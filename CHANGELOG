@@ -1,0 +1,4 @@
+* Thu May 11 2017 Valentin Collet <valentin@famillecollet.com> 0.0.1
+- First version of the software
+	- new class : GApplication
+	- new class : GWindow

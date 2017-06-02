@@ -1,0 +1,7 @@
+ARG_ENABLE("pggi", "pggi module", "no");
+
+if (PHP_PGGI != "no") {
+    EXTENSION("phpggi", "pggi.c", , "-Iext/pggi/include -D HAVE_PHP_PGGI");
+	ADD_SOURCES(configure_module_dirname + "/include", "gapplication", "pggi");
+	ADD_EXTENSION_DEP('xmlwriter', 'gtk3');
+}
