@@ -10,8 +10,17 @@ function starting(GApplication $app){
 
 function activate($app){
 	echo "activate\n";
+	echo("-----\n");
 	$b = new GWindow($app);
-	$b->setTitle("Window Test");
+	echo("-----\n");
+	
+	var_dump($b);
+	//$b->setTitle("Window Test");
+	$b->title = "Window Test";
+	echo("{$b->title}\n");
+	$b->hAlign = 3;
+	echo("{$b->hAlign}\n");
+	var_dump($b);
 	$b->setDefaultSize(200, 200);
 	$b->showAll();
 }

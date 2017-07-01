@@ -1,5 +1,7 @@
 <?php
 
+chdir(__DIR__);
+
 function shutdown($app){
 	echo("fermeture\n");
 }
@@ -10,10 +12,11 @@ function starting(GApplication $app){
 
 function activate($app){
 	echo "activate\n";
-	$b = new GWindow($app);
-	$b->setTitle("Window Test");
-	$b->setDefaultSize(200, 200);
-	$b->showAll();
+	$w = new GWindow($app, "example button");
+	$w->setDefaultSize(200, 200);
+	$button = new GButton("hey !");
+	$w->add($button);
+	$w->showAll();
 }
 
 $a = new GApplication();

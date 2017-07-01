@@ -9,29 +9,28 @@
   +-----------------------------------------------------------+
 */
 
-#ifndef __PGGI_DEF__
-#define __PGGI_DEF__
 
-#define PGGI_VERSION "1.0"
-#define PGGI_EXTNAME "pggi"
+#ifndef __G_BUTTON_BOX_DEF__
+#define __G_BUTTON_BOX_DEF__
 
+#include <gtk/gtk.h>
 #include "php.h"
 #include "php_ini.h"
 #include "ext/standard/info.h"
 #include "zend.h"
 #include "zend_API.h"
-#include "gexception.h"
-#include "gapplication.h"
 #include "hub.h"
-#include "gwidget.h"
-#include "gcontainer.h"
-#include "gwindow.h"
-#include "glabel.h"
-#include "gimage.h"
 #include "gbox.h"
-#include "gbutton.h"
-#include "gbuttonbox.h"
 
-#define pphext_pggi_ptr &pggi_module_entry
+ZEND_BEGIN_ARG_INFO_EX(arginfo_gbuttonbox_construct, 0, 0, 1)
+	ZEND_ARG_INFO(0, orientation)
+ZEND_END_ARG_INFO()
+
+
+PHP_METHOD(GButtonBox, __construct);
+PHP_METHOD(GButtonBox, getLayout);
+PHP_METHOD(GButtonBox, setLayout);
+
+void gbuttonbox_init(int module_number);
 
 #endif

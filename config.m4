@@ -16,10 +16,16 @@ if test "$PHP_PGGI" != "no"; then
 		AC_MSG_ERROR(system gtk not found)
 	fi
 	PHP_NEW_EXTENSION(pggi,
-    	src/pggi.c \
-    	src/gapplication.c \
-		src/gwidget.c \
-		src/gwindow.c \
+    	src/pggi.c 			\
+    	src/gapplication.c 	\
+		src/gwidget.c 		\
+		src/gcontainer.c 	\
+		src/gwindow.c 		\
+		src/glabel.c		\
+		src/gimage.c		\
+		src/gbutton.c       \
+		src/gbox.c          \
+		src/gexception.c	\
     	, $ext_shared, , -I@ext_srcdir@/pggi/include)
 	PHP_ADD_BUILD_DIR($ext_builddir/src)
 	PHP_ADD_INCLUDE([$ext_srcdir/include])

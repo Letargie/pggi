@@ -9,29 +9,34 @@
   +-----------------------------------------------------------+
 */
 
-#ifndef __PGGI_DEF__
-#define __PGGI_DEF__
 
-#define PGGI_VERSION "1.0"
-#define PGGI_EXTNAME "pggi"
+#ifndef __GBUTTON_DEF__
+#define __GBUTTON_DEF__
 
+#include <gtk/gtk.h>
 #include "php.h"
 #include "php_ini.h"
 #include "ext/standard/info.h"
 #include "zend.h"
 #include "zend_API.h"
-#include "gexception.h"
-#include "gapplication.h"
 #include "hub.h"
-#include "gwidget.h"
+#include "gapplication.h"
 #include "gcontainer.h"
-#include "gwindow.h"
-#include "glabel.h"
-#include "gimage.h"
-#include "gbox.h"
-#include "gbutton.h"
-#include "gbuttonbox.h"
 
-#define pphext_pggi_ptr &pggi_module_entry
+
+#define GBUTTON_ALWAYS_SHOW_IMAGE	"alwaysShowImage"
+#define GBUTTON_IMAGE				"image"
+#define GBUTTON_IMAGE_POSITION		"imagePosition"
+#define GBUTTON_LABEL				"label"
+#define GBUTTON_RELIEF				"relief"
+#define GBUTTON_USE_UNDERLINE		"useUnderline"
+
+PHP_METHOD(GButton, __construct);
+
+zval *gbutton_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv);
+HashTable *gbutton_get_properties(zval *object);
+void gbutton_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+
+void gbutton_init(int module_number);
 
 #endif

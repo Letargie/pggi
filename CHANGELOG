@@ -1,4 +1,12 @@
+* Sat July 01 2017 Valentin Collet <valentin@famillecollet.com> 0.0.2
+- Adding new classes, the handling of signals and properties.
+	- GApplication : adding properties and signal handling
+	- GWidget : adding properties and signal handling
+	- GWindow : adding properties and signal handling
+	- new classes : GContainer, GLabel, GImage, GBox, GButton
+
 * Thu May 11 2017 Valentin Collet <valentin@famillecollet.com> 0.0.1
 - First version of the software
 	- new class : GApplication
+	- new class : GWidget
 	- new class : GWindow

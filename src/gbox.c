@@ -1,0 +1,165 @@
+/*
+  +-----------------------------------------------------------+
+  | Copyright (c) 2017 Collet Valentin                        |
+  +-----------------------------------------------------------+
+  | This source file is subject to version the BDS license,   |
+  | that is bundled with this package in the file LICENSE     |
+  +-----------------------------------------------------------+
+  | Author: Collet Valentin <valentin@famillecollet.com>      |
+  +-----------------------------------------------------------+
+*/
+
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+
+#include "gbox.h"
+
+static int le_gbox;
+static zend_object_handlers gbox_object_handlers;
+static zend_class_entry * gbox_class_entry_ce;
+
+zend_class_entry * gbox_get_class_entry(){
+	return gbox_class_entry_ce;
+}
+
+zend_object_handlers * gbox_get_object_handlers(){
+	return &gbox_object_handlers;
+}
+
+PHP_METHOD(GBox, __construct){
+	long orientation, spacing;
+	ze_gwidget_object * widget;
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ll", &orientation, &spacing) == FAILURE) {
+        RETURN_NULL();
+    }
+	widget = Z_GWIDGET_P(getThis());
+	widget->std.handlers = &gbox_object_handlers;	
+	if(!widget)
+		RETURN_NULL();
+	switch(orientation){
+		case GTK_ORIENTATION_HORIZONTAL:
+		case GTK_ORIENTATION_VERTICAL:
+			widget->widget_ptr = gwidget_new();
+			widget->widget_ptr->intern = gtk_box_new(orientation, spacing);
+			break;
+		default :
+			RETURN_NULL();
+	}
+	g_signal_connect(widget->widget_ptr->intern, "destroy", G_CALLBACK (widget_destructed), widget);
+}
+
+static const zend_function_entry gbox_class_functions[] = {
+	PHP_ME(GBox, __construct		, arginfo_gbox_construct, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	PHP_FE_END
+};
+
+
+
+zval *gbox_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv){
+	ze_gwidget_object * intern = Z_GWIDGET_P(object);
+	gwidget_ptr w = intern->widget_ptr;
+	const char * tmp;
+	ZVAL_NULL(rv);
+	if(!w)
+		return rv;
+	convert_to_string(member);
+	char * member_val = Z_STRVAL_P(member);
+	if(!strcmp(member_val, GBOX_SPACING)){
+		ZVAL_LONG(rv, gtk_box_get_spacing(GTK_BOX(w->intern)));
+		return rv;
+	}else if(!strcmp(member_val, GBOX_BASELINE_POSITION)){
+		ZVAL_LONG(rv, gtk_box_get_baseline_position(GTK_BOX(w->intern)));
+		return rv;
+	}else if(!strcmp(member_val, GBOX_HOMOGENEOUS)){
+		ZVAL_BOOL(rv, gtk_box_get_homogeneous(GTK_BOX(w->intern)));
+		return rv;
+	}
+	return gcontainer_read_property(object, member, type, cache_slot, rv);
+}
+
+#define G_H_UPDATE(name) \
+zend_hash_update(props, zend_string_init(name, sizeof(name)-1, 0), &zv)
+
+HashTable *gbox_get_properties(zval *object){
+	G_H_UPDATE_INIT(gcontainer_get_properties(object));
+	const char * tmp;
+	ze_gwidget_object * intern = Z_GWIDGET_P(object);
+	gwidget_ptr w = intern->widget_ptr;
+	if(!w){
+		return NULL;
+	}
+
+	G_H_UPDATE_LONG(GBOX_SPACING			, gtk_box_get_spacing			(GTK_BOX(w->intern)));
+	G_H_UPDATE_LONG(GBOX_BASELINE_POSITION	, gtk_box_get_baseline_position	(GTK_BOX(w->intern)));
+	G_H_UPDATE_BOOL(GBOX_HOMOGENEOUS		, gtk_box_get_homogeneous		(GTK_BOX(w->intern)));
+
+	return G_H_UPDATE_RETURN;
+}
+
+void gbox_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+	ze_gwidget_object * intern = Z_GWIDGET_P(object);
+	gwidget_ptr w = intern->widget_ptr;
+	zval * tmp_member;
+	long tmp_l;
+	const char * tmp_s;
+	double tmp_d;
+	int tmp_b;
+	convert_to_string(member);
+	char * member_val = Z_STRVAL_P(member);
+	switch(Z_TYPE_P(value)){
+		case IS_LONG :
+			tmp_l = Z_LVAL_P(value);
+			if(!strcmp(member_val, GBOX_SPACING))
+				gtk_box_set_spacing(GTK_BOX(w->intern), tmp_l);
+			else if(!strcmp(member_val, GBOX_BASELINE_POSITION))
+				switch(tmp_l){
+					case GTK_BASELINE_POSITION_TOP :
+					case GTK_BASELINE_POSITION_CENTER :
+					case GTK_BASELINE_POSITION_BOTTOM :
+						gtk_box_set_baseline_position(GTK_BOX(w->intern), tmp_l);
+						break;
+					default:
+						/* error here */
+						break;
+				}
+			else
+				gcontainer_write_property(object, member, value, cache_slot);
+			break;
+		case IS_FALSE :
+		case IS_TRUE :
+			tmp_b = Z_LVAL_P(value);
+			if(!strcmp(member_val, GBOX_HOMOGENEOUS))
+				gtk_box_set_homogeneous(GTK_BOX(w->intern), tmp_b);
+			else
+				gcontainer_write_property(object, member, value, cache_slot);
+			break;
+		default:
+			gcontainer_write_property(object, member, value, cache_slot);
+	}
+}
+
+
+#define DECLARE_GBOX_PROP(name) \
+DECLARE_CLASS_PROPERTY(gbox_class_entry_ce, name)
+
+void gbox_init(int module_number){
+	zend_class_entry ce;
+	le_gbox = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "gbox", module_number);
+
+	memcpy(&gbox_object_handlers, gcontainer_get_object_handlers(), sizeof(zend_object_handlers));
+	gbox_object_handlers.read_property  = gbox_read_property;
+	gbox_object_handlers.get_properties = gbox_get_properties;
+	gbox_object_handlers.write_property = gbox_write_property;	
+	INIT_CLASS_ENTRY(ce, "GBox", gbox_class_functions);
+	ce.create_object 	= gwidget_object_new;
+	gbox_class_entry_ce	= zend_register_internal_class_ex(&ce, gcontainer_get_class_entry());
+
+	DECLARE_GBOX_PROP(GBOX_HOMOGENEOUS);
+	DECLARE_GBOX_PROP(GBOX_SPACING);
+	DECLARE_GBOX_PROP(GBOX_BASELINE_POSITION);
+}
+
+

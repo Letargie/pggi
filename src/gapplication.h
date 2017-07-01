@@ -1,3 +1,15 @@
+/*
+  +-----------------------------------------------------------+
+  | Copyright (c) 2017 Collet Valentin                        |
+  +-----------------------------------------------------------+
+  | This source file is subject to version the BDS license,   |
+  | that is bundled with this package in the file LICENSE     |
+  +-----------------------------------------------------------+
+  | Author: Collet Valentin <valentin@famillecollet.com>      |
+  +-----------------------------------------------------------+
+*/
+
+
 #ifndef __GAPPLICATION_DEF__
 #define __GAPPLICATION_DEF__
 
@@ -7,18 +19,15 @@
 #include "ext/standard/info.h"
 #include "zend.h"
 #include "zend_API.h"
-#include "pggi_parameters.h"
+#include "hub.h"
 
-enum{
-		gapplication_func_type_startup,
-		gapplication_func_type_activate,
-		gapplication_func_type_shutdown,
-		gapplication_func_type_count
-} gapplication_func_types;
+/************************************/
+/* GApplication internal structures */
+/************************************/
 
 typedef struct{
 	GtkApplication * app;
-	zval functions[gapplication_func_type_count];
+	zval signals;
 	zval windows;
 } * gapplication_ptr, gapplication_len;
 
@@ -26,6 +35,11 @@ typedef struct{
 	gapplication_ptr app_ptr;
 	zend_object std;
 } ze_gapplication_object;
+
+
+/*********************************/
+/* GApplication memory functions */
+/*********************************/
 
 static inline ze_gapplication_object *php_gapplication_fetch_object(zend_object *obj) {
 	return (ze_gapplication_object *)((char*)(obj) - XtOffsetOf(ze_gapplication_object, std));
@@ -42,23 +56,34 @@ zend_object * gapplication_object_new(zend_class_entry *class_type);
 void gapplication_object_free_storage(zend_object *object);
 void gapplication_free_resource(zend_resource *rsrc);
 
+/********************************/
+/* GApplication signal handling */
+/********************************/
+
 void gapplication_function(gpointer data, unsigned int type);
 void gapplication_func_activate(GtkApplication* app, gpointer data);
 void gapplication_func_startup(GtkApplication* app, gpointer data);
 void gapplication_func_shutdown(GtkApplication* app, gpointer data);
 
-void gapplication_set_function(INTERNAL_FUNCTION_PARAMETERS, char * function_name, zval * this, unsigned int type);
+/***************/
+/* PHP METHODS */
+/***************/
 
-PHP_METHOD(GApplication, __construct);
+#define GAPPLICATION_METHOD(name) \
+PHP_METHOD(GApplication,name)
 
-PHP_METHOD(GApplication, gapplication_run);
+GAPPLICATION_METHOD(__construct);
 
-PHP_METHOD(GApplication, onActivate);
-PHP_METHOD(GApplication, onStartup);
-PHP_METHOD(GApplication, onShutdown);
+GAPPLICATION_METHOD(run);
 
-PHP_METHOD(GApplication, quit);
-PHP_METHOD(GApplication, hold);
+GAPPLICATION_METHOD(on);
+
+GAPPLICATION_METHOD(quit);
+GAPPLICATION_METHOD(hold);
+
+/******************************/
+/* GApplication Initilializer */
+/******************************/
 
 void gapplication_init(int module_number);
 

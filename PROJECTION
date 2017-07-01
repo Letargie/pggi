@@ -1,0 +1,813 @@
+Extension [ <persistent> extension #15 pggi version 1.0 ] {
+
+  - Constants [95] {
+    Constant [ integer PGGI_BASELINE_POSITION_TOP ] { 0 }
+    Constant [ integer PGGI_BASELINE_POSITION_CENTER ] { 1 }
+    Constant [ integer PGGI_BASELINE_POSITION_BOTTOM ] { 2 }
+    Constant [ integer PGGI_DELETE_CHARS ] { 0 }
+    Constant [ integer PGGI_DELETE_WORD_ENDS ] { 1 }
+    Constant [ integer PGGI_DELETE_WORDS ] { 2 }
+    Constant [ integer PGGI_DELETE_DISPLAY_LINES ] { 3 }
+    Constant [ integer PGGI_DELETE_DISPLAY_LINE_ENDS ] { 4 }
+    Constant [ integer PGGI_DELETE_PARAGRAPH_ENDS ] { 5 }
+    Constant [ integer PGGI_DELETE_PARAGRAPHS ] { 6 }
+    Constant [ integer PGGI_DELETE_WHITESPACE ] { 7 }
+    Constant [ integer PGGI_DIR_TAB_FORWARD ] { 0 }
+    Constant [ integer PGGI_DIR_TAB_BACKWARD ] { 1 }
+    Constant [ integer PGGI_DIR_UP ] { 2 }
+    Constant [ integer PGGI_DIR_DOWN ] { 3 }
+    Constant [ integer PGGI_DIR_LEFT ] { 4 }
+    Constant [ integer PGGI_DIR_RIGHT ] { 5 }
+    Constant [ integer PGGI_JUSTIFY_LEFT ] { 0 }
+    Constant [ integer PGGI_JUSTIFY_RIGHT ] { 1 }
+    Constant [ integer PGGI_JUSTIFY_CENTER ] { 2 }
+    Constant [ integer PGGI_JUSTIFY_FILL ] { 3 }
+    Constant [ integer PGGI_MOVEMENT_LOGICAL_POSITIONS ] { 0 }
+    Constant [ integer PGGI_MOVEMENT_VISUAL_POSITIONS ] { 1 }
+    Constant [ integer PGGI_MOVEMENT_WORDS ] { 2 }
+    Constant [ integer PGGI_MOVEMENT_DISPLAY_LINES ] { 3 }
+    Constant [ integer PGGI_MOVEMENT_DISPLAY_LINE_ENDS ] { 4 }
+    Constant [ integer PGGI_MOVEMENT_PARAGRAPHS ] { 5 }
+    Constant [ integer PGGI_MOVEMENT_PARAGRAPH_ENDS ] { 6 }
+    Constant [ integer PGGI_MOVEMENT_BUFFER_ENDS ] { 8 }
+    Constant [ integer PGGI_MOVEMENT_HORIZONTAL_PAGES ] { 9 }
+    Constant [ integer PGGI_ORIENTATION_HORIZONTAL ] { 0 }
+    Constant [ integer PGGI_ORIENTATION_VERTICAL ] { 1 }
+    Constant [ integer PGGI_PACK_START ] { 0 }
+    Constant [ integer PGGI_PACK_END ] { 1 }
+    Constant [ integer PGGI_POS_LEFT ] { 0 }
+    Constant [ integer PGGI_POS_RIGHT ] { 1 }
+    Constant [ integer PGGI_POS_TOP ] { 2 }
+    Constant [ integer PGGI_POS_BOTTOM ] { 3 }
+    Constant [ integer PGGI_RELIEF_NORMAL ] { 0 }
+    Constant [ integer PGGI_RELIEF_HALF ] { 1 }
+    Constant [ integer PGGI_RELIEF_NONE ] { 2 }
+    Constant [ integer PGGI_SCROLL_STEPS ] { 0 }
+    Constant [ integer PGGI_SCROLL_PAGES ] { 1 }
+    Constant [ integer PGGI_SCROLL_ENDS ] { 2 }
+    Constant [ integer PGGI_SCROLL_HORIZONTAL_STEPS ] { 3 }
+    Constant [ integer PGGI_SCROLL_HORIZONTAL_PAGES ] { 4 }
+    Constant [ integer PGGI_SCROLL_HORIZONTAL_ENDS ] { 5 }
+    Constant [ integer PGGI_SCROLL_NONE ] { 0 }
+    Constant [ integer PGGI_SCROLL_JUMP ] { 1 }
+    Constant [ integer PGGI_SCROLL_STEP_BACKWARD ] { 2 }
+    Constant [ integer PGGI_SCROLL_STEP_FORWARD ] { 3 }
+    Constant [ integer PGGI_SCROLL_PAGE_BACKWARD ] { 4 }
+    Constant [ integer PGGI_SCROLL_PAGE_FORWARD ] { 5 }
+    Constant [ integer PGGI_SCROLL_STEP_UP ] { 6 }
+    Constant [ integer PGGI_SCROLL_STEP_DOWN ] { 7 }
+    Constant [ integer PGGI_SCROLL_PAGE_UP ] { 8 }
+    Constant [ integer PGGI_SCROLL_PAGE_DOWN ] { 9 }
+    Constant [ integer PGGI_SCROLL_STEP_LEFT ] { 10 }
+    Constant [ integer PGGI_SCROLL_STEP_RIGHT ] { 11 }
+    Constant [ integer PGGI_SCROLL_PAGE_LEFT ] { 12 }
+    Constant [ integer PGGI_SCROLL_PAGE_RIGHT ] { 13 }
+    Constant [ integer PGGI_SCROLL_START ] { 14 }
+    Constant [ integer PGGI_SCROLL_END ] { 15 }
+    Constant [ integer PGGI_SELECTION_NONE ] { 0 }
+    Constant [ integer PGGI_SELECTION_SINGLE ] { 1 }
+    Constant [ integer PGGI_SELECTION_BROWSE ] { 2 }
+    Constant [ integer PGGI_SELECTION_MULTIPLE ] { 3 }
+    Constant [ integer PGGI_SHADOW_NONE ] { 0 }
+    Constant [ integer PGGI_SHADOW_IN ] { 1 }
+    Constant [ integer PGGI_SHADOW_OUT ] { 2 }
+    Constant [ integer PGGI_SHADOW_ETCHED_IN ] { 3 }
+    Constant [ integer PGGI_SHADOW_ETCHED_OUT ] { 4 }
+    Constant [ integer PGGI_STATE_FLAG_NORMAL ] { 0 }
+    Constant [ integer PGGI_STATE_FLAG_ACTIVE ] { 1 }
+    Constant [ integer PGGI_STATE_FLAG_PRELIGHT ] { 2 }
+    Constant [ integer PGGI_STATE_FLAG_SELECTED ] { 4 }
+    Constant [ integer PGGI_STATE_FLAG_INSENSITIVE ] { 8 }
+    Constant [ integer PGGI_STATE_FLAG_FOCUSED ] { 32 }
+    Constant [ integer PGGI_STATE_FLAG_BACKDROP ] { 64 }
+    Constant [ integer PGGI_STATE_FLAG_DIR_LTR ] { 128 }
+    Constant [ integer PGGI_STATE_FLAG_DIR_RTL ] { 256 }
+    Constant [ integer PGGI_STATE_FLAG_LINK ] { 512 }
+    Constant [ integer PGGI_STATE_FLAG_VISITED ] { 1024 }
+    Constant [ integer PGGI_STATE_FLAG_CHECKED ] { 2048 }
+    Constant [ integer PGGI_TOOLBAR_ICONS ] { 0 }
+    Constant [ integer PGGI_TOOLBAR_TEXT ] { 1 }
+    Constant [ integer PGGI_TOOLBAR_BOTH ] { 2 }
+    Constant [ integer PGGI_TOOLBAR_BOTH_HORIZ ] { 3 }
+    Constant [ integer PGGI_SORT_ASCENDING ] { 0 }
+    Constant [ integer PGGI_SORT_DESCENDING ] { 1 }
+    Constant [ integer PGGI_SIGNAL_GAPPLICATION_WINDOW_ADDED ] { 0 }
+    Constant [ integer PGGI_SIGNAL_GAPPLICATION_WINDOW_REMOVED ] { 1 }
+    Constant [ integer PGGI_SIGNAL_GAPPLICATION_STARTUP ] { 2 }
+    Constant [ integer PGGI_SIGNAL_GAPPLICATION_SHUTDOWN ] { 3 }
+    Constant [ integer PGGI_SIGNAL_GAPPLICATION_ACTIVATE ] { 4 }
+  }
+
+  - Classes [9] {
+    Class [ <internal:pggi> class PGGIException extends Exception implements Throwable ] {
+
+      - Constants [0] {
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [4] {
+        Property [ <default> protected $message ]
+        Property [ <default> protected $code ]
+        Property [ <default> protected $file ]
+        Property [ <default> protected $line ]
+      }
+
+      - Methods [10] {
+        Method [ <internal:Core, inherits Exception, ctor> public method __construct ] {
+
+          - Parameters [3] {
+            Parameter #0 [ <optional> $message ]
+            Parameter #1 [ <optional> $code ]
+            Parameter #2 [ <optional> $previous ]
+          }
+        }
+
+        Method [ <internal:Core, inherits Exception> public method __wakeup ] {
+        }
+
+        Method [ <internal:Core, inherits Exception, prototype Throwable> final public method getMessage ] {
+        }
+
+        Method [ <internal:Core, inherits Exception, prototype Throwable> final public method getCode ] {
+        }
+
+        Method [ <internal:Core, inherits Exception, prototype Throwable> final public method getFile ] {
+        }
+
+        Method [ <internal:Core, inherits Exception, prototype Throwable> final public method getLine ] {
+        }
+
+        Method [ <internal:Core, inherits Exception, prototype Throwable> final public method getTrace ] {
+        }
+
+        Method [ <internal:Core, inherits Exception, prototype Throwable> final public method getPrevious ] {
+        }
+
+        Method [ <internal:Core, inherits Exception, prototype Throwable> final public method getTraceAsString ] {
+        }
+
+        Method [ <internal:Core, inherits Exception, prototype Throwable> public method __toString ] {
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class GApplication ] {
+
+      - Constants [0] {
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [0] {
+      }
+
+      - Methods [4] {
+        Method [ <internal:pggi> public method on ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> $type ]
+            Parameter #1 [ <required> $callback ]
+          }
+        }
+
+        Method [ <internal:pggi> public method run ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method quit ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, ctor> public method __construct ] {
+
+          - Parameters [0] {
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class GWidget ] {
+
+      - Constants [5] {
+        Constant [ public float ALIGN_FILL ] { 0 }
+        Constant [ public float ALIGN_START ] { 1 }
+        Constant [ public float ALIGN_END ] { 2 }
+        Constant [ public float ALIGN_CENTER ] { 3 }
+        Constant [ public float ALIGN_BASELINE ] { 4 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [18] {
+        Property [ <default> public $vAlign ]
+        Property [ <default> public $hAlign ]
+        Property [ <default> public $marginStart ]
+        Property [ <default> public $marginEnd ]
+        Property [ <default> public $marginTop ]
+        Property [ <default> public $marginBottom ]
+        Property [ <default> public $hExpand ]
+        Property [ <default> public $hExpandSet ]
+        Property [ <default> public $vExpand ]
+        Property [ <default> public $vExpandSet ]
+        Property [ <default> public $opacity ]
+        Property [ <default> public $visible ]
+        Property [ <default> public $noShowAll ]
+        Property [ <default> public $direction ]
+        Property [ <default> public $sensitive ]
+        Property [ <default> public $name ]
+        Property [ <default> public $canDefault ]
+        Property [ <default> public $canFocus ]
+      }
+
+      - Methods [5] {
+        Method [ <internal:pggi> public method on ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> $type ]
+            Parameter #1 [ <required> $callback ]
+          }
+        }
+
+        Method [ <internal:pggi> public method show ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method hide ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method showAll ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, ctor> public method __construct ] {
+
+          - Parameters [0] {
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class GContainer extends GWidget ] {
+
+      - Constants [5] {
+        Constant [ public float ALIGN_FILL ] { 0 }
+        Constant [ public float ALIGN_START ] { 1 }
+        Constant [ public float ALIGN_END ] { 2 }
+        Constant [ public float ALIGN_CENTER ] { 3 }
+        Constant [ public float ALIGN_BASELINE ] { 4 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [19] {
+        Property [ <default> public $vAlign ]
+        Property [ <default> public $hAlign ]
+        Property [ <default> public $marginStart ]
+        Property [ <default> public $marginEnd ]
+        Property [ <default> public $marginTop ]
+        Property [ <default> public $marginBottom ]
+        Property [ <default> public $hExpand ]
+        Property [ <default> public $hExpandSet ]
+        Property [ <default> public $vExpand ]
+        Property [ <default> public $vExpandSet ]
+        Property [ <default> public $opacity ]
+        Property [ <default> public $visible ]
+        Property [ <default> public $noShowAll ]
+        Property [ <default> public $direction ]
+        Property [ <default> public $sensitive ]
+        Property [ <default> public $name ]
+        Property [ <default> public $canDefault ]
+        Property [ <default> public $canFocus ]
+        Property [ <default> public $borderWidth ]
+      }
+
+      - Methods [6] {
+        Method [ <internal:pggi> public method add ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $data ]
+          }
+        }
+
+        Method [ <internal:pggi, overwrites GWidget, ctor> public method __construct ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method on ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> $type ]
+            Parameter #1 [ <required> $callback ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method show ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+
+          - Parameters [0] {
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class GWindow extends GContainer ] {
+
+      - Constants [5] {
+        Constant [ public float ALIGN_FILL ] { 0 }
+        Constant [ public float ALIGN_START ] { 1 }
+        Constant [ public float ALIGN_END ] { 2 }
+        Constant [ public float ALIGN_CENTER ] { 3 }
+        Constant [ public float ALIGN_BASELINE ] { 4 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [29] {
+        Property [ <default> public $vAlign ]
+        Property [ <default> public $hAlign ]
+        Property [ <default> public $marginStart ]
+        Property [ <default> public $marginEnd ]
+        Property [ <default> public $marginTop ]
+        Property [ <default> public $marginBottom ]
+        Property [ <default> public $hExpand ]
+        Property [ <default> public $hExpandSet ]
+        Property [ <default> public $vExpand ]
+        Property [ <default> public $vExpandSet ]
+        Property [ <default> public $opacity ]
+        Property [ <default> public $visible ]
+        Property [ <default> public $noShowAll ]
+        Property [ <default> public $direction ]
+        Property [ <default> public $sensitive ]
+        Property [ <default> public $name ]
+        Property [ <default> public $canDefault ]
+        Property [ <default> public $canFocus ]
+        Property [ <default> public $borderWidth ]
+        Property [ <default> public $title ]
+        Property [ <default> public $focusVisible ]
+        Property [ <default> public $focusOnMap ]
+        Property [ <default> public $decorated ]
+        Property [ <default> public $deletable ]
+        Property [ <default> public $mnemonicsVisible ]
+        Property [ <default> public $resizable ]
+        Property [ <default> public $defaultHeight ]
+        Property [ <default> public $defaultWidth ]
+        Property [ <default> public $hideTitlebarWhenMaximized ]
+      }
+
+      - Methods [9] {
+        Method [ <internal:pggi, overwrites GContainer, ctor> public method __construct ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> $app ]
+            Parameter #1 [ <optional> $title ]
+          }
+        }
+
+        Method [ <internal:pggi> public method setTitle ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $name ]
+          }
+        }
+
+        Method [ <internal:pggi> public method setDefaultSize ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> $x ]
+            Parameter #1 [ <required> $y ]
+          }
+        }
+
+        Method [ <internal:pggi> public method close ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GContainer> public method add ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $data ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method on ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> $type ]
+            Parameter #1 [ <required> $callback ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method show ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+
+          - Parameters [0] {
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class GBox extends GContainer ] {
+
+      - Constants [5] {
+        Constant [ public float ALIGN_FILL ] { 0 }
+        Constant [ public float ALIGN_START ] { 1 }
+        Constant [ public float ALIGN_END ] { 2 }
+        Constant [ public float ALIGN_CENTER ] { 3 }
+        Constant [ public float ALIGN_BASELINE ] { 4 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [22] {
+        Property [ <default> public $vAlign ]
+        Property [ <default> public $hAlign ]
+        Property [ <default> public $marginStart ]
+        Property [ <default> public $marginEnd ]
+        Property [ <default> public $marginTop ]
+        Property [ <default> public $marginBottom ]
+        Property [ <default> public $hExpand ]
+        Property [ <default> public $hExpandSet ]
+        Property [ <default> public $vExpand ]
+        Property [ <default> public $vExpandSet ]
+        Property [ <default> public $opacity ]
+        Property [ <default> public $visible ]
+        Property [ <default> public $noShowAll ]
+        Property [ <default> public $direction ]
+        Property [ <default> public $sensitive ]
+        Property [ <default> public $name ]
+        Property [ <default> public $canDefault ]
+        Property [ <default> public $canFocus ]
+        Property [ <default> public $borderWidth ]
+        Property [ <default> public $homogeneous ]
+        Property [ <default> public $spacing ]
+        Property [ <default> public $baselinePosition ]
+      }
+
+      - Methods [6] {
+        Method [ <internal:pggi, overwrites GContainer, ctor> public method __construct ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> $orientation ]
+            Parameter #1 [ <optional> $spacing ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GContainer> public method add ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $data ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method on ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> $type ]
+            Parameter #1 [ <required> $callback ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method show ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+
+          - Parameters [0] {
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class GButton extends GContainer ] {
+
+      - Constants [11] {
+        Constant [ public float ALIGN_FILL ] { 0 }
+        Constant [ public float ALIGN_START ] { 1 }
+        Constant [ public float ALIGN_END ] { 2 }
+        Constant [ public float ALIGN_CENTER ] { 3 }
+        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public integer LABEL ] { 0 }
+        Constant [ public integer MNEMONIC ] { 1 }
+        Constant [ public integer IMAGE_16 ] { 2 }
+        Constant [ public integer IMAGE_24 ] { 3 }
+        Constant [ public integer IMAGE_32 ] { 4 }
+        Constant [ public integer IMAGE_48 ] { 5 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [25] {
+        Property [ <default> public $vAlign ]
+        Property [ <default> public $hAlign ]
+        Property [ <default> public $marginStart ]
+        Property [ <default> public $marginEnd ]
+        Property [ <default> public $marginTop ]
+        Property [ <default> public $marginBottom ]
+        Property [ <default> public $hExpand ]
+        Property [ <default> public $hExpandSet ]
+        Property [ <default> public $vExpand ]
+        Property [ <default> public $vExpandSet ]
+        Property [ <default> public $opacity ]
+        Property [ <default> public $visible ]
+        Property [ <default> public $noShowAll ]
+        Property [ <default> public $direction ]
+        Property [ <default> public $sensitive ]
+        Property [ <default> public $name ]
+        Property [ <default> public $canDefault ]
+        Property [ <default> public $canFocus ]
+        Property [ <default> public $borderWidth ]
+        Property [ <default> public $alwaysShowImage ]
+        Property [ <default> public $image ]
+        Property [ <default> public $imagePosition ]
+        Property [ <default> public $label ]
+        Property [ <default> public $relief ]
+        Property [ <default> public $useUnderline ]
+      }
+
+      - Methods [6] {
+        Method [ <internal:pggi, overwrites GContainer, ctor> public method __construct ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GContainer> public method add ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $data ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method on ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> $type ]
+            Parameter #1 [ <required> $callback ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method show ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+
+          - Parameters [0] {
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class GLabel extends GWidget ] {
+
+      - Constants [9] {
+        Constant [ public float ALIGN_FILL ] { 0 }
+        Constant [ public float ALIGN_START ] { 1 }
+        Constant [ public float ALIGN_END ] { 2 }
+        Constant [ public float ALIGN_CENTER ] { 3 }
+        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public float ELLIPSIZE_NONE ] { 0 }
+        Constant [ public float ELLIPSIZE_START ] { 1 }
+        Constant [ public float ELLIPSIZE_MIDDLE ] { 2 }
+        Constant [ public float ELLIPSIZE_END ] { 3 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [29] {
+        Property [ <default> public $vAlign ]
+        Property [ <default> public $hAlign ]
+        Property [ <default> public $marginStart ]
+        Property [ <default> public $marginEnd ]
+        Property [ <default> public $marginTop ]
+        Property [ <default> public $marginBottom ]
+        Property [ <default> public $hExpand ]
+        Property [ <default> public $hExpandSet ]
+        Property [ <default> public $vExpand ]
+        Property [ <default> public $vExpandSet ]
+        Property [ <default> public $opacity ]
+        Property [ <default> public $visible ]
+        Property [ <default> public $noShowAll ]
+        Property [ <default> public $direction ]
+        Property [ <default> public $sensitive ]
+        Property [ <default> public $name ]
+        Property [ <default> public $canDefault ]
+        Property [ <default> public $canFocus ]
+        Property [ <default> public $trackVisitedLinks ]
+        Property [ <default> public $useMarkup ]
+        Property [ <default> public $useUnderline ]
+        Property [ <default> public $xAlign ]
+        Property [ <default> public $yAlign ]
+        Property [ <default> public $ellipsize ]
+        Property [ <default> public $widthChars ]
+        Property [ <default> public $maxWidthChars ]
+        Property [ <default> public $lines ]
+        Property [ <default> public $selectable ]
+        Property [ <default> public $text ]
+      }
+
+      - Methods [5] {
+        Method [ <internal:pggi, overwrites GWidget, ctor> public method __construct ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $label ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method on ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> $type ]
+            Parameter #1 [ <required> $callback ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method show ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+
+          - Parameters [0] {
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class GImage extends GWidget ] {
+
+      - Constants [5] {
+        Constant [ public float ALIGN_FILL ] { 0 }
+        Constant [ public float ALIGN_START ] { 1 }
+        Constant [ public float ALIGN_END ] { 2 }
+        Constant [ public float ALIGN_CENTER ] { 3 }
+        Constant [ public float ALIGN_BASELINE ] { 4 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [18] {
+        Property [ <default> public $vAlign ]
+        Property [ <default> public $hAlign ]
+        Property [ <default> public $marginStart ]
+        Property [ <default> public $marginEnd ]
+        Property [ <default> public $marginTop ]
+        Property [ <default> public $marginBottom ]
+        Property [ <default> public $hExpand ]
+        Property [ <default> public $hExpandSet ]
+        Property [ <default> public $vExpand ]
+        Property [ <default> public $vExpandSet ]
+        Property [ <default> public $opacity ]
+        Property [ <default> public $visible ]
+        Property [ <default> public $noShowAll ]
+        Property [ <default> public $direction ]
+        Property [ <default> public $sensitive ]
+        Property [ <default> public $name ]
+        Property [ <default> public $canDefault ]
+        Property [ <default> public $canFocus ]
+      }
+
+      - Methods [6] {
+        Method [ <internal:pggi> public method set ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $name ]
+          }
+        }
+
+        Method [ <internal:pggi, overwrites GWidget, ctor> public method __construct ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $image ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method on ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> $type ]
+            Parameter #1 [ <required> $callback ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method show ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+
+          - Parameters [0] {
+          }
+        }
+      }
+    }
+  }
+}
+

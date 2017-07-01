@@ -9,29 +9,25 @@
   +-----------------------------------------------------------+
 */
 
-#ifndef __PGGI_DEF__
-#define __PGGI_DEF__
 
-#define PGGI_VERSION "1.0"
-#define PGGI_EXTNAME "pggi"
-
-#include "php.h"
-#include "php_ini.h"
-#include "ext/standard/info.h"
-#include "zend.h"
-#include "zend_API.h"
-#include "gexception.h"
-#include "gapplication.h"
-#include "hub.h"
-#include "gwidget.h"
-#include "gcontainer.h"
-#include "gwindow.h"
-#include "glabel.h"
-#include "gimage.h"
-#include "gbox.h"
-#include "gbutton.h"
-#include "gbuttonbox.h"
-
-#define pphext_pggi_ptr &pggi_module_entry
-
+#ifdef HAVE_CONFIG_H
+#include "config.h"
 #endif
+
+
+#include "gexception.h"
+
+static zend_class_entry * gexception_entry_ce;
+
+zend_class_entry * pggi_exception_get(){
+	return gexception_entry_ce;
+}
+
+void gexception_init(int module_number){
+	zend_class_entry ce;
+	INIT_CLASS_ENTRY(ce, "PGGIException", NULL);
+ 	gexception_entry_ce = zend_register_internal_class_ex(&ce, zend_ce_exception);
+
+}
+
+

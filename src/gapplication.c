@@ -1,3 +1,15 @@
+/*
+  +-----------------------------------------------------------+
+  | Copyright (c) 2017 Collet Valentin                        |
+  +-----------------------------------------------------------+
+  | This source file is subject to version the BDS license,   |
+  | that is bundled with this package in the file LICENSE     |
+  +-----------------------------------------------------------+
+  | Author: Collet Valentin <valentin@famillecollet.com>      |
+  +-----------------------------------------------------------+
+*/
+
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -9,6 +21,10 @@ static int le_gapplication;
 static zend_object_handlers gapplication_object_handlers;
 static zend_class_entry * gapplication_class_entry_ce;
 
+/*********************************/
+/* GApplication memory functions */
+/*********************************/
+
 void gapplication_add_windows(gapplication_ptr intern, zval * window){
 	zend_hash_next_index_insert(Z_ARRVAL_P(&intern->windows), window);
 	zval_addref_p(window);
@@ -16,19 +32,27 @@ void gapplication_add_windows(gapplication_ptr intern, zval * window){
 
 gapplication_ptr gapplication_ctor(){
 	gapplication_ptr tor = ecalloc(1, sizeof(gapplication_len));	
-	tor->app = gtk_application_new("org.gtk.example", G_APPLICATION_FLAGS_NONE);
+	tor->app = gtk_application_new("org.gtk.example", G_APPLICATION_FLAGS_NONE); /*Should probably be in __construct*/
 	array_init(&tor->windows);
+	array_init(&tor->signals);
 	return tor;
 }
 
 void gapplication_dtor(gapplication_ptr intern){
 	unsigned int i;
+	zval * zv, * tmp;
 	if (intern->app){
 		g_object_unref(intern->app);
 	}
-	for(i = 0; i < gapplication_func_type_count; ++i)
-		if(zend_is_callable(&intern->functions[i], 0, NULL))
-			zval_dtor(&intern->functions[i]);
+	ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(&intern->signals), zv){
+		ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(zv), tmp){
+			zval_ptr_dtor(tmp);		
+		} ZEND_HASH_FOREACH_END();
+		zend_hash_destroy(Z_ARRVAL_P(zv));
+	} ZEND_HASH_FOREACH_END();
+	zend_hash_destroy(Z_ARRVAL_P(&intern->signals));
+	zend_hash_destroy(Z_ARRVAL_P(&intern->windows));
+	
 	efree(intern);
 }
 
@@ -58,52 +82,87 @@ void gapplication_free_resource(zend_resource *rsrc) {
 	gapplication_dtor(app);
 }
 
+/********************************/
+/* GApplication signal handling */
+/********************************/
+
 void gapplication_function(gpointer data, unsigned int type){
 	zval retval;
-	zval * tmp = data;
-	if(tmp){
-		ze_gapplication_object * app = Z_GAPPLICATION_P(tmp);
-		if(call_user_function(EG(function_table), NULL, &app->app_ptr->functions[type], &retval, 1, tmp) != SUCCESS){
-			zend_error(E_ERROR, "Function call failed");
+	zval * this = data;
+	zval * array, * value, * zv;
+	if(type){
+		ze_gapplication_object * app = Z_GAPPLICATION_P(this);
+		array = &app->app_ptr->signals;
+		value = (zend_hash_index_find(Z_ARRVAL_P(array), type));
+		if(value != NULL){
+			ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(value), zv){
+				if(call_user_function(EG(function_table), NULL, zv, &retval, 1, this) != SUCCESS){
+					zend_error(E_ERROR, "Function call failed");
+				}
+			} ZEND_HASH_FOREACH_END();
 		}
 	}
 }
 
+
 void gapplication_func_activate(GtkApplication* app, gpointer data){
-	gapplication_function(data, gapplication_func_type_activate);
+	gapplication_function(data, gsignal_gapplication_activate);
 }
 
 void gapplication_func_startup(GtkApplication* app, gpointer data){
-	gapplication_function(data, gapplication_func_type_startup);
+	gapplication_function(data, gsignal_gapplication_startup);
 }
 
 void gapplication_func_shutdown(GtkApplication* app, gpointer data){
-	gapplication_function(data, gapplication_func_type_shutdown);
+	gapplication_function(data, gsignal_gapplication_shutdown);
 }
 
-void gapplication_set_function(INTERNAL_FUNCTION_PARAMETERS, char * function_name, zval * this, unsigned int type){
-	zval * function;
+/***************/
+/* PHP METHODS */
+/***************/
+
+PHP_METHOD(GApplication, on){
+	zval * function, * data,* narray, * this;
+	long val;
 	ze_gapplication_object *ze_obj = NULL;
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "z", &function) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "lz", &val ,&function) == FAILURE) {
         RETURN_NULL();
     }
 	if(!zend_is_callable(function, 0, NULL))
-		zend_error(E_ERROR, "Function requires string argument");
-
+		zend_error(E_ERROR, "Function requires callable argument");
+	this = getThis();
+	if(!this)
+		RETURN_NULL();
 	ze_obj = Z_GAPPLICATION_P(this);
-	if(zend_is_callable(&ze_obj->app_ptr->functions[type], 0, NULL))
-		zval_dtor(&ze_obj->app_ptr->functions[type]);
-	ZVAL_COPY(&ze_obj->app_ptr->functions[type], function);
-	switch(type){
-		case gapplication_func_type_activate:
-			g_signal_connect(ze_obj->app_ptr->app, function_name, G_CALLBACK (gapplication_func_activate), (gpointer) this);
+	switch(val){
+		case gsignal_gapplication_startup :
+		case gsignal_gapplication_shutdown :
+		case gsignal_gapplication_activate :
 			break;
-		case gapplication_func_type_startup:
-			g_signal_connect(ze_obj->app_ptr->app, function_name, G_CALLBACK (gapplication_func_startup), (gpointer) this);
-			break;
-		case gapplication_func_type_shutdown:
-			g_signal_connect(ze_obj->app_ptr->app, function_name, G_CALLBACK (gapplication_func_shutdown), (gpointer) this);
-			break;
+		default :
+			zend_error(E_ERROR, "Signal unknown");
+	}
+	data = zend_hash_index_find(Z_ARRVAL_P(&ze_obj->app_ptr->signals), val);
+	if(data == NULL){
+		narray = ecalloc(1,sizeof(zval));
+		array_init(narray);
+		zend_hash_index_add(Z_ARRVAL_P(&ze_obj->app_ptr->signals), val, narray);
+		zend_hash_next_index_insert(Z_ARRVAL_P(narray), function);
+		zval_addref_p(function);
+		switch(val){
+			case gsignal_gapplication_startup :
+				g_signal_connect(ze_obj->app_ptr->app, GSIGNAL_GAPPLICATION_STARTUP, G_CALLBACK (gapplication_func_startup), (gpointer) this);
+				break;
+			case gsignal_gapplication_shutdown :
+				g_signal_connect(ze_obj->app_ptr->app, GSIGNAL_GAPPLICATION_SHUTDOWN, G_CALLBACK (gapplication_func_shutdown), (gpointer) this);
+				break;
+			case gsignal_gapplication_activate :
+				g_signal_connect(ze_obj->app_ptr->app, GSIGNAL_GAPPLICATION_ACTIVATE, G_CALLBACK (gapplication_func_activate), (gpointer) this);
+				break;
+		}
+	}else{
+		zend_hash_next_index_insert(Z_ARRVAL_P(data), function);
+		/*zval_addref_p(function);*/
 	}
 }
 
@@ -125,25 +184,6 @@ PHP_METHOD(GApplication, run){
 	}
 }
 
-
-PHP_METHOD(GApplication, onActivate){
-	zval * this = getThis();	
-	if(!this) zend_error(E_ERROR, "function call on null");
-	gapplication_set_function(INTERNAL_FUNCTION_PARAM_PASSTHRU, "activate", this, gapplication_func_type_activate);
-}
-
-PHP_METHOD(GApplication, onStartup){
-	zval * this = getThis();	
-	if(!this) zend_error(E_ERROR, "function call on null");
-	gapplication_set_function(INTERNAL_FUNCTION_PARAM_PASSTHRU, "startup", this, gapplication_func_type_startup);
-}
-
-PHP_METHOD(GApplication, onShutdown){
-	zval * this = getThis();	
-	if(!this) zend_error(E_ERROR, "function call on null");
-	gapplication_set_function(INTERNAL_FUNCTION_PARAM_PASSTHRU, "shutdown", this, gapplication_func_type_shutdown);
-}
-
 PHP_METHOD(GApplication, quit){
 	ze_gapplication_object *ze_obj = NULL;
 	zval * self = getThis();
@@ -163,15 +203,16 @@ PHP_METHOD(GApplication, hold){
 }
 
 static const zend_function_entry gapplication_class_functions[] = {
-	PHP_ME(GApplication, onActivate		, arginfo_gapplication_on	, ZEND_ACC_PUBLIC)
-	PHP_ME(GApplication, onStartup		, arginfo_gapplication_on	, ZEND_ACC_PUBLIC)
-	PHP_ME(GApplication, onShutdown		, arginfo_gapplication_on	, ZEND_ACC_PUBLIC)
-	PHP_ME(GApplication, run			, arginfo_pggi_void			, ZEND_ACC_PUBLIC)
-	PHP_ME(GApplication, quit			, arginfo_pggi_void			, ZEND_ACC_PUBLIC)
-	PHP_ME(GApplication, __construct	, arginfo_pggi_void			, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	PHP_ME(GApplication, on				, arginfo_pggi_on	, ZEND_ACC_PUBLIC)
+	PHP_ME(GApplication, run			, arginfo_pggi_void	, ZEND_ACC_PUBLIC)
+	PHP_ME(GApplication, quit			, arginfo_pggi_void	, ZEND_ACC_PUBLIC)
+	PHP_ME(GApplication, __construct	, arginfo_pggi_void	, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
 	PHP_FE_END
 };
 
+/******************************/
+/* GApplication Initilializer */
+/******************************/
 
 void gapplication_init(int module_number){
 	zend_class_entry ce;
