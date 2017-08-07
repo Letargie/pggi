@@ -91,17 +91,12 @@ zval *gbutton_read_property(zval *object, zval *member, int type, void **cache_s
 		}else if(!strcmp(member_val, GBUTTON_USE_UNDERLINE)){
 			ZVAL_LONG(rv, gtk_button_get_use_underline(but));
 		}else if(!strcmp(member_val, GBUTTON_IMAGE)){
-			rv = zend_read_property(gbutton_class_entry_ce, object, GBUTTON_IMAGE, sizeof(GBUTTON_IMAGE) - 1, 1, rv);
+			return std_object_handlers.read_property(object, member, type, cache_slot, rv);
 		}else
 			return gcontainer_read_property(object, member, type, cache_slot, rv);
 	}
 	return rv;
 }
-
-#define G_H_OBJ_UPDATE(name) do { \
-	zval * zv_p = zend_read_property(gbutton_class_entry_ce, object, name, sizeof(name) - 1, 1, zv_p);\
-	zend_hash_update(props, zend_string_init(name, sizeof(name)-1, 0), zv_p); \
-}while(0)\
 
 HashTable *gbutton_get_properties(zval *object){
 	HashTable *props;
@@ -118,8 +113,6 @@ HashTable *gbutton_get_properties(zval *object){
 	G_H_UPDATE_BOOL		(GBUTTON_USE_UNDERLINE		, gtk_button_get_use_underline		(but));
 	G_H_UPDATE_LONG		(GBUTTON_IMAGE_POSITION		, gtk_button_get_image_position		(but));
 	G_H_UPDATE_LONG		(GBUTTON_RELIEF				, gtk_button_get_relief				(but));
-
-	G_H_OBJ_UPDATE(GBUTTON_IMAGE);
 
 	return props;
 }
@@ -177,10 +170,10 @@ void gbutton_write_property(zval *object, zval *member, zval *value, void **cach
 						/*error*/
 						return;
 					}
-					/*should zval be copied? or update do take care of it*/
-					zend_update_property(gbutton_class_entry_ce, object, GBUTTON_IMAGE, sizeof(GBUTTON_IMAGE) - 1, value);
+					std_object_handlers.write_property(object, member, value, cache_slot);
 					gtk_button_set_image(but, w->intern);
-				}
+				}else
+					gcontainer_write_property(object, member, value, cache_slot);
 			break;
 		default :
 			gcontainer_write_property(object, member, value, cache_slot);

@@ -30,6 +30,7 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO_EX(arginfo_pggi_on, 0, 0, 2)
 	ZEND_ARG_INFO(0, type)
 	ZEND_ARG_INFO(0, callback)
+	ZEND_ARG_INFO(0, param)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_pggi_set, 0, 0, 1)
@@ -52,7 +53,14 @@ enum{
 
 	gsignal_gwidget_destroy,
 
-	gsignal_gcontainer_add
+	gsignal_gcontainer_add,
+
+	gsignal_gmenuitem_activate,
+
+	gsignal_gcombo_box_changed,
+	gsignal_gcombo_box_move_active,
+
+	gsignal_gtext_buffer_changed
 } gsignals;
 
 /**
@@ -67,12 +75,32 @@ enum{
 #define GSIGNAL_GAPPLICATION_ACTIVATE		"activate"
 
 #define GSIGNAL_GWIDGET_DESTROY				"destroy"
+
 #define GSIGNAL_GCONTAINER_ADD				"add"
 
+#define GSIGNAL_GMENUITEM_ACTIVATE			"activate"
+
+#define GSIGNAL_GCOMBO_BOX_CHANGED			"changed"
+#define GSIGNAL_GCOMBO_BOX_MOVE_ACTIVE		"move_active"
+
+#define GSIGNAL_GTEXT_BUFFER_CHANGED		"changed"
 
 /*****************/
 /* Utils defines */
 /*****************/
+
+#define PARSE_CONSTRUCT_PARAMETERS(parsing)									\
+do{																			\
+	zend_error_handling error_handling;										\
+	zend_replace_error_handling(EH_THROW, NULL, &error_handling);			\
+	if (parsing == FAILURE) {												\
+		zend_restore_error_handling(&error_handling TSRMLS_CC);				\
+	}																		\
+	zend_restore_error_handling(&error_handling TSRMLS_CC);					\
+}while(0)
+
+#define PGGI_PARSE_PARAMETERS(parsing)										\
+PARSE_CONSTRUCT_PARAMETERS(parsing)
 
 #define DECLARE_CLASS_PROPERTY_INIT()										\
 zend_class_entry ce;

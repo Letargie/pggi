@@ -30,9 +30,9 @@ zend_object_handlers * gbox_get_object_handlers(){
 }
 
 PHP_METHOD(GBox, __construct){
-	long orientation, spacing;
+	long orientation, spacing = 0;
 	ze_gwidget_object * widget;
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ll", &orientation, &spacing) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l|l", &orientation, &spacing) == FAILURE) {
         RETURN_NULL();
     }
 	widget = Z_GWIDGET_P(getThis());
@@ -51,8 +51,52 @@ PHP_METHOD(GBox, __construct){
 	g_signal_connect(widget->widget_ptr->intern, "destroy", G_CALLBACK (widget_destructed), widget);
 }
 
+
+PHP_METHOD(GBox, packStart){
+	ze_gwidget_object *ze_obj = NULL;
+	ze_gwidget_object * data;
+	zval * self = getThis();
+	zval * obj;
+	int expand = 0;
+	int fill = 1;
+	long padding = 0;
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "z|bbl", &obj ,&expand, &fill, &padding) == FAILURE){
+        RETURN_NULL();
+    }
+	data = Z_GWIDGET_P(obj);
+	if(self){
+		ze_obj = Z_GWIDGET_P(self);
+		gtk_box_pack_start(GTK_BOX(ze_obj->widget_ptr->intern), data->widget_ptr->intern, expand, fill, padding);
+		gcontainer_add_data(ze_obj->widget_ptr, obj);
+	}
+}
+
+
+PHP_METHOD(GBox, packEnd){
+	ze_gwidget_object *ze_obj = NULL;
+	ze_gwidget_object * data;
+	zval * self = getThis();
+	zval * obj;
+	int expand = 0;
+	int fill = 1;
+	long padding = 0;
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "z|bbl", &obj ,&expand, &fill, &padding) == FAILURE){
+        RETURN_NULL();
+    }
+	data = Z_GWIDGET_P(obj);
+	if(self){
+		ze_obj = Z_GWIDGET_P(self);
+		gtk_box_pack_end(GTK_BOX(ze_obj->widget_ptr->intern), data->widget_ptr->intern, expand, fill, padding);
+		gcontainer_add_data(ze_obj->widget_ptr, obj);
+	}
+}
+
+
+
 static const zend_function_entry gbox_class_functions[] = {
-	PHP_ME(GBox, __construct		, arginfo_gbox_construct, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	PHP_ME(GBox, __construct		, arginfo_gbox_construct, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR	)
+	PHP_ME(GBox, packStart			, arginfo_gbox_pack		, ZEND_ACC_PUBLIC					)
+	PHP_ME(GBox, packEnd			, arginfo_gbox_pack		, ZEND_ACC_PUBLIC					)
 	PHP_FE_END
 };
 

@@ -5,5 +5,3 @@ I made this extension in purpose to learn how to make php extension and learn GT
 For now there isn't much but I intend to add more to it.
 
 
-
-

@@ -92,6 +92,10 @@ static inline ze_gwidget_object *php_gwidget_fetch_object(zend_object *obj) {
 	return (ze_gwidget_object *)((char*)(obj) - XtOffsetOf(ze_gwidget_object, std));
 }
 
+inline zend_object *php_gwidget_reverse_object(ze_gwidget_object *obj) {
+	return (zend_object *)((char*)(obj) + sizeof(gwidget_ptr));
+}
+
 #define Z_GWIDGET_P(zv) php_gwidget_fetch_object(Z_OBJ_P((zv)))
 
 zend_object *gwidget_object_new(zend_class_entry *class_type);
@@ -105,10 +109,17 @@ void gwidget_free_resource(zend_resource *rsrc);
 /* internal on-related functions */
 /*********************************/
 
-void gwidget_func_destroy(GtkApplication* app, gpointer data);
+typedef struct _on_data{
+	zval 	* function,
+			* data;
+} * on_data_ptr, on_data_t;
+
+void gwidget_func_destroy(GtkWidget* w, gpointer data);
+
+void gwidget_adding_function(long val, char * name, void (*f)(GtkWidget *, void *) ,ze_gwidget_object * ze_obj, zval * function, zval * param);
 
 void gwidget_function(gpointer data, unsigned int type);
-void gwidget_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * this);
+void gwidget_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * param);
 
 /***************/
 /* PHP Methods */

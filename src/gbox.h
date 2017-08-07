@@ -33,11 +33,20 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_gbox_construct, 0, 0, 1)
 	ZEND_ARG_INFO(0, spacing)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_gbox_pack, 0, 0, 1)
+	ZEND_ARG_INFO(0, object)
+	ZEND_ARG_INFO(0, expand)
+	ZEND_ARG_INFO(0, fill)
+	ZEND_ARG_INFO(0, padding)
+ZEND_END_ARG_INFO()
+
 #define GBOX_HOMOGENEOUS		"homogeneous"
 #define GBOX_SPACING			"spacing"
 #define GBOX_BASELINE_POSITION	"baselinePosition"
 
 PHP_METHOD(GBox, __construct);
+PHP_METHOD(GBox, packStart);
+PHP_METHOD(GBox, packEnd);
 
 zval *gbox_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv);
 

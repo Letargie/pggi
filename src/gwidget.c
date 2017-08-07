@@ -59,16 +59,23 @@ zend_object *gwidget_object_new(zend_class_entry *class_type){
 }
 
 void gwidget_dtor(gwidget_ptr intern){
-	zval *  zv, * tmp;
+	zval *  zv, * tmp, * val;
 	if (intern->intern){	
 		gtk_widget_destroy(intern->intern);
 	}
+	// not sure of the usefulness of that
 	ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(&intern->signals), zv){
 		ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(zv), tmp){
-			zval_ptr_dtor(tmp);		
+			
+			ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(tmp), val){
+			if(val)
+				zval_ptr_dtor(val);
+		} ZEND_HASH_FOREACH_END();
+			zend_hash_destroy(Z_ARRVAL_P(tmp));
 		} ZEND_HASH_FOREACH_END();
 		zend_hash_destroy(Z_ARRVAL_P(zv));
 	} ZEND_HASH_FOREACH_END();
+	
 	zend_hash_destroy(Z_ARRVAL_P(&intern->signals));
 	zend_hash_destroy(Z_ARRVAL_P(&intern->data));
 	efree(intern);
@@ -91,18 +98,29 @@ void gwidget_free_resource(zend_resource *rsrc) {
 	gwidget_dtor(widget);
 }
 
+#define INDEX_ON_FUNCTION_NAME 1
+#define INDEX_ON_FUNCTION_PARAM 2
 
 void gwidget_function(gpointer data, unsigned int type){
 	zval retval;
-	zval * this = data;
+	ze_gwidget_object * w = data;
 	zval * array, * value, * zv;
+	zval args[2];
 	if(type){
-		ze_gwidget_object * w = Z_GWIDGET_P(this);
+		zend_object * this = php_gwidget_reverse_object(w);
+		ZVAL_OBJ(&args[0], this);
 		array = &w->widget_ptr->signals;
 		value = (zend_hash_index_find(Z_ARRVAL_P(array), type));
 		if(value != NULL){
+			if(Z_ARRVAL_P(value))
 			ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(value), zv){
-				if(call_user_function(EG(function_table), NULL, zv, &retval, 1, this) != SUCCESS){
+				zval * function	= zend_hash_index_find(Z_ARRVAL_P(zv), INDEX_ON_FUNCTION_NAME);
+				zval * tmp = zend_hash_index_find(Z_ARRVAL_P(zv), INDEX_ON_FUNCTION_PARAM);
+				if(tmp){
+					ZVAL_COPY(&args[1], tmp);
+				}else
+					ZVAL_NULL(&args[1]);
+				if(call_user_function(EG(function_table), NULL, function, &retval, 2, args) != SUCCESS){
 					zend_error(E_ERROR, "Function call failed");
 				}
 			} ZEND_HASH_FOREACH_END();
@@ -114,34 +132,39 @@ void gwidget_function(gpointer data, unsigned int type){
 /* internal on-related functions */
 /*********************************/
 
-void gwidget_func_destroy(GtkApplication* app, gpointer data){
+void gwidget_func_destroy(GtkWidget* w, gpointer data){
 	gwidget_function(data, gsignal_gwidget_destroy);
 }
 
-void gwidget_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * this){
+void gwidget_adding_function(long val, char * name, void (*f)(GtkWidget *, void *) ,ze_gwidget_object * ze_obj, zval * function, zval * param){
 	zval * data, * narray;
-	switch(val){
-		case gsignal_gwidget_destroy :
-			break;
-		default :
-			zend_error(E_ERROR, "Signal unknown");
-	}
 	data = zend_hash_index_find(Z_ARRVAL_P(&ze_obj->widget_ptr->signals), val);
+	zval * data_to_insert = ecalloc(1,sizeof(zval));
+	array_init(data_to_insert);
+	zend_hash_index_add(Z_ARRVAL_P(data_to_insert), INDEX_ON_FUNCTION_NAME, function);
+	if(param){
+		zend_hash_index_add(Z_ARRVAL_P(data_to_insert), INDEX_ON_FUNCTION_PARAM, param);
+	}
 	if(data == NULL){
 		narray = ecalloc(1,sizeof(zval));
 		array_init(narray);
 		zend_hash_index_add(Z_ARRVAL_P(&ze_obj->widget_ptr->signals), val, narray);
-		zend_hash_next_index_insert(Z_ARRVAL_P(narray), function);
-		zval_addref_p(function);
-		switch(val){
-			case gsignal_gwidget_destroy :
-				g_signal_connect(ze_obj->widget_ptr->intern, GSIGNAL_GWIDGET_DESTROY, G_CALLBACK (gwidget_func_destroy), (gpointer) this);
-				break;
-		}
+		zend_hash_next_index_insert(Z_ARRVAL_P(narray), data_to_insert);
+		g_signal_connect(ze_obj->widget_ptr->intern, name, G_CALLBACK (f), (gpointer) ze_obj);
 	}else{
-		zend_hash_next_index_insert(Z_ARRVAL_P(data), function);
-		/*zval_addref_p(function);*/
+		zend_hash_next_index_insert(Z_ARRVAL_P(data), data_to_insert);
 	}
+}
+
+void gwidget_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * param){
+	switch(val){
+		case gsignal_gwidget_destroy :
+			gwidget_adding_function(val, GSIGNAL_GWIDGET_DESTROY, gwidget_func_destroy, ze_obj, function, param);
+			break;
+		default :
+			zend_error(E_ERROR, "Signal unknown");
+	}
+	
 }
 
 /***************/
@@ -161,10 +184,9 @@ GWIDGET_METHOD(__construct){
 
 
 GWIDGET_METHOD(on){
-	zval * function, * this;
+	zval * function, * this, * param = NULL;
 	long val;
-	ze_gwidget_object *ze_obj = NULL;
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "lz", &val ,&function) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "lz|z", &val ,&function, &param) == FAILURE) {
         RETURN_NULL();
     }
 	if(!zend_is_callable(function, 0, NULL))
@@ -172,8 +194,7 @@ GWIDGET_METHOD(on){
 	this = getThis();
 	if(!this)
 		RETURN_NULL();
-	ze_obj = Z_GWIDGET_P(this);
-	gwidget_on(val, ze_obj, function, this);
+	gwidget_on(val, Z_GWIDGET_P(this), function, param);
 }
 
 
@@ -185,10 +206,7 @@ GWIDGET_METHOD(show){
 		gtk_widget_show(ze_obj->widget_ptr->intern);
 	}
 }
-/*
- * TEST
- * @param hide
- */
+
 GWIDGET_METHOD(hide){
 	ze_gwidget_object *ze_obj = NULL;
 	zval * self = getThis();

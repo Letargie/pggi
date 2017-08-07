@@ -64,41 +64,27 @@ PHP_METHOD(GContainer, add){
 	gcontainer_add_data(this->widget_ptr, obj);
 }
 
-void gcontainer_func_add(GtkContainer* container, gpointer data){
+void gcontainer_func_add(GtkWidget * container, gpointer data){
 	gwidget_function(data, gsignal_gcontainer_add);
 }
 
-void gcontainer_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * this){
+void gcontainer_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * param){
 	zval * data, * narray;
 	switch(val){
 		case gsignal_gcontainer_add :
+			gwidget_adding_function(val, GSIGNAL_GCONTAINER_ADD, gcontainer_func_add, ze_obj, function, param);
 			break;
 		default :
-			zend_error(E_ERROR, "Signal unknown");
-	}
-	data = zend_hash_index_find(Z_ARRVAL_P(&ze_obj->widget_ptr->signals), val);
-	if(data == NULL){
-		narray = ecalloc(1,sizeof(zval));
-		array_init(narray);
-		zend_hash_index_add(Z_ARRVAL_P(&ze_obj->widget_ptr->signals), val, narray);
-		zend_hash_next_index_insert(Z_ARRVAL_P(narray), function);
-		zval_addref_p(function);
-		switch(val){
-			case gsignal_gcontainer_add :
-				g_signal_connect(ze_obj->widget_ptr->intern, GSIGNAL_GCONTAINER_ADD, G_CALLBACK (gcontainer_func_add), (gpointer) this);
-				break;
-		}
-	}else{
-		zend_hash_next_index_insert(Z_ARRVAL_P(data), function);
-		/*zval_addref_p(function);*/
+			gwidget_on(val, ze_obj, function, param);
+			return ;
 	}
 }
 
 PHP_METHOD(GContainer, on){
-	zval * function, * this;
+	zval * function, * this, *param = NULL;
 	long val;
 	ze_gwidget_object *ze_obj = NULL;
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "lz", &val ,&function) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "lz|z", &val ,&function, &param) == FAILURE) {
         RETURN_NULL();
     }
 	if(!zend_is_callable(function, 0, NULL))
@@ -107,7 +93,7 @@ PHP_METHOD(GContainer, on){
 	if(!this)
 		RETURN_NULL();
 	ze_obj = Z_GWIDGET_P(this);
-	gcontainer_on(val, ze_obj, function, this);
+	gcontainer_on(val, ze_obj, function, param);
 }
 
 /*****************************/
@@ -172,6 +158,7 @@ void gcontainer_write_property(zval *object, zval *member, zval *value, void **c
 static const zend_function_entry gcontainer_class_functions[] = {
 	PHP_ME(GContainer, add			, arginfo_gcontainer_add	, ZEND_ACC_PUBLIC)
 	PHP_ME(GContainer, __construct	, arginfo_pggi_void			, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	PHP_ME(GContainer, on			, arginfo_pggi_on			, ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 

@@ -49,6 +49,11 @@ ZEND_END_ARG_INFO()
 
 PHP_METHOD(GContainer, add);
 PHP_METHOD(GContainer, __construct);
+PHP_METHOD(GContainer, on);
+
+void gcontainer_func_add(GtkWidget* container, gpointer data);
+
+void gcontainer_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * param);
 
 /*****************************/
 /* Object handling functions */

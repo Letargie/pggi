@@ -22,9 +22,9 @@
 
 /*only work in MINIT_FUNCTION*/
 #define REGISTER_CONST_LONG(const_name, value) \
-		zend_register_long_constant(const_name, sizeof(const_name)-1, value, 0, module_number)
+		zend_register_long_constant(const_name, sizeof(const_name)-1, value, CONST_CS | CONST_PERSISTENT, module_number)
 #define REGISTER_CONST_STRING(const_name, value) \
-		zend_register_string_constant(const_name, sizeof(const_name)-1, value, module_number)
+		zend_register_string_constant(const_name, sizeof(const_name)-1, value, 0, module_number)
 static const zend_function_entry pggi_functions[] = {
 	PHP_FE_END
 };
@@ -129,7 +129,7 @@ PHP_MINIT_FUNCTION(pggi){
 	REGISTER_CONST_LONG("PGGI_STATE_FLAG_VISITED"			, GTK_STATE_FLAG_VISITED		);
 	REGISTER_CONST_LONG("PGGI_STATE_FLAG_CHECKED"			, GTK_STATE_FLAG_CHECKED		);
 	/*REGISTER_CONST_LONG("PGGI_STATE_FLAG_DROP_ACTIVE"		, GTK_STATE_FLAG_DROP_ACTIVE	);*/
-
+	
 	REGISTER_CONST_LONG("PGGI_TOOLBAR_ICONS"				, GTK_TOOLBAR_ICONS				);
 	REGISTER_CONST_LONG("PGGI_TOOLBAR_TEXT"					, GTK_TOOLBAR_TEXT				);
 	REGISTER_CONST_LONG("PGGI_TOOLBAR_BOTH"					, GTK_TOOLBAR_BOTH				);
@@ -138,12 +138,21 @@ PHP_MINIT_FUNCTION(pggi){
 	REGISTER_CONST_LONG("PGGI_SORT_ASCENDING"				, GTK_SORT_ASCENDING			);
 	REGISTER_CONST_LONG("PGGI_SORT_DESCENDING"				, GTK_SORT_DESCENDING			);
 
-
+	
 	REGISTER_CONST_LONG("PGGI_SIGNAL_GAPPLICATION_WINDOW_ADDED"		, gsignal_gapplication_window_added		);
 	REGISTER_CONST_LONG("PGGI_SIGNAL_GAPPLICATION_WINDOW_REMOVED"	, gsignal_gapplication_window_removed	);
 	REGISTER_CONST_LONG("PGGI_SIGNAL_GAPPLICATION_STARTUP"			, gsignal_gapplication_startup			);
 	REGISTER_CONST_LONG("PGGI_SIGNAL_GAPPLICATION_SHUTDOWN"			, gsignal_gapplication_shutdown			);
 	REGISTER_CONST_LONG("PGGI_SIGNAL_GAPPLICATION_ACTIVATE"			, gsignal_gapplication_activate			);
+
+	REGISTER_CONST_LONG("PGGI_SIGNAL_GCONTAINER_ADD"				, gsignal_gcontainer_add				);
+
+	REGISTER_CONST_LONG("PGGI_SIGNAL_GMENUITEM_ACTIVATE"			, gsignal_gmenuitem_activate			);
+	
+	REGISTER_CONST_LONG("PGGI_SIGNAL_GCOMBO_BOX_CHANGED"			, gsignal_gcombo_box_changed			);
+	REGISTER_CONST_LONG("PGGI_SIGNAL_GCOMBO_BOX_MOVE_ACTIVE"		, gsignal_gcombo_box_move_active		);
+
+	REGISTER_CONST_LONG("PGGI_SIGNAL_GTEXT_BUFFER_CHANGED"			, gsignal_gtext_buffer_changed			);	
 
 	gexception_init		(module_number);
 
@@ -159,6 +168,19 @@ PHP_MINIT_FUNCTION(pggi){
 
 	glabel_init			(module_number);
 	gimage_init			(module_number);
+
+	gmenushell_init		(module_number);
+	gmenubar_init		(module_number);
+	gmenu_init			(module_number);
+	gmenuitem_init		(module_number);
+
+	gtext_view_init		(module_number);
+	gtext_buffer_init	(module_number);
+
+	gscroll_window_init	(module_number);
+
+	gcombo_box_init		(module_number);
+	gcombo_box_text_init(module_number);
 
 	return SUCCESS;
 }

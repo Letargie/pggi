@@ -26,6 +26,15 @@ if test "$PHP_PGGI" != "no"; then
 		src/gbutton.c       \
 		src/gbox.c          \
 		src/gexception.c	\
+		src/gmenushell.c	\
+		src/gmenubar.c		\
+		src/gmenu.c			\
+		src/gmenuitem.c		\
+		src/gtextview.c		\
+		src/gtextbuffer.c	\
+		src/gscrollwindow.c	\
+		src/gcombobox.c		\
+		src/gcomboboxtext.c	\
     	, $ext_shared, , -I@ext_srcdir@/pggi/include)
 	PHP_ADD_BUILD_DIR($ext_builddir/src)
 	PHP_ADD_INCLUDE([$ext_srcdir/include])

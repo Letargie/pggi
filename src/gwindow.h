@@ -51,6 +51,7 @@ ZEND_END_ARG_INFO()
 #define GWINDOW_DEFAULT_HEIGHT					"defaultHeight"
 #define GWINDOW_DEFAULT_WIDTH					"defaultWidth"
 #define GWINDOW_HIDE_TITLEBAR_WHEN_MAXIMIZED	"hideTitlebarWhenMaximized"
+#define GWINDOW_ACCEPT_FOCUS					"acceptFocus"
 
 /*****************************/
 /* Object handling functions */
@@ -66,7 +67,7 @@ zval *gwindow_read_property(zval *object, zval *member, int type, void **cache_s
 /** 
  * Get property handling function
  */
-HashTable *row_get_properties(zval *object);
+HashTable * gwindow_get_properties(zval *object);
 
 /*==========================================================================*/
 /** 
@@ -86,6 +87,10 @@ GWINDOW_METHOD(__construct		);
 GWINDOW_METHOD(setTitle			);
 GWINDOW_METHOD(setDefaultSize	);
 GWINDOW_METHOD(close			);
+GWINDOW_METHOD(setKeepAbove		);
+GWINDOW_METHOD(setKeepBelow		);
+GWINDOW_METHOD(fullscreen		);
+GWINDOW_METHOD(unfullscreen		);
 
 /********************************/
 /* GWindow class initialisation */

@@ -30,12 +30,14 @@ GWINDOW_METHOD(__construct){
 	zval * obj;
 	ze_gwidget_object * widget;
 	zval * title = NULL;
+
 	zend_error_handling error_handling;
 	zend_replace_error_handling(EH_THROW, NULL, &error_handling);
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "z|z", &obj, &title) == FAILURE) {
 		zend_restore_error_handling(&error_handling TSRMLS_CC);
 	}
 	zend_restore_error_handling(&error_handling TSRMLS_CC);
+
 	ze_obj = Z_GAPPLICATION_P(obj);
 	widget = Z_GWIDGET_P(getThis());
 	// necessary for personnalised handlers, warning if you bypass the constructor
@@ -50,7 +52,6 @@ GWINDOW_METHOD(__construct){
 		if(Z_TYPE_P(title) != IS_STRING)
 			zend_throw_exception(zend_exception_get_default(), "Bad Parameter, invalid title should be string", 0);
 		gtk_window_set_title(GTK_WINDOW(widget->widget_ptr->intern),ZSTR_VAL(Z_STR_P(title)));
-		zend_update_property(gwindow_class_entry_ce, getThis(), GWINDOW_TITLE, sizeof(GWINDOW_TITLE) - 1, title);
 	}
 	gapplication_add_windows(ze_obj->app_ptr, getThis());
 	g_signal_connect(widget->widget_ptr->intern, "destroy", G_CALLBACK (widget_destructed), widget);
@@ -100,6 +101,48 @@ GWINDOW_METHOD(close){
 	}
 }
 
+GWINDOW_METHOD(setKeepAbove){
+	ze_gwidget_object *ze_obj = NULL;
+	int kept;
+	PGGI_PARSE_PARAMETERS(zend_parse_parameters(ZEND_NUM_ARGS(), "b", &kept));
+	zval * self = getThis();
+	if(self){
+		ze_obj = Z_GWIDGET_P(self);
+		gtk_window_set_keep_above(GTK_WINDOW(ze_obj->widget_ptr->intern), kept);
+	}
+}
+
+GWINDOW_METHOD(setKeepBelow){
+	ze_gwidget_object *ze_obj = NULL;
+	int kept;
+	PGGI_PARSE_PARAMETERS(zend_parse_parameters(ZEND_NUM_ARGS(), "b", &kept));
+	zval * self = getThis();
+	if(self){
+		ze_obj = Z_GWIDGET_P(self);
+		gtk_window_set_keep_below(GTK_WINDOW(ze_obj->widget_ptr->intern), kept);
+	}
+}
+
+GWINDOW_METHOD(fullscreen){
+	ze_gwidget_object *ze_obj = NULL;
+	zval * self = getThis();
+	if(self){
+		ze_obj = Z_GWIDGET_P(self);
+		gtk_window_fullscreen(GTK_WINDOW(ze_obj->widget_ptr->intern));
+	}
+}
+
+
+GWINDOW_METHOD(unfullscreen){
+	ze_gwidget_object *ze_obj = NULL;
+	zval * self = getThis();
+	if(self){
+		ze_obj = Z_GWIDGET_P(self);
+		gtk_window_unfullscreen(GTK_WINDOW(ze_obj->widget_ptr->intern));
+	}
+}
+
+
 /**
  * List of GWindow functions and methods with their arguments
  */
@@ -108,6 +151,10 @@ static const zend_function_entry gwindow_class_functions[] = {
 	PHP_ME(GWindow, setTitle		, arginfo_pggi_set					, ZEND_ACC_PUBLIC)
 	PHP_ME(GWindow, setDefaultSize	, arginfo_gwindow_set_default_size	, ZEND_ACC_PUBLIC)
 	PHP_ME(GWindow, close			, arginfo_pggi_void					, ZEND_ACC_PUBLIC)
+	PHP_ME(GWindow, setKeepAbove	, arginfo_pggi_set					, ZEND_ACC_PUBLIC)
+	PHP_ME(GWindow, setKeepBelow	, arginfo_pggi_set					, ZEND_ACC_PUBLIC)
+	PHP_ME(GWindow, fullscreen		, arginfo_pggi_void					, ZEND_ACC_PUBLIC)
+	PHP_ME(GWindow, unfullscreen	, arginfo_pggi_void					, ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 
@@ -143,6 +190,8 @@ zval *gwindow_read_property(zval *object, zval *member, int type, void **cache_s
 			ZVAL_BOOL(rv, gtk_window_get_resizable(win));
 		else if(!strcmp(member_val, GWINDOW_HIDE_TITLEBAR_WHEN_MAXIMIZED))
 			ZVAL_BOOL(rv, gtk_window_get_hide_titlebar_when_maximized(win));
+		else if(!strcmp(member_val, GWINDOW_ACCEPT_FOCUS))
+			ZVAL_BOOL(rv, gtk_window_get_accept_focus(win));
 		else
 			return gcontainer_read_property(object, member, type, cache_slot, rv);
 	}
@@ -166,6 +215,7 @@ HashTable *gwindow_get_properties(zval *object){
 	G_H_UPDATE_BOOL		(GWINDOW_MNEMONICS_VISIBLE				, gtk_window_get_mnemonics_visible				(win));
 	G_H_UPDATE_BOOL		(GWINDOW_RESIZABLE						, gtk_window_get_resizable						(win));
 	G_H_UPDATE_BOOL		(GWINDOW_HIDE_TITLEBAR_WHEN_MAXIMIZED	, gtk_window_get_hide_titlebar_when_maximized	(win));
+	G_H_UPDATE_BOOL		(GWINDOW_ACCEPT_FOCUS					, gtk_window_get_accept_focus					(win));
 
 	return G_H_UPDATE_RETURN;
 }
@@ -186,8 +236,9 @@ void gwindow_write_property(zval *object, zval *member, zval *value, void **cach
 			else
 				gcontainer_write_property(object, member, value, cache_slot);
 			break;
-		case IS_LONG :
-			tmp_l = Z_LVAL_P(value);
+		case IS_TRUE :
+		case IS_FALSE :
+			tmp_b = Z_LVAL_P(value);
 			if(!strcmp(member_val, GWINDOW_FOCUS_VISIBLE))
 				gtk_window_set_focus_visible(win, tmp_l);
 			else if(!strcmp(member_val, GWINDOW_FOCUS_ON_MAP))
@@ -202,6 +253,8 @@ void gwindow_write_property(zval *object, zval *member, zval *value, void **cach
 				gtk_window_set_resizable(win, tmp_l);
 			else if(!strcmp(member_val, GWINDOW_HIDE_TITLEBAR_WHEN_MAXIMIZED))
 				gtk_window_set_hide_titlebar_when_maximized(win, tmp_l);
+			else if(!strcmp(member_val, GWINDOW_ACCEPT_FOCUS))
+				gtk_window_set_accept_focus(win, tmp_l);
 			else
 				gcontainer_write_property(object, member, value, cache_slot);
 			break;
@@ -239,6 +292,7 @@ void gwindow_init(int module_number){
 	DECLARE_GWINDOW_PROP(GWINDOW_DEFAULT_HEIGHT					);
 	DECLARE_GWINDOW_PROP(GWINDOW_DEFAULT_WIDTH					);
 	DECLARE_GWINDOW_PROP(GWINDOW_HIDE_TITLEBAR_WHEN_MAXIMIZED	);
+	DECLARE_GWINDOW_PROP(GWINDOW_ACCEPT_FOCUS					);
 }
 
 

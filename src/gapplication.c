@@ -40,13 +40,17 @@ gapplication_ptr gapplication_ctor(){
 
 void gapplication_dtor(gapplication_ptr intern){
 	unsigned int i;
-	zval * zv, * tmp;
+	zval * zv, * tmp, *val;
 	if (intern->app){
 		g_object_unref(intern->app);
 	}
+	// not sure of the usefulness of that
 	ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(&intern->signals), zv){
 		ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(zv), tmp){
-			zval_ptr_dtor(tmp);		
+			ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(tmp), val){
+				if(val)
+					zval_ptr_dtor(val);
+			} ZEND_HASH_FOREACH_END();
 		} ZEND_HASH_FOREACH_END();
 		zend_hash_destroy(Z_ARRVAL_P(zv));
 	} ZEND_HASH_FOREACH_END();
@@ -86,17 +90,28 @@ void gapplication_free_resource(zend_resource *rsrc) {
 /* GApplication signal handling */
 /********************************/
 
+#define INDEX_ON_FUNCTION_NAME 1
+#define INDEX_ON_FUNCTION_PARAM 2
+
 void gapplication_function(gpointer data, unsigned int type){
 	zval retval;
-	zval * this = data;
+	ze_gapplication_object * app = data;
 	zval * array, * value, * zv;
+	zval args[2];
 	if(type){
-		ze_gapplication_object * app = Z_GAPPLICATION_P(this);
+		zend_object * this = php_gapplication_reverse_object(app);
+		ZVAL_OBJ(&args[0], this);
 		array = &app->app_ptr->signals;
 		value = (zend_hash_index_find(Z_ARRVAL_P(array), type));
 		if(value != NULL){
 			ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(value), zv){
-				if(call_user_function(EG(function_table), NULL, zv, &retval, 1, this) != SUCCESS){
+				zval * function	= zend_hash_index_find(Z_ARRVAL_P(zv), INDEX_ON_FUNCTION_NAME);
+				zval * tmp = zend_hash_index_find(Z_ARRVAL_P(zv), INDEX_ON_FUNCTION_PARAM);
+				if(tmp){
+					ZVAL_COPY(&args[1], tmp);
+				}else
+					ZVAL_NULL(&args[1]);
+				if(call_user_function(EG(function_table), NULL, function, &retval, 2, args) != SUCCESS){
 					zend_error(E_ERROR, "Function call failed");
 				}
 			} ZEND_HASH_FOREACH_END();
@@ -122,10 +137,10 @@ void gapplication_func_shutdown(GtkApplication* app, gpointer data){
 /***************/
 
 PHP_METHOD(GApplication, on){
-	zval * function, * data,* narray, * this;
+	zval * function, * data,* narray, * this, * param = NULL;
 	long val;
 	ze_gapplication_object *ze_obj = NULL;
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "lz", &val ,&function) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "lz|z", &val ,&function, &param) == FAILURE) {
         RETURN_NULL();
     }
 	if(!zend_is_callable(function, 0, NULL))
@@ -142,27 +157,31 @@ PHP_METHOD(GApplication, on){
 		default :
 			zend_error(E_ERROR, "Signal unknown");
 	}
+	zval * data_to_insert = ecalloc(1,sizeof(zval));
+	array_init(data_to_insert);
+	zend_hash_index_add(Z_ARRVAL_P(data_to_insert), INDEX_ON_FUNCTION_NAME, function);
+	if(param){
+		zend_hash_index_add(Z_ARRVAL_P(data_to_insert), INDEX_ON_FUNCTION_PARAM, param);
+	}
 	data = zend_hash_index_find(Z_ARRVAL_P(&ze_obj->app_ptr->signals), val);
 	if(data == NULL){
 		narray = ecalloc(1,sizeof(zval));
 		array_init(narray);
 		zend_hash_index_add(Z_ARRVAL_P(&ze_obj->app_ptr->signals), val, narray);
-		zend_hash_next_index_insert(Z_ARRVAL_P(narray), function);
-		zval_addref_p(function);
+		zend_hash_next_index_insert(Z_ARRVAL_P(narray), data_to_insert);
 		switch(val){
 			case gsignal_gapplication_startup :
-				g_signal_connect(ze_obj->app_ptr->app, GSIGNAL_GAPPLICATION_STARTUP, G_CALLBACK (gapplication_func_startup), (gpointer) this);
+				g_signal_connect(ze_obj->app_ptr->app, GSIGNAL_GAPPLICATION_STARTUP, G_CALLBACK (gapplication_func_startup), (gpointer) ze_obj);
 				break;
 			case gsignal_gapplication_shutdown :
-				g_signal_connect(ze_obj->app_ptr->app, GSIGNAL_GAPPLICATION_SHUTDOWN, G_CALLBACK (gapplication_func_shutdown), (gpointer) this);
+				g_signal_connect(ze_obj->app_ptr->app, GSIGNAL_GAPPLICATION_SHUTDOWN, G_CALLBACK (gapplication_func_shutdown), (gpointer) ze_obj);
 				break;
 			case gsignal_gapplication_activate :
-				g_signal_connect(ze_obj->app_ptr->app, GSIGNAL_GAPPLICATION_ACTIVATE, G_CALLBACK (gapplication_func_activate), (gpointer) this);
+				g_signal_connect(ze_obj->app_ptr->app, GSIGNAL_GAPPLICATION_ACTIVATE, G_CALLBACK (gapplication_func_activate), (gpointer) ze_obj);
 				break;
 		}
 	}else{
-		zend_hash_next_index_insert(Z_ARRVAL_P(data), function);
-		/*zval_addref_p(function);*/
+		zend_hash_next_index_insert(Z_ARRVAL_P(data), data_to_insert);
 	}
 }
 

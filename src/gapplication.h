@@ -45,6 +45,10 @@ static inline ze_gapplication_object *php_gapplication_fetch_object(zend_object 
 	return (ze_gapplication_object *)((char*)(obj) - XtOffsetOf(ze_gapplication_object, std));
 }
 
+inline zend_object *php_gapplication_reverse_object(ze_gapplication_object *obj) {
+	return (zend_object *)((char*)(obj) + sizeof(gapplication_ptr));
+}
+
 #define Z_GAPPLICATION_P(zv) php_gapplication_fetch_object(Z_OBJ_P((zv)))
 
 void gapplication_add_windows(gapplication_ptr intern, zval * window);

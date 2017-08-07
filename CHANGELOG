@@ -1,3 +1,11 @@
+* Mon August 07 2017 Valentin Collet <valentin@famillecollet.com> 0.0.3
+- new changes in signal handling, correction of critical bugs, adding menus, multiline text view and comboboxes
+	- changes in signal handling : GApplication, GWidget, GContainer
+	- new class : GException
+	- new classes : GMenu, GMenuShell, GMenuItem, GMenuBar
+	- new class : GScrollWindow, GComboBox, GComboBoxText
+	- new class : GTextView, GTextBuffer
+
 * Sat July 01 2017 Valentin Collet <valentin@famillecollet.com> 0.0.2
 - Adding new classes, the handling of signals and properties.
 	- GApplication : adding properties and signal handling
