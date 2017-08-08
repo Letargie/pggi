@@ -192,7 +192,7 @@ void gmenuitem_write_property(zval *object, zval *member, zval *value, void **ca
 			break;
 		case IS_FALSE :
 		case IS_TRUE :
-			tmp_b = Z_LVAL_P(value);
+			tmp_b = Z_TYPE_P(value) == IS_TRUE ? 1 : 0;
 			if(!strcmp(member_val, GMENUITEM_USE_UNDERLINE))
 				gtk_menu_item_set_use_underline(menu, tmp_b);
 			else if(!strcmp(member_val, GMENUITEM_RESERVE_INDICATOR))

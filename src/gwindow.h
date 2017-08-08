@@ -23,6 +23,10 @@
 #include "gapplication.h"
 #include "gcontainer.h"
 
+zend_class_entry * gwindow_get_class_entry(void);
+
+zend_object_handlers * gwindow_get_object_handlers(void);
+
 /********************/
 /* GWindow Arginfos */
 /********************/

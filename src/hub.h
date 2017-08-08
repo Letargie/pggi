@@ -60,7 +60,10 @@ enum{
 	gsignal_gcombo_box_changed,
 	gsignal_gcombo_box_move_active,
 
-	gsignal_gtext_buffer_changed
+	gsignal_gtext_buffer_changed,
+
+	gsignal_gdialog_close,
+	gsignal_gdialog_response
 } gsignals;
 
 /**
@@ -84,6 +87,9 @@ enum{
 #define GSIGNAL_GCOMBO_BOX_MOVE_ACTIVE		"move_active"
 
 #define GSIGNAL_GTEXT_BUFFER_CHANGED		"changed"
+
+#define GSIGNAL_GDIALOG_CLOSE				"close"
+#define GSIGNAL_GDIALOG_RESPONSE			"response"
 
 /*****************/
 /* Utils defines */

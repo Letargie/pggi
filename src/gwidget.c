@@ -390,7 +390,7 @@ void gwidget_write_property(zval *object, zval *member, zval *value, void **cach
 			break;
 		case IS_FALSE :
 		case IS_TRUE :
-			tmp_b = Z_LVAL_P(value);
+			tmp_b = Z_TYPE_P(value) == IS_TRUE ? 1 : 0;
 			if(!strcmp(member_val, GWIDGET_HEXPAND))
 				gtk_widget_set_hexpand(w->intern, tmp_b);
 			else if(!strcmp(member_val, GWIDGET_HEXPAND_SET))

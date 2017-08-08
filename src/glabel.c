@@ -164,7 +164,7 @@ void glabel_write_property(zval *object, zval *member, zval *value, void **cache
 			break;
 		case IS_FALSE :
 		case IS_TRUE :
-			tmp_b = Z_LVAL_P(value);
+			tmp_b = Z_TYPE_P(value) == IS_TRUE ? 1 : 0 ;
 			if(!strcmp(member_val, GLABEL_SELECTABLE))
 				gtk_label_set_selectable(label, tmp_b);
 			else if(!strcmp(member_val, GLABEL_USE_UNDERLINE))

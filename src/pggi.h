@@ -40,6 +40,8 @@
 #include "gscrollwindow.h"
 #include "gcombobox.h"
 #include "gcomboboxtext.h"
+#include "gdialog.h"
+#include "gaboutdialog.h"
 
 #define pphext_pggi_ptr &pggi_module_entry
 

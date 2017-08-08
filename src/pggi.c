@@ -152,7 +152,11 @@ PHP_MINIT_FUNCTION(pggi){
 	REGISTER_CONST_LONG("PGGI_SIGNAL_GCOMBO_BOX_CHANGED"			, gsignal_gcombo_box_changed			);
 	REGISTER_CONST_LONG("PGGI_SIGNAL_GCOMBO_BOX_MOVE_ACTIVE"		, gsignal_gcombo_box_move_active		);
 
-	REGISTER_CONST_LONG("PGGI_SIGNAL_GTEXT_BUFFER_CHANGED"			, gsignal_gtext_buffer_changed			);	
+	REGISTER_CONST_LONG("PGGI_SIGNAL_GTEXT_BUFFER_CHANGED"			, gsignal_gtext_buffer_changed			);
+
+	REGISTER_CONST_LONG("PGGI_SIGNAL_GDIALOG_RESPONSE"				, gsignal_gdialog_response				);
+	REGISTER_CONST_LONG("PGGI_SIGNAL_GDIALOG_CLOSE"					, gsignal_gdialog_close					);
+
 
 	gexception_init		(module_number);
 
@@ -181,6 +185,9 @@ PHP_MINIT_FUNCTION(pggi){
 
 	gcombo_box_init		(module_number);
 	gcombo_box_text_init(module_number);
+
+	gdialog_init		(module_number);
+	gabout_dialog_init	(module_number);
 
 	return SUCCESS;
 }

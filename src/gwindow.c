@@ -21,6 +21,15 @@ static int le_gwindow;
 static zend_object_handlers gwindow_object_handlers;
 static zend_class_entry * gwindow_class_entry_ce;
 
+
+zend_class_entry * gwindow_get_class_entry(){
+	return gwindow_class_entry_ce;
+}
+
+zend_object_handlers * gwindow_get_object_handlers(){
+	return &gwindow_object_handlers;
+}
+
 /***************/
 /* PHP Methods */
 /***************/
@@ -238,7 +247,7 @@ void gwindow_write_property(zval *object, zval *member, zval *value, void **cach
 			break;
 		case IS_TRUE :
 		case IS_FALSE :
-			tmp_b = Z_LVAL_P(value);
+			tmp_b = Z_TYPE_P(value) == IS_TRUE ? 1 :0;
 			if(!strcmp(member_val, GWINDOW_FOCUS_VISIBLE))
 				gtk_window_set_focus_visible(win, tmp_l);
 			else if(!strcmp(member_val, GWINDOW_FOCUS_ON_MAP))

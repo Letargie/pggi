@@ -143,7 +143,7 @@ void gmenushell_write_property(zval *object, zval *member, zval *value, void **c
 	switch(Z_TYPE_P(value)){
 		case IS_TRUE :
 		case IS_FALSE :
-			tmp_l = Z_LVAL_P(value);
+			tmp_l = Z_TYPE_P(value) == IS_TRUE ? 1 : 0;
 			if(!strcmp(member_val, GMENUSHELL_TAKE_FOCUS))
 				gtk_menu_shell_set_take_focus(menu, tmp_l);
 			else
