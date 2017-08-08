@@ -1,4 +1,4 @@
-<img src="logo!.png" align="right" />
+<img src="logo.png" align="right"/>
 
 # PGGI
 
@@ -42,7 +42,7 @@ Followed by
 Finally run
 
 ```
-./make
+make
 ```
 
 To test the extension, try running the exemples scripts in the exemples directory.
