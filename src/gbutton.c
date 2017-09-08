@@ -60,6 +60,7 @@ PHP_METHOD(GButton, __construct){
 		}
 	}else
 		widget->widget_ptr->intern = gtk_button_new();
+	GCONTAINER_ADD_ELEMENT(widget);
 	g_signal_connect(widget->widget_ptr->intern, "destroy", G_CALLBACK (widget_destructed), widget);
 }
 

@@ -63,7 +63,8 @@ enum{
 	gsignal_gtext_buffer_changed,
 
 	gsignal_gdialog_close,
-	gsignal_gdialog_response
+	gsignal_gdialog_response,
+	gsignal_gtree_view_column_changed
 } gsignals;
 
 /**
@@ -71,8 +72,8 @@ enum{
  * Needed for GTK+ signal handling
  */
 
-#define GSIGNAL_GAPPLICATION_WINDOW_ADDED	"window_added"
-#define GSIGNAL_GAPPLICATION_WINDOW_REMOVED	"window_removed"
+#define GSIGNAL_GAPPLICATION_WINDOW_ADDED	"window-added"
+#define GSIGNAL_GAPPLICATION_WINDOW_REMOVED	"window-removed"
 #define GSIGNAL_GAPPLICATION_STARTUP		"startup"
 #define GSIGNAL_GAPPLICATION_SHUTDOWN		"shutdown"
 #define GSIGNAL_GAPPLICATION_ACTIVATE		"activate"
@@ -84,16 +85,76 @@ enum{
 #define GSIGNAL_GMENUITEM_ACTIVATE			"activate"
 
 #define GSIGNAL_GCOMBO_BOX_CHANGED			"changed"
-#define GSIGNAL_GCOMBO_BOX_MOVE_ACTIVE		"move_active"
+#define GSIGNAL_GCOMBO_BOX_MOVE_ACTIVE		"move-active"
 
 #define GSIGNAL_GTEXT_BUFFER_CHANGED		"changed"
 
 #define GSIGNAL_GDIALOG_CLOSE				"close"
 #define GSIGNAL_GDIALOG_RESPONSE			"response"
 
+#define GSIGNAL_GTREE_VIEW_COLUMN_CHANGED   "column-changed"
+
+/****************************/
+/* Utils parsing parameters */
+/****************************/
+
+// Not available for php versions below 7.2
+#define pggi_parse_parameters_none_throw() \
+(EXPECTED(ZEND_NUM_ARGS() == 0) ? SUCCESS : zend_parse_parameters_throw(ZEND_NUM_ARGS(), ""))
+
+// what I think is missing
+
+
+// code from zend_parse_method_parameters but with another flag
+#define pggi_parse_method_parameters_throw(num_arg, ptr, type, ... ) \
+zend_parse_method_parameters_ex(ZEND_PARSE_PARAMS_THROW, num_arg, ptr, type, __VA_ARGS__)
+
+#define pggi_parse_method_parameters_none(this_ptr) \
+(EXPECTED(ZEND_NUM_ARGS() == 0) ? SUCCESS : zend_parse_method_parameters(ZEND_NUM_ARGS(), this_ptr,""))
+
+#define pggi_parse_method_parameters_none_throw(this_ptr) \
+(EXPECTED(ZEND_NUM_ARGS() == 0) ? SUCCESS : zend_parse_method_parameters_ex(ZEND_PARSE_PARAMS_THROW , ZEND_NUM_ARGS(), this_ptr,""))
+
+
+
 /*****************/
 /* Utils defines */
 /*****************/
+/*
+size_t pggi_utf32_utf8(unsigned char *buf, unsigned k){
+	size_t retval = 0;
+*/
+	/* assert(0x0 <= k <= 0x10FFFF); */
+/*
+	if (k < 0x80) {
+		buf[0] = k;
+		retval = 1;
+	} else if (k < 0x800) {
+		buf[0] = 0xc0 | (k >> 6);
+		buf[1] = 0x80 | (k & 0x3f);
+		retval = 2;
+	} else if (k < 0x10000) {
+		buf[0] = 0xe0 | (k >> 12);
+		buf[1] = 0x80 | ((k >> 6) & 0x3f);
+		buf[2] = 0x80 | (k & 0x3f);
+		retval = 3;
+	} else {
+		buf[0] = 0xf0 | (k >> 18);
+		buf[1] = 0x80 | ((k >> 12) & 0x3f);
+		buf[2] = 0x80 | ((k >> 6) & 0x3f);
+		buf[3] = 0x80 | (k & 0x3f);
+		retval = 4;
+	}*/
+	/* UTF-8 has been restricted to max 4 bytes since RFC 3629 */
+/*
+	return retval;
+}*/
+
+#define PGGI_READ_PROPERTY(oclass) \
+	zval * oclass##_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv)
+
+#define READ_PROPERTY_NAME(oclass) \
+	oclass##_read_property
 
 #define PARSE_CONSTRUCT_PARAMETERS(parsing)									\
 do{																			\

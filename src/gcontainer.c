@@ -31,8 +31,11 @@ zend_object_handlers * gcontainer_get_object_handlers(){
 }
 
 void gcontainer_add_data(gwidget_ptr intern, zval * data){
-	zend_hash_next_index_insert(Z_ARRVAL_P(&intern->data), data);
-	zval_addref_p(data);
+	zval * add_folder = zend_hash_index_find(Z_ARRVAL_P(&intern->data), GWIDGET_DATA_INDEX_GCONTAINER);
+	if(add_folder){
+		zend_hash_next_index_insert(Z_ARRVAL_P(add_folder), data);
+		zval_addref_p(data);
+	}
 }
 
 /*****************/
@@ -45,6 +48,7 @@ PHP_METHOD(GContainer, __construct){
 	if(self){
 		ze_obj = Z_GWIDGET_P(self);
 		ze_obj->std.handlers = &gcontainer_object_handlers;
+		GCONTAINER_ADD_ELEMENT(ze_obj);
 		g_signal_connect(ze_obj->widget_ptr->intern, "destroy", G_CALLBACK (widget_destructed), ze_obj);
 	}
 }

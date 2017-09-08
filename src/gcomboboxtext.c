@@ -34,6 +34,7 @@ GCOMBO_BOX_TEXT_METHOD(__construct){
 	ze_obj->std.handlers = &gcombo_box_text_object_handlers;
 	ze_obj->widget_ptr = gwidget_new();
 	ze_obj->widget_ptr->intern = gtk_combo_box_text_new();
+	GCONTAINER_ADD_ELEMENT(ze_obj);
 	g_signal_connect(ze_obj->widget_ptr->intern, "destroy", G_CALLBACK (widget_destructed), Z_GWIDGET_P(self));
 }
 

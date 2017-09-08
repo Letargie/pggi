@@ -239,7 +239,8 @@ static const zend_function_entry gwidget_class_functions[] = {
 /* Object handling functions */
 /*****************************/
 
-zval *gwidget_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv){
+PGGI_READ_PROPERTY(gwidget){
+//zval *gwidget_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
 	const char * tmp;
@@ -487,5 +488,4 @@ void gwidget_init(int module_number){
 	DECLARE_GWIDGET_PROP(GWIDGET_CAN_DEFAULT	);
 	DECLARE_GWIDGET_PROP(GWIDGET_CAN_FOCUS		);
 }
-
 

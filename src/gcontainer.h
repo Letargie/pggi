@@ -27,6 +27,7 @@ zend_object_handlers * gcontainer_get_object_handlers(void);
 
 void gcontainer_add_data(gwidget_ptr intern, zval * data);
 
+#define GWIDGET_DATA_INDEX_GCONTAINER 1
 
 /***********************/
 /* GContainer Arginfos */
@@ -70,5 +71,13 @@ void gcontainer_write_property(zval *object, zval *member, zval *value, void **c
 /***********************************/
 
 void gcontainer_init(int module_number);
+
+#define GCONTAINER_ADD_ELEMENT(ze_obj)                                                                     \
+	do{                                                                                                    \
+		zval * narray = ecalloc(1,sizeof(zval));                                                           \
+		array_init(narray);                                                                                \
+		zend_hash_index_add(Z_ARRVAL_P(&ze_obj->widget_ptr->data), GWIDGET_DATA_INDEX_GCONTAINER, narray); \
+		zval_addref_p(narray);                                                                             \
+	}while(0)
 
 #endif

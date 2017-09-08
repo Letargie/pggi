@@ -32,6 +32,7 @@ GSCROLL_WINDOW_METHOD(__construct){
 	widget->std.handlers = &gscroll_window_object_handlers;
 	widget->widget_ptr = gwidget_new();
 	widget->widget_ptr->intern = gtk_scrolled_window_new(NULL, NULL);
+	GCONTAINER_ADD_ELEMENT(widget);
 	g_signal_connect(widget->widget_ptr->intern, "destroy", G_CALLBACK (widget_destructed), widget);
 }
 

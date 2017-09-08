@@ -11,7 +11,7 @@ function starting(GApplication $app){
 function activate($app){
 	echo "activate\n";
 	$b = new GWindow($app);
-	$t = new GTextView();
+	$t = new GTextView(new GTextBuffer());
 	$b->add($t);
 	$b->setDefaultSize(200, 200);
 	$b->showAll();

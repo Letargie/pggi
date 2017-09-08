@@ -1,6 +1,6 @@
 <?php
 
-function activate($app){
+function activate($app, $data){
 	$label = new GLabel("Hello World !");
 	$win = new GWindow($app);
 	$win->setTitle("Window Test");

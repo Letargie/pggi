@@ -40,6 +40,7 @@ PHP_METHOD(GButtonBox, __construct){
 		default :
 			RETURN_NULL();
 	}
+	GCONTAINER_ADD_ELEMENT(widget);
 	g_signal_connect(widget->widget_ptr->intern, "destroy", G_CALLBACK (widget_destructed), widget);
 }
 

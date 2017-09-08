@@ -31,6 +31,7 @@ GMENUBAR_METHOD(__construct){
 	widget->std.handlers = &gmenubar_object_handlers;
 	widget->widget_ptr = gwidget_new();
 	widget->widget_ptr->intern = gtk_menu_bar_new();
+	GCONTAINER_ADD_ELEMENT(widget);
 	g_signal_connect(widget->widget_ptr->intern, "destroy", G_CALLBACK (widget_destructed), widget);
 }
 

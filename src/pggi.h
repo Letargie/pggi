@@ -42,6 +42,13 @@
 #include "gcomboboxtext.h"
 #include "gdialog.h"
 #include "gaboutdialog.h"
+#include "ggrid.h"
+#include "gtextiter.h"
+#include "gtreeiter.h"
+#include "gtreestore.h"
+#include "gtreeview.h"
+
+PHP_FUNCTION(buildUI);
 
 #define pphext_pggi_ptr &pggi_module_entry
 

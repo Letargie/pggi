@@ -48,6 +48,7 @@ PHP_METHOD(GBox, __construct){
 		default :
 			RETURN_NULL();
 	}
+	GCONTAINER_ADD_ELEMENT(widget);
 	g_signal_connect(widget->widget_ptr->intern, "destroy", G_CALLBACK (widget_destructed), widget);
 }
 
@@ -124,9 +125,6 @@ zval *gbox_read_property(zval *object, zval *member, int type, void **cache_slot
 	return gcontainer_read_property(object, member, type, cache_slot, rv);
 }
 
-#define G_H_UPDATE(name) \
-zend_hash_update(props, zend_string_init(name, sizeof(name)-1, 0), &zv)
-
 HashTable *gbox_get_properties(zval *object){
 	G_H_UPDATE_INIT(gcontainer_get_properties(object));
 	const char * tmp;
@@ -174,7 +172,7 @@ void gbox_write_property(zval *object, zval *member, zval *value, void **cache_s
 			break;
 		case IS_FALSE :
 		case IS_TRUE :
-			tmp_b = Z_LVAL_P(value);
+			tmp_b = Z_TYPE_P(value) == IS_TRUE ? 1 : 0;
 			if(!strcmp(member_val, GBOX_HOMOGENEOUS))
 				gtk_box_set_homogeneous(GTK_BOX(w->intern), tmp_b);
 			else

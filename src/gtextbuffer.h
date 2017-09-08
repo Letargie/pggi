@@ -90,7 +90,19 @@ GTEXT_BUFFER_METHOD(__construct	);
 GTEXT_BUFFER_METHOD(getLineCount);
 GTEXT_BUFFER_METHOD(getCharCount);
 
-
+GTEXT_BUFFER_METHOD(insert); // iter string length
+GTEXT_BUFFER_METHOD(insertAtCursor); //string length
+GTEXT_BUFFER_METHOD(insertRange); // iter iter iter
+GTEXT_BUFFER_METHOD(delete); // iter iter
+GTEXT_BUFFER_METHOD(placeCursor); // iter
+GTEXT_BUFFER_METHOD(selectRange); // iter iter
+GTEXT_BUFFER_METHOD(getIterAtLineOffset); // line offset
+GTEXT_BUFFER_METHOD(getIterAtOffset); // offset
+GTEXT_BUFFER_METHOD(getIterAtLine); // line
+GTEXT_BUFFER_METHOD(getIterAtLineIndex); // line index
+GTEXT_BUFFER_METHOD(getStartIter); 
+GTEXT_BUFFER_METHOD(getEndIter); 
+GTEXT_BUFFER_METHOD(getBound); // return 2 iterator 
 
 /*****************************/
 /* Object handling functions */

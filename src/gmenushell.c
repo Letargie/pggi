@@ -172,7 +172,7 @@ void gmenushell_init(int module_number){
 
 	INIT_CLASS_ENTRY(ce, "GMenuShell", gmenushell_class_functions);
 	gmenushell_class_entry_ce	= zend_register_internal_class_ex(&ce, gcontainer_get_class_entry());
-
+	gmenushell_class_entry_ce->ce_flags |= ZEND_ACC_ABSTRACT;
 	DECLARE_GMENUSHELL_PROP(GMENUSHELL_TAKE_FOCUS);
 }
 

@@ -1,3 +1,7 @@
+* Fri September 08 2017 Valentin Collet <valentin@famillecollet.com> 0.0.5
+- adding tools for stubs & documentation generation
+- adding few classes (still unstable)
+
 * Tue August 08 2017 Valentin Collet <valentin@famillecollet.com> 0.0.4
 - adding dialogs, and correcting a bug on boolean properties writing
 

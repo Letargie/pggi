@@ -37,6 +37,11 @@ if test "$PHP_PGGI" != "no"; then
 		src/gcomboboxtext.c	\
 		src/gdialog.c		\
 		src/gaboutdialog.c	\
+		src/ggrid.c			\
+		src/gtextiter.c		\
+		src/gtreeiter.c     \
+		src/gtreestore.c    \
+		src/gtreeview.c     \
     	, $ext_shared, , -I@ext_srcdir@/pggi/include)
 	PHP_ADD_BUILD_DIR($ext_builddir/src)
 	PHP_ADD_INCLUDE([$ext_srcdir/include])

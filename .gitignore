@@ -50,3 +50,4 @@ mkinstalldirs
 modules
 run-tests.log
 tmp-php.ini
+doc

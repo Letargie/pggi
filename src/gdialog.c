@@ -51,6 +51,7 @@ GDIALOG_METHOD(__construct){
 	widget->widget_ptr = gwidget_new();
 	// SHOULD take care of parameters later
 	widget->widget_ptr->intern = gtk_dialog_new();
+	GCONTAINER_ADD_ELEMENT(widget);
 	g_signal_connect(widget->widget_ptr->intern, "destroy", G_CALLBACK (widget_destructed), widget);
 }
 

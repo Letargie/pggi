@@ -42,6 +42,7 @@ GMENUITEM_METHOD(__construct){
 		ze_obj->widget_ptr->intern = gtk_menu_item_new_with_label(c);
 	}else
 		ze_obj->widget_ptr->intern = gtk_menu_item_new();
+	GCONTAINER_ADD_ELEMENT(ze_obj);
 	g_signal_connect(ze_obj->widget_ptr->intern, "destroy", G_CALLBACK (widget_destructed), Z_GWIDGET_P(self));
 }
 

@@ -40,6 +40,7 @@ GTEXT_VIEW_METHOD(__construct){
 		widget->std.handlers = &gtext_view_object_handlers;
 		widget->widget_ptr = gwidget_new();
 		widget->widget_ptr->intern = gtk_text_view_new_with_buffer(buffer);
+		GCONTAINER_ADD_ELEMENT(widget);
 		g_signal_connect(widget->widget_ptr->intern, "destroy", G_CALLBACK (widget_destructed), widget);
 	}
 }

@@ -26,6 +26,11 @@
 /* GAboutDialog Arginfos */
 /*************************/
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_gabout_dialog_show, 0, 0, 0)
+	ZEND_ARG_INFO(0, parent)
+	ZEND_ARG_INFO(0, args)
+ZEND_END_ARG_INFO()
+
 /***************************/
 /* GAboutWindow Properties */
 /***************************/
@@ -92,6 +97,7 @@ void gabout_dialog_write_property(zval *object, zval *member, zval *value, void 
 PHP_METHOD(GAboutDialog, name)
 
 GABOUT_DIALOG_METHOD(__construct);
+GABOUT_DIALOG_METHOD(showGAboutDialog);
 
 
 /*************************************/

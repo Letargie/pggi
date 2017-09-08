@@ -1,6 +1,6 @@
 Extension [ <persistent> extension #15 pggi version 1.0 ] {
 
-  - Constants [100] {
+  - Constants [103] {
     Constant [ integer PGGI_BASELINE_POSITION_TOP ] { 0 }
     Constant [ integer PGGI_BASELINE_POSITION_CENTER ] { 1 }
     Constant [ integer PGGI_BASELINE_POSITION_BOTTOM ] { 2 }
@@ -29,6 +29,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
     Constant [ integer PGGI_MOVEMENT_DISPLAY_LINE_ENDS ] { 4 }
     Constant [ integer PGGI_MOVEMENT_PARAGRAPHS ] { 5 }
     Constant [ integer PGGI_MOVEMENT_PARAGRAPH_ENDS ] { 6 }
+    Constant [ integer PGGI_MOVEMENT_PAGES ] { 7 }
     Constant [ integer PGGI_MOVEMENT_BUFFER_ENDS ] { 8 }
     Constant [ integer PGGI_MOVEMENT_HORIZONTAL_PAGES ] { 9 }
     Constant [ integer PGGI_ORIENTATION_HORIZONTAL ] { 0 }
@@ -40,7 +41,6 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
     Constant [ integer PGGI_POS_TOP ] { 2 }
     Constant [ integer PGGI_POS_BOTTOM ] { 3 }
     Constant [ integer PGGI_RELIEF_NORMAL ] { 0 }
-    Constant [ integer PGGI_RELIEF_HALF ] { 1 }
     Constant [ integer PGGI_RELIEF_NONE ] { 2 }
     Constant [ integer PGGI_SCROLL_STEPS ] { 0 }
     Constant [ integer PGGI_SCROLL_PAGES ] { 1 }
@@ -78,6 +78,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
     Constant [ integer PGGI_STATE_FLAG_PRELIGHT ] { 2 }
     Constant [ integer PGGI_STATE_FLAG_SELECTED ] { 4 }
     Constant [ integer PGGI_STATE_FLAG_INSENSITIVE ] { 8 }
+    Constant [ integer PGGI_STATE_FLAG_INCONSISTENT ] { 16 }
     Constant [ integer PGGI_STATE_FLAG_FOCUSED ] { 32 }
     Constant [ integer PGGI_STATE_FLAG_BACKDROP ] { 64 }
     Constant [ integer PGGI_STATE_FLAG_DIR_LTR ] { 128 }
@@ -101,9 +102,11 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
     Constant [ integer PGGI_SIGNAL_GCOMBO_BOX_CHANGED ] { 8 }
     Constant [ integer PGGI_SIGNAL_GCOMBO_BOX_MOVE_ACTIVE ] { 9 }
     Constant [ integer PGGI_SIGNAL_GTEXT_BUFFER_CHANGED ] { 10 }
+    Constant [ integer PGGI_SIGNAL_GDIALOG_RESPONSE ] { 12 }
+    Constant [ integer PGGI_SIGNAL_GDIALOG_CLOSE ] { 11 }
   }
 
-  - Classes [18] {
+  - Classes [25] {
     Class [ <internal:pggi> class PGGIException extends Exception implements Throwable ] {
 
       - Constants [0] {
@@ -1599,6 +1602,1117 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
         }
 
         Method [ <internal:pggi, inherits GComboBox, prototype GWidget> public method on ] {
+
+          - Parameters [3] {
+            Parameter #0 [ <required> $type ]
+            Parameter #1 [ <required> $callback ]
+            Parameter #2 [ <optional> $param ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GContainer> public method add ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $data ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method show ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+
+          - Parameters [0] {
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class GDialog extends GWindow ] {
+
+      - Constants [19] {
+        Constant [ public float ALIGN_FILL ] { 0 }
+        Constant [ public float ALIGN_START ] { 1 }
+        Constant [ public float ALIGN_END ] { 2 }
+        Constant [ public float ALIGN_CENTER ] { 3 }
+        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public float GDIALOG_FLAG_MODAL ] { 1 }
+        Constant [ public float GDIALOG_FLAG_DESTROY_WITH_PARENT ] { 2 }
+        Constant [ public float GDIALOG_FLAG_USE_HEADER_BAR ] { 4 }
+        Constant [ public float GDIALOG_RESPONSE_TYPE_NONE ] { -1 }
+        Constant [ public float GDIALOG_RESPONSE_TYPE_REJECT ] { -2 }
+        Constant [ public float GDIALOG_RESPONSE_TYPE_ACCEPT ] { -3 }
+        Constant [ public float GDIALOG_RESPONSE_TYPE_DELETE_EVENT ] { -4 }
+        Constant [ public float GDIALOG_RESPONSE_TYPE_OK ] { -5 }
+        Constant [ public float GDIALOG_RESPONSE_TYPE_CANCEL ] { -6 }
+        Constant [ public float GDIALOG_RESPONSE_TYPE_CLOSE ] { -7 }
+        Constant [ public float GDIALOG_RESPONSE_TYPE_YES ] { -8 }
+        Constant [ public float GDIALOG_RESPONSE_TYPE_NO ] { -9 }
+        Constant [ public float GDIALOG_RESPONSE_TYPE_APPLY ] { -10 }
+        Constant [ public float GDIALOG_RESPONSE_TYPE_HELP ] { -11 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [30] {
+        Property [ <default> public $vAlign ]
+        Property [ <default> public $hAlign ]
+        Property [ <default> public $marginStart ]
+        Property [ <default> public $marginEnd ]
+        Property [ <default> public $marginTop ]
+        Property [ <default> public $marginBottom ]
+        Property [ <default> public $hExpand ]
+        Property [ <default> public $hExpandSet ]
+        Property [ <default> public $vExpand ]
+        Property [ <default> public $vExpandSet ]
+        Property [ <default> public $opacity ]
+        Property [ <default> public $visible ]
+        Property [ <default> public $noShowAll ]
+        Property [ <default> public $direction ]
+        Property [ <default> public $sensitive ]
+        Property [ <default> public $name ]
+        Property [ <default> public $canDefault ]
+        Property [ <default> public $canFocus ]
+        Property [ <default> public $borderWidth ]
+        Property [ <default> public $title ]
+        Property [ <default> public $focusVisible ]
+        Property [ <default> public $focusOnMap ]
+        Property [ <default> public $decorated ]
+        Property [ <default> public $deletable ]
+        Property [ <default> public $mnemonicsVisible ]
+        Property [ <default> public $resizable ]
+        Property [ <default> public $defaultHeight ]
+        Property [ <default> public $defaultWidth ]
+        Property [ <default> public $hideTitlebarWhenMaximized ]
+        Property [ <default> public $acceptFocus ]
+      }
+
+      - Methods [14] {
+        Method [ <internal:pggi, overwrites GWindow, ctor> public method __construct ] {
+
+          - Parameters [4] {
+            Parameter #0 [ <optional> $title ]
+            Parameter #1 [ <optional> $parent ]
+            Parameter #2 [ <optional> $flags ]
+            Parameter #3 [ <optional> $data ]
+          }
+        }
+
+        Method [ <internal:pggi> public method run ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWindow> public method setTitle ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $name ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWindow> public method setDefaultSize ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> $x ]
+            Parameter #1 [ <required> $y ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWindow> public method close ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWindow> public method setKeepAbove ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $name ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWindow> public method setKeepBelow ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $name ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWindow> public method fullscreen ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWindow> public method unfullscreen ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GContainer> public method add ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $data ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GContainer, prototype GWidget> public method on ] {
+
+          - Parameters [3] {
+            Parameter #0 [ <required> $type ]
+            Parameter #1 [ <required> $callback ]
+            Parameter #2 [ <optional> $param ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method show ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+
+          - Parameters [0] {
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class GAboutDialog extends GDialog ] {
+
+      - Constants [32] {
+        Constant [ public float ALIGN_FILL ] { 0 }
+        Constant [ public float ALIGN_START ] { 1 }
+        Constant [ public float ALIGN_END ] { 2 }
+        Constant [ public float ALIGN_CENTER ] { 3 }
+        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public float GDIALOG_FLAG_MODAL ] { 1 }
+        Constant [ public float GDIALOG_FLAG_DESTROY_WITH_PARENT ] { 2 }
+        Constant [ public float GDIALOG_FLAG_USE_HEADER_BAR ] { 4 }
+        Constant [ public float GDIALOG_RESPONSE_TYPE_NONE ] { -1 }
+        Constant [ public float GDIALOG_RESPONSE_TYPE_REJECT ] { -2 }
+        Constant [ public float GDIALOG_RESPONSE_TYPE_ACCEPT ] { -3 }
+        Constant [ public float GDIALOG_RESPONSE_TYPE_DELETE_EVENT ] { -4 }
+        Constant [ public float GDIALOG_RESPONSE_TYPE_OK ] { -5 }
+        Constant [ public float GDIALOG_RESPONSE_TYPE_CANCEL ] { -6 }
+        Constant [ public float GDIALOG_RESPONSE_TYPE_CLOSE ] { -7 }
+        Constant [ public float GDIALOG_RESPONSE_TYPE_YES ] { -8 }
+        Constant [ public float GDIALOG_RESPONSE_TYPE_NO ] { -9 }
+        Constant [ public float GDIALOG_RESPONSE_TYPE_APPLY ] { -10 }
+        Constant [ public float GDIALOG_RESPONSE_TYPE_HELP ] { -11 }
+        Constant [ public float GABOUT_DIALOG_LICENSE_UNKNOWN ] { 0 }
+        Constant [ public float GABOUT_DIALOG_LICENSE_CUSTOM ] { 1 }
+        Constant [ public float GABOUT_DIALOG_LICENSE_GPL_2_0 ] { 2 }
+        Constant [ public float GABOUT_DIALOG_LICENSE_GPL_3_0 ] { 3 }
+        Constant [ public float GABOUT_DIALOG_LICENSE_LGPL_2_1 ] { 4 }
+        Constant [ public float GABOUT_DIALOG_LICENSE_LGPL_3_0 ] { 5 }
+        Constant [ public float GABOUT_DIALOG_LICENSE_BSD ] { 6 }
+        Constant [ public float GABOUT_DIALOG_LICENSE_MIT_X11 ] { 7 }
+        Constant [ public float GABOUT_DIALOG_LICENSE_ARTISTIC ] { 8 }
+        Constant [ public float GABOUT_DIALOG_LICENSE_GPL_2_0_ONLY ] { 9 }
+        Constant [ public float GABOUT_DIALOG_LICENSE_GPL_3_0_ONLY ] { 10 }
+        Constant [ public float GABOUT_DIALOG_LICENSE_LGPL_2_1_ONLY ] { 11 }
+        Constant [ public float GABOUT_DIALOG_LICENSE_LGPL_3_0_ONLY ] { 12 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [1] {
+        Method [ <internal:pggi> static public method showGAboutDialog ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <optional> $parent ]
+            Parameter #1 [ <optional> $args ]
+          }
+        }
+      }
+
+      - Properties [41] {
+        Property [ <default> public $vAlign ]
+        Property [ <default> public $hAlign ]
+        Property [ <default> public $marginStart ]
+        Property [ <default> public $marginEnd ]
+        Property [ <default> public $marginTop ]
+        Property [ <default> public $marginBottom ]
+        Property [ <default> public $hExpand ]
+        Property [ <default> public $hExpandSet ]
+        Property [ <default> public $vExpand ]
+        Property [ <default> public $vExpandSet ]
+        Property [ <default> public $opacity ]
+        Property [ <default> public $visible ]
+        Property [ <default> public $noShowAll ]
+        Property [ <default> public $direction ]
+        Property [ <default> public $sensitive ]
+        Property [ <default> public $name ]
+        Property [ <default> public $canDefault ]
+        Property [ <default> public $canFocus ]
+        Property [ <default> public $borderWidth ]
+        Property [ <default> public $title ]
+        Property [ <default> public $focusVisible ]
+        Property [ <default> public $focusOnMap ]
+        Property [ <default> public $decorated ]
+        Property [ <default> public $deletable ]
+        Property [ <default> public $mnemonicsVisible ]
+        Property [ <default> public $resizable ]
+        Property [ <default> public $defaultHeight ]
+        Property [ <default> public $defaultWidth ]
+        Property [ <default> public $hideTitlebarWhenMaximized ]
+        Property [ <default> public $acceptFocus ]
+        Property [ <default> public $programName ]
+        Property [ <default> public $version ]
+        Property [ <default> public $copyright ]
+        Property [ <default> public $comments ]
+        Property [ <default> public $license ]
+        Property [ <default> public $wrapLicense ]
+        Property [ <default> public $licenseType ]
+        Property [ <default> public $website ]
+        Property [ <default> public $websiteLabel ]
+        Property [ <default> public $translatorCredits ]
+        Property [ <default> public $logoIconName ]
+      }
+
+      - Methods [14] {
+        Method [ <internal:pggi, overwrites GDialog, ctor> public method __construct ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GDialog> public method run ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWindow> public method setTitle ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $name ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWindow> public method setDefaultSize ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> $x ]
+            Parameter #1 [ <required> $y ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWindow> public method close ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWindow> public method setKeepAbove ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $name ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWindow> public method setKeepBelow ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $name ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWindow> public method fullscreen ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWindow> public method unfullscreen ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GContainer> public method add ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $data ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GContainer, prototype GWidget> public method on ] {
+
+          - Parameters [3] {
+            Parameter #0 [ <required> $type ]
+            Parameter #1 [ <required> $callback ]
+            Parameter #2 [ <optional> $param ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method show ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+
+          - Parameters [0] {
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class GGrid extends GBox ] {
+
+      - Constants [5] {
+        Constant [ public float ALIGN_FILL ] { 0 }
+        Constant [ public float ALIGN_START ] { 1 }
+        Constant [ public float ALIGN_END ] { 2 }
+        Constant [ public float ALIGN_CENTER ] { 3 }
+        Constant [ public float ALIGN_BASELINE ] { 4 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [27] {
+        Property [ <default> public $vAlign ]
+        Property [ <default> public $hAlign ]
+        Property [ <default> public $marginStart ]
+        Property [ <default> public $marginEnd ]
+        Property [ <default> public $marginTop ]
+        Property [ <default> public $marginBottom ]
+        Property [ <default> public $hExpand ]
+        Property [ <default> public $hExpandSet ]
+        Property [ <default> public $vExpand ]
+        Property [ <default> public $vExpandSet ]
+        Property [ <default> public $opacity ]
+        Property [ <default> public $visible ]
+        Property [ <default> public $noShowAll ]
+        Property [ <default> public $direction ]
+        Property [ <default> public $sensitive ]
+        Property [ <default> public $name ]
+        Property [ <default> public $canDefault ]
+        Property [ <default> public $canFocus ]
+        Property [ <default> public $borderWidth ]
+        Property [ <default> public $homogeneous ]
+        Property [ <default> public $spacing ]
+        Property [ <default> public $baselinePosition ]
+        Property [ <default> public $baselineRow ]
+        Property [ <default> public $columnHomogeneous ]
+        Property [ <default> public $columnSpacing ]
+        Property [ <default> public $rowHomogeneous ]
+        Property [ <default> public $rowSpacing ]
+      }
+
+      - Methods [16] {
+        Method [ <internal:pggi, overwrites GBox, ctor> public method __construct ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method attach ] {
+
+          - Parameters [5] {
+            Parameter #0 [ <required> $widget ]
+            Parameter #1 [ <required> $left ]
+            Parameter #2 [ <required> $top ]
+            Parameter #3 [ <optional> $width ]
+            Parameter #4 [ <optional> $height ]
+          }
+        }
+
+        Method [ <internal:pggi> public method attachNextTo ] {
+
+          - Parameters [5] {
+            Parameter #0 [ <required> $widget ]
+            Parameter #1 [ <required> $sibling ]
+            Parameter #2 [ <required> $side ]
+            Parameter #3 [ <optional> $width ]
+            Parameter #4 [ <optional> $height ]
+          }
+        }
+
+        Method [ <internal:pggi> public method getChildAt ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> $left ]
+            Parameter #1 [ <required> $top ]
+          }
+        }
+
+        Method [ <internal:pggi> public method insertRow ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $position ]
+          }
+        }
+
+        Method [ <internal:pggi> public method insertColumn ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $position ]
+          }
+        }
+
+        Method [ <internal:pggi> public method removeRow ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $position ]
+          }
+        }
+
+        Method [ <internal:pggi> public method removeColumn ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $position ]
+          }
+        }
+
+        Method [ <internal:pggi> public method insertNextTo ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> $sibling ]
+            Parameter #1 [ <required> $side ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GBox> public method packStart ] {
+
+          - Parameters [4] {
+            Parameter #0 [ <required> $object ]
+            Parameter #1 [ <optional> $expand ]
+            Parameter #2 [ <optional> $fill ]
+            Parameter #3 [ <optional> $padding ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GBox> public method packEnd ] {
+
+          - Parameters [4] {
+            Parameter #0 [ <required> $object ]
+            Parameter #1 [ <optional> $expand ]
+            Parameter #2 [ <optional> $fill ]
+            Parameter #3 [ <optional> $padding ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GContainer> public method add ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $data ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GContainer, prototype GWidget> public method on ] {
+
+          - Parameters [3] {
+            Parameter #0 [ <required> $type ]
+            Parameter #1 [ <required> $callback ]
+            Parameter #2 [ <optional> $param ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method show ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+
+          - Parameters [0] {
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class GTextIter ] {
+
+      - Constants [0] {
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [4] {
+        Method [ <internal:pggi> static public method getSlice ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> $begin ]
+            Parameter #1 [ <required> $end ]
+          }
+        }
+
+        Method [ <internal:pggi> static public method getText ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> $begin ]
+            Parameter #1 [ <required> $end ]
+          }
+        }
+
+        Method [ <internal:pggi> static public method getVisibleSlice ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> $begin ]
+            Parameter #1 [ <required> $end ]
+          }
+        }
+
+        Method [ <internal:pggi> static public method getVisibleText ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> $begin ]
+            Parameter #1 [ <required> $end ]
+          }
+        }
+      }
+
+      - Properties [5] {
+        Property [ <default> public $offset ]
+        Property [ <default> public $line ]
+        Property [ <default> public $index ]
+        Property [ <default> public $lineIndex ]
+        Property [ <default> public $lineOffset ]
+      }
+
+      - Methods [50] {
+        Method [ <internal:pggi, ctor> private method __construct ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method getBuffer ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method getChar ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method startsWord ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method endsWord ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method insideWord ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method startsLine ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method endsLine ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method startsSentence ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method endsSentence ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method insideSentence ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method isCursorPosition ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method isEnd ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method isStart ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method getCharsInLine ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method getBytesInLine ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method forwardChar ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method backwardChar ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method forwardChars ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $number ]
+          }
+        }
+
+        Method [ <internal:pggi> public method backwardChars ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $number ]
+          }
+        }
+
+        Method [ <internal:pggi> public method forwardLine ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method backwardLine ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method forwardLines ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $number ]
+          }
+        }
+
+        Method [ <internal:pggi> public method backwardLines ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $number ]
+          }
+        }
+
+        Method [ <internal:pggi> public method backwardWordStart ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method forwardWordEnd ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method backwardWordStarts ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $number ]
+          }
+        }
+
+        Method [ <internal:pggi> public method forwardWordEnds ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $number ]
+          }
+        }
+
+        Method [ <internal:pggi> public method backwardCursorPosition ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method forwardCursorPosition ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method backwardCursorPositions ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $number ]
+          }
+        }
+
+        Method [ <internal:pggi> public method forwardCursorPositions ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $number ]
+          }
+        }
+
+        Method [ <internal:pggi> public method backwardSentenceStart ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method forwardSentenceEnd ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method backwardSentenceStarts ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $number ]
+          }
+        }
+
+        Method [ <internal:pggi> public method forwardSentenceEnds ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $number ]
+          }
+        }
+
+        Method [ <internal:pggi> public method backwardVisibleWordStart ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method forwardVisibleWordEnd ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method backwardVisibleWordStarts ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $number ]
+          }
+        }
+
+        Method [ <internal:pggi> public method forwardVisibleWordEnds ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $number ]
+          }
+        }
+
+        Method [ <internal:pggi> public method backwardVisibleCursorPosition ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method forwardVisibleCursorPosition ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method backwardVisibleCursorPositions ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $number ]
+          }
+        }
+
+        Method [ <internal:pggi> public method forwardVisibleCursorPositions ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $number ]
+          }
+        }
+
+        Method [ <internal:pggi> public method forwardVisibleLine ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method backwardVisibleLine ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method forwardVisibleLines ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $number ]
+          }
+        }
+
+        Method [ <internal:pggi> public method backwardVisibleLines ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $number ]
+          }
+        }
+
+        Method [ <internal:pggi> public method forwardEnd ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method forwardLineEnd ] {
+
+          - Parameters [0] {
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class GTreeIter ] {
+
+      - Constants [0] {
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [0] {
+      }
+
+      - Methods [9] {
+        Method [ <internal:pggi, ctor> private method __construct ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method setValue ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> $column ]
+            Parameter #1 [ <required> $value ]
+          }
+        }
+
+        Method [ <internal:pggi> public method next ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method previous ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method getFirstChild ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method hasChild ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method getNbChildren ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method getNthChild ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $number ]
+          }
+        }
+
+        Method [ <internal:pggi> public method getParent ] {
+
+          - Parameters [0] {
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class GTreeStore ] {
+
+      - Constants [0] {
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [0] {
+      }
+
+      - Methods [4] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method clear ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method append ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <optional> $parent ]
+          }
+        }
+
+        Method [ <internal:pggi> public method prepend ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <optional> $parent ]
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class GTreeView extends GContainer ] {
+
+      - Constants [5] {
+        Constant [ public float ALIGN_FILL ] { 0 }
+        Constant [ public float ALIGN_START ] { 1 }
+        Constant [ public float ALIGN_END ] { 2 }
+        Constant [ public float ALIGN_CENTER ] { 3 }
+        Constant [ public float ALIGN_BASELINE ] { 4 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [35] {
+        Property [ <default> public $vAlign ]
+        Property [ <default> public $hAlign ]
+        Property [ <default> public $marginStart ]
+        Property [ <default> public $marginEnd ]
+        Property [ <default> public $marginTop ]
+        Property [ <default> public $marginBottom ]
+        Property [ <default> public $hExpand ]
+        Property [ <default> public $hExpandSet ]
+        Property [ <default> public $vExpand ]
+        Property [ <default> public $vExpandSet ]
+        Property [ <default> public $opacity ]
+        Property [ <default> public $visible ]
+        Property [ <default> public $noShowAll ]
+        Property [ <default> public $direction ]
+        Property [ <default> public $sensitive ]
+        Property [ <default> public $name ]
+        Property [ <default> public $canDefault ]
+        Property [ <default> public $canFocus ]
+        Property [ <default> public $borderWidth ]
+        Property [ <default> public $activateOnSingleClick ]
+        Property [ <default> public $enableGridLines ]
+        Property [ <default> public $enableSearch ]
+        Property [ <default> public $enableTreeLines ]
+        Property [ <default> public $fixedHeightMode ]
+        Property [ <default> public $headersClickable ]
+        Property [ <default> public $headersVisible ]
+        Property [ <default> public $hoverExpand ]
+        Property [ <default> public $hoverSelection ]
+        Property [ <default> public $levelIndentation ]
+        Property [ <default> public $model ]
+        Property [ <default> public $reorderable ]
+        Property [ <default> public $rubberBanding ]
+        Property [ <default> public $searchColumn ]
+        Property [ <default> public $showExpanders ]
+        Property [ <default> public $tooltipColumn ]
+      }
+
+      - Methods [6] {
+        Method [ <internal:pggi, overwrites GContainer, ctor> public method __construct ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, overwrites GContainer, prototype GWidget> public method on ] {
 
           - Parameters [3] {
             Parameter #0 [ <required> $type ]

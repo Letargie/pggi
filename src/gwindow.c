@@ -63,6 +63,7 @@ GWINDOW_METHOD(__construct){
 		gtk_window_set_title(GTK_WINDOW(widget->widget_ptr->intern),ZSTR_VAL(Z_STR_P(title)));
 	}
 	gapplication_add_windows(ze_obj->app_ptr, getThis());
+	GCONTAINER_ADD_ELEMENT(widget);
 	g_signal_connect(widget->widget_ptr->intern, "destroy", G_CALLBACK (widget_destructed), widget);
 }
 
@@ -113,7 +114,9 @@ GWINDOW_METHOD(close){
 GWINDOW_METHOD(setKeepAbove){
 	ze_gwidget_object *ze_obj = NULL;
 	int kept;
-	PGGI_PARSE_PARAMETERS(zend_parse_parameters(ZEND_NUM_ARGS(), "b", &kept));
+	if(zend_parse_parameters(ZEND_NUM_ARGS(), "b", &kept) == FAILURE){
+		return;
+	}
 	zval * self = getThis();
 	if(self){
 		ze_obj = Z_GWIDGET_P(self);
@@ -124,7 +127,9 @@ GWINDOW_METHOD(setKeepAbove){
 GWINDOW_METHOD(setKeepBelow){
 	ze_gwidget_object *ze_obj = NULL;
 	int kept;
-	PGGI_PARSE_PARAMETERS(zend_parse_parameters(ZEND_NUM_ARGS(), "b", &kept));
+	if(zend_parse_parameters(ZEND_NUM_ARGS(), "b", &kept) == FAILURE){
+		return;
+	}
 	zval * self = getThis();
 	if(self){
 		ze_obj = Z_GWIDGET_P(self);

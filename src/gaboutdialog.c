@@ -30,7 +30,47 @@ GABOUT_DIALOG_METHOD(__construct){
 	widget->std.handlers = &gabout_dialog_object_handlers;
 	widget->widget_ptr = gwidget_new();
 	widget->widget_ptr->intern = gtk_about_dialog_new();
+	GCONTAINER_ADD_ELEMENT(widget);
 	g_signal_connect(widget->widget_ptr->intern, "destroy", G_CALLBACK (widget_destructed), widget);
+}
+
+/* args :
+array("artists" => array("", "", ""),
+		"authors" => array("", "", ""),
+		"comments" => "",
+		"copyright" => "",
+		"documenters" => array("", "", ""),
+		"license" => "",
+		"license-type" => 1,
+		"logo" => ... or log-icon-name .... for now we don't use
+		"program-name" => "",
+		translator-credits => ""
+		"website" => ""
+		"website-label" => ""
+		"wrap-license" => true)
+
+
+showNewGAboutDialog(parameters.....) static
+
+->showGAboutDialog() : use data to create a new GAboutDialog
+
+add a property parent?
+
+*/
+GABOUT_DIALOG_METHOD(showGAboutDialog){
+	ze_gwidget_object *ze_obj = NULL;
+	zval * parent = NULL, * args = NULL;
+	GtkWidget * p = NULL;
+	if(zend_parse_parameters(ZEND_NUM_ARGS(), "|zz", &parent, args) == FAILURE){
+		return ;
+	}
+	zval * self = getThis();
+	if(self){
+		ze_obj = Z_GWIDGET_P(self);
+		if(parent)
+			p = (Z_GWIDGET_P(parent))->widget_ptr->intern;
+		
+	}
 }
 
 /**
@@ -38,6 +78,8 @@ GABOUT_DIALOG_METHOD(__construct){
  */
 static const zend_function_entry gabout_dialog_class_functions[] = {
 	PHP_ME(GAboutDialog, __construct	, arginfo_pggi_void	, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	PHP_ME(GAboutDialog, showGAboutDialog, arginfo_gabout_dialog_show, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
+
 	PHP_FE_END
 };
 
