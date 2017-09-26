@@ -51,3 +51,4 @@ modules
 run-tests.log
 tmp-php.ini
 doc
+run-test.php
