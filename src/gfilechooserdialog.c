@@ -272,7 +272,7 @@ void gfile_chooser_dialog_init(int module_number){
 	gfile_chooser_dialog_object_handlers.get_properties = gfile_chooser_dialog_get_properties;
 	gfile_chooser_dialog_object_handlers.write_property = gfile_chooser_dialog_write_property;
 
-	INIT_CLASS_ENTRY(ce, "GFileChooserDialog", gfile_chooser_dialog_class_functions);
+	INIT_CLASS_ENTRY(ce, "PGGI\\GFileChooserDialog", gfile_chooser_dialog_class_functions);
 	gfile_chooser_dialog_class_entry_ce	= zend_register_internal_class_ex(&ce, gdialog_get_class_entry());
 
 	GFILE_CHOOSER_DIALOG_CONSTANT("ACTION_OPEN"         , GFILE_CHOOSER_DIALOG_ACTION_OPEN         );
