@@ -47,6 +47,12 @@ Finally run
 make
 ```
 
+In the pggi directory there a pggi file, it's a launcher to use pggi :
+
+```
+path\pggi file
+```
+
 To test the extension, try running the exemples scripts in the exemples directory.
 
 You can also check my other repositories where I put applications using pggi, that a good way to see how it works and have a nice demo.
