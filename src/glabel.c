@@ -33,13 +33,11 @@ PHP_METHOD(GLabel, __construct){
 	zend_string * label = NULL;
 	ze_gwidget_object * ze_obj;
 	zval * self = getThis();
-	if(!self)
-		RETURN_NULL();
 	ze_obj = Z_GWIDGET_P(getThis());
 		ze_obj->std.handlers = &glabel_object_handlers;
 	char * c = NULL;
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "|S", &label) == FAILURE)
-		RETURN_NULL();
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "|S", &label) == FAILURE)
+		return;
 	if(label)
 		c = ZSTR_VAL(label);
 	ze_obj->widget_ptr = gwidget_new();
@@ -48,7 +46,7 @@ PHP_METHOD(GLabel, __construct){
 }
 
 static const zend_function_entry glabel_class_functions[] = {
-	PHP_ME(GLabel, __construct	, arginfo_glabel_construct	, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	PHP_ME(GLabel, __construct, arginfo_glabel_construct, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
 	PHP_FE_END
 };
 
@@ -61,9 +59,6 @@ zval *glabel_read_property(zval *object, zval *member, int type, void **cache_sl
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
 	const char * tmp;
-	ZVAL_NULL(rv);
-	if(!w)
-		return rv;
 	GtkLabel * label = GTK_LABEL(w->intern);
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
@@ -103,22 +98,19 @@ HashTable *glabel_get_properties(zval *object){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	intern->std.handlers = &glabel_object_handlers;
 	gwidget_ptr w = intern->widget_ptr;
-	if(!w){
-		return NULL;
-	}
 	GtkLabel * label = GTK_LABEL(w->intern);
 
-	G_H_UPDATE_LONG		(GLABEL_ELLIPSIZE			, gtk_label_get_ellipsize			(label));
-	G_H_UPDATE_LONG		(GLABEL_LINES				, gtk_label_get_lines				(label));
-	G_H_UPDATE_LONG		(GLABEL_WIDTH_CHARS			, gtk_label_get_width_chars			(label));
-	G_H_UPDATE_LONG		(GLABEL_MAX_WIDTH_CHARS		, gtk_label_get_max_width_chars		(label));
-	G_H_UPDATE_BOOL		(GLABEL_SELECTABLE			, gtk_label_get_selectable			(label));
-	G_H_UPDATE_BOOL		(GLABEL_TRACK_VISITED_LINKS	, gtk_label_get_track_visited_links	(label));
-	G_H_UPDATE_BOOL		(GLABEL_USE_MARKUP			, gtk_label_get_use_markup			(label));
-	G_H_UPDATE_BOOL		(GLABEL_USE_UNDERLINE		, gtk_label_get_use_underline		(label));
-	G_H_UPDATE_DOUBLE	(GLABEL_XALIGN				, gtk_label_get_xalign				(label));
-	G_H_UPDATE_DOUBLE	(GLABEL_YALIGN				, gtk_label_get_yalign				(label));
-	G_H_UPDATE_STRING	(GLABEL_TEXT				, gtk_label_get_text				(label));
+	G_H_UPDATE_LONG  (GLABEL_ELLIPSIZE          , gtk_label_get_ellipsize          (label));
+	G_H_UPDATE_LONG  (GLABEL_LINES              , gtk_label_get_lines              (label));
+	G_H_UPDATE_LONG  (GLABEL_WIDTH_CHARS        , gtk_label_get_width_chars        (label));
+	G_H_UPDATE_LONG  (GLABEL_MAX_WIDTH_CHARS    , gtk_label_get_max_width_chars    (label));
+	G_H_UPDATE_BOOL  (GLABEL_SELECTABLE         , gtk_label_get_selectable         (label));
+	G_H_UPDATE_BOOL  (GLABEL_TRACK_VISITED_LINKS, gtk_label_get_track_visited_links(label));
+	G_H_UPDATE_BOOL  (GLABEL_USE_MARKUP         , gtk_label_get_use_markup         (label));
+	G_H_UPDATE_BOOL  (GLABEL_USE_UNDERLINE      , gtk_label_get_use_underline      (label));
+	G_H_UPDATE_DOUBLE(GLABEL_XALIGN             , gtk_label_get_xalign             (label));
+	G_H_UPDATE_DOUBLE(GLABEL_YALIGN             , gtk_label_get_yalign             (label));
+	G_H_UPDATE_STRING(GLABEL_TEXT               , gtk_label_get_text               (label));
 
 	return G_H_UPDATE_RETURN;
 }
@@ -193,32 +185,32 @@ zend_declare_class_constant_double(glabel_class_entry_ce, name, sizeof(name)-1, 
 
 void glabel_init(int module_number){
 	zend_class_entry ce;
-	le_glabel = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "glabel", module_number);
+	le_glabel = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "PGGI\\GLabel", module_number);
 
 	memcpy(&glabel_object_handlers, gwidget_get_object_handlers(), sizeof(zend_object_handlers));
 	glabel_object_handlers.read_property  = glabel_read_property;
 	glabel_object_handlers.get_properties = glabel_get_properties;
 	glabel_object_handlers.write_property = glabel_write_property;
-	INIT_CLASS_ENTRY(ce, "GLabel", glabel_class_functions);
+	INIT_CLASS_ENTRY(ce, "PGGI\\GLabel", glabel_class_functions);
 	ce.create_object = gwidget_object_new;
 	glabel_class_entry_ce = zend_register_internal_class_ex(&ce, gwidget_get_class_entry());
 
-	GLABEL_CONSTANT("ELLIPSIZE_NONE"	, PANGO_ELLIPSIZE_NONE	);
-	GLABEL_CONSTANT("ELLIPSIZE_START"	, PANGO_ELLIPSIZE_START	);
-	GLABEL_CONSTANT("ELLIPSIZE_MIDDLE"	, PANGO_ELLIPSIZE_MIDDLE);
-	GLABEL_CONSTANT("ELLIPSIZE_END"		, PANGO_ELLIPSIZE_END	);
+	GLABEL_CONSTANT("ELLIPSIZE_NONE"  , PANGO_ELLIPSIZE_NONE  );
+	GLABEL_CONSTANT("ELLIPSIZE_START" , PANGO_ELLIPSIZE_START );
+	GLABEL_CONSTANT("ELLIPSIZE_MIDDLE", PANGO_ELLIPSIZE_MIDDLE);
+	GLABEL_CONSTANT("ELLIPSIZE_END"   , PANGO_ELLIPSIZE_END   );
 
-	DECLARE_GLABEL_PROP(GLABEL_TRACK_VISITED_LINKS	);
-	DECLARE_GLABEL_PROP(GLABEL_USE_MARKUP			);
-	DECLARE_GLABEL_PROP(GLABEL_USE_UNDERLINE		);
-	DECLARE_GLABEL_PROP(GLABEL_XALIGN				);
-	DECLARE_GLABEL_PROP(GLABEL_YALIGN				);
-	DECLARE_GLABEL_PROP(GLABEL_ELLIPSIZE			);
-	DECLARE_GLABEL_PROP(GLABEL_WIDTH_CHARS			);
-	DECLARE_GLABEL_PROP(GLABEL_MAX_WIDTH_CHARS		);
-	DECLARE_GLABEL_PROP(GLABEL_LINES				);
-	DECLARE_GLABEL_PROP(GLABEL_SELECTABLE			);
-	DECLARE_GLABEL_PROP(GLABEL_TEXT					);
+	DECLARE_GLABEL_PROP(GLABEL_TRACK_VISITED_LINKS);
+	DECLARE_GLABEL_PROP(GLABEL_USE_MARKUP         );
+	DECLARE_GLABEL_PROP(GLABEL_USE_UNDERLINE      );
+	DECLARE_GLABEL_PROP(GLABEL_XALIGN             );
+	DECLARE_GLABEL_PROP(GLABEL_YALIGN             );
+	DECLARE_GLABEL_PROP(GLABEL_ELLIPSIZE          );
+	DECLARE_GLABEL_PROP(GLABEL_WIDTH_CHARS        );
+	DECLARE_GLABEL_PROP(GLABEL_MAX_WIDTH_CHARS    );
+	DECLARE_GLABEL_PROP(GLABEL_LINES              );
+	DECLARE_GLABEL_PROP(GLABEL_SELECTABLE         );
+	DECLARE_GLABEL_PROP(GLABEL_TEXT               );
 }
 
 

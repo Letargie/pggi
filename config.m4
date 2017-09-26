@@ -16,32 +16,37 @@ if test "$PHP_PGGI" != "no"; then
 		AC_MSG_ERROR(system gtk not found)
 	fi
 	PHP_NEW_EXTENSION(pggi,
-    	src/pggi.c 			\
-    	src/gapplication.c 	\
-		src/gwidget.c 		\
-		src/gcontainer.c 	\
-		src/gwindow.c 		\
-		src/glabel.c		\
-		src/gimage.c		\
-		src/gbutton.c       \
-		src/gbox.c          \
-		src/gexception.c	\
-		src/gmenushell.c	\
-		src/gmenubar.c		\
-		src/gmenu.c			\
-		src/gmenuitem.c		\
-		src/gtextview.c		\
-		src/gtextbuffer.c	\
-		src/gscrollwindow.c	\
-		src/gcombobox.c		\
-		src/gcomboboxtext.c	\
-		src/gdialog.c		\
-		src/gaboutdialog.c	\
-		src/ggrid.c			\
-		src/gtextiter.c		\
-		src/gtreeiter.c     \
-		src/gtreestore.c    \
-		src/gtreeview.c     \
+    	src/pggi.c               \
+    	src/gapplication.c       \
+		src/gwidget.c            \
+		src/gcontainer.c     	 \
+		src/gwindow.c 		     \
+		src/glabel.c		     \
+		src/gimage.c		     \
+		src/gbutton.c            \
+		src/gbuttonbox.c         \
+		src/gbox.c               \
+		src/gexception.c         \
+		src/gmenushell.c         \
+		src/gmenubar.c           \
+		src/gmenu.c              \
+		src/gmenuitem.c          \
+		src/gtextview.c          \
+		src/gtextbuffer.c        \
+		src/gscrollwindow.c      \
+		src/gcombobox.c          \
+		src/gcomboboxtext.c      \
+		src/gdialog.c            \
+		src/gaboutdialog.c       \
+		src/ggrid.c              \
+		src/gtextiter.c	         \
+		src/gtreeiter.c          \
+		src/gtreestore.c         \
+		src/gtreeview.c          \
+		src/gfilechooserdialog.c \
+		src/gcellrenderer.c      \
+		src/gcellrenderertext.c  \
+		src/gtreeviewcolumn.c	 \
     	, $ext_shared, , -I@ext_srcdir@/pggi/include)
 	PHP_ADD_BUILD_DIR($ext_builddir/src)
 	PHP_ADD_INCLUDE([$ext_srcdir/include])

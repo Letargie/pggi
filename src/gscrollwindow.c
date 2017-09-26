@@ -29,6 +29,8 @@ GSCROLL_WINDOW_METHOD(__construct){
 	ze_gwidget_object * widget;
 	zval * title = NULL;
 	widget = Z_GWIDGET_P(getThis());
+	if(pggi_parse_parameters_none_throw() == FAILURE)
+		return ;
 	widget->std.handlers = &gscroll_window_object_handlers;
 	widget->widget_ptr = gwidget_new();
 	widget->widget_ptr->intern = gtk_scrolled_window_new(NULL, NULL);
@@ -54,23 +56,16 @@ zval *gscroll_window_read_property(zval *object, zval *member, int type, void **
 	zval zobj;
 	zend_long lval;
 
-	ZVAL_NULL(rv);
-	if(w){
-		convert_to_string(member);
-		char * member_val = Z_STRVAL_P(member);
-		GtkScrolledWindow * win = GTK_SCROLLED_WINDOW(w->intern);
-		return gcontainer_read_property(object, member, type, cache_slot, rv);
-	}
-	return rv;
+	convert_to_string(member);
+	char * member_val = Z_STRVAL_P(member);
+	GtkScrolledWindow * win = GTK_SCROLLED_WINDOW(w->intern);
+	return gcontainer_read_property(object, member, type, cache_slot, rv);
 }
 
 HashTable *gscroll_window_get_properties(zval *object){
 	G_H_UPDATE_INIT(gcontainer_get_properties(object));
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	if(!w){
-		return NULL;
-	}
 	GtkScrolledWindow * win = GTK_SCROLLED_WINDOW(w->intern);
 
 	return G_H_UPDATE_RETURN;
@@ -100,14 +95,14 @@ DECLARE_CLASS_PROPERTY(gscroll_window_class_entry_ce, name)
 
 void gscroll_window_init(int module_number){
 	DECLARE_CLASS_PROPERTY_INIT();
-	le_gscroll_window = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "gscroll_window", module_number);
+	le_gscroll_window = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "PGGI\\GScrollWindow", module_number);
 
 	memcpy(&gscroll_window_object_handlers, gcontainer_get_object_handlers(), sizeof(zend_object_handlers));
 	gscroll_window_object_handlers.read_property  = gscroll_window_read_property;
 	gscroll_window_object_handlers.get_properties = gscroll_window_get_properties;
 	gscroll_window_object_handlers.write_property = gscroll_window_write_property;
 
-	INIT_CLASS_ENTRY(ce, "GScrollWindow", gscroll_window_class_functions);
+	INIT_CLASS_ENTRY(ce, "PGGI\\GScrollWindow", gscroll_window_class_functions);
 	gscroll_window_class_entry_ce	= zend_register_internal_class_ex(&ce, gcontainer_get_class_entry());
 }
 

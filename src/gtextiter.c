@@ -30,42 +30,42 @@ static zend_class_entry * gtext_iter_class_entry_ce;
 /****************************/
 
 gtext_iter_ptr gtext_iter_new(){
-    gtext_iter_ptr tor = ecalloc(1, sizeof(gtext_iter_t));
-    return tor;
+	gtext_iter_ptr tor = ecalloc(1, sizeof(gtext_iter_t));
+	return tor;
 }
 
 zend_object *gtext_iter_object_new(zend_class_entry *class_type){
-    ze_gtext_iter_object *intern;
-    intern = ecalloc(1, sizeof(ze_gtext_iter_object) + zend_object_properties_size(class_type));
-    zend_object_std_init    (&intern->std, class_type);
-    object_properties_init    (&intern->std, class_type);
-    intern->std.handlers = &gtext_iter_object_handlers;
-    return &intern->std;
+	ze_gtext_iter_object *intern;
+	intern = ecalloc(1, sizeof(ze_gtext_iter_object) + zend_object_properties_size(class_type));
+	zend_object_std_init    (&intern->std, class_type);
+	object_properties_init    (&intern->std, class_type);
+	intern->std.handlers = &gtext_iter_object_handlers;
+	return &intern->std;
 }
 
 void gtext_iter_dtor(gtext_iter_ptr intern){
-    zval *  zv, * tmp;
-    if (intern->intern){    
-    /*unref text iter?*/
-    }
-    efree(intern);
+	zval *  zv, * tmp;
+	if (intern->intern){    
+	/*unref text iter?*/
+	}
+	efree(intern);
 }
 
 void gtext_iter_object_free_storage(zend_object *object){
-    ze_gtext_iter_object *intern = php_gtext_iter_fetch_object(object);
-    if (!intern) {
-        return;
-    }
-    if (intern->iter_ptr){
-        gtext_iter_dtor(intern->iter_ptr);
-    }
-    intern->iter_ptr = NULL;
-    zend_object_std_dtor(&intern->std);
+	ze_gtext_iter_object *intern = php_gtext_iter_fetch_object(object);
+	if(!intern){
+		return;
+	}
+	if(intern->iter_ptr){
+		gtext_iter_dtor(intern->iter_ptr);
+	}
+	intern->iter_ptr = NULL;
+	zend_object_std_dtor(&intern->std);
 }
 
 void gtext_iter_free_resource(zend_resource *rsrc) {
-    gtext_iter_ptr iter = (gtext_iter_ptr) rsrc->ptr;
-    gtext_iter_dtor(iter);
+	gtext_iter_ptr iter = (gtext_iter_ptr) rsrc->ptr;
+	gtext_iter_dtor(iter);
 }
 
 /***************/
@@ -73,12 +73,12 @@ void gtext_iter_free_resource(zend_resource *rsrc) {
 /***************/
 
 GTEXT_ITER_METHOD(__construct){
-    RETURN_NULL();
+	return;
 }
 
 GTEXT_ITER_METHOD(getBuffer){
 	zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
 	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
 	RETURN_OBJ(ze_obj->iter_ptr->buffer);
@@ -116,458 +116,458 @@ size_t pggi_utf32_utf8(unsigned char *buf, unsigned k){
 
 
 GTEXT_ITER_METHOD(getChar){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    char tmp[4]; 
-    int size = pggi_utf32_utf8(tmp, gtk_text_iter_get_char(ze_obj->iter_ptr->intern));
-    RETURN_STRINGL(tmp, size);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	char tmp[4]; 
+	int size = pggi_utf32_utf8(tmp, gtk_text_iter_get_char(ze_obj->iter_ptr->intern));
+	RETURN_STRINGL(tmp, size);
 }
 
 GTEXT_ITER_METHOD(getSlice){
 	zval * beg, * end;
-    if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "zz", beg, end) == FAILURE)
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "zz", beg, end) == FAILURE)
 		return;
-    ze_gtext_iter_object * beg_obj = Z_GTEXT_ITER_P(beg),
+	ze_gtext_iter_object * beg_obj = Z_GTEXT_ITER_P(beg),
 	                     * end_obj = Z_GTEXT_ITER_P(end);
-    RETURN_STRING(gtk_text_iter_get_slice(beg_obj->iter_ptr->intern, end_obj->iter_ptr->intern));
+	RETURN_STRING(gtk_text_iter_get_slice(beg_obj->iter_ptr->intern, end_obj->iter_ptr->intern));
 }
 
 GTEXT_ITER_METHOD(getText){
 	zval * beg, * end;
-    if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "zz", beg, end) == FAILURE)
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "zz", beg, end) == FAILURE)
 		return;
-    ze_gtext_iter_object * beg_obj = Z_GTEXT_ITER_P(beg),
+	ze_gtext_iter_object * beg_obj = Z_GTEXT_ITER_P(beg),
 	                     * end_obj = Z_GTEXT_ITER_P(end);
-    RETURN_STRING(gtk_text_iter_get_text(beg_obj->iter_ptr->intern, end_obj->iter_ptr->intern));
+	RETURN_STRING(gtk_text_iter_get_text(beg_obj->iter_ptr->intern, end_obj->iter_ptr->intern));
 }
 
 GTEXT_ITER_METHOD(getVisibleSlice){
 	zval * beg, * end;
-    if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "zz", beg, end) == FAILURE)
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "zz", beg, end) == FAILURE)
 		return;
-    ze_gtext_iter_object * beg_obj = Z_GTEXT_ITER_P(beg),
+	ze_gtext_iter_object * beg_obj = Z_GTEXT_ITER_P(beg),
 	                     * end_obj = Z_GTEXT_ITER_P(end);
-    RETURN_STRING(gtk_text_iter_get_visible_slice(beg_obj->iter_ptr->intern, end_obj->iter_ptr->intern));
+	RETURN_STRING(gtk_text_iter_get_visible_slice(beg_obj->iter_ptr->intern, end_obj->iter_ptr->intern));
 }
 
 GTEXT_ITER_METHOD(getVisibleText){
 	zval * beg, * end;
-    if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "zz", beg, end) == FAILURE)
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "zz", beg, end) == FAILURE)
 		return;
-    ze_gtext_iter_object * beg_obj = Z_GTEXT_ITER_P(beg),
+	ze_gtext_iter_object * beg_obj = Z_GTEXT_ITER_P(beg),
 	                     * end_obj = Z_GTEXT_ITER_P(end);
-    RETURN_STRING(gtk_text_iter_get_visible_text(beg_obj->iter_ptr->intern, end_obj->iter_ptr->intern));
+	RETURN_STRING(gtk_text_iter_get_visible_text(beg_obj->iter_ptr->intern, end_obj->iter_ptr->intern));
 }
 
 /*
 GTEXT_ITER_METHOD(editable){
-    zval * self = getThis();
-    pggi_parse_method_parameters_none_throw(self);
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    RETURN_BOOL(gtk_text_iter_editable(ze_obj->iter_ptr->intern) != 0);
+	zval * self = getThis();
+	pggi_parse_method_parameters_none_throw(self);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	RETURN_BOOL(gtk_text_iter_editable(ze_obj->iter_ptr->intern) != 0);
 }
 
 GTEXT_ITER_METHOD(canInsert){
-    zval * self = getThis();
-    pggi_parse_method_parameters_none_throw(self);
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    RETURN_BOOL(gtk_text_iter_can_insert(ze_obj->iter_ptr->intern) != 0);
+	zval * self = getThis();
+	pggi_parse_method_parameters_none_throw(self);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	RETURN_BOOL(gtk_text_iter_can_insert(ze_obj->iter_ptr->intern) != 0);
 }
 */
 GTEXT_ITER_METHOD(startsWord){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    RETURN_BOOL(gtk_text_iter_starts_word(ze_obj->iter_ptr->intern) != 0);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	RETURN_BOOL(gtk_text_iter_starts_word(ze_obj->iter_ptr->intern) != 0);
 }
 
 GTEXT_ITER_METHOD(endsWord){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    RETURN_BOOL(gtk_text_iter_ends_word(ze_obj->iter_ptr->intern) != 0);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	RETURN_BOOL(gtk_text_iter_ends_word(ze_obj->iter_ptr->intern) != 0);
 }
 
 GTEXT_ITER_METHOD(insideWord){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    RETURN_BOOL(gtk_text_iter_inside_word(ze_obj->iter_ptr->intern) != 0);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	RETURN_BOOL(gtk_text_iter_inside_word(ze_obj->iter_ptr->intern) != 0);
 }
 
 GTEXT_ITER_METHOD(startsLine){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    RETURN_BOOL(gtk_text_iter_starts_line(ze_obj->iter_ptr->intern) != 0);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	RETURN_BOOL(gtk_text_iter_starts_line(ze_obj->iter_ptr->intern) != 0);
 }
 
 GTEXT_ITER_METHOD(endsLine){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    RETURN_BOOL(gtk_text_iter_ends_line(ze_obj->iter_ptr->intern) != 0);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	RETURN_BOOL(gtk_text_iter_ends_line(ze_obj->iter_ptr->intern) != 0);
 }
 
 GTEXT_ITER_METHOD(startsSentence){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    RETURN_BOOL(gtk_text_iter_starts_sentence(ze_obj->iter_ptr->intern) != 0);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	RETURN_BOOL(gtk_text_iter_starts_sentence(ze_obj->iter_ptr->intern) != 0);
 }
 
 GTEXT_ITER_METHOD(endsSentence){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    RETURN_BOOL(gtk_text_iter_ends_sentence(ze_obj->iter_ptr->intern) != 0);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	RETURN_BOOL(gtk_text_iter_ends_sentence(ze_obj->iter_ptr->intern) != 0);
 }
 
 GTEXT_ITER_METHOD(insideSentence){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    RETURN_BOOL(gtk_text_iter_inside_sentence(ze_obj->iter_ptr->intern) != 0);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	RETURN_BOOL(gtk_text_iter_inside_sentence(ze_obj->iter_ptr->intern) != 0);
 }
 
 GTEXT_ITER_METHOD(isCursorPosition){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    RETURN_BOOL(gtk_text_iter_is_cursor_position(ze_obj->iter_ptr->intern) != 0);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	RETURN_BOOL(gtk_text_iter_is_cursor_position(ze_obj->iter_ptr->intern) != 0);
 }
 
 GTEXT_ITER_METHOD(isEnd){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    RETURN_BOOL(gtk_text_iter_is_end(ze_obj->iter_ptr->intern) != 0);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	RETURN_BOOL(gtk_text_iter_is_end(ze_obj->iter_ptr->intern) != 0);
 }
 
 GTEXT_ITER_METHOD(isStart){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    RETURN_BOOL(gtk_text_iter_is_start(ze_obj->iter_ptr->intern) != 0);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	RETURN_BOOL(gtk_text_iter_is_start(ze_obj->iter_ptr->intern) != 0);
 }
 
 GTEXT_ITER_METHOD(getCharsInLine){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    RETURN_LONG(gtk_text_iter_get_chars_in_line(ze_obj->iter_ptr->intern));
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	RETURN_LONG(gtk_text_iter_get_chars_in_line(ze_obj->iter_ptr->intern));
 }
 
 GTEXT_ITER_METHOD(getBytesInLine){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    RETURN_LONG(gtk_text_iter_get_bytes_in_line(ze_obj->iter_ptr->intern));
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	RETURN_LONG(gtk_text_iter_get_bytes_in_line(ze_obj->iter_ptr->intern));
 }
 
 GTEXT_ITER_METHOD(forwardChar){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_forward_char(ze_obj->iter_ptr->intern);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_forward_char(ze_obj->iter_ptr->intern);
 }
 
 GTEXT_ITER_METHOD(backwardChar){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_backward_char(ze_obj->iter_ptr->intern);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_backward_char(ze_obj->iter_ptr->intern);
 }
 
 GTEXT_ITER_METHOD(forwardChars){
-    zval * self = getThis();
-    long number;
-    if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
+	zval * self = getThis();
+	long number;
+	if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_forward_chars(ze_obj->iter_ptr->intern, number);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_forward_chars(ze_obj->iter_ptr->intern, number);
 }
 
 GTEXT_ITER_METHOD(backwardChars){
-    zval * self = getThis();
-    long number;
-    if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
+	zval * self = getThis();
+	long number;
+	if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_backward_chars(ze_obj->iter_ptr->intern, number);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_backward_chars(ze_obj->iter_ptr->intern, number);
 }
 
 GTEXT_ITER_METHOD(forwardLine){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_forward_line(ze_obj->iter_ptr->intern);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_forward_line(ze_obj->iter_ptr->intern);
 }
 
 GTEXT_ITER_METHOD(backwardLine){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_backward_line(ze_obj->iter_ptr->intern);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_backward_line(ze_obj->iter_ptr->intern);
 }
 
 GTEXT_ITER_METHOD(forwardLines){
-    zval * self = getThis();
-    long number;
-    if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
+	zval * self = getThis();
+	long number;
+	if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_forward_lines(ze_obj->iter_ptr->intern, number);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_forward_lines(ze_obj->iter_ptr->intern, number);
 }
 
 GTEXT_ITER_METHOD(backwardLines){
-    zval * self = getThis();
-    long number;
-    if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
+	zval * self = getThis();
+	long number;
+	if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_backward_lines(ze_obj->iter_ptr->intern, number);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_backward_lines(ze_obj->iter_ptr->intern, number);
 }
 
 GTEXT_ITER_METHOD(backwardWordStart){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_backward_word_start(ze_obj->iter_ptr->intern);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_backward_word_start(ze_obj->iter_ptr->intern);
 }
 
 GTEXT_ITER_METHOD(forwardWordEnd){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_forward_word_end(ze_obj->iter_ptr->intern);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_forward_word_end(ze_obj->iter_ptr->intern);
 }
 
 GTEXT_ITER_METHOD(backwardWordStarts){
-    zval * self = getThis();
-    long number;
-    if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
+	zval * self = getThis();
+	long number;
+	if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_backward_word_starts(ze_obj->iter_ptr->intern, number);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_backward_word_starts(ze_obj->iter_ptr->intern, number);
 }
 
 GTEXT_ITER_METHOD(forwardWordEnds){
-    zval * self = getThis();
-    long number;
-    if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
+	zval * self = getThis();
+	long number;
+	if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_forward_word_ends(ze_obj->iter_ptr->intern, number);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_forward_word_ends(ze_obj->iter_ptr->intern, number);
 }
 
 GTEXT_ITER_METHOD(backwardCursorPosition){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_backward_cursor_position(ze_obj->iter_ptr->intern);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_backward_cursor_position(ze_obj->iter_ptr->intern);
 }
 
 GTEXT_ITER_METHOD(forwardCursorPosition){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_forward_cursor_position(ze_obj->iter_ptr->intern);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_forward_cursor_position(ze_obj->iter_ptr->intern);
 }
 
 GTEXT_ITER_METHOD(backwardCursorPositions){
-    zval * self = getThis();
-    long number;
-    if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
+	zval * self = getThis();
+	long number;
+	if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_backward_cursor_positions(ze_obj->iter_ptr->intern, number);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_backward_cursor_positions(ze_obj->iter_ptr->intern, number);
 }
 
 GTEXT_ITER_METHOD(forwardCursorPositions){
-    zval * self = getThis();
-    long number;
-    if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
+	zval * self = getThis();
+	long number;
+	if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_forward_cursor_positions(ze_obj->iter_ptr->intern, number);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_forward_cursor_positions(ze_obj->iter_ptr->intern, number);
 }
 
 GTEXT_ITER_METHOD(backwardSentenceStart){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_backward_sentence_start(ze_obj->iter_ptr->intern);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_backward_sentence_start(ze_obj->iter_ptr->intern);
 }
 
 GTEXT_ITER_METHOD(forwardSentenceEnd){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_forward_sentence_end(ze_obj->iter_ptr->intern);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_forward_sentence_end(ze_obj->iter_ptr->intern);
 }
 
 GTEXT_ITER_METHOD(backwardSentenceStarts){
-    zval * self = getThis();
-    long number;
-    if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
+	zval * self = getThis();
+	long number;
+	if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_backward_sentence_starts(ze_obj->iter_ptr->intern, number);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_backward_sentence_starts(ze_obj->iter_ptr->intern, number);
 }
 
 GTEXT_ITER_METHOD(forwardSentenceEnds){
-    zval * self = getThis();
-    long number;
-    if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
+	zval * self = getThis();
+	long number;
+	if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_forward_sentence_ends(ze_obj->iter_ptr->intern, number);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_forward_sentence_ends(ze_obj->iter_ptr->intern, number);
 }
 
 
 GTEXT_ITER_METHOD(forwardVisibleLine){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_forward_visible_line(ze_obj->iter_ptr->intern);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_forward_visible_line(ze_obj->iter_ptr->intern);
 }
 
 GTEXT_ITER_METHOD(backwardVisibleLine){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_backward_visible_line(ze_obj->iter_ptr->intern);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_backward_visible_line(ze_obj->iter_ptr->intern);
 }
 
 
 GTEXT_ITER_METHOD(forwardVisibleLines){
-    zval * self = getThis();
-    long number;
-    if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
+	zval * self = getThis();
+	long number;
+	if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_forward_visible_lines(ze_obj->iter_ptr->intern, number);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_forward_visible_lines(ze_obj->iter_ptr->intern, number);
 }
 
 GTEXT_ITER_METHOD(backwardVisibleLines){
-    zval * self = getThis();
-    long number;
-    if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
+	zval * self = getThis();
+	long number;
+	if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_backward_visible_lines(ze_obj->iter_ptr->intern, number);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_backward_visible_lines(ze_obj->iter_ptr->intern, number);
 }
 
 GTEXT_ITER_METHOD(backwardVisibleWordStart){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_backward_visible_word_start(ze_obj->iter_ptr->intern);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_backward_visible_word_start(ze_obj->iter_ptr->intern);
 }
 
 GTEXT_ITER_METHOD(forwardVisibleWordEnd){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_forward_visible_word_end(ze_obj->iter_ptr->intern);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_forward_visible_word_end(ze_obj->iter_ptr->intern);
 }
 
 GTEXT_ITER_METHOD(backwardVisibleWordStarts){
-    zval * self = getThis();
+	zval * self = getThis();
 	long number;
-    if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
+	if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_backward_visible_word_starts(ze_obj->iter_ptr->intern, number);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_backward_visible_word_starts(ze_obj->iter_ptr->intern, number);
 }
 
 GTEXT_ITER_METHOD(forwardVisibleWordEnds){
-    zval * self = getThis();
-    long number;
-    if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
+	zval * self = getThis();
+	long number;
+	if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_forward_visible_word_ends(ze_obj->iter_ptr->intern, number);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_forward_visible_word_ends(ze_obj->iter_ptr->intern, number);
 }
 
 GTEXT_ITER_METHOD(backwardVisibleCursorPosition){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_backward_visible_cursor_position(ze_obj->iter_ptr->intern);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_backward_visible_cursor_position(ze_obj->iter_ptr->intern);
 }
 
 GTEXT_ITER_METHOD(forwardVisibleCursorPosition){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_forward_visible_cursor_position(ze_obj->iter_ptr->intern);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_forward_visible_cursor_position(ze_obj->iter_ptr->intern);
 }
 
 GTEXT_ITER_METHOD(backwardVisibleCursorPositions){
-    zval * self = getThis();
-    long number;
-    if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
+	zval * self = getThis();
+	long number;
+	if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_backward_visible_cursor_positions(ze_obj->iter_ptr->intern, number);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_backward_visible_cursor_positions(ze_obj->iter_ptr->intern, number);
 }
 
 GTEXT_ITER_METHOD(forwardVisibleCursorPositions){
-    zval * self = getThis();
+	zval * self = getThis();
 	long number;
-    if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
+	if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &number) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_forward_visible_cursor_positions(ze_obj->iter_ptr->intern, number);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_forward_visible_cursor_positions(ze_obj->iter_ptr->intern, number);
 }
 
 GTEXT_ITER_METHOD(forwardEnd){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_forward_to_end(ze_obj->iter_ptr->intern);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_forward_to_end(ze_obj->iter_ptr->intern);
 }
 
 GTEXT_ITER_METHOD(forwardLineEnd){
-    zval * self = getThis();
-    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
-    ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-    gtk_text_iter_forward_to_line_end(ze_obj->iter_ptr->intern);
+	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
+	gtk_text_iter_forward_to_line_end(ze_obj->iter_ptr->intern);
 }
 
 GTEXT_ITER_METHOD(forwardFindChar);
@@ -664,81 +664,81 @@ static const zend_function_entry gtext_iter_class_functions[] = {
 /*****************************/
 
 zval *gtext_iter_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv){
-    ze_gtext_iter_object * intern = Z_GTEXT_ITER_P(object);
-    gtext_iter_ptr b = intern->iter_ptr;
-    const char * tmp;
-    ZVAL_NULL(rv);
-    if(!b)
-        return rv;
-    convert_to_string(member);
-    char * member_val = Z_STRVAL_P(member);
-    GtkTextIter * iter = b->intern;
-    if(!strcmp(member_val, GTEXT_ITER_OFFSET)){
-        ZVAL_LONG(rv, gtk_text_iter_get_offset(iter));
-    }else if(!strcmp(member_val, GTEXT_ITER_LINE)){
-        ZVAL_LONG(rv, gtk_text_iter_get_line(iter));
-    }else if(!strcmp(member_val, GTEXT_ITER_LINE_OFFSET)){
-        ZVAL_LONG(rv, gtk_text_iter_get_line_offset(iter));
-    }else if(!strcmp(member_val, GTEXT_ITER_LINE_INDEX)){
-        ZVAL_LONG(rv, gtk_text_iter_get_line_index(iter));
-    }else if(!strcmp(member_val, GTEXT_ITER_VISIBLE_LINE_INDEX)){
-        ZVAL_LONG(rv, gtk_text_iter_get_visible_line_index(iter));
-    }else if(!strcmp(member_val, GTEXT_ITER_VISIBLE_LINE_OFFSET)){
-        ZVAL_LONG(rv, gtk_text_iter_get_visible_line_offset(iter));
+	ze_gtext_iter_object * intern = Z_GTEXT_ITER_P(object);
+	gtext_iter_ptr b = intern->iter_ptr;
+	const char * tmp;
+	ZVAL_NULL(rv);
+	if(!b)
+		return rv;
+	convert_to_string(member);
+	char * member_val = Z_STRVAL_P(member);
+	GtkTextIter * iter = b->intern;
+	if(!strcmp(member_val, GTEXT_ITER_OFFSET)){
+		ZVAL_LONG(rv, gtk_text_iter_get_offset(iter));
+	}else if(!strcmp(member_val, GTEXT_ITER_LINE)){
+		ZVAL_LONG(rv, gtk_text_iter_get_line(iter));
+	}else if(!strcmp(member_val, GTEXT_ITER_LINE_OFFSET)){
+		ZVAL_LONG(rv, gtk_text_iter_get_line_offset(iter));
+	}else if(!strcmp(member_val, GTEXT_ITER_LINE_INDEX)){
+		ZVAL_LONG(rv, gtk_text_iter_get_line_index(iter));
+	}else if(!strcmp(member_val, GTEXT_ITER_VISIBLE_LINE_INDEX)){
+		ZVAL_LONG(rv, gtk_text_iter_get_visible_line_index(iter));
+	}else if(!strcmp(member_val, GTEXT_ITER_VISIBLE_LINE_OFFSET)){
+		ZVAL_LONG(rv, gtk_text_iter_get_visible_line_offset(iter));
 	}
-    return std_object_handlers.read_property(object, member, type, cache_slot, rv);
+	return std_object_handlers.read_property(object, member, type, cache_slot, rv);
 }
 
 HashTable *gtext_iter_get_properties(zval *object){
-    G_H_UPDATE_INIT(zend_std_get_properties(object));
-    const char * tmp;
-    ze_gtext_iter_object * intern = Z_GTEXT_ITER_P(object);
-    gtext_iter_ptr b = intern->iter_ptr;
-    GtkTextIter * iter = b->intern;
-    if(!b){
-        return NULL;
-    }
-    G_H_UPDATE_LONG(GTEXT_ITER_OFFSET             , gtk_text_iter_get_offset             (iter));
-    G_H_UPDATE_LONG(GTEXT_ITER_LINE               , gtk_text_iter_get_line               (iter));
-    G_H_UPDATE_LONG(GTEXT_ITER_LINE_OFFSET        , gtk_text_iter_get_line_offset        (iter));
-    G_H_UPDATE_LONG(GTEXT_ITER_LINE_INDEX         , gtk_text_iter_get_line_index         (iter));
-    G_H_UPDATE_LONG(GTEXT_ITER_VISIBLE_LINE_INDEX , gtk_text_iter_get_visible_line_index (iter));
-    G_H_UPDATE_LONG(GTEXT_ITER_VISIBLE_LINE_OFFSET, gtk_text_iter_get_visible_line_offset(iter));
-    return G_H_UPDATE_RETURN;
+	G_H_UPDATE_INIT(zend_std_get_properties(object));
+	const char * tmp;
+	ze_gtext_iter_object * intern = Z_GTEXT_ITER_P(object);
+	gtext_iter_ptr b = intern->iter_ptr;
+	GtkTextIter * iter = b->intern;
+	if(!b){
+		return NULL;
+	}
+	G_H_UPDATE_LONG(GTEXT_ITER_OFFSET             , gtk_text_iter_get_offset             (iter));
+	G_H_UPDATE_LONG(GTEXT_ITER_LINE               , gtk_text_iter_get_line               (iter));
+	G_H_UPDATE_LONG(GTEXT_ITER_LINE_OFFSET        , gtk_text_iter_get_line_offset        (iter));
+	G_H_UPDATE_LONG(GTEXT_ITER_LINE_INDEX         , gtk_text_iter_get_line_index         (iter));
+	G_H_UPDATE_LONG(GTEXT_ITER_VISIBLE_LINE_INDEX , gtk_text_iter_get_visible_line_index (iter));
+	G_H_UPDATE_LONG(GTEXT_ITER_VISIBLE_LINE_OFFSET, gtk_text_iter_get_visible_line_offset(iter));
+	return G_H_UPDATE_RETURN;
 }
 
 void gtext_iter_write_property(zval *object, zval *member, zval *value, void **cache_slot){
-    ze_gtext_iter_object * intern = Z_GTEXT_ITER_P(object);
-    gtext_iter_ptr b = intern->iter_ptr;
-    zval * tmp_member;
-    long tmp_l;
-    const char * tmp_s;
-    double tmp_d;
-    int tmp_b;
-    convert_to_string(member);
-    char * member_val = Z_STRVAL_P(member);
-    GtkTextIter * iter = b->intern;
-    switch(Z_TYPE_P(value)){
-        case IS_LONG :
-            tmp_l = Z_LVAL_P(value);
-            if(!strcmp(member_val, GTEXT_ITER_OFFSET)){
-                gtk_text_iter_set_offset(iter, tmp_l);
-            }else if(!strcmp(member_val, GTEXT_ITER_LINE)){
-                gtk_text_iter_set_line(iter, tmp_l);
-            }else if(!strcmp(member_val, GTEXT_ITER_LINE_OFFSET)){
-                gtk_text_iter_set_line_offset(iter, tmp_l);
-            }else if(!strcmp(member_val, GTEXT_ITER_LINE_INDEX)){
-                gtk_text_iter_set_line_index(iter, tmp_l);
-            }else if(!strcmp(member_val, GTEXT_ITER_VISIBLE_LINE_INDEX)){
-                gtk_text_iter_set_visible_line_index(iter, tmp_l);
-            }else if(!strcmp(member_val, GTEXT_ITER_VISIBLE_LINE_OFFSET)){
-                gtk_text_iter_set_visible_line_offset(iter, tmp_l);
-            }else
-                std_object_handlers.write_property(object, member, value, cache_slot);
-            break;
-        default:
-            std_object_handlers.write_property(object, member, value, cache_slot);
-    }
+	ze_gtext_iter_object * intern = Z_GTEXT_ITER_P(object);
+	gtext_iter_ptr b = intern->iter_ptr;
+	zval * tmp_member;
+	long tmp_l;
+	const char * tmp_s;
+	double tmp_d;
+	int tmp_b;
+	convert_to_string(member);
+	char * member_val = Z_STRVAL_P(member);
+	GtkTextIter * iter = b->intern;
+	switch(Z_TYPE_P(value)){
+		case IS_LONG :
+		    tmp_l = Z_LVAL_P(value);
+		    if(!strcmp(member_val, GTEXT_ITER_OFFSET)){
+		        gtk_text_iter_set_offset(iter, tmp_l);
+		    }else if(!strcmp(member_val, GTEXT_ITER_LINE)){
+		        gtk_text_iter_set_line(iter, tmp_l);
+		    }else if(!strcmp(member_val, GTEXT_ITER_LINE_OFFSET)){
+		        gtk_text_iter_set_line_offset(iter, tmp_l);
+		    }else if(!strcmp(member_val, GTEXT_ITER_LINE_INDEX)){
+		        gtk_text_iter_set_line_index(iter, tmp_l);
+		    }else if(!strcmp(member_val, GTEXT_ITER_VISIBLE_LINE_INDEX)){
+		        gtk_text_iter_set_visible_line_index(iter, tmp_l);
+		    }else if(!strcmp(member_val, GTEXT_ITER_VISIBLE_LINE_OFFSET)){
+		        gtk_text_iter_set_visible_line_offset(iter, tmp_l);
+		    }else
+		        std_object_handlers.write_property(object, member, value, cache_slot);
+		    break;
+		default:
+		    std_object_handlers.write_property(object, member, value, cache_slot);
+	}
 }
 
 /************************************/
@@ -763,26 +763,26 @@ zend_declare_class_constant_double(gtext_iter_class_entry_ce, name, sizeof(name)
 
 
 void gtext_iter_init(int module_number){
-    zend_class_entry ce;
-    le_gtext_iter = zend_register_list_destructors_ex(gtext_iter_free_resource, NULL, "gtext_iter", module_number);
+	zend_class_entry ce;
+	le_gtext_iter = zend_register_list_destructors_ex(gtext_iter_free_resource, NULL, "PGGI\\GTextIter", module_number);
 
-    memcpy(&gtext_iter_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    gtext_iter_object_handlers.offset         = XtOffsetOf(ze_gtext_iter_object, std);
-    gtext_iter_object_handlers.free_obj       = gtext_iter_object_free_storage;
-    gtext_iter_object_handlers.clone_obj      = NULL;
-    gtext_iter_object_handlers.read_property  = gtext_iter_read_property;
-    gtext_iter_object_handlers.get_properties = gtext_iter_get_properties;
-    gtext_iter_object_handlers.write_property = gtext_iter_write_property;
-    INIT_CLASS_ENTRY(ce, "GTextIter", gtext_iter_class_functions);
-    ce.create_object = gtext_iter_object_new;
-    gtext_iter_class_entry_ce = zend_register_internal_class(&ce);
+	memcpy(&gtext_iter_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
+	gtext_iter_object_handlers.offset         = XtOffsetOf(ze_gtext_iter_object, std);
+	gtext_iter_object_handlers.free_obj       = gtext_iter_object_free_storage;
+	gtext_iter_object_handlers.clone_obj      = NULL;
+	gtext_iter_object_handlers.read_property  = gtext_iter_read_property;
+	gtext_iter_object_handlers.get_properties = gtext_iter_get_properties;
+	gtext_iter_object_handlers.write_property = gtext_iter_write_property;
+	INIT_CLASS_ENTRY(ce, "PGGI\\GTextIter", gtext_iter_class_functions);
+	ce.create_object = gtext_iter_object_new;
+	gtext_iter_class_entry_ce = zend_register_internal_class(&ce);
 
-    DECLARE_GTEXT_ITER_PROP(GTEXT_ITER_OFFSET             );
-    DECLARE_GTEXT_ITER_PROP(GTEXT_ITER_LINE               );
-    DECLARE_GTEXT_ITER_PROP(GTEXT_ITER_LINE_OFFSET        );
-    DECLARE_GTEXT_ITER_PROP(GTEXT_ITER_LINE_INDEX         );
-    DECLARE_GTEXT_ITER_PROP(GTEXT_ITER_VISIBLE_LINE_INDEX );
-    DECLARE_GTEXT_ITER_PROP(GTEXT_ITER_VISIBLE_LINE_OFFSET);
+	DECLARE_GTEXT_ITER_PROP(GTEXT_ITER_OFFSET             );
+	DECLARE_GTEXT_ITER_PROP(GTEXT_ITER_LINE               );
+	DECLARE_GTEXT_ITER_PROP(GTEXT_ITER_LINE_OFFSET        );
+	DECLARE_GTEXT_ITER_PROP(GTEXT_ITER_LINE_INDEX         );
+	DECLARE_GTEXT_ITER_PROP(GTEXT_ITER_VISIBLE_LINE_INDEX );
+	DECLARE_GTEXT_ITER_PROP(GTEXT_ITER_VISIBLE_LINE_OFFSET);
 
 }
 

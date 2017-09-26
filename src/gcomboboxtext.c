@@ -28,8 +28,8 @@ static zend_class_entry * gcombo_box_text_class_entry_ce;
 GCOMBO_BOX_TEXT_METHOD(__construct){
 	ze_gwidget_object * ze_obj;
 	zval * self = getThis();
-	if(!self)
-		RETURN_NULL();
+	if(pggi_parse_parameters_none_throw() == FAILURE)
+		return;
 	ze_obj = Z_GWIDGET_P(getThis());
 	ze_obj->std.handlers = &gcombo_box_text_object_handlers;
 	ze_obj->widget_ptr = gwidget_new();
@@ -42,9 +42,8 @@ GCOMBO_BOX_TEXT_METHOD(append){
 	ze_gwidget_object * ze_obj;
 	zend_string * text;
 	zend_string * id = NULL;
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "S|S", &text, &id) == FAILURE) {
-        RETURN_NULL();
-    }
+	if(zend_parse_parameters(ZEND_NUM_ARGS(), "S|S", &text, &id) == FAILURE)
+		return;
 	ze_obj = Z_GWIDGET_P(getThis());
 	char * ctext = ZSTR_VAL(text);
 	if(!id)
@@ -59,9 +58,8 @@ GCOMBO_BOX_TEXT_METHOD(prepend){
 	ze_gwidget_object * ze_obj;
 	zend_string * text;
 	zend_string * id = NULL;
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "S|S", &text, &id) == FAILURE) {
-        RETURN_NULL();
-    }
+	if(zend_parse_parameters(ZEND_NUM_ARGS(), "S|S", &text, &id) == FAILURE)
+		return;
 	ze_obj = Z_GWIDGET_P(getThis());
 	char * ctext = ZSTR_VAL(text);
 	if(!id)
@@ -77,9 +75,8 @@ GCOMBO_BOX_TEXT_METHOD(insert){
 	zend_string * text;
 	zend_string * id = NULL;
 	long val;
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "lS|S", &val, &text, &id) == FAILURE) {
-        RETURN_NULL();
-    }
+	if(zend_parse_parameters(ZEND_NUM_ARGS(), "lS|S", &val, &text, &id) == FAILURE)
+		return;
 	ze_obj = Z_GWIDGET_P(getThis());
 	char * ctext = ZSTR_VAL(text);
 	if(!id)
@@ -93,9 +90,8 @@ GCOMBO_BOX_TEXT_METHOD(insert){
 GCOMBO_BOX_TEXT_METHOD(remove){
 	ze_gwidget_object * ze_obj;
 	long val;
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "l", &val) == FAILURE) {
-        RETURN_NULL();
-    }
+	if(zend_parse_parameters(ZEND_NUM_ARGS(), "l", &val) == FAILURE)
+		return;
 	ze_obj = Z_GWIDGET_P(getThis());
 	gtk_combo_box_text_remove(GTK_COMBO_BOX_TEXT(ze_obj->widget_ptr->intern), val);
 }
@@ -103,12 +99,16 @@ GCOMBO_BOX_TEXT_METHOD(remove){
 GCOMBO_BOX_TEXT_METHOD(removeAll){
 	ze_gwidget_object * ze_obj;
 	ze_obj = Z_GWIDGET_P(getThis());
+	if(pggi_parse_parameters_none_throw() == FAILURE)
+		return;
 	gtk_combo_box_text_remove_all(GTK_COMBO_BOX_TEXT(ze_obj->widget_ptr->intern));
 }
 
 GCOMBO_BOX_TEXT_METHOD(getActiveText){
 	ze_gwidget_object * ze_obj;
 	ze_obj = Z_GWIDGET_P(getThis());
+	if(pggi_parse_parameters_none_throw() == FAILURE)
+		return;
 	char * string = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(ze_obj->widget_ptr->intern));
 	if(string){
 		RETURN_STRING(string);
@@ -121,13 +121,13 @@ GCOMBO_BOX_TEXT_METHOD(getActiveText){
  * List of GComboBoxText functions and methods with their arguments
  */
 static const zend_function_entry gcombo_box_text_class_functions[] = {
-	PHP_ME(GComboBoxText, __construct	, arginfo_pggi_void					, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
-	PHP_ME(GComboBoxText, insert		, arginfo_gcombo_box_text_insert	, ZEND_ACC_PUBLIC)
-	PHP_ME(GComboBoxText, append		, arginfo_gcombo_box_text_append	, ZEND_ACC_PUBLIC)
-	PHP_ME(GComboBoxText, prepend		, arginfo_gcombo_box_text_prepend	, ZEND_ACC_PUBLIC)
-	PHP_ME(GComboBoxText, getActiveText	, arginfo_pggi_void					, ZEND_ACC_PUBLIC)
-	PHP_ME(GComboBoxText, removeAll		, arginfo_pggi_void					, ZEND_ACC_PUBLIC)
-	PHP_ME(GComboBoxText, remove		, arginfo_gcombo_box_text_remove	, ZEND_ACC_PUBLIC)
+	PHP_ME(GComboBoxText, __construct  , arginfo_pggi_void             , ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	PHP_ME(GComboBoxText, insert       , arginfo_gcombo_box_text_insert, ZEND_ACC_PUBLIC)
+	PHP_ME(GComboBoxText, append       , arginfo_gcombo_box_text_pend  , ZEND_ACC_PUBLIC)
+	PHP_ME(GComboBoxText, prepend      , arginfo_gcombo_box_text_pend  , ZEND_ACC_PUBLIC)
+	PHP_ME(GComboBoxText, getActiveText, arginfo_pggi_get_string       , ZEND_ACC_PUBLIC)
+	PHP_ME(GComboBoxText, removeAll    , arginfo_pggi_void             , ZEND_ACC_PUBLIC)
+	PHP_ME(GComboBoxText, remove       , arginfo_gcombo_box_text_remove, ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 
@@ -137,10 +137,10 @@ static const zend_function_entry gcombo_box_text_class_functions[] = {
 
 void gcombo_box_text_init(int module_number){
 	DECLARE_CLASS_PROPERTY_INIT();
-	le_gcombo_box_text = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "gcombo_box_text", module_number);
+	le_gcombo_box_text = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "PGGI\\GComboBoxText", module_number);
 	memcpy(&gcombo_box_text_object_handlers, gcombo_box_get_object_handlers(), sizeof(zend_object_handlers));
-	INIT_CLASS_ENTRY(ce, "GComboBoxText", gcombo_box_text_class_functions);
-	gcombo_box_text_class_entry_ce	= zend_register_internal_class_ex(&ce, gcombo_box_get_class_entry());
+	INIT_CLASS_ENTRY(ce, "PGGI\\GComboBoxText", gcombo_box_text_class_functions);
+	gcombo_box_text_class_entry_ce = zend_register_internal_class_ex(&ce, gcombo_box_get_class_entry());
 }
 
 

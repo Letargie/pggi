@@ -113,22 +113,22 @@ void gtree_store_free_resource(zend_resource *rsrc);
 #define GTREE_STORE_METHOD(name) \
 PHP_METHOD(GTreeStore, name)
 
-GTREE_STORE_METHOD(__construct);
-GTREE_STORE_METHOD(clear);
+GTREE_STORE_METHOD(__construct     );
+GTREE_STORE_METHOD(clear           );
 //GTREE_STORE_METHOD(setValue);
 //GTREE_STORE_METHOD(setValues);
 //GTREE_STORE_METHOD(remove);
-GTREE_STORE_METHOD(insert);
-GTREE_STORE_METHOD(insertBefore);
-GTREE_STORE_METHOD(insertAfter);
+GTREE_STORE_METHOD(insert          );
+GTREE_STORE_METHOD(insertBefore    );
+GTREE_STORE_METHOD(insertAfter     );
 GTREE_STORE_METHOD(insertWithValues);
-GTREE_STORE_METHOD(prepend);
-GTREE_STORE_METHOD(append);
-GTREE_STORE_METHOD(isAncestor);
-GTREE_STORE_METHOD(depth);
-GTREE_STORE_METHOD(getNbColumns);
-GTREE_STORE_METHOD(getColumnType);
-GTREE_STORE_METHOD(getIterFirst);
+GTREE_STORE_METHOD(prepend         );
+GTREE_STORE_METHOD(append          );
+GTREE_STORE_METHOD(isAncestor      );
+GTREE_STORE_METHOD(depth           );
+GTREE_STORE_METHOD(getNbColumns    );
+GTREE_STORE_METHOD(getColumnType   );
+GTREE_STORE_METHOD(getIterFirst    );
 //GTREE_STORE_METHOD(foreach);
 
 /************************************/

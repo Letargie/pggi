@@ -24,12 +24,12 @@
 #include "gcontainer.h"
 
 
-#define GBUTTON_ALWAYS_SHOW_IMAGE	"alwaysShowImage"
-#define GBUTTON_IMAGE				"image"
-#define GBUTTON_IMAGE_POSITION		"imagePosition"
-#define GBUTTON_LABEL				"label"
-#define GBUTTON_RELIEF				"relief"
-#define GBUTTON_USE_UNDERLINE		"useUnderline"
+#define GBUTTON_ALWAYS_SHOW_IMAGE "alwaysShowImage"
+#define GBUTTON_IMAGE             "image"
+#define GBUTTON_IMAGE_POSITION    "imagePosition"
+#define GBUTTON_LABEL             "label"
+#define GBUTTON_RELIEF            "relief"
+#define GBUTTON_USE_UNDERLINE     "useUnderline"
 
 PHP_METHOD(GButton, __construct);
 

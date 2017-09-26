@@ -37,8 +37,8 @@ zend_object_handlers * gcombo_box_get_object_handlers(){
 GCOMBO_BOX_METHOD(__construct){
 	ze_gwidget_object * ze_obj;
 	zval * self = getThis();
-	if(!self)
-		RETURN_NULL();
+	if(pggi_parse_method_parameters_none(self) == FAILURE)
+		return ;
 	ze_obj = Z_GWIDGET_P(getThis());
 	ze_obj->std.handlers = &gcombo_box_object_handlers;
 	ze_obj->widget_ptr = gwidget_new();
@@ -73,14 +73,9 @@ void gcombo_box_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * 
 GCOMBO_BOX_METHOD(on){
 	zval * function, * this, * param = NULL;
 	long val;
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "lz|z", &val ,&function, &param) == FAILURE) {
-        RETURN_NULL();
-    }
-	if(!zend_is_callable(function, 0, NULL))
-		zend_error(E_ERROR, "Function requires callable argument");
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "lz|z", &val ,&function, &param) == FAILURE)
+		return;
 	this = getThis();
-	if(!this)
-		RETURN_NULL();
 	gcombo_box_on(val, Z_GWIDGET_P(this), function, param);
 }
 
@@ -89,8 +84,8 @@ GCOMBO_BOX_METHOD(on){
  * List of GComboBox functions and methods with their arguments
  */
 static const zend_function_entry gcombo_box_class_functions[] = {
-	PHP_ME(GComboBox, __construct	, arginfo_pggi_void	, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR	)
-	PHP_ME(GComboBox, on			, arginfo_pggi_on	, ZEND_ACC_PUBLIC					)
+	PHP_ME(GComboBox, __construct, arginfo_pggi_void, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	PHP_ME(GComboBox, on         , arginfo_pggi_on  , ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 
@@ -103,17 +98,13 @@ zval *gcombo_box_read_property(zval *object, zval *member, int type, void **cach
 	gwidget_ptr w = intern->widget_ptr;
 	zval zobj;
 	zend_long lval;
-
-	ZVAL_NULL(rv);
-	if(w){
-		convert_to_string(member);
-		char * member_val = Z_STRVAL_P(member);
-		GtkComboBox * menu = GTK_COMBO_BOX(w->intern);
-		if(!strcmp(member_val, GCOMBO_BOX_ACTIVE)){
-			ZVAL_BOOL(rv, gtk_combo_box_get_active(menu));
-		}else
-			return gcontainer_read_property(object, member, type, cache_slot, rv);
-	}
+	convert_to_string(member);
+	char * member_val = Z_STRVAL_P(member);
+	GtkComboBox * menu = GTK_COMBO_BOX(w->intern);
+	if(!strcmp(member_val, GCOMBO_BOX_ACTIVE)){
+		ZVAL_LONG(rv, gtk_combo_box_get_active(menu));
+	}else
+		return gcontainer_read_property(object, member, type, cache_slot, rv);
 	return rv;
 }
 
@@ -121,9 +112,6 @@ HashTable *gcombo_box_get_properties(zval *object){
 	G_H_UPDATE_INIT(gcontainer_get_properties(object));
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	if(!w){
-		return NULL;
-	}
 	GtkComboBox * win = GTK_COMBO_BOX(w->intern);
 	G_H_UPDATE_LONG(GCOMBO_BOX_ACTIVE, gtk_combo_box_get_active(win));
 
@@ -160,15 +148,15 @@ DECLARE_CLASS_PROPERTY(gcombo_box_class_entry_ce, name)
 
 void gcombo_box_init(int module_number){
 	DECLARE_CLASS_PROPERTY_INIT();
-	le_gcombo_box = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "gcombo_box", module_number);
+	le_gcombo_box = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "PGGI\\GComboBox", module_number);
 
 	memcpy(&gcombo_box_object_handlers, gcontainer_get_object_handlers(), sizeof(zend_object_handlers));
 	gcombo_box_object_handlers.read_property  = gcombo_box_read_property;
 	gcombo_box_object_handlers.get_properties = gcombo_box_get_properties;
 	gcombo_box_object_handlers.write_property = gcombo_box_write_property;
 
-	INIT_CLASS_ENTRY(ce, "GComboBox", gcombo_box_class_functions);
-	gcombo_box_class_entry_ce	= zend_register_internal_class_ex(&ce, gcontainer_get_class_entry());
+	INIT_CLASS_ENTRY(ce, "PGGI\\GComboBox", gcombo_box_class_functions);
+	gcombo_box_class_entry_ce = zend_register_internal_class_ex(&ce, gcontainer_get_class_entry());
 
 	DECLARE_GCOMBO_BOX_PROP(GCOMBO_BOX_ACTIVE);
 }

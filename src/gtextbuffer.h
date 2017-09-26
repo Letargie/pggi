@@ -85,8 +85,8 @@ void gtext_buffer_function(gpointer data, unsigned int type);
 #define GTEXT_BUFFER_METHOD(name) \
 PHP_METHOD(GTextBuffer, name)
 
-GTEXT_BUFFER_METHOD(on			);
-GTEXT_BUFFER_METHOD(__construct	);
+GTEXT_BUFFER_METHOD(on          );
+GTEXT_BUFFER_METHOD(__construct );
 GTEXT_BUFFER_METHOD(getLineCount);
 GTEXT_BUFFER_METHOD(getCharCount);
 

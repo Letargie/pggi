@@ -34,12 +34,8 @@ zend_object_handlers * gmenushell_get_object_handlers(){
 /* PHP Methods */
 /***************/
 
-GMENUSHELL_METHOD(__construct){
-	RETURN_NULL();
-}
-
 /*NOT IMPLEMENTED YET*/
-
+/*
 GMENUSHELL_METHOD(append){
 	ze_gwidget_object * self, * obj;
 	self = Z_GWIDGET_P(getThis());
@@ -83,14 +79,13 @@ GMENUSHELL_METHOD(activateItem){
 GMENUSHELL_METHOD(cancel){
 	ze_gwidget_object * widget;
 	widget = Z_GWIDGET_P(getThis());
-}
+}*/
 
 
 /**
  * List of GMenuShell functions and methods with their arguments
  */
 static const zend_function_entry gmenushell_class_functions[] = {
-	PHP_ME(GMenuShell, __construct, arginfo_pggi_void, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
 	PHP_FE_END
 };
 
@@ -103,17 +98,13 @@ zval *gmenushell_read_property(zval *object, zval *member, int type, void **cach
 	gwidget_ptr w = intern->widget_ptr;
 	zval zobj;
 	zend_long lval;
-
-	ZVAL_NULL(rv);
-	if(w){
-		convert_to_string(member);
-		char * member_val = Z_STRVAL_P(member);
-		GtkMenuShell * menu = GTK_MENU_SHELL(w->intern);
-		if(!strcmp(member_val, GMENUSHELL_TAKE_FOCUS))
-			ZVAL_BOOL(rv, gtk_menu_shell_get_take_focus(menu));
-		else
-			return gcontainer_read_property(object, member, type, cache_slot, rv);
-	}
+	convert_to_string(member);
+	char * member_val = Z_STRVAL_P(member);
+	GtkMenuShell * menu = GTK_MENU_SHELL(w->intern);
+	if(!strcmp(member_val, GMENUSHELL_TAKE_FOCUS))
+		ZVAL_BOOL(rv, gtk_menu_shell_get_take_focus(menu));
+	else
+		return gcontainer_read_property(object, member, type, cache_slot, rv);
 	return rv;
 }
 
@@ -121,9 +112,6 @@ HashTable *gmenushell_get_properties(zval *object){
 	G_H_UPDATE_INIT(gcontainer_get_properties(object));
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	if(!w){
-		return NULL;
-	}
 	GtkMenuShell * menu = GTK_MENU_SHELL(w->intern);
 
 	G_H_UPDATE_BOOL(GMENUSHELL_TAKE_FOCUS, gtk_menu_shell_get_take_focus(menu));
@@ -163,15 +151,15 @@ DECLARE_CLASS_PROPERTY(gmenushell_class_entry_ce, name)
 
 void gmenushell_init(int module_number){
 	DECLARE_CLASS_PROPERTY_INIT();
-	le_gmenushell = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "gmenushell", module_number);
+	le_gmenushell = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "PGGI\\GMenuShell", module_number);
 
 	memcpy(&gmenushell_object_handlers, gcontainer_get_object_handlers(), sizeof(zend_object_handlers));
 	gmenushell_object_handlers.read_property  = gmenushell_read_property;
 	gmenushell_object_handlers.get_properties = gmenushell_get_properties;
 	gmenushell_object_handlers.write_property = gmenushell_write_property;
 
-	INIT_CLASS_ENTRY(ce, "GMenuShell", gmenushell_class_functions);
-	gmenushell_class_entry_ce	= zend_register_internal_class_ex(&ce, gcontainer_get_class_entry());
+	INIT_CLASS_ENTRY(ce, "PGGI\\GMenuShell", gmenushell_class_functions);
+	gmenushell_class_entry_ce = zend_register_internal_class_ex(&ce, gcontainer_get_class_entry());
 	gmenushell_class_entry_ce->ce_flags |= ZEND_ACC_ABSTRACT;
 	DECLARE_GMENUSHELL_PROP(GMENUSHELL_TAKE_FOCUS);
 }

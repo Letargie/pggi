@@ -26,7 +26,7 @@ zend_class_entry * pggi_exception_get(){
 void gexception_init(int module_number){
 	zend_class_entry ce;
 	INIT_CLASS_ENTRY(ce, "PGGIException", NULL);
- 	gexception_entry_ce = zend_register_internal_class_ex(&ce, zend_ce_exception);
+	gexception_entry_ce = zend_register_internal_class_ex(&ce, zend_ce_exception);
 
 }
 

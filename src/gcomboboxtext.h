@@ -27,23 +27,18 @@
 /***************************/
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_gcombo_box_text_remove, 0, 0, 1)
-	ZEND_ARG_INFO(0, position)
+	ZEND_ARG_TYPE_INFO(0, position, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_gcombo_box_text_insert, 0, 0, 2)
-	ZEND_ARG_INFO(0, position)
-	ZEND_ARG_INFO(0, text)
-	ZEND_ARG_INFO(0, id)
+	ZEND_ARG_TYPE_INFO(0, position, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, text, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, id, IS_STRING, 1)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_gcombo_box_text_append, 0, 0, 1)
-	ZEND_ARG_INFO(0, text)
-	ZEND_ARG_INFO(0, id)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_INFO_EX(arginfo_gcombo_box_text_prepend, 0, 0, 1)
-	ZEND_ARG_INFO(0, text)
-	ZEND_ARG_INFO(0, id)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_gcombo_box_text_pend, 0, 0, 1)
+	ZEND_ARG_TYPE_INFO(0, text, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, id, IS_STRING, 1)
 ZEND_END_ARG_INFO()
 
 /****************************/

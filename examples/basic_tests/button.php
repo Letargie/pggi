@@ -1,5 +1,5 @@
 <?php
-
+namespace PGGI;
 chdir(__DIR__);
 
 function shutdown($app){
@@ -20,7 +20,7 @@ function activate($app){
 }
 
 $a = new GApplication();
-$a->on(PGGI_SIGNAL_GAPPLICATION_SHUTDOWN,"shutdown");
-$a->on(PGGI_SIGNAL_GAPPLICATION_STARTUP,"starting");
-$a->on(PGGI_SIGNAL_GAPPLICATION_ACTIVATE,"activate");
+$a->on(SIGNAL_GAPPLICATION_SHUTDOWN,"PGGI\\shutdown");
+$a->on(SIGNAL_GAPPLICATION_STARTUP,"PGGI\\starting");
+$a->on(SIGNAL_GAPPLICATION_ACTIVATE,"PGGI\\activate");
 $a->run();

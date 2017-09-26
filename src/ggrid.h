@@ -29,40 +29,41 @@ zend_object_handlers * ggrid_get_object_handlers();
 #define GWIDGET_DATA_INDEX_GGRID 2
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_ggrid_attach, 0, 0, 3)
-	ZEND_ARG_INFO(0, widget)
-	ZEND_ARG_INFO(0, left)
-	ZEND_ARG_INFO(0, top)
-	ZEND_ARG_INFO(0, width)
-	ZEND_ARG_INFO(0, height)
+	ZEND_ARG_OBJ_INFO(0, widget, PGGI\\GWidget, 0)
+	ZEND_ARG_TYPE_INFO(0, left, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, top, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, width, IS_LONG, 1)
+	ZEND_ARG_TYPE_INFO(0, height, IS_LONG, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_ggrid_attach_next_to, 0, 0, 3)
-	ZEND_ARG_INFO(0, widget)
-	ZEND_ARG_INFO(0, sibling)
-	ZEND_ARG_INFO(0, side)
-	ZEND_ARG_INFO(0, width)
-	ZEND_ARG_INFO(0, height)
+	ZEND_ARG_OBJ_INFO(0, widget, PGGI\\GWidget, 0)
+	ZEND_ARG_OBJ_INFO(0, sibling, PGGI\\GWidget, 0)
+	ZEND_ARG_TYPE_INFO(0, side, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, width, IS_LONG, 1)
+	ZEND_ARG_TYPE_INFO(0, height, IS_LONG, 1)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_ggrid_get_child_at, 0, 0, 2)
-	ZEND_ARG_INFO(0, left)
-	ZEND_ARG_INFO(0, top)
+//ZEND_BEGIN_ARG_INFO_EX(arginfo_ggrid_get_child_at, 0, 0, 0)
+PGGI_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_ggrid_get_child_at, 0, 0, PGGI\\GWidget, 1)
+	ZEND_ARG_TYPE_INFO(0, left, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, top, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_ggrid_insert_remove, 0, 0, 1)
-	ZEND_ARG_INFO(0, position)
+	ZEND_ARG_TYPE_INFO(0, position, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_ggrid_insert_next_to, 0, 0, 2)
-	ZEND_ARG_INFO(0, sibling)
-	ZEND_ARG_INFO(0, side)
+	ZEND_ARG_OBJ_INFO(0, sibling, PGGI\\GWidget, 0)
+	ZEND_ARG_TYPE_INFO(0, side, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-#define GGRID_BASELINE_ROW			"baselineRow"
-#define GGRID_COLUMN_HOMOGENEOUS	"columnHomogeneous"
-#define GGRID_COLUMN_SPACING		"columnSpacing"
-#define GGRID_ROW_HOMOGENEOUS		"rowHomogeneous"
-#define GGRID_ROW_SPACING			"rowSpacing"
+#define GGRID_BASELINE_ROW       "baselineRow"
+#define GGRID_COLUMN_HOMOGENEOUS "columnHomogeneous"
+#define GGRID_COLUMN_SPACING     "columnSpacing"
+#define GGRID_ROW_HOMOGENEOUS    "rowHomogeneous"
+#define GGRID_ROW_SPACING        "rowSpacing"
 
 PHP_METHOD(GGrid, __construct);
 PHP_METHOD(GGrid, attach);

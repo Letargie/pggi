@@ -27,15 +27,21 @@
 /* GMenuItem Arginfos */
 /**********************/
 
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_gmenuitem_construct, 0, 0, 0)
+	ZEND_ARG_TYPE_INFO(0, label, IS_STRING, 1)
+ZEND_END_ARG_INFO()
+
+
 /************************/
 /* GMenuItem Properties */
 /************************/
 
-#define GMENUITEM_ACCEL_PATH		"accelPath"
-#define GMENUITEM_LABEL				"label"
-#define GMENUITEM_SUBMENU			"submenu"
-#define GMENUITEM_USE_UNDERLINE		"useUnderline"
-#define GMENUITEM_RESERVE_INDICATOR	"reserveIndicator"
+#define GMENUITEM_ACCEL_PATH        "accelPath"
+#define GMENUITEM_LABEL             "label"
+#define GMENUITEM_SUBMENU           "submenu"
+#define GMENUITEM_USE_UNDERLINE     "useUnderline"
+#define GMENUITEM_RESERVE_INDICATOR "reserveIndicator"
 
 /*****************************/
 /* Object handling functions */
@@ -73,12 +79,12 @@ PHP_METHOD(GMenuItem, name)
 
 GMENUITEM_METHOD(on);
 
-GMENUITEM_METHOD(__construct			);
-GMENUITEM_METHOD(select					);
-GMENUITEM_METHOD(deselect				);
-GMENUITEM_METHOD(activate				);
-//GMENUITEM_METHOD(toggle_size_request	);
-//GMENUITEM_METHOD(toggle_size_allocate	);
+GMENUITEM_METHOD(__construct);
+GMENUITEM_METHOD(select     );
+GMENUITEM_METHOD(deselect   );
+GMENUITEM_METHOD(activate   );
+//GMENUITEM_METHOD(toggle_size_request);
+//GMENUITEM_METHOD(toggle_size_allocate);
 
 /***********************************/
 /* GMenuItem class initialisation */

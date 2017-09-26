@@ -12,7 +12,7 @@
 #ifndef __PGGI_DEF__
 #define __PGGI_DEF__
 
-#define PGGI_VERSION "1.0"
+#define PGGI_VERSION "0.1.0"
 #define PGGI_EXTNAME "pggi"
 
 #include "php.h"
@@ -46,9 +46,13 @@
 #include "gtextiter.h"
 #include "gtreeiter.h"
 #include "gtreestore.h"
+#include "gcellrenderer.h"
+#include "gcellrenderertext.h"
+#include "gtreeviewcolumn.h"
 #include "gtreeview.h"
+#include "gfilechooserdialog.h"
 
-PHP_FUNCTION(buildUI);
+
 
 #define pphext_pggi_ptr &pggi_module_entry
 

@@ -12,6 +12,8 @@ For now there isn't much but I intend to add more to it.
     - [Prerequisites](#prerequisites)
     - [Installing](#installing)
 - [Running the tests](#running-the-tests)
+- [Documentation](#documentation)
+- [Contact](#contact)
 
 ## Getting Started
 
@@ -20,9 +22,9 @@ For now there isn't much but I intend to add more to it.
 As a prerequisite, you should have a CLI binary (command-line) version of PHP
 installed along with the header files and development scripts.
 
-For now, PGGI needs PHP 7.1 or greater to run, and to build. (could work with php 7.0, haven't try it )
+PGGI needs PHP 7 or greater to run, and to build.
 
-PGGI supports GTK+ 3.2 or greater (I will have to make some tweaking for 3.0 and 3.1 but it could work in the future)
+PGGI supports GTK+ 3.10 or greater (It should work with previous versions or GTK+ 3 but that's not for sure)
 
 ### Installing
 
@@ -54,6 +56,15 @@ You can also check my other repositories where I put applications using pggi, th
 you can launch tests by running the file run-tests.php
 
 For now there isn't any.
+
+## Documentation
+
+In the tools directory, there is a program genstub.php that generate a stub version of the extension to facilitate the use of the extension with an IDE.
+Once the stub version generated, you can use it to create the documentation with apidoc or oxygen. (I made a program genapidoc.sh for apidoc)
+
+A wiki will come to explain how to use each element of the extension.
+
+For now there isn't a lot of information, but I'm working on it.
 
 ## Contact
 

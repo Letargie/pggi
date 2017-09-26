@@ -31,13 +31,13 @@ zend_object_handlers * gfile_chooser_dialog_get_object_handlers();
 /*******************************/
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_gfile_chooser_dialog_construct, 0, 0, 1)
-	ZEND_ARG_INFO(0, action)
-	ZEND_ARG_INFO(0, title)
-	ZEND_ARG_INFO(0, parent)
-	ZEND_ARG_INFO(0, button1_name)
-	ZEND_ARG_INFO(0, button1_action)
-	ZEND_ARG_INFO(0, button2_name)
-	ZEND_ARG_INFO(0, button2_action)
+	ZEND_ARG_TYPE_INFO(0, action, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, title, IS_STRING, 1)
+	ZEND_ARG_OBJ_INFO(0, parent, PGGI\\GWindow, 1)
+	ZEND_ARG_TYPE_INFO(0, button1_name, IS_STRING, 1)
+	ZEND_ARG_TYPE_INFO(0, button1_action, IS_LONG, 1)
+	ZEND_ARG_TYPE_INFO(0, button2_name, IS_STRING, 1)
+	ZEND_ARG_TYPE_INFO(0, button2_action, IS_LONG, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_gfile_chooser_dialog_select, 0, 0, 1)

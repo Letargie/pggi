@@ -42,28 +42,14 @@ void gcontainer_add_data(gwidget_ptr intern, zval * data){
 /* PHP FUNCTIONS */
 /*****************/
 
-PHP_METHOD(GContainer, __construct){
-	ze_gwidget_object *ze_obj = NULL;
-	zval * self = getThis();
-	if(self){
-		ze_obj = Z_GWIDGET_P(self);
-		ze_obj->std.handlers = &gcontainer_object_handlers;
-		GCONTAINER_ADD_ELEMENT(ze_obj);
-		g_signal_connect(ze_obj->widget_ptr->intern, "destroy", G_CALLBACK (widget_destructed), ze_obj);
-	}
-}
-
 PHP_METHOD(GContainer, add){
 	ze_gwidget_object * data;
 	ze_gwidget_object * this;
 	zval * obj;
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "z", &obj) == FAILURE) {
-        RETURN_NULL();
-    }
+	if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "z", &obj) == FAILURE)
+		return;
 	data = Z_GWIDGET_P(obj);
 	this = Z_GWIDGET_P(getThis());
-	if(!this)
-		RETURN_NULL();
 	gtk_container_add(GTK_CONTAINER(this->widget_ptr->intern), data->widget_ptr->intern);
 	gcontainer_add_data(this->widget_ptr, obj);
 }
@@ -80,7 +66,6 @@ void gcontainer_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * 
 			break;
 		default :
 			gwidget_on(val, ze_obj, function, param);
-			return ;
 	}
 }
 
@@ -88,14 +73,9 @@ PHP_METHOD(GContainer, on){
 	zval * function, * this, *param = NULL;
 	long val;
 	ze_gwidget_object *ze_obj = NULL;
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "lz|z", &val ,&function, &param) == FAILURE) {
-        RETURN_NULL();
-    }
-	if(!zend_is_callable(function, 0, NULL))
-		zend_error(E_ERROR, "Function requires callable argument");
+	if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "lz|z", &val ,&function, &param) == FAILURE)
+		return;
 	this = getThis();
-	if(!this)
-		RETURN_NULL();
 	ze_obj = Z_GWIDGET_P(this);
 	gcontainer_on(val, ze_obj, function, param);
 }
@@ -108,16 +88,13 @@ zval *gcontainer_read_property(zval *object, zval *member, int type, void **cach
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
 	const char * tmp;
-	ZVAL_NULL(rv);
-	if(!w)
-		return rv;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	if(!strcmp(member_val, GCONTAINER_BORDER_WIDTH)){
 		ZVAL_LONG(rv, gtk_container_get_border_width(GTK_CONTAINER(w->intern)));
-		return rv;
-	}
-	return gwidget_read_property(object, member, type, cache_slot, rv);
+	}else
+		return gwidget_read_property(object, member, type, cache_slot, rv);
+	return rv;
 }
 
 #define G_H_UPDATE(name) \
@@ -128,9 +105,6 @@ HashTable *gcontainer_get_properties(zval *object){
 	const char * tmp;
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	if(!w){
-		return NULL;
-	}
 	G_H_UPDATE_LONG(GCONTAINER_BORDER_WIDTH, gtk_container_get_border_width(GTK_CONTAINER(w->intern)));
 	return G_H_UPDATE_RETURN;
 }
@@ -160,9 +134,8 @@ void gcontainer_write_property(zval *object, zval *member, zval *value, void **c
 
 
 static const zend_function_entry gcontainer_class_functions[] = {
-	PHP_ME(GContainer, add			, arginfo_gcontainer_add	, ZEND_ACC_PUBLIC)
-	PHP_ME(GContainer, __construct	, arginfo_pggi_void			, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
-	PHP_ME(GContainer, on			, arginfo_pggi_on			, ZEND_ACC_PUBLIC)
+	PHP_ME(GContainer, add, arginfo_pggi_gwidget, ZEND_ACC_PUBLIC)
+	PHP_ME(GContainer, on , arginfo_pggi_on     , ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 
@@ -173,16 +146,16 @@ static const zend_function_entry gcontainer_class_functions[] = {
 
 void gcontainer_init(int module_number){
 	zend_class_entry ce;
-	le_gcontainer = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "gcontainer", module_number);
+	le_gcontainer = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "PGGI\\GContainer", module_number);
 
 	memcpy(&gcontainer_object_handlers, gwidget_get_object_handlers(), sizeof(zend_object_handlers));
 	gcontainer_object_handlers.read_property  = gcontainer_read_property;
 	gcontainer_object_handlers.get_properties = gcontainer_get_properties;
 	gcontainer_object_handlers.write_property = gcontainer_write_property;
-	INIT_CLASS_ENTRY(ce, "GContainer", gcontainer_class_functions);
+	INIT_CLASS_ENTRY(ce, "PGGI\\GContainer", gcontainer_class_functions);
 	ce.create_object = gwidget_object_new;
 	gcontainer_class_entry_ce = zend_register_internal_class_ex(&ce, gwidget_get_class_entry());
-
+	gcontainer_class_entry_ce->ce_flags |= ZEND_ACC_ABSTRACT;
 	DECLARE_CLASS_PROPERTY(gcontainer_class_entry_ce, GCONTAINER_BORDER_WIDTH);
 }
 

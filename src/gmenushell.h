@@ -65,16 +65,16 @@ void gmenushell_write_property(zval *object, zval *member, zval *value, void **c
 #define GMENUSHELL_METHOD(name) \
 PHP_METHOD(GMenuShell, name)
 
-GMENUSHELL_METHOD(__construct);
-GMENUSHELL_METHOD(append);
-GMENUSHELL_METHOD(prepend);
-GMENUSHELL_METHOD(insert);
-GMENUSHELL_METHOD(deactivate);
-GMENUSHELL_METHOD(selectItem);
-GMENUSHELL_METHOD(selectFirst);
-GMENUSHELL_METHOD(deselect);
+GMENUSHELL_METHOD(__construct );
+GMENUSHELL_METHOD(append      );
+GMENUSHELL_METHOD(prepend     );
+GMENUSHELL_METHOD(insert      );
+GMENUSHELL_METHOD(deactivate  );
+GMENUSHELL_METHOD(selectItem  );
+GMENUSHELL_METHOD(selectFirst );
+GMENUSHELL_METHOD(deselect    );
 GMENUSHELL_METHOD(activateItem);
-GMENUSHELL_METHOD(cancel);
+GMENUSHELL_METHOD(cancel      );
 
 /***********************************/
 /* GMenuShell class initialisation */

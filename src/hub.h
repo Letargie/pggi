@@ -10,6 +10,22 @@
 */
 
 
+#if PHP_VERSION_ID >= 70200
+
+#define PGGI_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX   ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX
+#define PGGI_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX    ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX
+
+#else
+
+#define PGGI_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(name, return_reference, required_num_args, type     ,             allow_null) \
+        ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(name, return_reference, required_num_args, type     ,  NULL     , allow_null)
+
+#define PGGI_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX( name, return_reference, required_num_args,             classname, allow_null) \
+        ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(name, return_reference, required_num_args, IS_OBJECT, #classname, allow_null)
+
+#endif
+
+
 #ifndef __PGGI_HUB_DEF__
 #define __PGGI_HUB_DEF__
 
@@ -24,17 +40,49 @@
 /* Common prototypes */
 /*********************/
 
+/*
+#define ZEND_BEGIN_ARG_INFO_EX(name, _unused, return_reference, required_num_args)
+#define ZEND_ARG_INFO(pass_by_ref, name)
+#define ZEND_ARG_OBJ_INFO(pass_by_ref, name, classname, allow_null)
+#define ZEND_ARG_ARRAY_INFO(pass_by_ref, name, allow_null)
+#define ZEND_ARG_CALLABLE_INFO(pass_by_ref, name, allow_null)
+#define ZEND_ARG_TYPE_INFO(pass_by_ref, name, type_hint, allow_null)
+#define ZEND_ARG_VARIADIC_INFO(pass_by_ref, name)
+*/
+
 ZEND_BEGIN_ARG_INFO(arginfo_pggi_void, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_pggi_on, 0, 0, 2)
-	ZEND_ARG_INFO(0, type)
-	ZEND_ARG_INFO(0, callback)
+	ZEND_ARG_TYPE_INFO(0, type, IS_LONG, 0)
+	ZEND_ARG_CALLABLE_INFO(0, callback, 0)
 	ZEND_ARG_INFO(0, param)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_pggi_set, 0, 0, 1)
 	ZEND_ARG_INFO(0, name)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_pggi_set_bool, 0, 0, 1)
+	ZEND_ARG_TYPE_INFO(0, value, _IS_BOOL, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_pggi_set_long, 0, 0, 1)
+	ZEND_ARG_TYPE_INFO(0, value, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_pggi_set_string, 0, 0, 1)
+	ZEND_ARG_TYPE_INFO(0, string, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_pggi_gwidget, 0, 0, 1)
+	ZEND_ARG_OBJ_INFO(0, widget, PGGI\\GWidget, 0)
+ZEND_END_ARG_INFO()
+
+PGGI_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_pggi_get_long, 0, 1, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+PGGI_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_pggi_get_string, 0, 1, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
 /************************/
@@ -64,7 +112,8 @@ enum{
 
 	gsignal_gdialog_close,
 	gsignal_gdialog_response,
-	gsignal_gtree_view_column_changed
+	gsignal_gtree_view_column_changed,
+	gsignal_gtree_view_column_clicked
 } gsignals;
 
 /**
@@ -72,27 +121,28 @@ enum{
  * Needed for GTK+ signal handling
  */
 
-#define GSIGNAL_GAPPLICATION_WINDOW_ADDED	"window-added"
-#define GSIGNAL_GAPPLICATION_WINDOW_REMOVED	"window-removed"
-#define GSIGNAL_GAPPLICATION_STARTUP		"startup"
-#define GSIGNAL_GAPPLICATION_SHUTDOWN		"shutdown"
-#define GSIGNAL_GAPPLICATION_ACTIVATE		"activate"
+#define GSIGNAL_GAPPLICATION_WINDOW_ADDED   "window-added"
+#define GSIGNAL_GAPPLICATION_WINDOW_REMOVED "window-removed"
+#define GSIGNAL_GAPPLICATION_STARTUP        "startup"
+#define GSIGNAL_GAPPLICATION_SHUTDOWN       "shutdown"
+#define GSIGNAL_GAPPLICATION_ACTIVATE       "activate"
 
-#define GSIGNAL_GWIDGET_DESTROY				"destroy"
+#define GSIGNAL_GWIDGET_DESTROY             "destroy"
 
-#define GSIGNAL_GCONTAINER_ADD				"add"
+#define GSIGNAL_GCONTAINER_ADD              "add"
 
-#define GSIGNAL_GMENUITEM_ACTIVATE			"activate"
+#define GSIGNAL_GMENUITEM_ACTIVATE          "activate"
 
-#define GSIGNAL_GCOMBO_BOX_CHANGED			"changed"
-#define GSIGNAL_GCOMBO_BOX_MOVE_ACTIVE		"move-active"
+#define GSIGNAL_GCOMBO_BOX_CHANGED          "changed"
+#define GSIGNAL_GCOMBO_BOX_MOVE_ACTIVE      "move-active"
 
-#define GSIGNAL_GTEXT_BUFFER_CHANGED		"changed"
+#define GSIGNAL_GTEXT_BUFFER_CHANGED        "changed"
 
-#define GSIGNAL_GDIALOG_CLOSE				"close"
-#define GSIGNAL_GDIALOG_RESPONSE			"response"
+#define GSIGNAL_GDIALOG_CLOSE               "close"
+#define GSIGNAL_GDIALOG_RESPONSE            "response"
 
 #define GSIGNAL_GTREE_VIEW_COLUMN_CHANGED   "column-changed"
+#define GSIGNAL_GTREE_VIEW_COLUMN_CLICKED   "clicked"
 
 /****************************/
 /* Utils parsing parameters */
@@ -100,21 +150,18 @@ enum{
 
 // Not available for php versions below 7.2
 #define pggi_parse_parameters_none_throw() \
-(EXPECTED(ZEND_NUM_ARGS() == 0) ? SUCCESS : zend_parse_parameters_throw(ZEND_NUM_ARGS(), ""))
+    (EXPECTED(ZEND_NUM_ARGS() == 0) ? SUCCESS : zend_parse_parameters_throw(ZEND_NUM_ARGS(), ""))
 
 // what I think is missing
 
+#define pggi_parse_method_parameters_throw(                      num_arg, ptr, type, ...        ) \
+        zend_parse_method_parameters_ex(ZEND_PARSE_PARAMS_THROW, num_arg, ptr, type, __VA_ARGS__)
 
-// code from zend_parse_method_parameters but with another flag
-#define pggi_parse_method_parameters_throw(num_arg, ptr, type, ... ) \
-zend_parse_method_parameters_ex(ZEND_PARSE_PARAMS_THROW, num_arg, ptr, type, __VA_ARGS__)
+#define pggi_parse_method_parameters_none(                                                    this_ptr)     \
+    (EXPECTED(ZEND_NUM_ARGS() == 0) ? SUCCESS : zend_parse_method_parameters(ZEND_NUM_ARGS(), this_ptr,""))
 
-#define pggi_parse_method_parameters_none(this_ptr) \
-(EXPECTED(ZEND_NUM_ARGS() == 0) ? SUCCESS : zend_parse_method_parameters(ZEND_NUM_ARGS(), this_ptr,""))
-
-#define pggi_parse_method_parameters_none_throw(this_ptr) \
-(EXPECTED(ZEND_NUM_ARGS() == 0) ? SUCCESS : zend_parse_method_parameters_ex(ZEND_PARSE_PARAMS_THROW , ZEND_NUM_ARGS(), this_ptr,""))
-
+#define pggi_parse_method_parameters_none_throw(                                                                           this_ptr)     \
+    (EXPECTED(ZEND_NUM_ARGS() == 0) ? SUCCESS : zend_parse_method_parameters_ex(ZEND_PARSE_PARAMS_THROW , ZEND_NUM_ARGS(), this_ptr,""))
 
 
 /*****************/
@@ -156,62 +203,52 @@ size_t pggi_utf32_utf8(unsigned char *buf, unsigned k){
 #define READ_PROPERTY_NAME(oclass) \
 	oclass##_read_property
 
-#define PARSE_CONSTRUCT_PARAMETERS(parsing)									\
-do{																			\
-	zend_error_handling error_handling;										\
-	zend_replace_error_handling(EH_THROW, NULL, &error_handling);			\
-	if (parsing == FAILURE) {												\
-		zend_restore_error_handling(&error_handling TSRMLS_CC);				\
-	}																		\
-	zend_restore_error_handling(&error_handling TSRMLS_CC);					\
-}while(0)
-
-#define PGGI_PARSE_PARAMETERS(parsing)										\
+#define PGGI_PARSE_PARAMETERS(parsing)                                      \
 PARSE_CONSTRUCT_PARAMETERS(parsing)
 
-#define DECLARE_CLASS_PROPERTY_INIT()										\
+#define DECLARE_CLASS_PROPERTY_INIT()                                       \
 zend_class_entry ce;
 
-#define DECLARE_CLASS_PROPERTY(ce, name) 									\
-zend_declare_property_null(ce, name, sizeof(name)-1, ZEND_ACC_PUBLIC)
+#define DECLARE_CLASS_PROPERTY(ce, name)                                    \
+	zend_declare_property_null(ce, name, sizeof(name)-1, ZEND_ACC_PUBLIC)
 
-#define G_H_UPDATE_INIT(value)												\
-HashTable *props;															\
-zval zv;																	\
-props = value;
+#define G_H_UPDATE_INIT(value)                                              \
+	HashTable *props;                                                       \
+	zval zv;                                                                \
+	props = value;
 
-#define G_H_UPDATE_RETURN													\
-props
+#define G_H_UPDATE_RETURN                                                   \
+	props
 
-#define G_H_UPDATE(name) 													\
+#define G_H_UPDATE(name)                                                    \
 zend_hash_update(props, zend_string_init(name, sizeof(name)-1, 0), &zv)
 
-#define G_H_UPDATE_BOOL(name, value)										\
-do{																			\
-	ZVAL_BOOL(&zv, value); 													\
-	G_H_UPDATE(name);														\
+#define G_H_UPDATE_BOOL(name, value)                                        \
+do{                                                                         \
+	ZVAL_BOOL(&zv, value);                                                  \
+	G_H_UPDATE(name);                                                       \
 }while(0)
 
-#define G_H_UPDATE_LONG(name, value)										\
-do{																			\
-	ZVAL_LONG(&zv, value); 													\
-	G_H_UPDATE(name);														\
+#define G_H_UPDATE_LONG(name, value)                                        \
+do{                                                                         \
+	ZVAL_LONG(&zv, value);                                                  \
+	G_H_UPDATE(name);                                                       \
 }while(0)
 
-#define G_H_UPDATE_DOUBLE(name, value)										\
-do{																			\
-	ZVAL_DOUBLE(&zv, value); 												\
-	G_H_UPDATE(name);														\
+#define G_H_UPDATE_DOUBLE(name, value)                                      \
+do{                                                                         \
+	ZVAL_DOUBLE(&zv, value);                                                \
+	G_H_UPDATE(name);                                                       \
 }while(0)
 
-#define G_H_UPDATE_STRING(name, value)										\
-do{																			\
-	const char * tmp = value;												\
-	if(tmp)																	\
-		ZVAL_STRINGL(&zv, estrdup(tmp), strlen(tmp));						\
-	else																	\
-		ZVAL_NULL(&zv);														\
-	G_H_UPDATE(name);														\
+#define G_H_UPDATE_STRING(name, value)                                      \
+do{                                                                         \
+	const char * tmp = value;                                               \
+	if(tmp)                                                                 \
+		ZVAL_STRINGL(&zv, estrdup(tmp), strlen(tmp));                       \
+	else                                                                    \
+		ZVAL_NULL(&zv);                                                     \
+	G_H_UPDATE(name);                                                       \
 }while(0)
 
 /* PGGI_HUB_DEF */

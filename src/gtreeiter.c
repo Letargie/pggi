@@ -104,7 +104,8 @@ GTREE_ITER_METHOD(setValue){
 	zval * self = getThis();
 	long column;
 	zval * value;
-	if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "lz", &column, value) == FAILURE)
+	//if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "lz", &column, &value) == FAILURE)
+	if(zend_parse_parameters_ex(ZEND_PARSE_PARAMS_THROW, ZEND_NUM_ARGS(), "lz", &column, &value) == FAILURE)
 		return;
 	ze_obj = Z_GTREE_ITER_P(self);
 	switch(Z_TYPE_P(value)){
@@ -113,7 +114,11 @@ GTREE_ITER_METHOD(setValue){
 			GValue a = G_VALUE_INIT;
 			g_value_init (&a, G_TYPE_STRING);
 			g_value_set_static_string (&a, Z_STRVAL_P(value));
-			gtk_tree_store_set_value(GTK_TREE_STORE(ze_obj->tree_iter_ptr->parent), ze_obj->tree_iter_ptr->intern, column, &a);
+			if(gtk_tree_store_iter_is_valid(GTK_TREE_STORE(ze_obj->tree_iter_ptr->parent), ze_obj->tree_iter_ptr->intern))
+				printf("it's valid !\n");
+			else
+				printf("it's not ! \n");
+			gtk_tree_store_set_value(GTK_TREE_STORE(ze_obj->tree_iter_ptr->parent), ze_obj->tree_iter_ptr->intern, 0, &a);
 			break;
 		default :
 			printf("Warning, for now, only Strings are handled\n");
@@ -132,6 +137,7 @@ GTREE_ITER_METHOD(next){
 	if(new){
 		zend_object * ze_iter = gtree_iter_object_new(gtree_iter_get_class_entry());
 		ze_gtree_iter_object * iter = php_gtree_iter_fetch_object(ze_iter);
+		iter->tree_iter_ptr = gtree_iter_new();
 		iter->tree_iter_ptr->intern = new;
 		iter->tree_iter_ptr->parent = ze_obj->tree_iter_ptr->parent;
 		RETURN_OBJ(ze_iter);
@@ -150,6 +156,7 @@ GTREE_ITER_METHOD(previous){
 	if(new){
 		zend_object * ze_iter = gtree_iter_object_new(gtree_iter_get_class_entry());
 		ze_gtree_iter_object * iter = php_gtree_iter_fetch_object(ze_iter);
+		iter->tree_iter_ptr = gtree_iter_new();
 		iter->tree_iter_ptr->intern = new;
 		iter->tree_iter_ptr->parent = ze_obj->tree_iter_ptr->parent;
 		RETURN_OBJ(ze_iter);
@@ -168,6 +175,7 @@ GTREE_ITER_METHOD(getFirstChild){
 	if(new){
 		zend_object * ze_iter = gtree_iter_object_new(gtree_iter_get_class_entry());
 		ze_gtree_iter_object * iter = php_gtree_iter_fetch_object(ze_iter);
+		iter->tree_iter_ptr = gtree_iter_new();
 		iter->tree_iter_ptr->intern = new;
 		iter->tree_iter_ptr->parent = ze_obj->tree_iter_ptr->parent;
 		RETURN_OBJ(ze_iter);
@@ -205,6 +213,7 @@ GTREE_ITER_METHOD(getNthChild){
 	if(new){
 		zend_object * ze_iter = gtree_iter_object_new(gtree_iter_get_class_entry());
 		ze_gtree_iter_object * iter = php_gtree_iter_fetch_object(ze_iter);
+		iter->tree_iter_ptr = gtree_iter_new();
 		iter->tree_iter_ptr->intern = new;
 		iter->tree_iter_ptr->parent = ze_obj->tree_iter_ptr->parent;
 		RETURN_OBJ(ze_iter);
@@ -223,13 +232,13 @@ GTREE_ITER_METHOD(getParent){
 	if(new){
 		zend_object * ze_iter = gtree_iter_object_new(gtree_iter_get_class_entry());
 		ze_gtree_iter_object * iter = php_gtree_iter_fetch_object(ze_iter);
+		iter->tree_iter_ptr = gtree_iter_new();
 		iter->tree_iter_ptr->intern = new;
 		iter->tree_iter_ptr->parent = ze_obj->tree_iter_ptr->parent;
 		RETURN_OBJ(ze_iter);
 	}else
 		RETURN_FALSE;
 }
-
 
 static const zend_function_entry gtree_iter_class_functions[] = {
 	PHP_ME(GTreeIter, __construct  , arginfo_pggi_void               , ZEND_ACC_PRIVATE | ZEND_ACC_CTOR)
@@ -242,6 +251,7 @@ static const zend_function_entry gtree_iter_class_functions[] = {
 	PHP_ME(GTreeIter, getNbChildren, arginfo_pggi_void               , ZEND_ACC_PUBLIC)
 	PHP_ME(GTreeIter, getNthChild  , arginfo_gtree_iter_get_nth_child, ZEND_ACC_PUBLIC)
 	PHP_ME(GTreeIter, getParent    , arginfo_pggi_void               , ZEND_ACC_PUBLIC)
+
 	PHP_FE_END
 };
 
@@ -253,18 +263,18 @@ static const zend_function_entry gtree_iter_class_functions[] = {
 DECLARE_CLASS_PROPERTY(gtree_iter_class_entry_ce, name)
 
 #define GTREE_ITER_CONSTANT(name, value) \
-zend_declare_class_constant_double(gtree_iter_class_entry_ce, name, sizeof(name)-1, value);
+zend_declare_class_constant_long(gtree_iter_class_entry_ce, name, sizeof(name)-1, value);
 
 
 void gtree_iter_init(int module_number){
 	zend_class_entry ce;
-	le_gtree_iter = zend_register_list_destructors_ex(gtree_iter_free_resource, NULL, "tree iter", module_number);
+	le_gtree_iter = zend_register_list_destructors_ex(gtree_iter_free_resource, NULL, "PGGI\\GTreeIter", module_number);
 
 	memcpy(&gtree_iter_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-	gtree_iter_object_handlers.offset			= XtOffsetOf(ze_gtree_iter_object, std);
-	gtree_iter_object_handlers.free_obj		= gtree_iter_object_free_storage;
-	gtree_iter_object_handlers.clone_obj		= NULL;
-	INIT_CLASS_ENTRY(ce, "GTreeIter", gtree_iter_class_functions);
+	gtree_iter_object_handlers.offset    = XtOffsetOf(ze_gtree_iter_object, std);
+	gtree_iter_object_handlers.free_obj  = gtree_iter_object_free_storage;
+	gtree_iter_object_handlers.clone_obj = NULL;
+	INIT_CLASS_ENTRY(ce, "PGGI\\GTreeIter", gtree_iter_class_functions);
 	ce.create_object = gtree_iter_object_new;
 	gtree_iter_class_entry_ce = zend_register_internal_class(&ce);
 }

@@ -35,7 +35,7 @@ zend_object_handlers * gcombo_box_get_object_handlers();
 /* GComboBox Properties */
 /************************/
 
-#define GCOMBO_BOX_ACTIVE	"active"
+#define GCOMBO_BOX_ACTIVE "active"
 
 /*****************************/
 /* Object handling functions */
@@ -73,8 +73,7 @@ void gcombo_box_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * 
 #define GCOMBO_BOX_METHOD(name) \
 PHP_METHOD(GComboBox, name)
 
-GCOMBO_BOX_METHOD(on);
-
+GCOMBO_BOX_METHOD(on         );
 GCOMBO_BOX_METHOD(__construct);
 
 /***********************************/

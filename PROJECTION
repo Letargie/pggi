@@ -1,112 +1,114 @@
-Extension [ <persistent> extension #15 pggi version 1.0 ] {
+Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
 
-  - Constants [103] {
-    Constant [ integer PGGI_BASELINE_POSITION_TOP ] { 0 }
-    Constant [ integer PGGI_BASELINE_POSITION_CENTER ] { 1 }
-    Constant [ integer PGGI_BASELINE_POSITION_BOTTOM ] { 2 }
-    Constant [ integer PGGI_DELETE_CHARS ] { 0 }
-    Constant [ integer PGGI_DELETE_WORD_ENDS ] { 1 }
-    Constant [ integer PGGI_DELETE_WORDS ] { 2 }
-    Constant [ integer PGGI_DELETE_DISPLAY_LINES ] { 3 }
-    Constant [ integer PGGI_DELETE_DISPLAY_LINE_ENDS ] { 4 }
-    Constant [ integer PGGI_DELETE_PARAGRAPH_ENDS ] { 5 }
-    Constant [ integer PGGI_DELETE_PARAGRAPHS ] { 6 }
-    Constant [ integer PGGI_DELETE_WHITESPACE ] { 7 }
-    Constant [ integer PGGI_DIR_TAB_FORWARD ] { 0 }
-    Constant [ integer PGGI_DIR_TAB_BACKWARD ] { 1 }
-    Constant [ integer PGGI_DIR_UP ] { 2 }
-    Constant [ integer PGGI_DIR_DOWN ] { 3 }
-    Constant [ integer PGGI_DIR_LEFT ] { 4 }
-    Constant [ integer PGGI_DIR_RIGHT ] { 5 }
-    Constant [ integer PGGI_JUSTIFY_LEFT ] { 0 }
-    Constant [ integer PGGI_JUSTIFY_RIGHT ] { 1 }
-    Constant [ integer PGGI_JUSTIFY_CENTER ] { 2 }
-    Constant [ integer PGGI_JUSTIFY_FILL ] { 3 }
-    Constant [ integer PGGI_MOVEMENT_LOGICAL_POSITIONS ] { 0 }
-    Constant [ integer PGGI_MOVEMENT_VISUAL_POSITIONS ] { 1 }
-    Constant [ integer PGGI_MOVEMENT_WORDS ] { 2 }
-    Constant [ integer PGGI_MOVEMENT_DISPLAY_LINES ] { 3 }
-    Constant [ integer PGGI_MOVEMENT_DISPLAY_LINE_ENDS ] { 4 }
-    Constant [ integer PGGI_MOVEMENT_PARAGRAPHS ] { 5 }
-    Constant [ integer PGGI_MOVEMENT_PARAGRAPH_ENDS ] { 6 }
-    Constant [ integer PGGI_MOVEMENT_PAGES ] { 7 }
-    Constant [ integer PGGI_MOVEMENT_BUFFER_ENDS ] { 8 }
-    Constant [ integer PGGI_MOVEMENT_HORIZONTAL_PAGES ] { 9 }
-    Constant [ integer PGGI_ORIENTATION_HORIZONTAL ] { 0 }
-    Constant [ integer PGGI_ORIENTATION_VERTICAL ] { 1 }
-    Constant [ integer PGGI_PACK_START ] { 0 }
-    Constant [ integer PGGI_PACK_END ] { 1 }
-    Constant [ integer PGGI_POS_LEFT ] { 0 }
-    Constant [ integer PGGI_POS_RIGHT ] { 1 }
-    Constant [ integer PGGI_POS_TOP ] { 2 }
-    Constant [ integer PGGI_POS_BOTTOM ] { 3 }
-    Constant [ integer PGGI_RELIEF_NORMAL ] { 0 }
-    Constant [ integer PGGI_RELIEF_NONE ] { 2 }
-    Constant [ integer PGGI_SCROLL_STEPS ] { 0 }
-    Constant [ integer PGGI_SCROLL_PAGES ] { 1 }
-    Constant [ integer PGGI_SCROLL_ENDS ] { 2 }
-    Constant [ integer PGGI_SCROLL_HORIZONTAL_STEPS ] { 3 }
-    Constant [ integer PGGI_SCROLL_HORIZONTAL_PAGES ] { 4 }
-    Constant [ integer PGGI_SCROLL_HORIZONTAL_ENDS ] { 5 }
-    Constant [ integer PGGI_SCROLL_NONE ] { 0 }
-    Constant [ integer PGGI_SCROLL_JUMP ] { 1 }
-    Constant [ integer PGGI_SCROLL_STEP_BACKWARD ] { 2 }
-    Constant [ integer PGGI_SCROLL_STEP_FORWARD ] { 3 }
-    Constant [ integer PGGI_SCROLL_PAGE_BACKWARD ] { 4 }
-    Constant [ integer PGGI_SCROLL_PAGE_FORWARD ] { 5 }
-    Constant [ integer PGGI_SCROLL_STEP_UP ] { 6 }
-    Constant [ integer PGGI_SCROLL_STEP_DOWN ] { 7 }
-    Constant [ integer PGGI_SCROLL_PAGE_UP ] { 8 }
-    Constant [ integer PGGI_SCROLL_PAGE_DOWN ] { 9 }
-    Constant [ integer PGGI_SCROLL_STEP_LEFT ] { 10 }
-    Constant [ integer PGGI_SCROLL_STEP_RIGHT ] { 11 }
-    Constant [ integer PGGI_SCROLL_PAGE_LEFT ] { 12 }
-    Constant [ integer PGGI_SCROLL_PAGE_RIGHT ] { 13 }
-    Constant [ integer PGGI_SCROLL_START ] { 14 }
-    Constant [ integer PGGI_SCROLL_END ] { 15 }
-    Constant [ integer PGGI_SELECTION_NONE ] { 0 }
-    Constant [ integer PGGI_SELECTION_SINGLE ] { 1 }
-    Constant [ integer PGGI_SELECTION_BROWSE ] { 2 }
-    Constant [ integer PGGI_SELECTION_MULTIPLE ] { 3 }
-    Constant [ integer PGGI_SHADOW_NONE ] { 0 }
-    Constant [ integer PGGI_SHADOW_IN ] { 1 }
-    Constant [ integer PGGI_SHADOW_OUT ] { 2 }
-    Constant [ integer PGGI_SHADOW_ETCHED_IN ] { 3 }
-    Constant [ integer PGGI_SHADOW_ETCHED_OUT ] { 4 }
-    Constant [ integer PGGI_STATE_FLAG_NORMAL ] { 0 }
-    Constant [ integer PGGI_STATE_FLAG_ACTIVE ] { 1 }
-    Constant [ integer PGGI_STATE_FLAG_PRELIGHT ] { 2 }
-    Constant [ integer PGGI_STATE_FLAG_SELECTED ] { 4 }
-    Constant [ integer PGGI_STATE_FLAG_INSENSITIVE ] { 8 }
-    Constant [ integer PGGI_STATE_FLAG_INCONSISTENT ] { 16 }
-    Constant [ integer PGGI_STATE_FLAG_FOCUSED ] { 32 }
-    Constant [ integer PGGI_STATE_FLAG_BACKDROP ] { 64 }
-    Constant [ integer PGGI_STATE_FLAG_DIR_LTR ] { 128 }
-    Constant [ integer PGGI_STATE_FLAG_DIR_RTL ] { 256 }
-    Constant [ integer PGGI_STATE_FLAG_LINK ] { 512 }
-    Constant [ integer PGGI_STATE_FLAG_VISITED ] { 1024 }
-    Constant [ integer PGGI_STATE_FLAG_CHECKED ] { 2048 }
-    Constant [ integer PGGI_TOOLBAR_ICONS ] { 0 }
-    Constant [ integer PGGI_TOOLBAR_TEXT ] { 1 }
-    Constant [ integer PGGI_TOOLBAR_BOTH ] { 2 }
-    Constant [ integer PGGI_TOOLBAR_BOTH_HORIZ ] { 3 }
-    Constant [ integer PGGI_SORT_ASCENDING ] { 0 }
-    Constant [ integer PGGI_SORT_DESCENDING ] { 1 }
-    Constant [ integer PGGI_SIGNAL_GAPPLICATION_WINDOW_ADDED ] { 0 }
-    Constant [ integer PGGI_SIGNAL_GAPPLICATION_WINDOW_REMOVED ] { 1 }
-    Constant [ integer PGGI_SIGNAL_GAPPLICATION_STARTUP ] { 2 }
-    Constant [ integer PGGI_SIGNAL_GAPPLICATION_SHUTDOWN ] { 3 }
-    Constant [ integer PGGI_SIGNAL_GAPPLICATION_ACTIVATE ] { 4 }
-    Constant [ integer PGGI_SIGNAL_GCONTAINER_ADD ] { 6 }
-    Constant [ integer PGGI_SIGNAL_GMENUITEM_ACTIVATE ] { 7 }
-    Constant [ integer PGGI_SIGNAL_GCOMBO_BOX_CHANGED ] { 8 }
-    Constant [ integer PGGI_SIGNAL_GCOMBO_BOX_MOVE_ACTIVE ] { 9 }
-    Constant [ integer PGGI_SIGNAL_GTEXT_BUFFER_CHANGED ] { 10 }
-    Constant [ integer PGGI_SIGNAL_GDIALOG_RESPONSE ] { 12 }
-    Constant [ integer PGGI_SIGNAL_GDIALOG_CLOSE ] { 11 }
+  - Constants [105] {
+    Constant [ integer BASELINE_POSITION_TOP ] { 0 }
+    Constant [ integer BASELINE_POSITION_CENTER ] { 1 }
+    Constant [ integer BASELINE_POSITION_BOTTOM ] { 2 }
+    Constant [ integer DELETE_CHARS ] { 0 }
+    Constant [ integer DELETE_WORD_ENDS ] { 1 }
+    Constant [ integer DELETE_WORDS ] { 2 }
+    Constant [ integer DELETE_DISPLAY_LINES ] { 3 }
+    Constant [ integer DELETE_DISPLAY_LINE_ENDS ] { 4 }
+    Constant [ integer DELETE_PARAGRAPH_ENDS ] { 5 }
+    Constant [ integer DELETE_PARAGRAPHS ] { 6 }
+    Constant [ integer DELETE_WHITESPACE ] { 7 }
+    Constant [ integer DIR_TAB_FORWARD ] { 0 }
+    Constant [ integer DIR_TAB_BACKWARD ] { 1 }
+    Constant [ integer DIR_UP ] { 2 }
+    Constant [ integer DIR_DOWN ] { 3 }
+    Constant [ integer DIR_LEFT ] { 4 }
+    Constant [ integer DIR_RIGHT ] { 5 }
+    Constant [ integer JUSTIFY_LEFT ] { 0 }
+    Constant [ integer JUSTIFY_RIGHT ] { 1 }
+    Constant [ integer JUSTIFY_CENTER ] { 2 }
+    Constant [ integer JUSTIFY_FILL ] { 3 }
+    Constant [ integer MOVEMENT_LOGICAL_POSITIONS ] { 0 }
+    Constant [ integer MOVEMENT_VISUAL_POSITIONS ] { 1 }
+    Constant [ integer MOVEMENT_WORDS ] { 2 }
+    Constant [ integer MOVEMENT_DISPLAY_LINES ] { 3 }
+    Constant [ integer MOVEMENT_DISPLAY_LINE_ENDS ] { 4 }
+    Constant [ integer MOVEMENT_PARAGRAPHS ] { 5 }
+    Constant [ integer MOVEMENT_PARAGRAPH_ENDS ] { 6 }
+    Constant [ integer MOVEMENT_PAGES ] { 7 }
+    Constant [ integer MOVEMENT_BUFFER_ENDS ] { 8 }
+    Constant [ integer MOVEMENT_HORIZONTAL_PAGES ] { 9 }
+    Constant [ integer ORIENTATION_HORIZONTAL ] { 0 }
+    Constant [ integer ORIENTATION_VERTICAL ] { 1 }
+    Constant [ integer PACK_START ] { 0 }
+    Constant [ integer PACK_END ] { 1 }
+    Constant [ integer POS_LEFT ] { 0 }
+    Constant [ integer POS_RIGHT ] { 1 }
+    Constant [ integer POS_TOP ] { 2 }
+    Constant [ integer POS_BOTTOM ] { 3 }
+    Constant [ integer RELIEF_NORMAL ] { 0 }
+    Constant [ integer RELIEF_NONE ] { 2 }
+    Constant [ integer SCROLL_STEPS ] { 0 }
+    Constant [ integer SCROLL_PAGES ] { 1 }
+    Constant [ integer SCROLL_ENDS ] { 2 }
+    Constant [ integer SCROLL_HORIZONTAL_STEPS ] { 3 }
+    Constant [ integer SCROLL_HORIZONTAL_PAGES ] { 4 }
+    Constant [ integer SCROLL_HORIZONTAL_ENDS ] { 5 }
+    Constant [ integer SCROLL_NONE ] { 0 }
+    Constant [ integer SCROLL_JUMP ] { 1 }
+    Constant [ integer SCROLL_STEP_BACKWARD ] { 2 }
+    Constant [ integer SCROLL_STEP_FORWARD ] { 3 }
+    Constant [ integer SCROLL_PAGE_BACKWARD ] { 4 }
+    Constant [ integer SCROLL_PAGE_FORWARD ] { 5 }
+    Constant [ integer SCROLL_STEP_UP ] { 6 }
+    Constant [ integer SCROLL_STEP_DOWN ] { 7 }
+    Constant [ integer SCROLL_PAGE_UP ] { 8 }
+    Constant [ integer SCROLL_PAGE_DOWN ] { 9 }
+    Constant [ integer SCROLL_STEP_LEFT ] { 10 }
+    Constant [ integer SCROLL_STEP_RIGHT ] { 11 }
+    Constant [ integer SCROLL_PAGE_LEFT ] { 12 }
+    Constant [ integer SCROLL_PAGE_RIGHT ] { 13 }
+    Constant [ integer SCROLL_START ] { 14 }
+    Constant [ integer SCROLL_END ] { 15 }
+    Constant [ integer SELECTION_NONE ] { 0 }
+    Constant [ integer SELECTION_SINGLE ] { 1 }
+    Constant [ integer SELECTION_BROWSE ] { 2 }
+    Constant [ integer SELECTION_MULTIPLE ] { 3 }
+    Constant [ integer SHADOW_NONE ] { 0 }
+    Constant [ integer SHADOW_IN ] { 1 }
+    Constant [ integer SHADOW_OUT ] { 2 }
+    Constant [ integer SHADOW_ETCHED_IN ] { 3 }
+    Constant [ integer SHADOW_ETCHED_OUT ] { 4 }
+    Constant [ integer STATE_FLAG_NORMAL ] { 0 }
+    Constant [ integer STATE_FLAG_ACTIVE ] { 1 }
+    Constant [ integer STATE_FLAG_PRELIGHT ] { 2 }
+    Constant [ integer STATE_FLAG_SELECTED ] { 4 }
+    Constant [ integer STATE_FLAG_INSENSITIVE ] { 8 }
+    Constant [ integer STATE_FLAG_INCONSISTENT ] { 16 }
+    Constant [ integer STATE_FLAG_FOCUSED ] { 32 }
+    Constant [ integer STATE_FLAG_BACKDROP ] { 64 }
+    Constant [ integer STATE_FLAG_DIR_LTR ] { 128 }
+    Constant [ integer STATE_FLAG_DIR_RTL ] { 256 }
+    Constant [ integer STATE_FLAG_LINK ] { 512 }
+    Constant [ integer STATE_FLAG_VISITED ] { 1024 }
+    Constant [ integer STATE_FLAG_CHECKED ] { 2048 }
+    Constant [ integer PGGI_STATE_FLAG_DROP_ACTIVE ] { 4096 }
+    Constant [ integer TOOLBAR_ICONS ] { 0 }
+    Constant [ integer TOOLBAR_TEXT ] { 1 }
+    Constant [ integer TOOLBAR_BOTH ] { 2 }
+    Constant [ integer TOOLBAR_BOTH_HORIZ ] { 3 }
+    Constant [ integer SORT_ASCENDING ] { 0 }
+    Constant [ integer SORT_DESCENDING ] { 1 }
+    Constant [ integer SIGNAL_GAPPLICATION_WINDOW_ADDED ] { 0 }
+    Constant [ integer SIGNAL_GAPPLICATION_WINDOW_REMOVED ] { 1 }
+    Constant [ integer SIGNAL_GAPPLICATION_STARTUP ] { 2 }
+    Constant [ integer SIGNAL_GAPPLICATION_SHUTDOWN ] { 3 }
+    Constant [ integer SIGNAL_GAPPLICATION_ACTIVATE ] { 4 }
+    Constant [ integer SIGNAL_GCONTAINER_ADD ] { 6 }
+    Constant [ integer SIGNAL_GMENUITEM_ACTIVATE ] { 7 }
+    Constant [ integer SIGNAL_GCOMBO_BOX_CHANGED ] { 8 }
+    Constant [ integer SIGNAL_GCOMBO_BOX_MOVE_ACTIVE ] { 9 }
+    Constant [ integer SIGNAL_GTEXT_BUFFER_CHANGED ] { 10 }
+    Constant [ integer SIGNAL_GDIALOG_RESPONSE ] { 12 }
+    Constant [ integer SIGNAL_GDIALOG_CLOSE ] { 11 }
+    Constant [ integer SIGNAL_GTREE_VIEW_COLUMN_CLICKED ] { 14 }
   }
 
-  - Classes [25] {
+  - Classes [30] {
     Class [ <internal:pggi> class PGGIException extends Exception implements Throwable ] {
 
       - Constants [0] {
@@ -164,7 +166,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
     }
 
-    Class [ <internal:pggi> class GApplication ] {
+    Class [ <internal:pggi> class PGGI\GApplication ] {
 
       - Constants [0] {
       }
@@ -182,8 +184,8 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
         Method [ <internal:pggi> public method on ] {
 
           - Parameters [3] {
-            Parameter #0 [ <required> $type ]
-            Parameter #1 [ <required> $callback ]
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
             Parameter #2 [ <optional> $param ]
           }
         }
@@ -208,7 +210,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
     }
 
-    Class [ <internal:pggi> class GWidget ] {
+    Class [ <internal:pggi> class PGGI\GWidget ] {
 
       - Constants [5] {
         Constant [ public float ALIGN_FILL ] { 0 }
@@ -245,12 +247,12 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
         Property [ <default> public $canFocus ]
       }
 
-      - Methods [5] {
+      - Methods [4] {
         Method [ <internal:pggi> public method on ] {
 
           - Parameters [3] {
-            Parameter #0 [ <required> $type ]
-            Parameter #1 [ <required> $callback ]
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
             Parameter #2 [ <optional> $param ]
           }
         }
@@ -272,16 +274,10 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
           - Parameters [0] {
           }
         }
-
-        Method [ <internal:pggi, ctor> public method __construct ] {
-
-          - Parameters [0] {
-          }
-        }
       }
     }
 
-    Class [ <internal:pggi> class GContainer extends GWidget ] {
+    Class [ <internal:pggi> class PGGI\GContainer extends PGGI\GWidget ] {
 
       - Constants [5] {
         Constant [ public float ALIGN_FILL ] { 0 }
@@ -319,42 +315,36 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
         Property [ <default> public $borderWidth ]
       }
 
-      - Methods [6] {
+      - Methods [5] {
         Method [ <internal:pggi> public method add ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $data ]
+            Parameter #0 [ <required> PGGI\GWidget $widget ]
           }
         }
 
-        Method [ <internal:pggi, overwrites GWidget, ctor> public method __construct ] {
-
-          - Parameters [0] {
-          }
-        }
-
-        Method [ <internal:pggi, overwrites GWidget, prototype GWidget> public method on ] {
+        Method [ <internal:pggi, overwrites PGGI\GWidget, prototype PGGI\GWidget> public method on ] {
 
           - Parameters [3] {
-            Parameter #0 [ <required> $type ]
-            Parameter #1 [ <required> $callback ]
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
             Parameter #2 [ <optional> $param ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method show ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method show ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method hide ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method showAll ] {
 
           - Parameters [0] {
           }
@@ -362,7 +352,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
     }
 
-    Class [ <internal:pggi> class GWindow extends GContainer ] {
+    Class [ <internal:pggi> class PGGI\GWindow extends PGGI\GContainer ] {
 
       - Constants [5] {
         Constant [ public float ALIGN_FILL ] { 0 }
@@ -411,27 +401,20 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
         Property [ <default> public $acceptFocus ]
       }
 
-      - Methods [13] {
-        Method [ <internal:pggi, overwrites GContainer, ctor> public method __construct ] {
+      - Methods [12] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
 
           - Parameters [2] {
-            Parameter #0 [ <required> $app ]
-            Parameter #1 [ <optional> $title ]
-          }
-        }
-
-        Method [ <internal:pggi> public method setTitle ] {
-
-          - Parameters [1] {
-            Parameter #0 [ <required> $name ]
+            Parameter #0 [ <required> PGGI\GApplication $app ]
+            Parameter #1 [ <optional> string $title ]
           }
         }
 
         Method [ <internal:pggi> public method setDefaultSize ] {
 
           - Parameters [2] {
-            Parameter #0 [ <required> $x ]
-            Parameter #1 [ <required> $y ]
+            Parameter #0 [ <required> integer $x ]
+            Parameter #1 [ <required> integer $y ]
           }
         }
 
@@ -444,14 +427,14 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
         Method [ <internal:pggi> public method setKeepAbove ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $name ]
+            Parameter #0 [ <required> boolean $value ]
           }
         }
 
         Method [ <internal:pggi> public method setKeepBelow ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $name ]
+            Parameter #0 [ <required> boolean $value ]
           }
         }
 
@@ -467,35 +450,35 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
           }
         }
 
-        Method [ <internal:pggi, inherits GContainer> public method add ] {
+        Method [ <internal:pggi, inherits PGGI\GContainer> public method add ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $data ]
+            Parameter #0 [ <required> PGGI\GWidget $widget ]
           }
         }
 
-        Method [ <internal:pggi, inherits GContainer, prototype GWidget> public method on ] {
+        Method [ <internal:pggi, inherits PGGI\GContainer, prototype PGGI\GWidget> public method on ] {
 
           - Parameters [3] {
-            Parameter #0 [ <required> $type ]
-            Parameter #1 [ <required> $callback ]
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
             Parameter #2 [ <optional> $param ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method show ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method show ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method hide ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method showAll ] {
 
           - Parameters [0] {
           }
@@ -503,7 +486,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
     }
 
-    Class [ <internal:pggi> class GBox extends GContainer ] {
+    Class [ <internal:pggi> class PGGI\GBox extends PGGI\GContainer ] {
 
       - Constants [5] {
         Constant [ public float ALIGN_FILL ] { 0 }
@@ -545,63 +528,63 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
 
       - Methods [8] {
-        Method [ <internal:pggi, overwrites GContainer, ctor> public method __construct ] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
 
           - Parameters [2] {
-            Parameter #0 [ <required> $orientation ]
-            Parameter #1 [ <optional> $spacing ]
+            Parameter #0 [ <required> integer $orientation ]
+            Parameter #1 [ <optional> integer or NULL $spacing ]
           }
         }
 
         Method [ <internal:pggi> public method packStart ] {
 
           - Parameters [4] {
-            Parameter #0 [ <required> $object ]
-            Parameter #1 [ <optional> $expand ]
-            Parameter #2 [ <optional> $fill ]
-            Parameter #3 [ <optional> $padding ]
+            Parameter #0 [ <required> PGGI\GWidget $object ]
+            Parameter #1 [ <optional> boolean or NULL $expand ]
+            Parameter #2 [ <optional> boolean or NULL $fill ]
+            Parameter #3 [ <optional> integer or NULL $padding ]
           }
         }
 
         Method [ <internal:pggi> public method packEnd ] {
 
           - Parameters [4] {
-            Parameter #0 [ <required> $object ]
-            Parameter #1 [ <optional> $expand ]
-            Parameter #2 [ <optional> $fill ]
-            Parameter #3 [ <optional> $padding ]
+            Parameter #0 [ <required> PGGI\GWidget $object ]
+            Parameter #1 [ <optional> boolean or NULL $expand ]
+            Parameter #2 [ <optional> boolean or NULL $fill ]
+            Parameter #3 [ <optional> integer or NULL $padding ]
           }
         }
 
-        Method [ <internal:pggi, inherits GContainer> public method add ] {
+        Method [ <internal:pggi, inherits PGGI\GContainer> public method add ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $data ]
+            Parameter #0 [ <required> PGGI\GWidget $widget ]
           }
         }
 
-        Method [ <internal:pggi, inherits GContainer, prototype GWidget> public method on ] {
+        Method [ <internal:pggi, inherits PGGI\GContainer, prototype PGGI\GWidget> public method on ] {
 
           - Parameters [3] {
-            Parameter #0 [ <required> $type ]
-            Parameter #1 [ <required> $callback ]
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
             Parameter #2 [ <optional> $param ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method show ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method show ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method hide ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method showAll ] {
 
           - Parameters [0] {
           }
@@ -609,7 +592,132 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
     }
 
-    Class [ <internal:pggi> class GButton extends GContainer ] {
+    Class [ <internal:pggi> class PGGI\GButtonBox extends PGGI\GBox ] {
+
+      - Constants [11] {
+        Constant [ public float ALIGN_FILL ] { 0 }
+        Constant [ public float ALIGN_START ] { 1 }
+        Constant [ public float ALIGN_END ] { 2 }
+        Constant [ public float ALIGN_CENTER ] { 3 }
+        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public integer LAYOUT_SPREAD ] { 1 }
+        Constant [ public integer LAYOUT_EDGE ] { 2 }
+        Constant [ public integer LAYOUT_START ] { 3 }
+        Constant [ public integer LAYOUT_END ] { 4 }
+        Constant [ public integer LAYOUT_CENTER ] { 5 }
+        Constant [ public integer LAYOUT_EXPAND ] { 6 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [22] {
+        Property [ <default> public $vAlign ]
+        Property [ <default> public $hAlign ]
+        Property [ <default> public $marginStart ]
+        Property [ <default> public $marginEnd ]
+        Property [ <default> public $marginTop ]
+        Property [ <default> public $marginBottom ]
+        Property [ <default> public $hExpand ]
+        Property [ <default> public $hExpandSet ]
+        Property [ <default> public $vExpand ]
+        Property [ <default> public $vExpandSet ]
+        Property [ <default> public $opacity ]
+        Property [ <default> public $visible ]
+        Property [ <default> public $noShowAll ]
+        Property [ <default> public $direction ]
+        Property [ <default> public $sensitive ]
+        Property [ <default> public $name ]
+        Property [ <default> public $canDefault ]
+        Property [ <default> public $canFocus ]
+        Property [ <default> public $borderWidth ]
+        Property [ <default> public $homogeneous ]
+        Property [ <default> public $spacing ]
+        Property [ <default> public $baselinePosition ]
+      }
+
+      - Methods [10] {
+        Method [ <internal:pggi, overwrites PGGI\GBox, ctor> public method __construct ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $orientation ]
+          }
+        }
+
+        Method [ <internal:pggi> public method getLayout ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi> public method setLayout ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> integer $value ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GBox> public method packStart ] {
+
+          - Parameters [4] {
+            Parameter #0 [ <required> PGGI\GWidget $object ]
+            Parameter #1 [ <optional> boolean or NULL $expand ]
+            Parameter #2 [ <optional> boolean or NULL $fill ]
+            Parameter #3 [ <optional> integer or NULL $padding ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GBox> public method packEnd ] {
+
+          - Parameters [4] {
+            Parameter #0 [ <required> PGGI\GWidget $object ]
+            Parameter #1 [ <optional> boolean or NULL $expand ]
+            Parameter #2 [ <optional> boolean or NULL $fill ]
+            Parameter #3 [ <optional> integer or NULL $padding ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GContainer> public method add ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> PGGI\GWidget $widget ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GContainer, prototype PGGI\GWidget> public method on ] {
+
+          - Parameters [3] {
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
+            Parameter #2 [ <optional> $param ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method show ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method hide ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method showAll ] {
+
+          - Parameters [0] {
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\GButton extends PGGI\GContainer ] {
 
       - Constants [11] {
         Constant [ public float ALIGN_FILL ] { 0 }
@@ -660,41 +768,41 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
 
       - Methods [6] {
-        Method [ <internal:pggi, overwrites GContainer, ctor> public method __construct ] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GContainer> public method add ] {
+        Method [ <internal:pggi, inherits PGGI\GContainer> public method add ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $data ]
+            Parameter #0 [ <required> PGGI\GWidget $widget ]
           }
         }
 
-        Method [ <internal:pggi, inherits GContainer, prototype GWidget> public method on ] {
+        Method [ <internal:pggi, inherits PGGI\GContainer, prototype PGGI\GWidget> public method on ] {
 
           - Parameters [3] {
-            Parameter #0 [ <required> $type ]
-            Parameter #1 [ <required> $callback ]
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
             Parameter #2 [ <optional> $param ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method show ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method show ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method hide ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method showAll ] {
 
           - Parameters [0] {
           }
@@ -702,7 +810,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
     }
 
-    Class [ <internal:pggi> class GLabel extends GWidget ] {
+    Class [ <internal:pggi> class PGGI\GLabel extends PGGI\GWidget ] {
 
       - Constants [9] {
         Constant [ public float ALIGN_FILL ] { 0 }
@@ -755,35 +863,35 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
 
       - Methods [5] {
-        Method [ <internal:pggi, overwrites GWidget, ctor> public method __construct ] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $label ]
+            Parameter #0 [ <optional> string or NULL $label ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method on ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method on ] {
 
           - Parameters [3] {
-            Parameter #0 [ <required> $type ]
-            Parameter #1 [ <required> $callback ]
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
             Parameter #2 [ <optional> $param ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method show ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method show ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method hide ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method showAll ] {
 
           - Parameters [0] {
           }
@@ -791,7 +899,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
     }
 
-    Class [ <internal:pggi> class GImage extends GWidget ] {
+    Class [ <internal:pggi> class PGGI\GImage extends PGGI\GWidget ] {
 
       - Constants [5] {
         Constant [ public float ALIGN_FILL ] { 0 }
@@ -832,39 +940,39 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
         Method [ <internal:pggi> public method set ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $name ]
+            Parameter #0 [ <required> string $string ]
           }
         }
 
-        Method [ <internal:pggi, overwrites GWidget, ctor> public method __construct ] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
 
           - Parameters [1] {
             Parameter #0 [ <required> $image ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method on ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method on ] {
 
           - Parameters [3] {
-            Parameter #0 [ <required> $type ]
-            Parameter #1 [ <required> $callback ]
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
             Parameter #2 [ <optional> $param ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method show ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method show ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method hide ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method showAll ] {
 
           - Parameters [0] {
           }
@@ -872,7 +980,83 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
     }
 
-    Class [ <internal:pggi> class GMenuShell extends GContainer ] {
+    Class [ <internal:pggi> class PGGI\GMenuShell extends PGGI\GContainer ] {
+
+      - Constants [5] {
+        Constant [ public float ALIGN_FILL ] { 0 }
+        Constant [ public float ALIGN_START ] { 1 }
+        Constant [ public float ALIGN_END ] { 2 }
+        Constant [ public float ALIGN_CENTER ] { 3 }
+        Constant [ public float ALIGN_BASELINE ] { 4 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [20] {
+        Property [ <default> public $vAlign ]
+        Property [ <default> public $hAlign ]
+        Property [ <default> public $marginStart ]
+        Property [ <default> public $marginEnd ]
+        Property [ <default> public $marginTop ]
+        Property [ <default> public $marginBottom ]
+        Property [ <default> public $hExpand ]
+        Property [ <default> public $hExpandSet ]
+        Property [ <default> public $vExpand ]
+        Property [ <default> public $vExpandSet ]
+        Property [ <default> public $opacity ]
+        Property [ <default> public $visible ]
+        Property [ <default> public $noShowAll ]
+        Property [ <default> public $direction ]
+        Property [ <default> public $sensitive ]
+        Property [ <default> public $name ]
+        Property [ <default> public $canDefault ]
+        Property [ <default> public $canFocus ]
+        Property [ <default> public $borderWidth ]
+        Property [ <default> public $takeFocus ]
+      }
+
+      - Methods [5] {
+        Method [ <internal:pggi, inherits PGGI\GContainer> public method add ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> PGGI\GWidget $widget ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GContainer, prototype PGGI\GWidget> public method on ] {
+
+          - Parameters [3] {
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
+            Parameter #2 [ <optional> $param ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method show ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method hide ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method showAll ] {
+
+          - Parameters [0] {
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\GMenubar extends PGGI\GMenuShell ] {
 
       - Constants [5] {
         Constant [ public float ALIGN_FILL ] { 0 }
@@ -912,41 +1096,41 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
 
       - Methods [6] {
-        Method [ <internal:pggi, overwrites GContainer, ctor> public method __construct ] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GContainer> public method add ] {
+        Method [ <internal:pggi, inherits PGGI\GContainer> public method add ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $data ]
+            Parameter #0 [ <required> PGGI\GWidget $widget ]
           }
         }
 
-        Method [ <internal:pggi, inherits GContainer, prototype GWidget> public method on ] {
+        Method [ <internal:pggi, inherits PGGI\GContainer, prototype PGGI\GWidget> public method on ] {
 
           - Parameters [3] {
-            Parameter #0 [ <required> $type ]
-            Parameter #1 [ <required> $callback ]
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
             Parameter #2 [ <optional> $param ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method show ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method show ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method hide ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method showAll ] {
 
           - Parameters [0] {
           }
@@ -954,7 +1138,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
     }
 
-    Class [ <internal:pggi> class GMenubar extends GMenuShell ] {
+    Class [ <internal:pggi> class PGGI\GMenu extends PGGI\GMenuShell ] {
 
       - Constants [5] {
         Constant [ public float ALIGN_FILL ] { 0 }
@@ -994,41 +1178,41 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
 
       - Methods [6] {
-        Method [ <internal:pggi, overwrites GMenuShell, ctor> public method __construct ] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GContainer> public method add ] {
+        Method [ <internal:pggi, inherits PGGI\GContainer> public method add ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $data ]
+            Parameter #0 [ <required> PGGI\GWidget $widget ]
           }
         }
 
-        Method [ <internal:pggi, inherits GContainer, prototype GWidget> public method on ] {
+        Method [ <internal:pggi, inherits PGGI\GContainer, prototype PGGI\GWidget> public method on ] {
 
           - Parameters [3] {
-            Parameter #0 [ <required> $type ]
-            Parameter #1 [ <required> $callback ]
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
             Parameter #2 [ <optional> $param ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method show ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method show ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method hide ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method showAll ] {
 
           - Parameters [0] {
           }
@@ -1036,89 +1220,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
     }
 
-    Class [ <internal:pggi> class GMenu extends GMenuShell ] {
-
-      - Constants [5] {
-        Constant [ public float ALIGN_FILL ] { 0 }
-        Constant [ public float ALIGN_START ] { 1 }
-        Constant [ public float ALIGN_END ] { 2 }
-        Constant [ public float ALIGN_CENTER ] { 3 }
-        Constant [ public float ALIGN_BASELINE ] { 4 }
-      }
-
-      - Static properties [0] {
-      }
-
-      - Static methods [0] {
-      }
-
-      - Properties [20] {
-        Property [ <default> public $vAlign ]
-        Property [ <default> public $hAlign ]
-        Property [ <default> public $marginStart ]
-        Property [ <default> public $marginEnd ]
-        Property [ <default> public $marginTop ]
-        Property [ <default> public $marginBottom ]
-        Property [ <default> public $hExpand ]
-        Property [ <default> public $hExpandSet ]
-        Property [ <default> public $vExpand ]
-        Property [ <default> public $vExpandSet ]
-        Property [ <default> public $opacity ]
-        Property [ <default> public $visible ]
-        Property [ <default> public $noShowAll ]
-        Property [ <default> public $direction ]
-        Property [ <default> public $sensitive ]
-        Property [ <default> public $name ]
-        Property [ <default> public $canDefault ]
-        Property [ <default> public $canFocus ]
-        Property [ <default> public $borderWidth ]
-        Property [ <default> public $takeFocus ]
-      }
-
-      - Methods [6] {
-        Method [ <internal:pggi, overwrites GMenuShell, ctor> public method __construct ] {
-
-          - Parameters [0] {
-          }
-        }
-
-        Method [ <internal:pggi, inherits GContainer> public method add ] {
-
-          - Parameters [1] {
-            Parameter #0 [ <required> $data ]
-          }
-        }
-
-        Method [ <internal:pggi, inherits GContainer, prototype GWidget> public method on ] {
-
-          - Parameters [3] {
-            Parameter #0 [ <required> $type ]
-            Parameter #1 [ <required> $callback ]
-            Parameter #2 [ <optional> $param ]
-          }
-        }
-
-        Method [ <internal:pggi, inherits GWidget> public method show ] {
-
-          - Parameters [0] {
-          }
-        }
-
-        Method [ <internal:pggi, inherits GWidget> public method hide ] {
-
-          - Parameters [0] {
-          }
-        }
-
-        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
-
-          - Parameters [0] {
-          }
-        }
-      }
-    }
-
-    Class [ <internal:pggi> class GMenuItem extends GContainer ] {
+    Class [ <internal:pggi> class PGGI\GMenuItem extends PGGI\GContainer ] {
 
       - Constants [5] {
         Constant [ public float ALIGN_FILL ] { 0 }
@@ -1162,9 +1264,10 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
 
       - Methods [9] {
-        Method [ <internal:pggi, overwrites GContainer, ctor> public method __construct ] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
 
-          - Parameters [0] {
+          - Parameters [1] {
+            Parameter #0 [ <optional> string or NULL $label ]
           }
         }
 
@@ -1186,35 +1289,35 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
           }
         }
 
-        Method [ <internal:pggi, overwrites GContainer, prototype GWidget> public method on ] {
+        Method [ <internal:pggi, overwrites PGGI\GContainer, prototype PGGI\GWidget> public method on ] {
 
           - Parameters [3] {
-            Parameter #0 [ <required> $type ]
-            Parameter #1 [ <required> $callback ]
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
             Parameter #2 [ <optional> $param ]
           }
         }
 
-        Method [ <internal:pggi, inherits GContainer> public method add ] {
+        Method [ <internal:pggi, inherits PGGI\GContainer> public method add ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $data ]
+            Parameter #0 [ <required> PGGI\GWidget $widget ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method show ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method show ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method hide ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method showAll ] {
 
           - Parameters [0] {
           }
@@ -1222,7 +1325,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
     }
 
-    Class [ <internal:pggi> class GTextView extends GContainer ] {
+    Class [ <internal:pggi> class PGGI\GTextView extends PGGI\GContainer ] {
 
       - Constants [5] {
         Constant [ public float ALIGN_FILL ] { 0 }
@@ -1261,41 +1364,41 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
 
       - Methods [6] {
-        Method [ <internal:pggi, overwrites GContainer, ctor> public method __construct ] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GContainer> public method add ] {
+        Method [ <internal:pggi, inherits PGGI\GContainer> public method add ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $data ]
+            Parameter #0 [ <required> PGGI\GWidget $widget ]
           }
         }
 
-        Method [ <internal:pggi, inherits GContainer, prototype GWidget> public method on ] {
+        Method [ <internal:pggi, inherits PGGI\GContainer, prototype PGGI\GWidget> public method on ] {
 
           - Parameters [3] {
-            Parameter #0 [ <required> $type ]
-            Parameter #1 [ <required> $callback ]
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
             Parameter #2 [ <optional> $param ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method show ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method show ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method hide ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method showAll ] {
 
           - Parameters [0] {
           }
@@ -1303,7 +1406,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
     }
 
-    Class [ <internal:pggi> class GTextBuffer ] {
+    Class [ <internal:pggi> class PGGI\GTextBuffer ] {
 
       - Constants [0] {
       }
@@ -1322,8 +1425,8 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
         Method [ <internal:pggi> public method on ] {
 
           - Parameters [3] {
-            Parameter #0 [ <required> $type ]
-            Parameter #1 [ <required> $callback ]
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
             Parameter #2 [ <optional> $param ]
           }
         }
@@ -1338,17 +1441,19 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
 
           - Parameters [0] {
           }
+          - Return [ integer ]
         }
 
         Method [ <internal:pggi> public method getCharCount ] {
 
           - Parameters [0] {
           }
+          - Return [ integer ]
         }
       }
     }
 
-    Class [ <internal:pggi> class GScrollWindow extends GContainer ] {
+    Class [ <internal:pggi> class PGGI\GScrollWindow extends PGGI\GContainer ] {
 
       - Constants [5] {
         Constant [ public float ALIGN_FILL ] { 0 }
@@ -1387,41 +1492,41 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
 
       - Methods [6] {
-        Method [ <internal:pggi, overwrites GContainer, ctor> public method __construct ] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GContainer> public method add ] {
+        Method [ <internal:pggi, inherits PGGI\GContainer> public method add ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $data ]
+            Parameter #0 [ <required> PGGI\GWidget $widget ]
           }
         }
 
-        Method [ <internal:pggi, inherits GContainer, prototype GWidget> public method on ] {
+        Method [ <internal:pggi, inherits PGGI\GContainer, prototype PGGI\GWidget> public method on ] {
 
           - Parameters [3] {
-            Parameter #0 [ <required> $type ]
-            Parameter #1 [ <required> $callback ]
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
             Parameter #2 [ <optional> $param ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method show ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method show ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method hide ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method showAll ] {
 
           - Parameters [0] {
           }
@@ -1429,7 +1534,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
     }
 
-    Class [ <internal:pggi> class GComboBox extends GContainer ] {
+    Class [ <internal:pggi> class PGGI\GComboBox extends PGGI\GContainer ] {
 
       - Constants [5] {
         Constant [ public float ALIGN_FILL ] { 0 }
@@ -1469,41 +1574,41 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
 
       - Methods [6] {
-        Method [ <internal:pggi, overwrites GContainer, ctor> public method __construct ] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, overwrites GContainer, prototype GWidget> public method on ] {
+        Method [ <internal:pggi, overwrites PGGI\GContainer, prototype PGGI\GWidget> public method on ] {
 
           - Parameters [3] {
-            Parameter #0 [ <required> $type ]
-            Parameter #1 [ <required> $callback ]
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
             Parameter #2 [ <optional> $param ]
           }
         }
 
-        Method [ <internal:pggi, inherits GContainer> public method add ] {
+        Method [ <internal:pggi, inherits PGGI\GContainer> public method add ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $data ]
+            Parameter #0 [ <required> PGGI\GWidget $widget ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method show ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method show ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method hide ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method showAll ] {
 
           - Parameters [0] {
           }
@@ -1511,7 +1616,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
     }
 
-    Class [ <internal:pggi> class GComboBoxText extends GComboBox ] {
+    Class [ <internal:pggi> class PGGI\GComboBoxText extends PGGI\GComboBox ] {
 
       - Constants [5] {
         Constant [ public float ALIGN_FILL ] { 0 }
@@ -1551,7 +1656,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
 
       - Methods [12] {
-        Method [ <internal:pggi, overwrites GComboBox, ctor> public method __construct ] {
+        Method [ <internal:pggi, overwrites PGGI\GComboBox, ctor> public method __construct ] {
 
           - Parameters [0] {
           }
@@ -1560,25 +1665,25 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
         Method [ <internal:pggi> public method insert ] {
 
           - Parameters [3] {
-            Parameter #0 [ <required> $position ]
-            Parameter #1 [ <required> $text ]
-            Parameter #2 [ <optional> $id ]
+            Parameter #0 [ <required> integer $position ]
+            Parameter #1 [ <required> string $text ]
+            Parameter #2 [ <optional> string or NULL $id ]
           }
         }
 
         Method [ <internal:pggi> public method append ] {
 
           - Parameters [2] {
-            Parameter #0 [ <required> $text ]
-            Parameter #1 [ <optional> $id ]
+            Parameter #0 [ <required> string $text ]
+            Parameter #1 [ <optional> string or NULL $id ]
           }
         }
 
         Method [ <internal:pggi> public method prepend ] {
 
           - Parameters [2] {
-            Parameter #0 [ <required> $text ]
-            Parameter #1 [ <optional> $id ]
+            Parameter #0 [ <required> string $text ]
+            Parameter #1 [ <optional> string or NULL $id ]
           }
         }
 
@@ -1586,6 +1691,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
 
           - Parameters [0] {
           }
+          - Return [ string ]
         }
 
         Method [ <internal:pggi> public method removeAll ] {
@@ -1597,39 +1703,39 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
         Method [ <internal:pggi> public method remove ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $position ]
+            Parameter #0 [ <required> integer $position ]
           }
         }
 
-        Method [ <internal:pggi, inherits GComboBox, prototype GWidget> public method on ] {
+        Method [ <internal:pggi, inherits PGGI\GComboBox, prototype PGGI\GWidget> public method on ] {
 
           - Parameters [3] {
-            Parameter #0 [ <required> $type ]
-            Parameter #1 [ <required> $callback ]
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
             Parameter #2 [ <optional> $param ]
           }
         }
 
-        Method [ <internal:pggi, inherits GContainer> public method add ] {
+        Method [ <internal:pggi, inherits PGGI\GContainer> public method add ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $data ]
+            Parameter #0 [ <required> PGGI\GWidget $widget ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method show ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method show ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method hide ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method showAll ] {
 
           - Parameters [0] {
           }
@@ -1637,7 +1743,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
     }
 
-    Class [ <internal:pggi> class GDialog extends GWindow ] {
+    Class [ <internal:pggi> class PGGI\GDialog extends PGGI\GWindow ] {
 
       - Constants [19] {
         Constant [ public float ALIGN_FILL ] { 0 }
@@ -1645,20 +1751,20 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
         Constant [ public float ALIGN_END ] { 2 }
         Constant [ public float ALIGN_CENTER ] { 3 }
         Constant [ public float ALIGN_BASELINE ] { 4 }
-        Constant [ public float GDIALOG_FLAG_MODAL ] { 1 }
-        Constant [ public float GDIALOG_FLAG_DESTROY_WITH_PARENT ] { 2 }
-        Constant [ public float GDIALOG_FLAG_USE_HEADER_BAR ] { 4 }
-        Constant [ public float GDIALOG_RESPONSE_TYPE_NONE ] { -1 }
-        Constant [ public float GDIALOG_RESPONSE_TYPE_REJECT ] { -2 }
-        Constant [ public float GDIALOG_RESPONSE_TYPE_ACCEPT ] { -3 }
-        Constant [ public float GDIALOG_RESPONSE_TYPE_DELETE_EVENT ] { -4 }
-        Constant [ public float GDIALOG_RESPONSE_TYPE_OK ] { -5 }
-        Constant [ public float GDIALOG_RESPONSE_TYPE_CANCEL ] { -6 }
-        Constant [ public float GDIALOG_RESPONSE_TYPE_CLOSE ] { -7 }
-        Constant [ public float GDIALOG_RESPONSE_TYPE_YES ] { -8 }
-        Constant [ public float GDIALOG_RESPONSE_TYPE_NO ] { -9 }
-        Constant [ public float GDIALOG_RESPONSE_TYPE_APPLY ] { -10 }
-        Constant [ public float GDIALOG_RESPONSE_TYPE_HELP ] { -11 }
+        Constant [ public integer FLAG_MODAL ] { 1 }
+        Constant [ public integer FLAG_DESTROY_WITH_PARENT ] { 2 }
+        Constant [ public integer FLAG_USE_HEADER_BAR ] { 4 }
+        Constant [ public integer RESPONSE_TYPE_NONE ] { -1 }
+        Constant [ public integer RESPONSE_TYPE_REJECT ] { -2 }
+        Constant [ public integer RESPONSE_TYPE_ACCEPT ] { -3 }
+        Constant [ public integer RESPONSE_TYPE_DELETE_EVENT ] { -4 }
+        Constant [ public integer RESPONSE_TYPE_OK ] { -5 }
+        Constant [ public integer RESPONSE_TYPE_CANCEL ] { -6 }
+        Constant [ public integer RESPONSE_TYPE_CLOSE ] { -7 }
+        Constant [ public integer RESPONSE_TYPE_YES ] { -8 }
+        Constant [ public integer RESPONSE_TYPE_NO ] { -9 }
+        Constant [ public integer RESPONSE_TYPE_APPLY ] { -10 }
+        Constant [ public integer RESPONSE_TYPE_HELP ] { -11 }
       }
 
       - Static properties [0] {
@@ -1700,13 +1806,13 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
         Property [ <default> public $acceptFocus ]
       }
 
-      - Methods [14] {
-        Method [ <internal:pggi, overwrites GWindow, ctor> public method __construct ] {
+      - Methods [13] {
+        Method [ <internal:pggi, overwrites PGGI\GWindow, ctor> public method __construct ] {
 
           - Parameters [4] {
-            Parameter #0 [ <optional> $title ]
-            Parameter #1 [ <optional> $parent ]
-            Parameter #2 [ <optional> $flags ]
+            Parameter #0 [ <optional> string or NULL $title ]
+            Parameter #1 [ <optional> PGGI\GWindow or NULL $parent ]
+            Parameter #2 [ <optional> integer or NULL $flags ]
             Parameter #3 [ <optional> $data ]
           }
         }
@@ -1717,82 +1823,75 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWindow> public method setTitle ] {
-
-          - Parameters [1] {
-            Parameter #0 [ <required> $name ]
-          }
-        }
-
-        Method [ <internal:pggi, inherits GWindow> public method setDefaultSize ] {
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method setDefaultSize ] {
 
           - Parameters [2] {
-            Parameter #0 [ <required> $x ]
-            Parameter #1 [ <required> $y ]
+            Parameter #0 [ <required> integer $x ]
+            Parameter #1 [ <required> integer $y ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWindow> public method close ] {
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method close ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWindow> public method setKeepAbove ] {
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method setKeepAbove ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $name ]
+            Parameter #0 [ <required> boolean $value ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWindow> public method setKeepBelow ] {
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method setKeepBelow ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $name ]
+            Parameter #0 [ <required> boolean $value ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWindow> public method fullscreen ] {
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method fullscreen ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWindow> public method unfullscreen ] {
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method unfullscreen ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GContainer> public method add ] {
+        Method [ <internal:pggi, inherits PGGI\GContainer> public method add ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $data ]
+            Parameter #0 [ <required> PGGI\GWidget $widget ]
           }
         }
 
-        Method [ <internal:pggi, inherits GContainer, prototype GWidget> public method on ] {
+        Method [ <internal:pggi, inherits PGGI\GContainer, prototype PGGI\GWidget> public method on ] {
 
           - Parameters [3] {
-            Parameter #0 [ <required> $type ]
-            Parameter #1 [ <required> $callback ]
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
             Parameter #2 [ <optional> $param ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method show ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method show ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method hide ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method showAll ] {
 
           - Parameters [0] {
           }
@@ -1800,7 +1899,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
     }
 
-    Class [ <internal:pggi> class GAboutDialog extends GDialog ] {
+    Class [ <internal:pggi> class PGGI\GAboutDialog extends PGGI\GDialog ] {
 
       - Constants [32] {
         Constant [ public float ALIGN_FILL ] { 0 }
@@ -1808,46 +1907,39 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
         Constant [ public float ALIGN_END ] { 2 }
         Constant [ public float ALIGN_CENTER ] { 3 }
         Constant [ public float ALIGN_BASELINE ] { 4 }
-        Constant [ public float GDIALOG_FLAG_MODAL ] { 1 }
-        Constant [ public float GDIALOG_FLAG_DESTROY_WITH_PARENT ] { 2 }
-        Constant [ public float GDIALOG_FLAG_USE_HEADER_BAR ] { 4 }
-        Constant [ public float GDIALOG_RESPONSE_TYPE_NONE ] { -1 }
-        Constant [ public float GDIALOG_RESPONSE_TYPE_REJECT ] { -2 }
-        Constant [ public float GDIALOG_RESPONSE_TYPE_ACCEPT ] { -3 }
-        Constant [ public float GDIALOG_RESPONSE_TYPE_DELETE_EVENT ] { -4 }
-        Constant [ public float GDIALOG_RESPONSE_TYPE_OK ] { -5 }
-        Constant [ public float GDIALOG_RESPONSE_TYPE_CANCEL ] { -6 }
-        Constant [ public float GDIALOG_RESPONSE_TYPE_CLOSE ] { -7 }
-        Constant [ public float GDIALOG_RESPONSE_TYPE_YES ] { -8 }
-        Constant [ public float GDIALOG_RESPONSE_TYPE_NO ] { -9 }
-        Constant [ public float GDIALOG_RESPONSE_TYPE_APPLY ] { -10 }
-        Constant [ public float GDIALOG_RESPONSE_TYPE_HELP ] { -11 }
-        Constant [ public float GABOUT_DIALOG_LICENSE_UNKNOWN ] { 0 }
-        Constant [ public float GABOUT_DIALOG_LICENSE_CUSTOM ] { 1 }
-        Constant [ public float GABOUT_DIALOG_LICENSE_GPL_2_0 ] { 2 }
-        Constant [ public float GABOUT_DIALOG_LICENSE_GPL_3_0 ] { 3 }
-        Constant [ public float GABOUT_DIALOG_LICENSE_LGPL_2_1 ] { 4 }
-        Constant [ public float GABOUT_DIALOG_LICENSE_LGPL_3_0 ] { 5 }
-        Constant [ public float GABOUT_DIALOG_LICENSE_BSD ] { 6 }
-        Constant [ public float GABOUT_DIALOG_LICENSE_MIT_X11 ] { 7 }
-        Constant [ public float GABOUT_DIALOG_LICENSE_ARTISTIC ] { 8 }
-        Constant [ public float GABOUT_DIALOG_LICENSE_GPL_2_0_ONLY ] { 9 }
-        Constant [ public float GABOUT_DIALOG_LICENSE_GPL_3_0_ONLY ] { 10 }
-        Constant [ public float GABOUT_DIALOG_LICENSE_LGPL_2_1_ONLY ] { 11 }
-        Constant [ public float GABOUT_DIALOG_LICENSE_LGPL_3_0_ONLY ] { 12 }
+        Constant [ public integer FLAG_MODAL ] { 1 }
+        Constant [ public integer FLAG_DESTROY_WITH_PARENT ] { 2 }
+        Constant [ public integer FLAG_USE_HEADER_BAR ] { 4 }
+        Constant [ public integer RESPONSE_TYPE_NONE ] { -1 }
+        Constant [ public integer RESPONSE_TYPE_REJECT ] { -2 }
+        Constant [ public integer RESPONSE_TYPE_ACCEPT ] { -3 }
+        Constant [ public integer RESPONSE_TYPE_DELETE_EVENT ] { -4 }
+        Constant [ public integer RESPONSE_TYPE_OK ] { -5 }
+        Constant [ public integer RESPONSE_TYPE_CANCEL ] { -6 }
+        Constant [ public integer RESPONSE_TYPE_CLOSE ] { -7 }
+        Constant [ public integer RESPONSE_TYPE_YES ] { -8 }
+        Constant [ public integer RESPONSE_TYPE_NO ] { -9 }
+        Constant [ public integer RESPONSE_TYPE_APPLY ] { -10 }
+        Constant [ public integer RESPONSE_TYPE_HELP ] { -11 }
+        Constant [ public integer LICENSE_UNKNOWN ] { 0 }
+        Constant [ public integer LICENSE_CUSTOM ] { 1 }
+        Constant [ public integer LICENSE_GPL_2_0 ] { 2 }
+        Constant [ public integer LICENSE_GPL_3_0 ] { 3 }
+        Constant [ public integer LICENSE_LGPL_2_1 ] { 4 }
+        Constant [ public integer LICENSE_LGPL_3_0 ] { 5 }
+        Constant [ public integer LICENSE_BSD ] { 6 }
+        Constant [ public integer LICENSE_MIT_X11 ] { 7 }
+        Constant [ public integer LICENSE_ARTISTIC ] { 8 }
+        Constant [ public integer LICENSE_GPL_2_0_ONLY ] { 9 }
+        Constant [ public integer LICENSE_GPL_3_0_ONLY ] { 10 }
+        Constant [ public integer LICENSE_LGPL_2_1_ONLY ] { 11 }
+        Constant [ public integer LICENSE_LGPL_3_0_ONLY ] { 12 }
       }
 
       - Static properties [0] {
       }
 
-      - Static methods [1] {
-        Method [ <internal:pggi> static public method showGAboutDialog ] {
-
-          - Parameters [2] {
-            Parameter #0 [ <optional> $parent ]
-            Parameter #1 [ <optional> $args ]
-          }
-        }
+      - Static methods [0] {
       }
 
       - Properties [41] {
@@ -1894,95 +1986,88 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
         Property [ <default> public $logoIconName ]
       }
 
-      - Methods [14] {
-        Method [ <internal:pggi, overwrites GDialog, ctor> public method __construct ] {
+      - Methods [13] {
+        Method [ <internal:pggi, overwrites PGGI\GDialog, ctor> public method __construct ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GDialog> public method run ] {
+        Method [ <internal:pggi, inherits PGGI\GDialog> public method run ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWindow> public method setTitle ] {
-
-          - Parameters [1] {
-            Parameter #0 [ <required> $name ]
-          }
-        }
-
-        Method [ <internal:pggi, inherits GWindow> public method setDefaultSize ] {
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method setDefaultSize ] {
 
           - Parameters [2] {
-            Parameter #0 [ <required> $x ]
-            Parameter #1 [ <required> $y ]
+            Parameter #0 [ <required> integer $x ]
+            Parameter #1 [ <required> integer $y ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWindow> public method close ] {
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method close ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWindow> public method setKeepAbove ] {
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method setKeepAbove ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $name ]
+            Parameter #0 [ <required> boolean $value ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWindow> public method setKeepBelow ] {
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method setKeepBelow ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $name ]
+            Parameter #0 [ <required> boolean $value ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWindow> public method fullscreen ] {
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method fullscreen ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWindow> public method unfullscreen ] {
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method unfullscreen ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GContainer> public method add ] {
+        Method [ <internal:pggi, inherits PGGI\GContainer> public method add ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $data ]
+            Parameter #0 [ <required> PGGI\GWidget $widget ]
           }
         }
 
-        Method [ <internal:pggi, inherits GContainer, prototype GWidget> public method on ] {
+        Method [ <internal:pggi, inherits PGGI\GContainer, prototype PGGI\GWidget> public method on ] {
 
           - Parameters [3] {
-            Parameter #0 [ <required> $type ]
-            Parameter #1 [ <required> $callback ]
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
             Parameter #2 [ <optional> $param ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method show ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method show ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method hide ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method showAll ] {
 
           - Parameters [0] {
           }
@@ -1990,7 +2075,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
     }
 
-    Class [ <internal:pggi> class GGrid extends GBox ] {
+    Class [ <internal:pggi> class PGGI\GGrid extends PGGI\GBox ] {
 
       - Constants [5] {
         Constant [ public float ALIGN_FILL ] { 0 }
@@ -2037,7 +2122,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
 
       - Methods [16] {
-        Method [ <internal:pggi, overwrites GBox, ctor> public method __construct ] {
+        Method [ <internal:pggi, overwrites PGGI\GBox, ctor> public method __construct ] {
 
           - Parameters [0] {
           }
@@ -2046,118 +2131,119 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
         Method [ <internal:pggi> public method attach ] {
 
           - Parameters [5] {
-            Parameter #0 [ <required> $widget ]
-            Parameter #1 [ <required> $left ]
-            Parameter #2 [ <required> $top ]
-            Parameter #3 [ <optional> $width ]
-            Parameter #4 [ <optional> $height ]
+            Parameter #0 [ <required> PGGI\GWidget $widget ]
+            Parameter #1 [ <required> integer $left ]
+            Parameter #2 [ <required> integer $top ]
+            Parameter #3 [ <optional> integer or NULL $width ]
+            Parameter #4 [ <optional> integer or NULL $height ]
           }
         }
 
         Method [ <internal:pggi> public method attachNextTo ] {
 
           - Parameters [5] {
-            Parameter #0 [ <required> $widget ]
-            Parameter #1 [ <required> $sibling ]
-            Parameter #2 [ <required> $side ]
-            Parameter #3 [ <optional> $width ]
-            Parameter #4 [ <optional> $height ]
+            Parameter #0 [ <required> PGGI\GWidget $widget ]
+            Parameter #1 [ <required> PGGI\GWidget $sibling ]
+            Parameter #2 [ <required> integer $side ]
+            Parameter #3 [ <optional> integer or NULL $width ]
+            Parameter #4 [ <optional> integer or NULL $height ]
           }
         }
 
         Method [ <internal:pggi> public method getChildAt ] {
 
           - Parameters [2] {
-            Parameter #0 [ <required> $left ]
-            Parameter #1 [ <required> $top ]
+            Parameter #0 [ <optional> integer $left ]
+            Parameter #1 [ <optional> integer $top ]
           }
+          - Return [ PGGI\GWidget or NULL ]
         }
 
         Method [ <internal:pggi> public method insertRow ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $position ]
+            Parameter #0 [ <required> integer $position ]
           }
         }
 
         Method [ <internal:pggi> public method insertColumn ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $position ]
+            Parameter #0 [ <required> integer $position ]
           }
         }
 
         Method [ <internal:pggi> public method removeRow ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $position ]
+            Parameter #0 [ <required> integer $position ]
           }
         }
 
         Method [ <internal:pggi> public method removeColumn ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $position ]
+            Parameter #0 [ <required> integer $position ]
           }
         }
 
         Method [ <internal:pggi> public method insertNextTo ] {
 
           - Parameters [2] {
-            Parameter #0 [ <required> $sibling ]
-            Parameter #1 [ <required> $side ]
+            Parameter #0 [ <required> PGGI\GWidget $sibling ]
+            Parameter #1 [ <required> integer $side ]
           }
         }
 
-        Method [ <internal:pggi, inherits GBox> public method packStart ] {
+        Method [ <internal:pggi, inherits PGGI\GBox> public method packStart ] {
 
           - Parameters [4] {
-            Parameter #0 [ <required> $object ]
-            Parameter #1 [ <optional> $expand ]
-            Parameter #2 [ <optional> $fill ]
-            Parameter #3 [ <optional> $padding ]
+            Parameter #0 [ <required> PGGI\GWidget $object ]
+            Parameter #1 [ <optional> boolean or NULL $expand ]
+            Parameter #2 [ <optional> boolean or NULL $fill ]
+            Parameter #3 [ <optional> integer or NULL $padding ]
           }
         }
 
-        Method [ <internal:pggi, inherits GBox> public method packEnd ] {
+        Method [ <internal:pggi, inherits PGGI\GBox> public method packEnd ] {
 
           - Parameters [4] {
-            Parameter #0 [ <required> $object ]
-            Parameter #1 [ <optional> $expand ]
-            Parameter #2 [ <optional> $fill ]
-            Parameter #3 [ <optional> $padding ]
+            Parameter #0 [ <required> PGGI\GWidget $object ]
+            Parameter #1 [ <optional> boolean or NULL $expand ]
+            Parameter #2 [ <optional> boolean or NULL $fill ]
+            Parameter #3 [ <optional> integer or NULL $padding ]
           }
         }
 
-        Method [ <internal:pggi, inherits GContainer> public method add ] {
+        Method [ <internal:pggi, inherits PGGI\GContainer> public method add ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $data ]
+            Parameter #0 [ <required> PGGI\GWidget $widget ]
           }
         }
 
-        Method [ <internal:pggi, inherits GContainer, prototype GWidget> public method on ] {
+        Method [ <internal:pggi, inherits PGGI\GContainer, prototype PGGI\GWidget> public method on ] {
 
           - Parameters [3] {
-            Parameter #0 [ <required> $type ]
-            Parameter #1 [ <required> $callback ]
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
             Parameter #2 [ <optional> $param ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method show ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method show ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method hide ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method showAll ] {
 
           - Parameters [0] {
           }
@@ -2165,7 +2251,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
     }
 
-    Class [ <internal:pggi> class GTextIter ] {
+    Class [ <internal:pggi> class PGGI\GTextIter ] {
 
       - Constants [0] {
       }
@@ -2327,14 +2413,14 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
         Method [ <internal:pggi> public method forwardChars ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $number ]
+            Parameter #0 [ <required> integer $value ]
           }
         }
 
         Method [ <internal:pggi> public method backwardChars ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $number ]
+            Parameter #0 [ <required> integer $value ]
           }
         }
 
@@ -2353,14 +2439,14 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
         Method [ <internal:pggi> public method forwardLines ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $number ]
+            Parameter #0 [ <required> integer $value ]
           }
         }
 
         Method [ <internal:pggi> public method backwardLines ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $number ]
+            Parameter #0 [ <required> integer $value ]
           }
         }
 
@@ -2379,14 +2465,14 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
         Method [ <internal:pggi> public method backwardWordStarts ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $number ]
+            Parameter #0 [ <required> integer $value ]
           }
         }
 
         Method [ <internal:pggi> public method forwardWordEnds ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $number ]
+            Parameter #0 [ <required> integer $value ]
           }
         }
 
@@ -2405,14 +2491,14 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
         Method [ <internal:pggi> public method backwardCursorPositions ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $number ]
+            Parameter #0 [ <required> integer $value ]
           }
         }
 
         Method [ <internal:pggi> public method forwardCursorPositions ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $number ]
+            Parameter #0 [ <required> integer $value ]
           }
         }
 
@@ -2431,14 +2517,14 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
         Method [ <internal:pggi> public method backwardSentenceStarts ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $number ]
+            Parameter #0 [ <required> integer $value ]
           }
         }
 
         Method [ <internal:pggi> public method forwardSentenceEnds ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $number ]
+            Parameter #0 [ <required> integer $value ]
           }
         }
 
@@ -2457,14 +2543,14 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
         Method [ <internal:pggi> public method backwardVisibleWordStarts ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $number ]
+            Parameter #0 [ <required> integer $value ]
           }
         }
 
         Method [ <internal:pggi> public method forwardVisibleWordEnds ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $number ]
+            Parameter #0 [ <required> integer $value ]
           }
         }
 
@@ -2483,14 +2569,14 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
         Method [ <internal:pggi> public method backwardVisibleCursorPositions ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $number ]
+            Parameter #0 [ <required> integer $value ]
           }
         }
 
         Method [ <internal:pggi> public method forwardVisibleCursorPositions ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $number ]
+            Parameter #0 [ <required> integer $value ]
           }
         }
 
@@ -2509,14 +2595,14 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
         Method [ <internal:pggi> public method forwardVisibleLines ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $number ]
+            Parameter #0 [ <required> integer $value ]
           }
         }
 
         Method [ <internal:pggi> public method backwardVisibleLines ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $number ]
+            Parameter #0 [ <required> integer $value ]
           }
         }
 
@@ -2534,7 +2620,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
     }
 
-    Class [ <internal:pggi> class GTreeIter ] {
+    Class [ <internal:pggi> class PGGI\GTreeIter ] {
 
       - Constants [0] {
       }
@@ -2608,7 +2694,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       }
     }
 
-    Class [ <internal:pggi> class GTreeStore ] {
+    Class [ <internal:pggi> class PGGI\GTreeStore ] {
 
       - Constants [0] {
       }
@@ -2622,7 +2708,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
       - Properties [0] {
       }
 
-      - Methods [4] {
+      - Methods [6] {
         Method [ <internal:pggi, ctor> public method __construct ] {
 
           - Parameters [0] {
@@ -2635,7 +2721,7 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
           }
         }
 
-        Method [ <internal:pggi> public method append ] {
+        Method [ <internal:pggi> public method appendRow ] {
 
           - Parameters [1] {
             Parameter #0 [ <optional> $parent ]
@@ -2648,10 +2734,119 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
             Parameter #0 [ <optional> $parent ]
           }
         }
+
+        Method [ <internal:pggi> public method getNbColumns ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method getIterFirst ] {
+
+          - Parameters [0] {
+          }
+        }
       }
     }
 
-    Class [ <internal:pggi> class GTreeView extends GContainer ] {
+    Class [ <internal:pggi> class PGGI\GCellRenderer ] {
+
+      - Constants [0] {
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [0] {
+      }
+
+      - Methods [0] {
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\GCellRendererText ] {
+
+      - Constants [0] {
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [0] {
+      }
+
+      - Methods [1] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
+
+          - Parameters [0] {
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\GTreeViewColumn ] {
+
+      - Constants [3] {
+        Constant [ public integer SIZING_GROW_ONLY ] { 0 }
+        Constant [ public integer SIZING_AUTOSIZE ] { 1 }
+        Constant [ public integer SIZING_FIXED ] { 2 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [12] {
+        Property [ <default> public $spacing ]
+        Property [ <default> public $visible ]
+        Property [ <default> public $resizable ]
+        Property [ <default> public $sizing ]
+        Property [ <default> public $fixedWidth ]
+        Property [ <default> public $minWidth ]
+        Property [ <default> public $maxWidth ]
+        Property [ <default> public $title ]
+        Property [ <default> public $expand ]
+        Property [ <default> public $clickable ]
+        Property [ <default> public $alignment ]
+        Property [ <default> public $reorderable ]
+      }
+
+      - Methods [3] {
+        Method [ <internal:pggi> public method on ] {
+
+          - Parameters [3] {
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
+            Parameter #2 [ <optional> $param ]
+          }
+        }
+
+        Method [ <internal:pggi, ctor> public method __construct ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method addAttribute ] {
+
+          - Parameters [3] {
+            Parameter #0 [ <required> $renderer ]
+            Parameter #1 [ <required> $attribute ]
+            Parameter #2 [ <required> $col ]
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\GTreeView extends PGGI\GContainer ] {
 
       - Constants [5] {
         Constant [ public float ALIGN_FILL ] { 0 }
@@ -2705,42 +2900,282 @@ Extension [ <persistent> extension #15 pggi version 1.0 ] {
         Property [ <default> public $tooltipColumn ]
       }
 
-      - Methods [6] {
-        Method [ <internal:pggi, overwrites GContainer, ctor> public method __construct ] {
+      - Methods [10] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, overwrites GContainer, prototype GWidget> public method on ] {
+        Method [ <internal:pggi, overwrites PGGI\GContainer, prototype PGGI\GWidget> public method on ] {
 
           - Parameters [3] {
-            Parameter #0 [ <required> $type ]
-            Parameter #1 [ <required> $callback ]
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
             Parameter #2 [ <optional> $param ]
           }
         }
 
-        Method [ <internal:pggi, inherits GContainer> public method add ] {
+        Method [ <internal:pggi> public method expandAll ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method collapseAll ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method appendColumn ] {
 
           - Parameters [1] {
-            Parameter #0 [ <required> $data ]
+            Parameter #0 [ <required> $column ]
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method show ] {
+        Method [ <internal:pggi> public method removeColumn ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $column ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GContainer> public method add ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> PGGI\GWidget $widget ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method show ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method hide ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method hide ] {
 
           - Parameters [0] {
           }
         }
 
-        Method [ <internal:pggi, inherits GWidget> public method showAll ] {
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method showAll ] {
+
+          - Parameters [0] {
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class GFileChooserDialog extends PGGI\GDialog ] {
+
+      - Constants [23] {
+        Constant [ public float ALIGN_FILL ] { 0 }
+        Constant [ public float ALIGN_START ] { 1 }
+        Constant [ public float ALIGN_END ] { 2 }
+        Constant [ public float ALIGN_CENTER ] { 3 }
+        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public integer FLAG_MODAL ] { 1 }
+        Constant [ public integer FLAG_DESTROY_WITH_PARENT ] { 2 }
+        Constant [ public integer FLAG_USE_HEADER_BAR ] { 4 }
+        Constant [ public integer RESPONSE_TYPE_NONE ] { -1 }
+        Constant [ public integer RESPONSE_TYPE_REJECT ] { -2 }
+        Constant [ public integer RESPONSE_TYPE_ACCEPT ] { -3 }
+        Constant [ public integer RESPONSE_TYPE_DELETE_EVENT ] { -4 }
+        Constant [ public integer RESPONSE_TYPE_OK ] { -5 }
+        Constant [ public integer RESPONSE_TYPE_CANCEL ] { -6 }
+        Constant [ public integer RESPONSE_TYPE_CLOSE ] { -7 }
+        Constant [ public integer RESPONSE_TYPE_YES ] { -8 }
+        Constant [ public integer RESPONSE_TYPE_NO ] { -9 }
+        Constant [ public integer RESPONSE_TYPE_APPLY ] { -10 }
+        Constant [ public integer RESPONSE_TYPE_HELP ] { -11 }
+        Constant [ public float ACTION_OPEN ] { 0 }
+        Constant [ public float ACTION_SAVE ] { 1 }
+        Constant [ public float ACTION_SELECT_FOLDER ] { 2 }
+        Constant [ public float ACTION_CREATE_FOLDER ] { 3 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [41] {
+        Property [ <default> public $vAlign ]
+        Property [ <default> public $hAlign ]
+        Property [ <default> public $marginStart ]
+        Property [ <default> public $marginEnd ]
+        Property [ <default> public $marginTop ]
+        Property [ <default> public $marginBottom ]
+        Property [ <default> public $hExpand ]
+        Property [ <default> public $hExpandSet ]
+        Property [ <default> public $vExpand ]
+        Property [ <default> public $vExpandSet ]
+        Property [ <default> public $opacity ]
+        Property [ <default> public $visible ]
+        Property [ <default> public $noShowAll ]
+        Property [ <default> public $direction ]
+        Property [ <default> public $sensitive ]
+        Property [ <default> public $name ]
+        Property [ <default> public $canDefault ]
+        Property [ <default> public $canFocus ]
+        Property [ <default> public $borderWidth ]
+        Property [ <default> public $title ]
+        Property [ <default> public $focusVisible ]
+        Property [ <default> public $focusOnMap ]
+        Property [ <default> public $decorated ]
+        Property [ <default> public $deletable ]
+        Property [ <default> public $mnemonicsVisible ]
+        Property [ <default> public $resizable ]
+        Property [ <default> public $defaultHeight ]
+        Property [ <default> public $defaultWidth ]
+        Property [ <default> public $hideTitlebarWhenMaximized ]
+        Property [ <default> public $acceptFocus ]
+        Property [ <default> public $action ]
+        Property [ <default> public $createFolders ]
+        Property [ <default> public $doOverrideConfirmation ]
+        Property [ <default> public $localOnly ]
+        Property [ <default> public $selectMultiple ]
+        Property [ <default> public $showHidden ]
+        Property [ <default> public $currentName ]
+        Property [ <default> public $fileName ]
+        Property [ <default> public $currentFolder ]
+        Property [ <default> public $uri ]
+        Property [ <default> public $currentFolderURI ]
+      }
+
+      - Methods [19] {
+        Method [ <internal:pggi, overwrites PGGI\GDialog, ctor> public method __construct ] {
+
+          - Parameters [7] {
+            Parameter #0 [ <required> integer $action ]
+            Parameter #1 [ <optional> string or NULL $title ]
+            Parameter #2 [ <optional> PGGI\GWindow or NULL $parent ]
+            Parameter #3 [ <optional> string or NULL $button1_name ]
+            Parameter #4 [ <optional> integer or NULL $button1_action ]
+            Parameter #5 [ <optional> string or NULL $button2_name ]
+            Parameter #6 [ <optional> integer or NULL $button2_action ]
+          }
+        }
+
+        Method [ <internal:pggi> public method selectFilename ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $name ]
+          }
+        }
+
+        Method [ <internal:pggi> public method unselectFilename ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $name ]
+          }
+        }
+
+        Method [ <internal:pggi> public method selectAll ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method unselectAll ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method selectURI ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $name ]
+          }
+        }
+
+        Method [ <internal:pggi> public method unselectURI ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $name ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GDialog> public method run ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method setDefaultSize ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> integer $x ]
+            Parameter #1 [ <required> integer $y ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method close ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method setKeepAbove ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> boolean $value ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method setKeepBelow ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> boolean $value ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method fullscreen ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method unfullscreen ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GContainer> public method add ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> PGGI\GWidget $widget ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GContainer, prototype PGGI\GWidget> public method on ] {
+
+          - Parameters [3] {
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
+            Parameter #2 [ <optional> $param ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method show ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method hide ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method showAll ] {
 
           - Parameters [0] {
           }

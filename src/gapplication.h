@@ -20,6 +20,11 @@
 #include "zend.h"
 #include "zend_API.h"
 #include "hub.h"
+#include "gwidget.h"
+
+zend_class_entry * gapplication_get_class_entry();
+
+zend_object_handlers * gapplication_get_object_handlers();
 
 /************************************/
 /* GApplication internal structures */
@@ -66,7 +71,7 @@ void gapplication_free_resource(zend_resource *rsrc);
 
 void gapplication_function(gpointer data, unsigned int type);
 void gapplication_func_activate(GtkApplication* app, gpointer data);
-void gapplication_func_startup(GtkApplication* app, gpointer data);
+void gapplication_func_startup (GtkApplication* app, gpointer data);
 void gapplication_func_shutdown(GtkApplication* app, gpointer data);
 
 /***************/
@@ -77,13 +82,10 @@ void gapplication_func_shutdown(GtkApplication* app, gpointer data);
 PHP_METHOD(GApplication,name)
 
 GAPPLICATION_METHOD(__construct);
-
-GAPPLICATION_METHOD(run);
-
-GAPPLICATION_METHOD(on);
-
-GAPPLICATION_METHOD(quit);
-GAPPLICATION_METHOD(hold);
+GAPPLICATION_METHOD(run        );
+GAPPLICATION_METHOD(on         );
+GAPPLICATION_METHOD(quit       );
+GAPPLICATION_METHOD(hold       );
 
 /******************************/
 /* GApplication Initilializer */

@@ -52,11 +52,11 @@ DECLARE_CLASS_PROPERTY(gmenubar_class_entry_ce, name)
 
 void gmenubar_init(int module_number){
 	DECLARE_CLASS_PROPERTY_INIT();
-	le_gmenubar = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "gmenubar", module_number);
+	le_gmenubar = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "PGGI\\GMenubar", module_number);
 
 	memcpy(&gmenubar_object_handlers, gmenushell_get_object_handlers(), sizeof(zend_object_handlers));
 
-	INIT_CLASS_ENTRY(ce, "GMenubar", gmenubar_class_functions);
+	INIT_CLASS_ENTRY(ce, "PGGI\\GMenubar", gmenubar_class_functions);
 	gmenubar_class_entry_ce = zend_register_internal_class_ex(&ce, gmenushell_get_class_entry());
 }
 

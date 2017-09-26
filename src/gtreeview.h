@@ -22,6 +22,7 @@
 #include "hub.h"
 #include "gcontainer.h"
 #include "gtreestore.h"
+#include "gtreeviewcolumn.h"
 
 /**********************/
 /* GTreeView Arginfos */
@@ -30,6 +31,10 @@
 ZEND_BEGIN_ARG_INFO_EX(arginfo_gtree_view_scroll_to_point, 0, 0, 2)
 	ZEND_ARG_INFO(0, x)
 	ZEND_ARG_INFO(0, y)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_gtree_view_pend, 0, 0, 1)
+	ZEND_ARG_INFO(0, column)
 ZEND_END_ARG_INFO()
 
 /************************/

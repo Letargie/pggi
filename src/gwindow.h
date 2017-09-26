@@ -32,13 +32,13 @@ zend_object_handlers * gwindow_get_object_handlers(void);
 /********************/
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_gwindow_set_default_size, 0, 0, 2)
-	ZEND_ARG_INFO(0, x)
-	ZEND_ARG_INFO(0, y)
+	ZEND_ARG_TYPE_INFO(0, x, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, y, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_gwindow_construct, 0, 0, 1)
-	ZEND_ARG_INFO(0, app)
-	ZEND_ARG_INFO(0, title)
+	ZEND_ARG_OBJ_INFO(0, app, PGGI\\GApplication, 0)
+	ZEND_ARG_TYPE_INFO(0, title, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
 /**********************/
@@ -87,14 +87,13 @@ void gwindow_write_property(zval *object, zval *member, zval *value, void **cach
 #define GWINDOW_METHOD(name) \
 PHP_METHOD(GWindow, name)
 
-GWINDOW_METHOD(__construct		);
-GWINDOW_METHOD(setTitle			);
-GWINDOW_METHOD(setDefaultSize	);
-GWINDOW_METHOD(close			);
-GWINDOW_METHOD(setKeepAbove		);
-GWINDOW_METHOD(setKeepBelow		);
-GWINDOW_METHOD(fullscreen		);
-GWINDOW_METHOD(unfullscreen		);
+GWINDOW_METHOD(__construct   );
+GWINDOW_METHOD(setDefaultSize);
+GWINDOW_METHOD(close         );
+GWINDOW_METHOD(setKeepAbove  );
+GWINDOW_METHOD(setKeepBelow  );
+GWINDOW_METHOD(fullscreen    );
+GWINDOW_METHOD(unfullscreen  );
 
 /********************************/
 /* GWindow class initialisation */

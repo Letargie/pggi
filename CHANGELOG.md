@@ -1,7 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] 1.0.0
+## [Unreleased] 0.2.0
+
+## [0.1.0]
+* Tue September 26 2017 Valentin Collet <valentin@famillecollet.com> 0.1.0
 ### Added
 	-new classes
 		-GApplication
@@ -27,4 +30,7 @@ All notable changes to this project will be documented in this file.
 		-GTreeView
 		-GTreeStore
 		-GTreeIter
+		-GTreeViewColumn
+		-GCellRenderer
+		-GCellRendererText
 		

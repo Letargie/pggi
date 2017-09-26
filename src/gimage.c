@@ -42,8 +42,8 @@ GIMAGE_METHOD(__construct){
 	ze_obj = Z_GWIDGET_P(getThis());
 	ze_obj->std.handlers = &gimage_object_handlers;
 	char * c = NULL;
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "S", &image) == FAILURE)
-		RETURN_NULL();
+	if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "S", &image) == FAILURE)
+		return;
 	c = ZSTR_VAL(image);
 	ze_obj->widget_ptr = gwidget_new();
 	ze_obj->widget_ptr->intern = gtk_image_new_from_file(c);
@@ -54,19 +54,17 @@ GIMAGE_METHOD(set){
 	zend_string * image = NULL;
 	ze_gwidget_object * ze_obj;
 	zval * self = getThis();
-	if(!self)
-		RETURN_NULL();
 	ze_obj = Z_GWIDGET_P(getThis());
 	char * c = NULL;
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "S", &image) == FAILURE)
-		RETURN_NULL();
+		return;
 	c = ZSTR_VAL(image);
 	gtk_image_set_from_file(GTK_IMAGE(ze_obj->widget_ptr->intern), c);
 }
 
 static const zend_function_entry gimage_class_functions[] = {
-	PHP_ME(GImage, set			, arginfo_pggi_set			, ZEND_ACC_PUBLIC)
-	PHP_ME(GImage, __construct	, arginfo_gimage_construct	, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	PHP_ME(GImage, set        , arginfo_pggi_set_string , ZEND_ACC_PUBLIC)
+	PHP_ME(GImage, __construct, arginfo_gimage_construct, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
 	PHP_FE_END
 };
 
@@ -76,10 +74,10 @@ static const zend_function_entry gimage_class_functions[] = {
 
 void gimage_init(int module_number){
 	zend_class_entry ce;
-	le_gimage = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "gimage", module_number);
+	le_gimage = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "PGGI\\GImage", module_number);
 
 	memcpy(&gimage_object_handlers, gwidget_get_object_handlers(), sizeof(zend_object_handlers));
-	INIT_CLASS_ENTRY(ce, "GImage", gimage_class_functions);
+	INIT_CLASS_ENTRY(ce, "PGGI\\GImage", gimage_class_functions);
 	ce.create_object = gwidget_object_new;
 	gimage_class_entry_ce = zend_register_internal_class_ex(&ce, gwidget_get_class_entry());
 }

@@ -27,6 +27,8 @@ static zend_class_entry * gabout_dialog_class_entry_ce;
 
 GABOUT_DIALOG_METHOD(__construct){
 	ze_gwidget_object * widget = Z_GWIDGET_P(getThis());
+	if(pggi_parse_parameters_none_throw() == FAILURE)
+		return ;
 	widget->std.handlers = &gabout_dialog_object_handlers;
 	widget->widget_ptr = gwidget_new();
 	widget->widget_ptr->intern = gtk_about_dialog_new();
@@ -61,25 +63,22 @@ GABOUT_DIALOG_METHOD(showGAboutDialog){
 	ze_gwidget_object *ze_obj = NULL;
 	zval * parent = NULL, * args = NULL;
 	GtkWidget * p = NULL;
-	if(zend_parse_parameters(ZEND_NUM_ARGS(), "|zz", &parent, args) == FAILURE){
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "|zz", &parent, args) == FAILURE)
 		return ;
-	}
 	zval * self = getThis();
-	if(self){
-		ze_obj = Z_GWIDGET_P(self);
-		if(parent)
-			p = (Z_GWIDGET_P(parent))->widget_ptr->intern;
-		
-	}
+	ze_obj = Z_GWIDGET_P(self);
+	if(parent)
+		p = (Z_GWIDGET_P(parent))->widget_ptr->intern;
+	// UNFINISHED need to check parameters
 }
+
 
 /**
  * List of GAboutDialog functions and methods with their arguments
  */
 static const zend_function_entry gabout_dialog_class_functions[] = {
-	PHP_ME(GAboutDialog, __construct	, arginfo_pggi_void	, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
-	PHP_ME(GAboutDialog, showGAboutDialog, arginfo_gabout_dialog_show, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
-
+	PHP_ME(GAboutDialog, __construct     , arginfo_pggi_void         , ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	//PHP_ME(GAboutDialog, showGAboutDialog, arginfo_gabout_dialog_show, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
 	PHP_FE_END
 };
 
@@ -92,7 +91,6 @@ zval *gabout_dialog_read_property(zval *object, zval *member, int type, void **c
 	gwidget_ptr w = intern->widget_ptr;
 	zval zobj;
 	zend_long lval;
-
 	ZVAL_NULL(rv);
 	if(w){
 		convert_to_string(member);
@@ -147,9 +145,6 @@ HashTable *gabout_dialog_get_properties(zval *object){
 	G_H_UPDATE_INIT(gwindow_get_properties(object));
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	if(!w){
-		return NULL;
-	}
 	GtkAboutDialog * dialog = GTK_ABOUT_DIALOG(w->intern);
 	G_H_UPDATE_STRING	(GABOUT_DIALOG_PROGRAM_NAME			, gtk_about_dialog_get_program_name			(dialog));
 	G_H_UPDATE_STRING	(GABOUT_DIALOG_VERSION				, gtk_about_dialog_get_version				(dialog));
@@ -198,25 +193,25 @@ void gabout_dialog_write_property(zval *object, zval *member, zval *value, void 
 			else
 				gwindow_write_property(object, member, value, cache_slot);
 			break;
-		case IS_LONG : // need to check license type
+		case IS_LONG :
 			if(!strcmp(member_val, GABOUT_DIALOG_LICENSE_TYPE)){
 				switch(Z_LVAL_P(value)){
 					case GABOUT_DIALOG_LICENSE_UNKNOWN:
-					case GABOUT_DIALOG_LICENSE_CUSTOM :
-					case GABOUT_DIALOG_LICENSE_GPL_2_0 :
-					case GABOUT_DIALOG_LICENSE_GPL_3_0 :
-					case GABOUT_DIALOG_LICENSE_BSD :
-					case GABOUT_DIALOG_LICENSE_MIT_X11 :
-					case GABOUT_DIALOG_LICENSE_ARTISTIC :
-					case GABOUT_DIALOG_LICENSE_GPL_2_0_ONLY :
-					case GABOUT_DIALOG_LICENSE_GPL_3_0_ONLY :
+					case GABOUT_DIALOG_LICENSE_CUSTOM        :
+					case GABOUT_DIALOG_LICENSE_GPL_2_0       :
+					case GABOUT_DIALOG_LICENSE_GPL_3_0       :
+					case GABOUT_DIALOG_LICENSE_BSD           :
+					case GABOUT_DIALOG_LICENSE_MIT_X11       :
+					case GABOUT_DIALOG_LICENSE_ARTISTIC      :
+					case GABOUT_DIALOG_LICENSE_GPL_2_0_ONLY  :
+					case GABOUT_DIALOG_LICENSE_GPL_3_0_ONLY  :
 					case GABOUT_DIALOG_LICENSE_LGPL_2_1_ONLY :
 					case GABOUT_DIALOG_LICENSE_LGPL_3_0_ONLY :
-					//case GABOUT_DIALOG_LICENSE_AGPL_3_0 :
+					//case GABOUT_DIALOG_LICENSE_AGPL_3_0    :
 						gtk_about_dialog_set_license_type(dialog, Z_LVAL_P(value));
 						break;
 					default :
-						// error
+						zend_throw_exception_ex(pggi_exception_get(), 0, "The licence type property need to be a LICENCE_*");
 						break;
 				}
 			}else{
@@ -245,50 +240,50 @@ DECLARE_CLASS_PROPERTY(gabout_dialog_class_entry_ce, name)
 
 
 #define GABOUT_DIALOG_CONSTANT(name, value) \
-zend_declare_class_constant_double(gabout_dialog_class_entry_ce, name, sizeof(name)-1, value);
+zend_declare_class_constant_long(gabout_dialog_class_entry_ce, name, sizeof(name)-1, value);
 
 void gabout_dialog_init(int module_number){
 	DECLARE_CLASS_PROPERTY_INIT();
-	le_gabout_dialog = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "gabout", module_number);
+	le_gabout_dialog = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "PGGI\\GAboutDialog", module_number);
 
 	memcpy(&gabout_dialog_object_handlers, gdialog_get_object_handlers(), sizeof(zend_object_handlers));
 	gabout_dialog_object_handlers.read_property  = gabout_dialog_read_property;
 	gabout_dialog_object_handlers.get_properties = gabout_dialog_get_properties;
 	gabout_dialog_object_handlers.write_property = gabout_dialog_write_property;
 
-	INIT_CLASS_ENTRY(ce, "GAboutDialog", gabout_dialog_class_functions);
-	gabout_dialog_class_entry_ce	= zend_register_internal_class_ex(&ce, gdialog_get_class_entry());
+	INIT_CLASS_ENTRY(ce, "PGGI\\GAboutDialog", gabout_dialog_class_functions);
+	gabout_dialog_class_entry_ce = zend_register_internal_class_ex(&ce, gdialog_get_class_entry());
 
-	DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_PROGRAM_NAME		);
-	DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_VERSION			);
-	DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_COPYRIGHT			);
-	DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_COMMENTS			);
-	DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_LICENSE			);
-	DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_WRAP_LICENSE		);
-	DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_LICENSE_TYPE		);
-	DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_WEBSITE			);
-	DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_WEBSITE_LABEL		);
-	//DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_AUTHORS			);
-	//DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_ARTISTS			);
-	//DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_DOCUMENTERS		);
-	DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_TRANSLATOR_CREDITS	);
-	//DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_LOGO				);
-	DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_LOGO_ICON_NAME		);
+	DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_PROGRAM_NAME      );
+	DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_VERSION           );
+	DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_COPYRIGHT         );
+	DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_COMMENTS          );
+	DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_LICENSE           );
+	DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_WRAP_LICENSE      );
+	DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_LICENSE_TYPE      );
+	DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_WEBSITE           );
+	DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_WEBSITE_LABEL     );
+	//DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_AUTHORS         );
+	//DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_ARTISTS         );
+	//DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_DOCUMENTERS     );
+	DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_TRANSLATOR_CREDITS);
+	//DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_LOGO            );
+	DECLARE_GABOUT_DIALOG_PROP(GABOUT_DIALOG_LOGO_ICON_NAME    );
 	
-	GABOUT_DIALOG_CONSTANT("GABOUT_DIALOG_LICENSE_UNKNOWN"		, GABOUT_DIALOG_LICENSE_UNKNOWN			);
-	GABOUT_DIALOG_CONSTANT("GABOUT_DIALOG_LICENSE_CUSTOM"		, GABOUT_DIALOG_LICENSE_CUSTOM			);
-	GABOUT_DIALOG_CONSTANT("GABOUT_DIALOG_LICENSE_GPL_2_0"		, GABOUT_DIALOG_LICENSE_GPL_2_0			);
-	GABOUT_DIALOG_CONSTANT("GABOUT_DIALOG_LICENSE_GPL_3_0"		, GABOUT_DIALOG_LICENSE_GPL_3_0			);
-	GABOUT_DIALOG_CONSTANT("GABOUT_DIALOG_LICENSE_LGPL_2_1"		, GABOUT_DIALOG_LICENSE_LGPL_2_1		);
-	GABOUT_DIALOG_CONSTANT("GABOUT_DIALOG_LICENSE_LGPL_3_0"		, GABOUT_DIALOG_LICENSE_LGPL_3_0		);
-	GABOUT_DIALOG_CONSTANT("GABOUT_DIALOG_LICENSE_BSD"			, GABOUT_DIALOG_LICENSE_BSD				);
-	GABOUT_DIALOG_CONSTANT("GABOUT_DIALOG_LICENSE_MIT_X11"		, GABOUT_DIALOG_LICENSE_MIT_X11			);
-	GABOUT_DIALOG_CONSTANT("GABOUT_DIALOG_LICENSE_ARTISTIC"		, GABOUT_DIALOG_LICENSE_ARTISTIC		);
-	GABOUT_DIALOG_CONSTANT("GABOUT_DIALOG_LICENSE_GPL_2_0_ONLY"	, GABOUT_DIALOG_LICENSE_GPL_2_0_ONLY	);
-	GABOUT_DIALOG_CONSTANT("GABOUT_DIALOG_LICENSE_GPL_3_0_ONLY"	, GABOUT_DIALOG_LICENSE_GPL_3_0_ONLY	);
-	GABOUT_DIALOG_CONSTANT("GABOUT_DIALOG_LICENSE_LGPL_2_1_ONLY", GABOUT_DIALOG_LICENSE_LGPL_2_1_ONLY	);
-	GABOUT_DIALOG_CONSTANT("GABOUT_DIALOG_LICENSE_LGPL_3_0_ONLY", GABOUT_DIALOG_LICENSE_LGPL_3_0_ONLY	);
-	//GABOUT_DIALOG_CONSTANT("GABOUT_DIALOG_LICENSE_AGPL_3_0"		, GABOUT_DIALOG_LICENSE_AGPL_3_0		);
+	GABOUT_DIALOG_CONSTANT("LICENSE_UNKNOWN"      , GABOUT_DIALOG_LICENSE_UNKNOWN      );
+	GABOUT_DIALOG_CONSTANT("LICENSE_CUSTOM"       , GABOUT_DIALOG_LICENSE_CUSTOM       );
+	GABOUT_DIALOG_CONSTANT("LICENSE_GPL_2_0"      , GABOUT_DIALOG_LICENSE_GPL_2_0      );
+	GABOUT_DIALOG_CONSTANT("LICENSE_GPL_3_0"      , GABOUT_DIALOG_LICENSE_GPL_3_0      );
+	GABOUT_DIALOG_CONSTANT("LICENSE_LGPL_2_1"     , GABOUT_DIALOG_LICENSE_LGPL_2_1     );
+	GABOUT_DIALOG_CONSTANT("LICENSE_LGPL_3_0"     , GABOUT_DIALOG_LICENSE_LGPL_3_0     );
+	GABOUT_DIALOG_CONSTANT("LICENSE_BSD"          , GABOUT_DIALOG_LICENSE_BSD          );
+	GABOUT_DIALOG_CONSTANT("LICENSE_MIT_X11"      , GABOUT_DIALOG_LICENSE_MIT_X11      );
+	GABOUT_DIALOG_CONSTANT("LICENSE_ARTISTIC"     , GABOUT_DIALOG_LICENSE_ARTISTIC     );
+	GABOUT_DIALOG_CONSTANT("LICENSE_GPL_2_0_ONLY" , GABOUT_DIALOG_LICENSE_GPL_2_0_ONLY );
+	GABOUT_DIALOG_CONSTANT("LICENSE_GPL_3_0_ONLY" , GABOUT_DIALOG_LICENSE_GPL_3_0_ONLY );
+	GABOUT_DIALOG_CONSTANT("LICENSE_LGPL_2_1_ONLY", GABOUT_DIALOG_LICENSE_LGPL_2_1_ONLY);
+	GABOUT_DIALOG_CONSTANT("LICENSE_LGPL_3_0_ONLY", GABOUT_DIALOG_LICENSE_LGPL_3_0_ONLY);
+	//GABOUT_DIALOG_CONSTANT("GABOUT_DIALOG_LICENSE_AGPL_3_0", GABOUT_DIALOG_LICENSE_AGPL_3_0);
 
 }
 

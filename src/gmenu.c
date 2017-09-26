@@ -28,6 +28,8 @@ static zend_class_entry * gmenu_class_entry_ce;
 GMENU_METHOD(__construct){
 	ze_gwidget_object * widget;
 	widget = Z_GWIDGET_P(getThis());
+	if(pggi_parse_parameters_none_throw() == FAILURE)
+		return;
 	widget->std.handlers = &gmenu_object_handlers;
 	widget->widget_ptr = gwidget_new();
 	widget->widget_ptr->intern = gtk_menu_new();
@@ -52,11 +54,11 @@ DECLARE_CLASS_PROPERTY(gmenu_class_entry_ce, name)
 
 void gmenu_init(int module_number){
 	DECLARE_CLASS_PROPERTY_INIT();
-	le_gmenu = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "gmenu", module_number);
+	le_gmenu = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "PGGI\\GMenu", module_number);
 
 	memcpy(&gmenu_object_handlers, gmenushell_get_object_handlers(), sizeof(zend_object_handlers));
 
-	INIT_CLASS_ENTRY(ce, "GMenu", gmenu_class_functions);
+	INIT_CLASS_ENTRY(ce, "PGGI\\GMenu", gmenu_class_functions);
 	gmenu_class_entry_ce = zend_register_internal_class_ex(&ce, gmenushell_get_class_entry());
 }
 

@@ -33,11 +33,6 @@ void gcontainer_add_data(gwidget_ptr intern, zval * data);
 /* GContainer Arginfos */
 /***********************/
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_gcontainer_add, 0, 0, 1)
-	ZEND_ARG_INFO(0, data)
-ZEND_END_ARG_INFO()
-
-
 /*************************/
 /* GContainer Properties */
 /*************************/
@@ -49,8 +44,7 @@ ZEND_END_ARG_INFO()
 /*****************/
 
 PHP_METHOD(GContainer, add);
-PHP_METHOD(GContainer, __construct);
-PHP_METHOD(GContainer, on);
+PHP_METHOD(GContainer, on );
 
 void gcontainer_func_add(GtkWidget* container, gpointer data);
 

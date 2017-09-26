@@ -21,18 +21,29 @@ static int le_gapplication;
 static zend_object_handlers gapplication_object_handlers;
 static zend_class_entry * gapplication_class_entry_ce;
 
+zend_class_entry * gapplication_get_class_entry(){
+	return gapplication_class_entry_ce;
+}
+
+zend_object_handlers * gapplication_get_object_handlers(){
+	return &gapplication_object_handlers;
+}
+
+
 /*********************************/
 /* GApplication memory functions */
 /*********************************/
 
 void gapplication_add_windows(gapplication_ptr intern, zval * window){
-	zend_hash_next_index_insert(Z_ARRVAL_P(&intern->windows), window);
-	zval_addref_p(window);
+	zval obj;
+	zend_object * this = php_gwidget_reverse_object(Z_GWIDGET_P(window));
+	ZVAL_OBJ(&obj, this);
+	zend_hash_next_index_insert(Z_ARRVAL_P(&intern->windows), &obj);
+	zval_addref_p(&obj);
 }
 
 gapplication_ptr gapplication_ctor(){
 	gapplication_ptr tor = ecalloc(1, sizeof(gapplication_len));	
-	tor->app = gtk_application_new("org.gtk.example", G_APPLICATION_FLAGS_NONE); /*Should probably be in __construct*/
 	array_init(&tor->windows);
 	array_init(&tor->signals);
 	return tor;
@@ -44,16 +55,6 @@ void gapplication_dtor(gapplication_ptr intern){
 	if (intern->app){
 		g_object_unref(intern->app);
 	}
-	// not sure of the usefulness of that
-	ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(&intern->signals), zv){
-		ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(zv), tmp){
-			ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(tmp), val){
-				if(val)
-					zval_ptr_dtor(val);
-			} ZEND_HASH_FOREACH_END();
-		} ZEND_HASH_FOREACH_END();
-		zend_hash_destroy(Z_ARRVAL_P(zv));
-	} ZEND_HASH_FOREACH_END();
 	zend_hash_destroy(Z_ARRVAL_P(&intern->signals));
 	zend_hash_destroy(Z_ARRVAL_P(&intern->windows));
 	
@@ -140,17 +141,12 @@ PHP_METHOD(GApplication, on){
 	zval * function, * data,* narray, * this, * param = NULL;
 	long val;
 	ze_gapplication_object *ze_obj = NULL;
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "lz|z", &val ,&function, &param) == FAILURE) {
-        RETURN_NULL();
-    }
-	if(!zend_is_callable(function, 0, NULL))
-		zend_error(E_ERROR, "Function requires callable argument");
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "lz|z", &val ,&function, &param) == FAILURE)
+		return;
 	this = getThis();
-	if(!this)
-		RETURN_NULL();
 	ze_obj = Z_GAPPLICATION_P(this);
 	switch(val){
-		case gsignal_gapplication_startup :
+		case gsignal_gapplication_startup  :
 		case gsignal_gapplication_shutdown :
 		case gsignal_gapplication_activate :
 			break;
@@ -188,37 +184,38 @@ PHP_METHOD(GApplication, on){
 PHP_METHOD(GApplication, __construct){
 	ze_gapplication_object *ze_obj = NULL;
 	zval * self = getThis();
-	if(self){
-		ze_obj = Z_GAPPLICATION_P(self);
-		ze_obj->app_ptr = gapplication_ctor();
-	}
+	if(pggi_parse_parameters_none_throw() == FAILURE)
+		return;
+	ze_obj = Z_GAPPLICATION_P(self);
+	ze_obj->app_ptr = gapplication_ctor();
+	ze_obj->app_ptr->app = gtk_application_new("pggi.application", G_APPLICATION_FLAGS_NONE);
 }
 
 PHP_METHOD(GApplication, run){
 	ze_gapplication_object *ze_obj = NULL;
 	zval *self = getThis();
-	if(self){
-		ze_obj = Z_GAPPLICATION_P(self);
-		RETURN_LONG(g_application_run(G_APPLICATION(ze_obj->app_ptr->app), 0, 0));
-	}
+	if(pggi_parse_parameters_none_throw() == FAILURE)
+		return;
+	ze_obj = Z_GAPPLICATION_P(self);
+	RETURN_LONG(g_application_run(G_APPLICATION(ze_obj->app_ptr->app), 0, 0));
 }
 
 PHP_METHOD(GApplication, quit){
 	ze_gapplication_object *ze_obj = NULL;
 	zval * self = getThis();
-	if(self){
-		ze_obj = Z_GAPPLICATION_P(self);
-		g_application_quit(G_APPLICATION(ze_obj->app_ptr->app));
-	}
+	if(pggi_parse_parameters_none_throw() == FAILURE)
+		return;
+	ze_obj = Z_GAPPLICATION_P(self);
+	g_application_quit(G_APPLICATION(ze_obj->app_ptr->app));
 }
 
 PHP_METHOD(GApplication, hold){
 	ze_gapplication_object *ze_obj = NULL;
 	zval * self = getThis();
-	if(self){
-		ze_obj = Z_GAPPLICATION_P(self);
-		g_application_hold(G_APPLICATION(ze_obj->app_ptr->app));
-	}
+	if(pggi_parse_parameters_none_throw() == FAILURE)
+		return;
+	ze_obj = Z_GAPPLICATION_P(self);
+	g_application_hold(G_APPLICATION(ze_obj->app_ptr->app));
 }
 
 static const zend_function_entry gapplication_class_functions[] = {
@@ -235,13 +232,13 @@ static const zend_function_entry gapplication_class_functions[] = {
 
 void gapplication_init(int module_number){
 	zend_class_entry ce;
-	le_gapplication = zend_register_list_destructors_ex(gapplication_free_resource, NULL, "gapplication", module_number);
+	le_gapplication = zend_register_list_destructors_ex(gapplication_free_resource, NULL, "PGGI\\GApplication", module_number);
 
 	memcpy(&gapplication_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-	gapplication_object_handlers.offset = XtOffsetOf(ze_gapplication_object, std);
-	gapplication_object_handlers.free_obj = gapplication_object_free_storage;
+	gapplication_object_handlers.offset    = XtOffsetOf(ze_gapplication_object, std);
+	gapplication_object_handlers.free_obj  = gapplication_object_free_storage;
 	gapplication_object_handlers.clone_obj = NULL;
-	INIT_CLASS_ENTRY(ce, "GApplication", gapplication_class_functions);
+	INIT_CLASS_ENTRY(ce, "PGGI\\GApplication", gapplication_class_functions);
 	ce.create_object = gapplication_object_new;
 	gapplication_class_entry_ce = zend_register_internal_class(&ce);
 }

@@ -39,7 +39,7 @@ GFILE_CHOOSER_DIALOG_METHOD(__construct){
 	ze_gwidget_object * widget, * window;
 	long action, bn1_action = 0, bn2_action = 0;
 	zend_string * button_name1 = NULL, * button_name2 = NULL, * title = NULL;
-	if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "l|SzSlSl", &action, &title, &parent, &button_name1, &bn1_action, &button_name2, &bn2_action) == FAILURE)
+	if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "l|SzSlSl", &action, &title, &parent, gwindow_get_class_entry() ,&button_name1, &bn1_action, &button_name2, &bn2_action) == FAILURE)
 		return;
 	widget = Z_GWIDGET_P(getThis());
 	widget->std.handlers = &gfile_chooser_dialog_object_handlers;
@@ -49,11 +49,11 @@ GFILE_CHOOSER_DIALOG_METHOD(__construct){
 		widget->widget_ptr->intern = gtk_file_chooser_dialog_new(ZSTR_VAL(title), GTK_WINDOW(window->widget_ptr->intern), action, NULL);
 	else if(!button_name2)
 		widget->widget_ptr->intern = gtk_file_chooser_dialog_new(ZSTR_VAL(title), GTK_WINDOW(window->widget_ptr->intern), action,
-                                                                 ZSTR_VAL(button_name1), bn1_action, NULL);
+		                                                         ZSTR_VAL(button_name1), bn1_action, NULL);
 	else	
 		widget->widget_ptr->intern = gtk_file_chooser_dialog_new(ZSTR_VAL(title), GTK_WINDOW(window->widget_ptr->intern), action,
-                                                                 ZSTR_VAL(button_name1), bn1_action,
-                                                                 ZSTR_VAL(button_name2), bn2_action, NULL);
+		                                                         ZSTR_VAL(button_name1), bn1_action,
+		                                                         ZSTR_VAL(button_name2), bn2_action, NULL);
 	GCONTAINER_ADD_ELEMENT(widget);
 	g_signal_connect(widget->widget_ptr->intern, "destroy", G_CALLBACK (widget_destructed), widget);
 }
@@ -116,7 +116,7 @@ GFILE_CHOOSER_DIALOG_METHOD(unselectURI){
  * List of GFileChooserDialog functions and methods with their arguments
  */
 static const zend_function_entry gfile_chooser_dialog_class_functions[] = {
-	PHP_ME(GFileChooserDialog, __construct	   , arginfo_gfile_chooser_dialog_construct, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	PHP_ME(GFileChooserDialog, __construct     , arginfo_gfile_chooser_dialog_construct, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
 	PHP_ME(GFileChooserDialog, selectFilename  , arginfo_gfile_chooser_dialog_select   , ZEND_ACC_PUBLIC)
 	PHP_ME(GFileChooserDialog, unselectFilename, arginfo_gfile_chooser_dialog_select   , ZEND_ACC_PUBLIC)
 	PHP_ME(GFileChooserDialog, selectAll       , arginfo_pggi_void                     , ZEND_ACC_PUBLIC)

@@ -1,5 +1,5 @@
 <?php
-
+namespace PGGI;
 chdir(__DIR__);
 
 function shutdown($app){
@@ -13,7 +13,7 @@ function starting(GApplication $app){
 function activate($app){
 	echo "activate\n";
 	
-	$box = new GBox(PGGI_ORIENTATION_VERTICAL, 2);
+	$box = new GBox(ORIENTATION_VERTICAL, 2);
 	$bar = new GMenuBar();
 	$itemA = new GMenuItem("Test1");
 	$itemB = new GMenuItem("Test2");
@@ -53,7 +53,7 @@ function activate($app){
 }
 
 $a = new GApplication();
-$a->on(PGGI_SIGNAL_GAPPLICATION_SHUTDOWN,"shutdown");
-$a->on(PGGI_SIGNAL_GAPPLICATION_STARTUP,"starting");
-$a->on(PGGI_SIGNAL_GAPPLICATION_ACTIVATE,"activate");
+$a->on(SIGNAL_GAPPLICATION_SHUTDOWN,"PGGI\\shutdown");
+$a->on(SIGNAL_GAPPLICATION_STARTUP,"PGGI\\starting");
+$a->on(SIGNAL_GAPPLICATION_ACTIVATE,"PGGI\\activate");
 $a->run();

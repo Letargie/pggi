@@ -52,30 +52,17 @@ gwidget_ptr gwidget_new(){
 zend_object *gwidget_object_new(zend_class_entry *class_type){
 	ze_gwidget_object *intern;
 	intern = ecalloc(1, sizeof(ze_gwidget_object) + zend_object_properties_size(class_type));
-	zend_object_std_init	(&intern->std, class_type);
-	object_properties_init	(&intern->std, class_type);
+	zend_object_std_init  (&intern->std, class_type);
+	object_properties_init(&intern->std, class_type);
 	intern->std.handlers = &gwidget_object_handlers;
 	return &intern->std;
 }
 
 void gwidget_dtor(gwidget_ptr intern){
 	zval *  zv, * tmp, * val;
-	if (intern->intern){	
+	if (intern->intern){
 		gtk_widget_destroy(intern->intern);
 	}
-	// not sure of the usefulness of that
-	ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(&intern->signals), zv){
-		ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(zv), tmp){
-			
-			ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(tmp), val){
-			if(val)
-				zval_ptr_dtor(val);
-		} ZEND_HASH_FOREACH_END();
-			zend_hash_destroy(Z_ARRVAL_P(tmp));
-		} ZEND_HASH_FOREACH_END();
-		zend_hash_destroy(Z_ARRVAL_P(zv));
-	} ZEND_HASH_FOREACH_END();
-	
 	zend_hash_destroy(Z_ARRVAL_P(&intern->signals));
 	zend_hash_destroy(Z_ARRVAL_P(&intern->data));
 	efree(intern);
@@ -114,14 +101,14 @@ void gwidget_function(gpointer data, unsigned int type){
 		if(value != NULL){
 			if(Z_ARRVAL_P(value))
 			ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(value), zv){
-				zval * function	= zend_hash_index_find(Z_ARRVAL_P(zv), INDEX_ON_FUNCTION_NAME);
-				zval * tmp = zend_hash_index_find(Z_ARRVAL_P(zv), INDEX_ON_FUNCTION_PARAM);
+				zval * function = zend_hash_index_find(Z_ARRVAL_P(zv), INDEX_ON_FUNCTION_NAME );
+				zval * tmp      = zend_hash_index_find(Z_ARRVAL_P(zv), INDEX_ON_FUNCTION_PARAM);
 				if(tmp){
 					ZVAL_COPY(&args[1], tmp);
 				}else
 					ZVAL_NULL(&args[1]);
 				if(call_user_function(EG(function_table), NULL, function, &retval, 2, args) != SUCCESS){
-					zend_error(E_ERROR, "Function call failed");
+					zend_throw_exception_ex(pggi_exception_get(), 0, "Function call failed");
 				}
 			} ZEND_HASH_FOREACH_END();
 		}
@@ -162,7 +149,7 @@ void gwidget_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * par
 			gwidget_adding_function(val, GSIGNAL_GWIDGET_DESTROY, gwidget_func_destroy, ze_obj, function, param);
 			break;
 		default :
-			zend_error(E_ERROR, "Signal unknown");
+			zend_throw_exception_ex(pggi_exception_get(), 0, "not handled signal");
 	}
 	
 }
@@ -171,29 +158,12 @@ void gwidget_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * par
 /* PHP Methods */
 /***************/
 
-GWIDGET_METHOD(__construct){
-	ze_gwidget_object *ze_obj = NULL;
-	zval * self = getThis();
-	if(self){
-		ze_obj = Z_GWIDGET_P(self);
-		ze_obj->widget_ptr = gwidget_new();
-		g_signal_connect(ze_obj->widget_ptr->intern, "destroy", G_CALLBACK (widget_destructed), ze_obj);	
-	}
-}
-
-
-
 GWIDGET_METHOD(on){
 	zval * function, * this, * param = NULL;
 	long val;
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "lz|z", &val ,&function, &param) == FAILURE) {
-        RETURN_NULL();
-    }
-	if(!zend_is_callable(function, 0, NULL))
-		zend_error(E_ERROR, "Function requires callable argument");
+	if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "lz|z", &val ,&function, &param) == FAILURE)
+		return;
 	this = getThis();
-	if(!this)
-		RETURN_NULL();
 	gwidget_on(val, Z_GWIDGET_P(this), function, param);
 }
 
@@ -201,37 +171,36 @@ GWIDGET_METHOD(on){
 GWIDGET_METHOD(show){
 	ze_gwidget_object *ze_obj = NULL;
 	zval * self = getThis();
-	if(self){
-		ze_obj = Z_GWIDGET_P(self);
-		gtk_widget_show(ze_obj->widget_ptr->intern);
-	}
+	if(pggi_parse_method_parameters_none(self) == FAILURE)
+		return ;
+	ze_obj = Z_GWIDGET_P(self);
+	gtk_widget_show(ze_obj->widget_ptr->intern);
 }
 
 GWIDGET_METHOD(hide){
 	ze_gwidget_object *ze_obj = NULL;
 	zval * self = getThis();
-	if(self){
-		ze_obj = Z_GWIDGET_P(self);
-		gtk_widget_hide(ze_obj->widget_ptr->intern);
-	}
+	if(pggi_parse_method_parameters_none(self) == FAILURE)
+		return ;
+	ze_obj = Z_GWIDGET_P(self);
+	gtk_widget_hide(ze_obj->widget_ptr->intern);
 }
 
 
 GWIDGET_METHOD(showAll){
 	ze_gwidget_object *ze_obj = NULL;
 	zval * self = getThis();
-	if(self){
-		ze_obj = Z_GWIDGET_P(self);
-		gtk_widget_show_all(ze_obj->widget_ptr->intern);
-	}
+	if(pggi_parse_method_parameters_none(self) == FAILURE)
+		return ;
+	ze_obj = Z_GWIDGET_P(self);
+	gtk_widget_show_all(ze_obj->widget_ptr->intern);
 }
 
 static const zend_function_entry gwidget_class_functions[] = {
-	PHP_ME(GWidget, on			, arginfo_pggi_on	, ZEND_ACC_PUBLIC)
-	PHP_ME(GWidget, show		, arginfo_pggi_void	, ZEND_ACC_PUBLIC)
-	PHP_ME(GWidget, hide		, arginfo_pggi_void	, ZEND_ACC_PUBLIC)
-	PHP_ME(GWidget, showAll		, arginfo_pggi_void	, ZEND_ACC_PUBLIC)
-	PHP_ME(GWidget, __construct	, arginfo_pggi_void	, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	PHP_ME(GWidget, on     , arginfo_pggi_on  , ZEND_ACC_PUBLIC)
+	PHP_ME(GWidget, show   , arginfo_pggi_void, ZEND_ACC_PUBLIC)
+	PHP_ME(GWidget, hide   , arginfo_pggi_void, ZEND_ACC_PUBLIC)
+	PHP_ME(GWidget, showAll, arginfo_pggi_void, ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 
@@ -239,14 +208,10 @@ static const zend_function_entry gwidget_class_functions[] = {
 /* Object handling functions */
 /*****************************/
 
-PGGI_READ_PROPERTY(gwidget){
-//zval *gwidget_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv){
+zval *gwidget_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
 	const char * tmp;
-	ZVAL_NULL(rv);
-	if(!w)
-		return rv;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 
@@ -302,28 +267,25 @@ HashTable *gwidget_get_properties(zval *object){
 	const char * tmp;
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	if(!w){
-		return NULL;
-	}
-	G_H_UPDATE_STRING	(GWIDGET_NAME			, gtk_widget_get_name			(w->intern));
-	G_H_UPDATE_LONG		(GWIDGET_HALIGN			, gtk_widget_get_halign			(w->intern));
-	G_H_UPDATE_LONG		(GWIDGET_VALIGN			, gtk_widget_get_valign			(w->intern));
-	G_H_UPDATE_LONG		(GWIDGET_MARGIN_START	, gtk_widget_get_margin_start	(w->intern));
-	G_H_UPDATE_LONG		(GWIDGET_MARGIN_END		, gtk_widget_get_margin_end		(w->intern));
-	G_H_UPDATE_LONG		(GWIDGET_MARGIN_TOP		, gtk_widget_get_margin_top		(w->intern));
-	G_H_UPDATE_LONG		(GWIDGET_DIRECTION		, gtk_widget_get_direction		(w->intern));
-	G_H_UPDATE_LONG		(GWIDGET_MARGIN_BOTTOM	, gtk_widget_get_margin_bottom	(w->intern));
-	G_H_UPDATE_BOOL		(GWIDGET_HEXPAND		, gtk_widget_get_hexpand		(w->intern));
-	G_H_UPDATE_BOOL		(GWIDGET_HEXPAND_SET	, gtk_widget_get_hexpand_set	(w->intern));
-	G_H_UPDATE_BOOL		(GWIDGET_VEXPAND		, gtk_widget_get_vexpand		(w->intern));
-	G_H_UPDATE_BOOL		(GWIDGET_VEXPAND_SET	, gtk_widget_get_vexpand_set	(w->intern));
-	G_H_UPDATE_BOOL		(GWIDGET_VISIBLE		, gtk_widget_get_visible		(w->intern));
-	G_H_UPDATE_BOOL		(GWIDGET_CAN_FOCUS		, gtk_widget_get_can_focus		(w->intern));
-	G_H_UPDATE_BOOL		(GWIDGET_CAN_DEFAULT	, gtk_widget_get_can_default	(w->intern));
-	G_H_UPDATE_BOOL		(GWIDGET_HAS_TOOLTIP	, gtk_widget_get_has_tooltip	(w->intern));
-	G_H_UPDATE_BOOL		(GWIDGET_NO_SHOW_ALL	, gtk_widget_get_no_show_all	(w->intern));
-	G_H_UPDATE_BOOL		(GWIDGET_SENSITIVE		, gtk_widget_get_sensitive		(w->intern));
-	G_H_UPDATE_DOUBLE	(GWIDGET_OPACITY		, gtk_widget_get_opacity		(w->intern));
+	G_H_UPDATE_STRING(GWIDGET_NAME         , gtk_widget_get_name         (w->intern));
+	G_H_UPDATE_LONG  (GWIDGET_HALIGN       , gtk_widget_get_halign       (w->intern));
+	G_H_UPDATE_LONG  (GWIDGET_VALIGN       , gtk_widget_get_valign       (w->intern));
+	G_H_UPDATE_LONG  (GWIDGET_MARGIN_START , gtk_widget_get_margin_start (w->intern));
+	G_H_UPDATE_LONG  (GWIDGET_MARGIN_END   , gtk_widget_get_margin_end   (w->intern));
+	G_H_UPDATE_LONG  (GWIDGET_MARGIN_TOP   , gtk_widget_get_margin_top   (w->intern));
+	G_H_UPDATE_LONG  (GWIDGET_DIRECTION    , gtk_widget_get_direction    (w->intern));
+	G_H_UPDATE_LONG  (GWIDGET_MARGIN_BOTTOM, gtk_widget_get_margin_bottom(w->intern));
+	G_H_UPDATE_BOOL  (GWIDGET_HEXPAND      , gtk_widget_get_hexpand      (w->intern));
+	G_H_UPDATE_BOOL  (GWIDGET_HEXPAND_SET  , gtk_widget_get_hexpand_set  (w->intern));
+	G_H_UPDATE_BOOL  (GWIDGET_VEXPAND      , gtk_widget_get_vexpand      (w->intern));
+	G_H_UPDATE_BOOL  (GWIDGET_VEXPAND_SET  , gtk_widget_get_vexpand_set  (w->intern));
+	G_H_UPDATE_BOOL  (GWIDGET_VISIBLE      , gtk_widget_get_visible      (w->intern));
+	G_H_UPDATE_BOOL  (GWIDGET_CAN_FOCUS    , gtk_widget_get_can_focus    (w->intern));
+	G_H_UPDATE_BOOL  (GWIDGET_CAN_DEFAULT  , gtk_widget_get_can_default  (w->intern));
+	G_H_UPDATE_BOOL  (GWIDGET_HAS_TOOLTIP  , gtk_widget_get_has_tooltip  (w->intern));
+	G_H_UPDATE_BOOL  (GWIDGET_NO_SHOW_ALL  , gtk_widget_get_no_show_all  (w->intern));
+	G_H_UPDATE_BOOL  (GWIDGET_SENSITIVE    , gtk_widget_get_sensitive    (w->intern));
+	G_H_UPDATE_DOUBLE(GWIDGET_OPACITY      , gtk_widget_get_opacity      (w->intern));
 
 	return G_H_UPDATE_RETURN;
 }
@@ -350,7 +312,8 @@ void gwidget_write_property(zval *object, zval *member, zval *value, void **cach
 					case GTK_ALIGN_BASELINE :
 						gtk_widget_set_halign(w->intern, tmp_l);
 						break;
-					default : // error
+					default :
+						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the hAlign property with something not a ALIGN_* constant");
 						break;
 				}
 			else if(!strcmp(member_val, GWIDGET_VALIGN))
@@ -362,7 +325,8 @@ void gwidget_write_property(zval *object, zval *member, zval *value, void **cach
 					case GTK_ALIGN_BASELINE :
 						gtk_widget_set_valign(w->intern, tmp_l);
 						break;
-					default : //error
+					default :
+						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the vAlign property with something not a ALIGN_* constant");
 						break;
 				}
 			else if(!strcmp(member_val, GWIDGET_MARGIN_START))
@@ -383,7 +347,8 @@ void gwidget_write_property(zval *object, zval *member, zval *value, void **cach
 					case GTK_DIR_RIGHT :
 						gtk_widget_set_direction(w->intern, tmp_l);
 						break;
-					default : // error
+					default :
+						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the direction property with something not a DIR_* constant");
 						break;
 				}
 			else
@@ -424,11 +389,12 @@ void gwidget_write_property(zval *object, zval *member, zval *value, void **cach
 			break;
 		case IS_DOUBLE :
 			tmp_d = Z_DVAL_P(value);
-			if(!strcmp(member_val, GWIDGET_OPACITY))
+			if(!strcmp(member_val, GWIDGET_OPACITY)){
 				if(tmp_d >= 0 && tmp_d <= 1)
 					gtk_widget_set_opacity(w->intern, tmp_d);
-				// else error
-			else
+				else
+				zend_throw_exception_ex(pggi_exception_get(), 0, "the opacity property should be between 0 and 1");
+			}else
 				std_object_handlers.write_property(object, member, value, cache_slot);
 			break;
 		default:
@@ -449,43 +415,44 @@ zend_declare_class_constant_double(gwidget_class_entry_ce, name, sizeof(name)-1,
 
 void gwidget_init(int module_number){
 	zend_class_entry ce;
-	le_gwidget = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "gwidget", module_number);
+	le_gwidget = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "PGGI\\GWidget", module_number);
 
 	memcpy(&gwidget_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-	gwidget_object_handlers.offset		= XtOffsetOf(ze_gwidget_object, std);
-	gwidget_object_handlers.free_obj	= gwidget_object_free_storage;
-	gwidget_object_handlers.clone_obj	= NULL;
+	gwidget_object_handlers.offset         = XtOffsetOf(ze_gwidget_object, std);
+	gwidget_object_handlers.free_obj       = gwidget_object_free_storage;
+	gwidget_object_handlers.clone_obj      = NULL;
 	gwidget_object_handlers.read_property  = gwidget_read_property;
 	gwidget_object_handlers.get_properties = gwidget_get_properties;
 	gwidget_object_handlers.write_property = gwidget_write_property;
-	INIT_CLASS_ENTRY(ce, "GWidget", gwidget_class_functions);
-	ce.create_object 		= gwidget_object_new;
-	gwidget_class_entry_ce 	= zend_register_internal_class(&ce);
+	INIT_CLASS_ENTRY(ce, "PGGI\\GWidget", gwidget_class_functions);
+	ce.create_object       = gwidget_object_new;
+	gwidget_class_entry_ce = zend_register_internal_class(&ce);
+	gwidget_class_entry_ce->ce_flags |= ZEND_ACC_ABSTRACT;
 
-	GWIDGET_CONSTANT("ALIGN_FILL"		, GTK_ALIGN_FILL	);
-	GWIDGET_CONSTANT("ALIGN_START"		, GTK_ALIGN_START	);
-	GWIDGET_CONSTANT("ALIGN_END"		, GTK_ALIGN_END		);
-	GWIDGET_CONSTANT("ALIGN_CENTER"		, GTK_ALIGN_CENTER	);
-	GWIDGET_CONSTANT("ALIGN_BASELINE"	, GTK_ALIGN_BASELINE);
+	GWIDGET_CONSTANT("ALIGN_FILL"    , GTK_ALIGN_FILL    );
+	GWIDGET_CONSTANT("ALIGN_START"   , GTK_ALIGN_START   );
+	GWIDGET_CONSTANT("ALIGN_END"     , GTK_ALIGN_END     );
+	GWIDGET_CONSTANT("ALIGN_CENTER"  , GTK_ALIGN_CENTER  );
+	GWIDGET_CONSTANT("ALIGN_BASELINE", GTK_ALIGN_BASELINE);
 
 	// for reflection purpose only
-	DECLARE_GWIDGET_PROP(GWIDGET_VALIGN			);
-	DECLARE_GWIDGET_PROP(GWIDGET_HALIGN			);
-	DECLARE_GWIDGET_PROP(GWIDGET_MARGIN_START	);
-	DECLARE_GWIDGET_PROP(GWIDGET_MARGIN_END		);
-	DECLARE_GWIDGET_PROP(GWIDGET_MARGIN_TOP		);
-	DECLARE_GWIDGET_PROP(GWIDGET_MARGIN_BOTTOM	);
-	DECLARE_GWIDGET_PROP(GWIDGET_HEXPAND		);
-	DECLARE_GWIDGET_PROP(GWIDGET_HEXPAND_SET	);
-	DECLARE_GWIDGET_PROP(GWIDGET_VEXPAND		);
-	DECLARE_GWIDGET_PROP(GWIDGET_VEXPAND_SET	);
-	DECLARE_GWIDGET_PROP(GWIDGET_OPACITY		);
-	DECLARE_GWIDGET_PROP(GWIDGET_VISIBLE		);
-	DECLARE_GWIDGET_PROP(GWIDGET_NO_SHOW_ALL	);
-	DECLARE_GWIDGET_PROP(GWIDGET_DIRECTION		);
-	DECLARE_GWIDGET_PROP(GWIDGET_SENSITIVE		);
-	DECLARE_GWIDGET_PROP(GWIDGET_NAME			);
-	DECLARE_GWIDGET_PROP(GWIDGET_CAN_DEFAULT	);
-	DECLARE_GWIDGET_PROP(GWIDGET_CAN_FOCUS		);
+	DECLARE_GWIDGET_PROP(GWIDGET_VALIGN       );
+	DECLARE_GWIDGET_PROP(GWIDGET_HALIGN       );
+	DECLARE_GWIDGET_PROP(GWIDGET_MARGIN_START );
+	DECLARE_GWIDGET_PROP(GWIDGET_MARGIN_END   );
+	DECLARE_GWIDGET_PROP(GWIDGET_MARGIN_TOP   );
+	DECLARE_GWIDGET_PROP(GWIDGET_MARGIN_BOTTOM);
+	DECLARE_GWIDGET_PROP(GWIDGET_HEXPAND      );
+	DECLARE_GWIDGET_PROP(GWIDGET_HEXPAND_SET  );
+	DECLARE_GWIDGET_PROP(GWIDGET_VEXPAND      );
+	DECLARE_GWIDGET_PROP(GWIDGET_VEXPAND_SET  );
+	DECLARE_GWIDGET_PROP(GWIDGET_OPACITY      );
+	DECLARE_GWIDGET_PROP(GWIDGET_VISIBLE      );
+	DECLARE_GWIDGET_PROP(GWIDGET_NO_SHOW_ALL  );
+	DECLARE_GWIDGET_PROP(GWIDGET_DIRECTION    );
+	DECLARE_GWIDGET_PROP(GWIDGET_SENSITIVE    );
+	DECLARE_GWIDGET_PROP(GWIDGET_NAME         );
+	DECLARE_GWIDGET_PROP(GWIDGET_CAN_DEFAULT  );
+	DECLARE_GWIDGET_PROP(GWIDGET_CAN_FOCUS    );
 }
 

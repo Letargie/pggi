@@ -40,25 +40,36 @@ typedef struct{
 /* GWidget properties */
 /**********************/
 
-#define GWIDGET_VALIGN			"vAlign"
-#define GWIDGET_HALIGN		 	"hAlign"
-#define GWIDGET_MARGIN_START	"marginStart"
-#define GWIDGET_MARGIN_END		"marginEnd"
-#define GWIDGET_MARGIN_TOP		"marginTop"
-#define GWIDGET_MARGIN_BOTTOM	"marginBottom"
-#define GWIDGET_HEXPAND			"hExpand"
-#define GWIDGET_HEXPAND_SET		"hExpandSet"
-#define GWIDGET_VEXPAND			"vExpand"
-#define GWIDGET_VEXPAND_SET		"vExpandSet"
-#define GWIDGET_VISIBLE			"visible"
-#define GWIDGET_NO_SHOW_ALL		"noShowAll"
-#define GWIDGET_DIRECTION		"direction"
-#define GWIDGET_SENSITIVE		"sensitive"
-#define GWIDGET_NAME			"name"
-#define GWIDGET_CAN_DEFAULT		"canDefault"
-#define GWIDGET_CAN_FOCUS		"canFocus"
-#define GWIDGET_HAS_TOOLTIP		"hasTooltip"
-#define GWIDGET_OPACITY			"opacity"
+#define GWIDGET_VALIGN                "vAlign"
+#define GWIDGET_HALIGN                "hAlign"
+
+#define GWIDGET_MARGIN_START          "marginStart" //3.12
+#define GWIDGET_MARGIN_END            "marginEnd"   //3.12
+#define GWIDGET_MARGIN_TOP            "marginTop"
+#define GWIDGET_MARGIN_BOTTOM         "marginBottom"
+#define GWIDGET_HEXPAND               "hExpand"
+#define GWIDGET_HEXPAND_SET           "hExpandSet"
+#define GWIDGET_VEXPAND               "vExpand"
+#define GWIDGET_VEXPAND_SET           "vExpandSet"
+#define GWIDGET_VISIBLE               "visible"
+#define GWIDGET_NO_SHOW_ALL           "noShowAll"
+#define GWIDGET_DIRECTION             "direction"
+#define GWIDGET_SENSITIVE             "sensitive"
+#define GWIDGET_NAME                  "name"
+#define GWIDGET_CAN_DEFAULT           "canDefault"
+#define GWIDGET_CAN_FOCUS             "canFocus"
+#define GWIDGET_HAS_TOOLTIP           "hasTooltip"
+#define GWIDGET_OPACITY               "opacity" //3.8
+
+#define GWIDGET_DEFAULT_DIRECTION     "defaultDirection"
+#define GWIDGET_TOOLTIP_WINDOW        "tooltipWindow"
+#define GWIDGET_FOCUS_ON_CLICK        "focusOnClick" //3.20
+#define GWIDGET_RECEIVES_DEFAULT      "receivesDefault"
+#define GWIDGET_SUPPORT_MULTIDEVICE   "supportMultidevice"
+#define GWIDGET_REALIZED              "realized"
+#define GWIDGET_MAPPED                "mapped"
+#define GWIDGET_CSS_NAME              "cssName" //3.20
+
 
 /*****************************/
 /* Class information getters */
@@ -110,8 +121,8 @@ void gwidget_free_resource(zend_resource *rsrc);
 /*********************************/
 
 typedef struct _on_data{
-	zval 	* function,
-			* data;
+	zval     * function,
+	         * data;
 } * on_data_ptr, on_data_t;
 
 void gwidget_func_destroy(GtkWidget* w, gpointer data);
@@ -128,15 +139,39 @@ void gwidget_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * par
 #define GWIDGET_METHOD(name) \
 PHP_METHOD(GWidget, name)
 
+//functions not here :
+// -> implementation purpose functions
+// -> cairo using function (draw)
+// -> animated frames
+// -> accelerators
+// -> gdk using function
 
-/**
- * TEST
- */
-GWIDGET_METHOD(on			);
-GWIDGET_METHOD(__construct	);
-GWIDGET_METHOD(show			);
-GWIDGET_METHOD(hide			);
-GWIDGET_METHOD(showAll		);
+GWIDGET_METHOD(on                 );
+GWIDGET_METHOD(show               );
+GWIDGET_METHOD(hide               );
+GWIDGET_METHOD(showAll            );
+
+GWIDGET_METHOD(getScaleFactor     ); //ret int   //3.10
+GWIDGET_METHOD(activate           ); //ret bool
+GWIDGET_METHOD(isFocus            ); // ret bool
+GWIDGET_METHOD(grabFocus          );
+GWIDGET_METHOD(grabDefault        );
+GWIDGET_METHOD(hideOnDelete       );
+GWIDGET_METHOD(mnemonicActivate   ); //ret bool @ param bool
+GWIDGET_METHOD(hasScreen          ); // ret bool
+GWIDGET_METHOD(setSizeRequest     ); // height width
+GWIDGET_METHOD(getSizeRequest     ); // same ref
+GWIDGET_METHOD(errorBell          );
+GWIDGET_METHOD(triggerTooltipQuery);
+GWIDGET_METHOD(getAllocatedHeight );
+GWIDGET_METHOD(getAllocatedWidth  );
+GWIDGET_METHOD(isSensitive        );
+GWIDGET_METHOD(isVisible          ); //3.8
+GWIDGET_METHOD(hasDefault         );
+GWIDGET_METHOD(hasFocus           );
+GWIDGET_METHOD(hasVisibleFocus    ); //3.2
+GWIDGET_METHOD(hasGrab            );
+GWIDGET_METHOD(isDrawable         );
 
 /*****************************/
 /* Object handling functions */

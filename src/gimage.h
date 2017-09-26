@@ -44,8 +44,8 @@ zend_class_entry * gimage_get_class_entry(void);
 #define GIMAGE_METHOD(name) \
 PHP_METHOD(GImage, name)
 
-GIMAGE_METHOD(__construct	);
-GIMAGE_METHOD(set			);
+GIMAGE_METHOD(__construct);
+GIMAGE_METHOD(set        );
 
 /*******************************/
 /* GImage Class Initialization */

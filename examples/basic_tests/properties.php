@@ -1,5 +1,5 @@
 <?php
-
+namespace PGGI;
 function shutdown($app){
 	echo("fermeture\n");
 }
@@ -15,7 +15,6 @@ function activate($app){
 	echo("-----\n");
 	
 	var_dump($b);
-	//$b->setTitle("Window Test");
 	$b->title = "Window Test";
 	echo("{$b->title}\n");
 	$b->hAlign = 3;
@@ -26,7 +25,7 @@ function activate($app){
 }
 
 $a = new GApplication();
-$a->on(PGGI_SIGNAL_GAPPLICATION_SHUTDOWN,"shutdown");
-$a->on(PGGI_SIGNAL_GAPPLICATION_STARTUP,"starting");
-$a->on(PGGI_SIGNAL_GAPPLICATION_ACTIVATE,"activate");
+$a->on(SIGNAL_GAPPLICATION_SHUTDOWN,"PGGI\\shutdown");
+$a->on(SIGNAL_GAPPLICATION_STARTUP,"PGGI\\starting");
+$a->on(SIGNAL_GAPPLICATION_ACTIVATE,"PGGI\\activate");
 $a->run();

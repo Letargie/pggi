@@ -65,7 +65,7 @@ PHP_METHOD(GButton, __construct){
 }
 
 static const zend_function_entry gbutton_class_functions[] = {
-	PHP_ME(GButton, __construct	, arginfo_pggi_void		, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	PHP_ME(GButton, __construct, arginfo_pggi_void, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
 	PHP_FE_END
 };
 
@@ -109,11 +109,11 @@ HashTable *gbutton_get_properties(zval *object){
 	}
 	GtkButton * but = GTK_BUTTON(w->intern);
 	props = gcontainer_get_properties(object);
-	G_H_UPDATE_STRING	(GBUTTON_LABEL				, gtk_button_get_label				(but));
-	G_H_UPDATE_BOOL		(GBUTTON_ALWAYS_SHOW_IMAGE	, gtk_button_get_always_show_image	(but));
-	G_H_UPDATE_BOOL		(GBUTTON_USE_UNDERLINE		, gtk_button_get_use_underline		(but));
-	G_H_UPDATE_LONG		(GBUTTON_IMAGE_POSITION		, gtk_button_get_image_position		(but));
-	G_H_UPDATE_LONG		(GBUTTON_RELIEF				, gtk_button_get_relief				(but));
+	G_H_UPDATE_STRING(GBUTTON_LABEL            , gtk_button_get_label            (but));
+	G_H_UPDATE_BOOL  (GBUTTON_ALWAYS_SHOW_IMAGE, gtk_button_get_always_show_image(but));
+	G_H_UPDATE_BOOL  (GBUTTON_USE_UNDERLINE    , gtk_button_get_use_underline    (but));
+	G_H_UPDATE_LONG  (GBUTTON_IMAGE_POSITION   , gtk_button_get_image_position   (but));
+	G_H_UPDATE_LONG  (GBUTTON_RELIEF           , gtk_button_get_relief           (but));
 
 	return props;
 }
@@ -149,7 +149,7 @@ void gbutton_write_property(zval *object, zval *member, zval *value, void **cach
 			else
 				gcontainer_write_property(object, member, value, cache_slot);
 			break;
-		case IS_TRUE :
+		case IS_TRUE  :
 		case IS_FALSE :
 			tmp_b = Z_LVAL_P(value);
 			if(!strcmp(member_val, GBUTTON_ALWAYS_SHOW_IMAGE))
@@ -163,14 +163,10 @@ void gbutton_write_property(zval *object, zval *member, zval *value, void **cach
 				if(!strcmp(member_val, GBUTTON_IMAGE)){
 					tmp_widget = Z_GWIDGET_P(value);
 					if(!tmp_widget){
-						/* error */
+						zend_throw_exception_ex(pggi_exception_get(), 0, "the image need to be an image");
 						return ;
 					}
 					w = tmp_widget->widget_ptr;
-					if(!w){
-						/*error*/
-						return;
-					}
 					std_object_handlers.write_property(object, member, value, cache_slot);
 					gtk_button_set_image(but, w->intern);
 				}else
@@ -190,31 +186,31 @@ zend_declare_class_constant_long(gbutton_class_entry_ce, name, sizeof(name)-1, v
 
 void gbutton_init(int module_number){
 	zend_class_entry ce;
-	le_gbutton = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "gbutton", module_number);
+	le_gbutton = zend_register_list_destructors_ex(gwidget_free_resource, NULL, "PGGI\\GButton", module_number);
 
 	memcpy(&gbutton_object_handlers, gcontainer_get_object_handlers(), sizeof(zend_object_handlers));
 	gbutton_object_handlers.free_obj = gwidget_object_free_storage;
 	gbutton_object_handlers.clone_obj = NULL;
-	INIT_CLASS_ENTRY(ce, "GButton", gbutton_class_functions);
+	INIT_CLASS_ENTRY(ce, "PGGI\\GButton", gbutton_class_functions);
 	gbutton_object_handlers.read_property  = gbutton_read_property;
 	gbutton_object_handlers.get_properties = gbutton_get_properties;
 	gbutton_object_handlers.write_property = gbutton_write_property;
 	gbutton_class_entry_ce	= zend_register_internal_class_ex(&ce, gcontainer_get_class_entry());
 
-	GBUTTON_CONSTANT("LABEL"	, gbutton_with_label	);
-	GBUTTON_CONSTANT("MNEMONIC"	, gbutton_with_mnemonic	);
-	GBUTTON_CONSTANT("IMAGE_16"	, gbutton_with_image_16	);
-	GBUTTON_CONSTANT("IMAGE_24"	, gbutton_with_image_24	);
-	GBUTTON_CONSTANT("IMAGE_32"	, gbutton_with_image_32	);
-	GBUTTON_CONSTANT("IMAGE_48"	, gbutton_with_image_48	);
+	GBUTTON_CONSTANT("LABEL"   , gbutton_with_label   );
+	GBUTTON_CONSTANT("MNEMONIC", gbutton_with_mnemonic);
+	GBUTTON_CONSTANT("IMAGE_16", gbutton_with_image_16);
+	GBUTTON_CONSTANT("IMAGE_24", gbutton_with_image_24);
+	GBUTTON_CONSTANT("IMAGE_32", gbutton_with_image_32);
+	GBUTTON_CONSTANT("IMAGE_48", gbutton_with_image_48);
 
 
-	DECLARE_GBUTTON_PROP(GBUTTON_ALWAYS_SHOW_IMAGE	);
-	DECLARE_GBUTTON_PROP(GBUTTON_IMAGE				);
-	DECLARE_GBUTTON_PROP(GBUTTON_IMAGE_POSITION		);
-	DECLARE_GBUTTON_PROP(GBUTTON_LABEL				);
-	DECLARE_GBUTTON_PROP(GBUTTON_RELIEF				);
-	DECLARE_GBUTTON_PROP(GBUTTON_USE_UNDERLINE		);
+	DECLARE_GBUTTON_PROP(GBUTTON_ALWAYS_SHOW_IMAGE);
+	DECLARE_GBUTTON_PROP(GBUTTON_IMAGE            );
+	DECLARE_GBUTTON_PROP(GBUTTON_IMAGE_POSITION   );
+	DECLARE_GBUTTON_PROP(GBUTTON_LABEL            );
+	DECLARE_GBUTTON_PROP(GBUTTON_RELIEF           );
+	DECLARE_GBUTTON_PROP(GBUTTON_USE_UNDERLINE    );
 }
 
 

@@ -28,25 +28,25 @@ zend_class_entry * glabel_get_class_entry(void);
 /* GLabel Arginfos */
 /*******************/
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glabel_construct, 0, 0, 1)
-	ZEND_ARG_INFO(0, label)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glabel_construct, 0, 0, 0)
+	ZEND_ARG_TYPE_INFO(0, label, IS_STRING, 1)
 ZEND_END_ARG_INFO()
 
 /**********************/
 /* GWindow Properties */
 /**********************/
 
-#define GLABEL_TRACK_VISITED_LINKS	"trackVisitedLinks"
-#define GLABEL_USE_MARKUP			"useMarkup"
-#define GLABEL_USE_UNDERLINE		"useUnderline"
-#define GLABEL_XALIGN				"xAlign"
-#define GLABEL_YALIGN				"yAlign"
-#define GLABEL_ELLIPSIZE			"ellipsize"
-#define GLABEL_WIDTH_CHARS			"widthChars"
-#define GLABEL_MAX_WIDTH_CHARS		"maxWidthChars"
-#define GLABEL_LINES				"lines"
-#define GLABEL_SELECTABLE			"selectable"
-#define GLABEL_TEXT					"text"
+#define GLABEL_TRACK_VISITED_LINKS "trackVisitedLinks"
+#define GLABEL_USE_MARKUP          "useMarkup"
+#define GLABEL_USE_UNDERLINE       "useUnderline"
+#define GLABEL_XALIGN              "xAlign"
+#define GLABEL_YALIGN              "yAlign"
+#define GLABEL_ELLIPSIZE           "ellipsize"
+#define GLABEL_WIDTH_CHARS         "widthChars"
+#define GLABEL_MAX_WIDTH_CHARS     "maxWidthChars"
+#define GLABEL_LINES               "lines"
+#define GLABEL_SELECTABLE          "selectable"
+#define GLABEL_TEXT                "text"
 
 /***************/
 /* PHP Methods */
