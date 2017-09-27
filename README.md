@@ -50,7 +50,7 @@ make
 In the pggi directory there a pggi file, it's a launcher to use pggi :
 
 ```
-path\pggi file
+path/pggi file
 ```
 
 To test the extension, try running the exemples scripts in the exemples directory.
