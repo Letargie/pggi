@@ -146,7 +146,7 @@ GTREE_VIEW_COLUMN_METHOD(on){
 		RETURN_NULL();
 	ze_obj = Z_GTREE_VIEW_COLUMN_P(this);
 	switch(val){
-		case gsignal_gtree_view_column_changed :
+		case gsignal_gtree_view_column_clicked :
 			break;
 		default :
 			zend_error(E_ERROR, "Signal unknown");
@@ -154,8 +154,10 @@ GTREE_VIEW_COLUMN_METHOD(on){
 	zval * data_to_insert = ecalloc(1,sizeof(zval));
 	array_init(data_to_insert);
 	zend_hash_index_add(Z_ARRVAL_P(data_to_insert), INDEX_ON_FUNCTION_NAME, function);
+	zval_addref_p(function);
 	if(param){
 		zend_hash_index_add(Z_ARRVAL_P(data_to_insert), INDEX_ON_FUNCTION_PARAM, param);
+		zval_addref_p(function);
 	}
 	data = zend_hash_index_find(Z_ARRVAL_P(&ze_obj->tree_view_column_ptr->signals), val);
 	if(data == NULL){
@@ -290,7 +292,7 @@ void gtree_view_column_write_property(zval *object, zval *member, zval *value, v
 						gtk_tree_view_column_set_sizing(tree, tmp_l);
 						break;
 					default :
-						std_object_handlers.write_property(object, member, value, cache_slot);
+						zend_throw_exception_ex(pggi_exception_get(), 0, "the sizing needs to be a SIZING_*");
 						break;
 				}			
 			}else if(!strcmp(member_val, GTREE_VIEW_COLUMN_SPACING)){

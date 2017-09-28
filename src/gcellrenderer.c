@@ -144,8 +144,10 @@ GCELL_RENDERER_METHOD(on){
 	zval * data_to_insert = ecalloc(1,sizeof(zval));
 	array_init(data_to_insert);
 	zend_hash_index_add(Z_ARRVAL_P(data_to_insert), INDEX_ON_FUNCTION_NAME, function);
+	zval_addref_p(function);
 	if(param){
 		zend_hash_index_add(Z_ARRVAL_P(data_to_insert), INDEX_ON_FUNCTION_PARAM, param);
+		zval_addref_p(param);
 	}
 	data = zend_hash_index_find(Z_ARRVAL_P(&ze_obj->cell_renderer_ptr->signals), val);
 	if(data == NULL){
