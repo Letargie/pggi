@@ -2,7 +2,17 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased] 0.2.0
-
+### Added
+	-new classes
+		- GTreeSelection
+###Bugfixed
+	- segfault in 'on' function when passing a closure as a callback in
+		- GApplication
+		- GWidgets
+		- GTextBuffer
+		- GTreeViewColumn
+	- wrong parameter in GFileChooserDialog
+	- wrong signal used in GTreeViewColumn
 ## [0.1.0]
 * Tue September 26 2017 Valentin Collet <valentin@famillecollet.com> 0.1.0
 ### Added
