@@ -23,6 +23,7 @@
 #include "gcontainer.h"
 #include "gtreestore.h"
 #include "gtreeviewcolumn.h"
+#include "gtreeselection.h"
 
 /**********************/
 /* GTreeView Arginfos */
@@ -35,6 +36,9 @@ ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_gtree_view_pend, 0, 0, 1)
 	ZEND_ARG_INFO(0, column)
+ZEND_END_ARG_INFO()
+
+PGGI_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_gtree_view_get_selection, 0, 0, gtree_selection_get_class_entry(), 0)
 ZEND_END_ARG_INFO()
 
 /************************/
@@ -89,11 +93,12 @@ void gtree_view_write_property(zval *object, zval *member, zval *value, void **c
 #define GTREE_VIEW_METHOD(name) \
 PHP_METHOD(GTreeView, name)
 
-GTREE_VIEW_METHOD(__construct);
-GTREE_VIEW_METHOD(on);
+GTREE_VIEW_METHOD(__construct  );
+GTREE_VIEW_METHOD(on           );
 GTREE_VIEW_METHOD(scrollToPoint);
-GTREE_VIEW_METHOD(expandAll);
-GTREE_VIEW_METHOD(collapseAll);
+GTREE_VIEW_METHOD(expandAll    );
+GTREE_VIEW_METHOD(collapseAll  );
+GTREE_VIEW_METHOD(getSelection );
 
 /**********************************/
 /* GTreeView class initialisation */

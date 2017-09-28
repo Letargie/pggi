@@ -208,7 +208,11 @@ PHP_MINIT_FUNCTION(pggi){
 	REGISTER_CONST_LONG("PGGI\\SIGNAL_GDIALOG_RESPONSE"           , gsignal_gdialog_response           );
 	REGISTER_CONST_LONG("PGGI\\SIGNAL_GDIALOG_CLOSE"              , gsignal_gdialog_close              );
 
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GTREE_VIEW_COLUMN_CHANGED"  , gsignal_gtree_view_column_changed  );
+
 	REGISTER_CONST_LONG("PGGI\\SIGNAL_GTREE_VIEW_COLUMN_CLICKED"  , gsignal_gtree_view_column_clicked  );
+
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GTREE_SELECTION_CHANGED"    , gsignal_gtree_selection_changed    );
 
 	gexception_init          (module_number);
 
@@ -251,10 +255,10 @@ PHP_MINIT_FUNCTION(pggi){
 	gcell_renderer_init      (module_number);
 	gcell_renderer_text_init (module_number);
 	gtree_view_column_init   (module_number);
+	gtree_selection_init     (module_number);
 	gtree_view_init          (module_number);
 
 	gfile_chooser_dialog_init(module_number);
-
 
 	return SUCCESS;
 }

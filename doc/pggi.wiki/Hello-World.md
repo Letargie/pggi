@@ -23,3 +23,17 @@ $a->on(SIGNAL_GAPPLICATION_ACTIVATE, "PGGI\\activate");
 $a->run();
 
 ```
+
+### GApplication
+```
+$a = new GApplication();
+$a->on(SIGNAL_GAPPLICATION_ACTIVATE, "PGGI\\activate");
+$a->run();
+```
+
+The first class you will have use is GApplication. This class take care of running the main loop of the application.
+The run() function launch the application and start the main loop. At this moment a 'activate' signal will be sent.
+In order to fill the application, you have to create a callback function that will be linked to the activate signal handler.
+The on function link a Signal with a callback function.
+
+

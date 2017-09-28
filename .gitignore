@@ -52,4 +52,4 @@ run-tests.log
 tmp-php.ini
 doc/api
 doc/src
-run-test.php
+run-tests.php

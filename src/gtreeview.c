@@ -121,16 +121,30 @@ GTREE_VIEW_METHOD(removeColumn){
     gtk_tree_view_append_column(GTK_TREE_VIEW(ze_obj->widget_ptr->intern), ze_col->tree_view_column_ptr->intern);
 }
 
+GTREE_VIEW_METHOD(getSelection){
+	zval * self = getThis();
+    if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+		return;
+    ze_gwidget_object * ze_obj = Z_GWIDGET_P(self);
+    GtkTreeSelection * selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(ze_obj->widget_ptr->intern));
+	zend_object * ze_select = gtree_selection_object_new(gtree_selection_get_class_entry());
+	ze_gtree_selection_object * select = php_gtree_selection_fetch_object(ze_select);
+	select->tree_selection_ptr = gtree_selection_new();
+	select->tree_selection_ptr->intern = selection;
+	RETURN_OBJ(ze_select);
+}
+
 /**
  * List of GTreeView functions and methods with their arguments
  */
 static const zend_function_entry gtree_view_class_functions[] = {
-	PHP_ME(GTreeView, __construct , arginfo_pggi_void      , ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
-	PHP_ME(GTreeView, on          , arginfo_pggi_on        , ZEND_ACC_PUBLIC)
-	PHP_ME(GTreeView, expandAll   , arginfo_pggi_void      , ZEND_ACC_PUBLIC)
-	PHP_ME(GTreeView, collapseAll , arginfo_pggi_void      , ZEND_ACC_PUBLIC)
-	PHP_ME(GTreeView, appendColumn, arginfo_gtree_view_pend, ZEND_ACC_PUBLIC)
-	PHP_ME(GTreeView, removeColumn, arginfo_gtree_view_pend, ZEND_ACC_PUBLIC)
+	PHP_ME(GTreeView, __construct , arginfo_pggi_void               , ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	PHP_ME(GTreeView, on          , arginfo_pggi_on                 , ZEND_ACC_PUBLIC)
+	PHP_ME(GTreeView, expandAll   , arginfo_pggi_void               , ZEND_ACC_PUBLIC)
+	PHP_ME(GTreeView, collapseAll , arginfo_pggi_void               , ZEND_ACC_PUBLIC)
+	PHP_ME(GTreeView, appendColumn, arginfo_gtree_view_pend         , ZEND_ACC_PUBLIC)
+	PHP_ME(GTreeView, removeColumn, arginfo_gtree_view_pend         , ZEND_ACC_PUBLIC)
+	PHP_ME(GTreeView, getSelection, arginfo_gtree_view_get_selection, ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 

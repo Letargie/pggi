@@ -49,9 +49,9 @@
 #include "gcellrenderer.h"
 #include "gcellrenderertext.h"
 #include "gtreeviewcolumn.h"
+#include "gtreeselection.h"
 #include "gtreeview.h"
 #include "gfilechooserdialog.h"
-
 
 
 #define pphext_pggi_ptr &pggi_module_entry

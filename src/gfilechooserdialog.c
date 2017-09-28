@@ -39,7 +39,7 @@ GFILE_CHOOSER_DIALOG_METHOD(__construct){
 	ze_gwidget_object * widget, * window;
 	long action, bn1_action = 0, bn2_action = 0;
 	zend_string * button_name1 = NULL, * button_name2 = NULL, * title = NULL;
-	if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "l|SzSlSl", &action, &title, &parent, gwindow_get_class_entry() ,&button_name1, &bn1_action, &button_name2, &bn2_action) == FAILURE)
+	if (zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "l|SOSlSl", &action, &title, &parent, gwindow_get_class_entry() ,&button_name1, &bn1_action, &button_name2, &bn2_action) == FAILURE)
 		return;
 	widget = Z_GWIDGET_P(getThis());
 	widget->std.handlers = &gfile_chooser_dialog_object_handlers;

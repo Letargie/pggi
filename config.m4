@@ -47,6 +47,7 @@ if test "$PHP_PGGI" != "no"; then
 		src/gcellrenderer.c      \
 		src/gcellrenderertext.c  \
 		src/gtreeviewcolumn.c	 \
+		src/gtreeselection.c     \
     	, $ext_shared)
 	PHP_ADD_BUILD_DIR($ext_builddir/src)
 	PHP_SUBST(PGGI_SHARED_LIBADD)

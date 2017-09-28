@@ -24,3 +24,6 @@ If there is a specific widget you need, feel free to ask me for it, I'll priorit
 		-GClipboard
 
 ### DONE
+
+	-adding widgets :
+		-GTreeSelection

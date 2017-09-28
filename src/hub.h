@@ -113,7 +113,10 @@ enum{
 	gsignal_gdialog_close,
 	gsignal_gdialog_response,
 	gsignal_gtree_view_column_changed,
-	gsignal_gtree_view_column_clicked
+
+	gsignal_gtree_view_column_clicked,
+
+	gsignal_gtree_selection_changed
 } gsignals;
 
 /**
@@ -143,6 +146,8 @@ enum{
 
 #define GSIGNAL_GTREE_VIEW_COLUMN_CHANGED   "column-changed"
 #define GSIGNAL_GTREE_VIEW_COLUMN_CLICKED   "clicked"
+
+#define GSIGNAL_GTREE_SELECTION_CHANGED     "changed"
 
 /****************************/
 /* Utils parsing parameters */
