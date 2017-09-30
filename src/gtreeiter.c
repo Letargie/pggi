@@ -84,21 +84,29 @@ void gtree_iter_free_resource(zend_resource *rsrc) {
 GTREE_ITER_METHOD(__construct){
 	RETURN_NULL();
 }
-/*
+
 GTREE_ITER_METHOD(getValue){
 	ze_gtree_iter_object *ze_obj = NULL;
 	zval * self = getThis();
 	long column;
-	if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &column) == FAILURE)
+	// BUG " ::getValue()" must be "TreeIter::getValue()"
+	//if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l", &column) == FAILURE)
+	if(zend_parse_parameters_ex(ZEND_PARSE_PARAMS_THROW, ZEND_NUM_ARGS(), "l", &column) == FAILURE)
 		return;
 	ze_obj = Z_GTREE_ITER_P(self);
-	GValue rval;
+	GValue rval ={0,};
 	gtk_tree_model_get_value(ze_obj->tree_iter_ptr->parent, ze_obj->tree_iter_ptr->intern, column, &rval);
-	
-	// return the result with the good format :x
+	switch(G_VALUE_TYPE(&rval)){
+		 case G_TYPE_STRING :
+			RETURN_STRING(g_value_get_string(&rval));
+			break;
+		default :
+			printf("default value \n");
+	}
+	// for now we don't really unset when returning value have to check for destruction
 	g_value_unset(&rval);
 }
-*/
+
 GTREE_ITER_METHOD(setValue){
 	ze_gtree_iter_object *ze_obj = NULL;
 	zval * self = getThis();
@@ -114,10 +122,6 @@ GTREE_ITER_METHOD(setValue){
 			GValue a = G_VALUE_INIT;
 			g_value_init (&a, G_TYPE_STRING);
 			g_value_set_static_string (&a, Z_STRVAL_P(value));
-			if(gtk_tree_store_iter_is_valid(GTK_TREE_STORE(ze_obj->tree_iter_ptr->parent), ze_obj->tree_iter_ptr->intern))
-				printf("it's valid !\n");
-			else
-				printf("it's not ! \n");
 			gtk_tree_store_set_value(GTK_TREE_STORE(ze_obj->tree_iter_ptr->parent), ze_obj->tree_iter_ptr->intern, 0, &a);
 			break;
 		default :
@@ -170,9 +174,10 @@ GTREE_ITER_METHOD(getFirstChild){
 	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
 	ze_obj = Z_GTREE_ITER_P(self);
-	GtkTreeIter * new;
-	gtk_tree_model_iter_children(ze_obj->tree_iter_ptr->parent, new, ze_obj->tree_iter_ptr->intern);
-	if(new){
+	GtkTreeIter * new = ecalloc(1, sizeof(GtkTreeIter));
+	GtkTreeIter tmp;
+	if(gtk_tree_model_iter_children(ze_obj->tree_iter_ptr->parent, &tmp, ze_obj->tree_iter_ptr->intern)){
+		*new = tmp;
 		zend_object * ze_iter = gtree_iter_object_new(gtree_iter_get_class_entry());
 		ze_gtree_iter_object * iter = php_gtree_iter_fetch_object(ze_iter);
 		iter->tree_iter_ptr = gtree_iter_new();
@@ -208,9 +213,10 @@ GTREE_ITER_METHOD(getNthChild){
 	if(pggi_parse_method_parameters_throw(ZEND_NUM_ARGS(), self, "l",&number) == FAILURE)
 		return;
 	ze_obj = Z_GTREE_ITER_P(self);
-	GtkTreeIter * new;
-	gtk_tree_model_iter_nth_child(ze_obj->tree_iter_ptr->parent, new ,ze_obj->tree_iter_ptr->intern, number);
-	if(new){
+	GtkTreeIter * new = ecalloc(1, sizeof(GtkTreeIter));
+	GtkTreeIter tmp;
+	if(gtk_tree_model_iter_nth_child(ze_obj->tree_iter_ptr->parent, &tmp, ze_obj->tree_iter_ptr->intern, number)){
+		*new = tmp;
 		zend_object * ze_iter = gtree_iter_object_new(gtree_iter_get_class_entry());
 		ze_gtree_iter_object * iter = php_gtree_iter_fetch_object(ze_iter);
 		iter->tree_iter_ptr = gtree_iter_new();
@@ -227,9 +233,10 @@ GTREE_ITER_METHOD(getParent){
 	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
 	ze_obj = Z_GTREE_ITER_P(self);
-	GtkTreeIter * new;
-	gtk_tree_model_iter_parent(ze_obj->tree_iter_ptr->parent, new, ze_obj->tree_iter_ptr->intern);
-	if(new){
+	GtkTreeIter * new = ecalloc(1, sizeof(GtkTreeIter));
+	GtkTreeIter tmp;
+	if(gtk_tree_model_iter_parent(ze_obj->tree_iter_ptr->parent, &tmp, ze_obj->tree_iter_ptr->intern)){
+		*new = tmp;
 		zend_object * ze_iter = gtree_iter_object_new(gtree_iter_get_class_entry());
 		ze_gtree_iter_object * iter = php_gtree_iter_fetch_object(ze_iter);
 		iter->tree_iter_ptr = gtree_iter_new();
@@ -242,7 +249,7 @@ GTREE_ITER_METHOD(getParent){
 
 static const zend_function_entry gtree_iter_class_functions[] = {
 	PHP_ME(GTreeIter, __construct  , arginfo_pggi_void               , ZEND_ACC_PRIVATE | ZEND_ACC_CTOR)
-	//PHP_ME(GTreeIter, getValue     , arginfo_gtree_iter_get_value    , ZEND_ACC_PUBLIC)
+	PHP_ME(GTreeIter, getValue     , arginfo_gtree_iter_get_value    , ZEND_ACC_PUBLIC)
 	PHP_ME(GTreeIter, setValue     , arginfo_gtree_iter_set_value    , ZEND_ACC_PUBLIC)
 	PHP_ME(GTreeIter, next         , arginfo_pggi_void               , ZEND_ACC_PUBLIC)
 	PHP_ME(GTreeIter, previous     , arginfo_pggi_void               , ZEND_ACC_PUBLIC)

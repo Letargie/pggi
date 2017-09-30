@@ -181,7 +181,7 @@ GWIDGET_METHOD(isDrawable         );
 /** 
  * Read property handling function
  */
-PGGI_READ_PROPERTY(gwidget);
+zval *gwidget_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv);
 //zval *gwidget_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv);
 
 /*==========================================================================*/

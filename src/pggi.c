@@ -295,7 +295,7 @@ zend_module_entry pggi_module_entry = {
 	STANDARD_MODULE_PROPERTIES
 };
 
-#ifdef COMPILE_DL_XMLWRITER
+#ifdef COMPILE_DL_PGGI
 ZEND_GET_MODULE(pggi)
 #endif
 

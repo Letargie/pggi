@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 	-new classes
 		- GTreeSelection
 ###Bugfixed
+	- GTreeIter functions not working
 	- segfault in 'on' function when passing a closure as a callback in
 		- GApplication
 		- GWidgets

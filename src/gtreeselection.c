@@ -125,7 +125,7 @@ GTREE_SELECTION_METHOD(__construct){}
 
 
 void gtree_selection_foreach_caller(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iterp, gpointer data){
-	zval * param = data;
+	zval ** param = data;
 	zval retval;
 	zval iter_zv;
 	zend_object * ze_iter = gtree_iter_object_new(gtree_iter_get_class_entry());
@@ -137,8 +137,8 @@ void gtree_selection_foreach_caller(GtkTreeModel *model, GtkTreePath *path, GtkT
 
 	zval args[2];
 	args[0] = iter_zv;
-	args[1] = param[1];
-	if(call_user_function(EG(function_table), NULL, &param[0], &retval, 2, args) != SUCCESS){
+	args[1] = *param[1];
+	if(call_user_function(EG(function_table), NULL, param[0], &retval, 2, args) != SUCCESS){
 		zend_error(E_ERROR, "Function call failed");
 	}
 }
@@ -153,7 +153,7 @@ GTREE_SELECTION_METHOD(forEach){
 	zval * data[2];
 	data[0] = function;
 	data[1] = param;
-	gtk_tree_selection_selected_foreach(ze_obj->tree_selection_ptr->intern, gtree_selection_foreach_caller, (gpointer) data);
+	gtk_tree_selection_selected_foreach(ze_obj->tree_selection_ptr->intern, gtree_selection_foreach_caller, (gpointer) &data);
 }
 
 GTREE_SELECTION_METHOD(on){
@@ -387,6 +387,7 @@ void gtree_selection_init(int module_number){
 	gtree_selection_class_entry_ce = zend_register_internal_class(&ce);
 
 	DECLARE_GTREE_SELECTION_PROP(GTREE_SELECTION_MODE);
+
 }
 
 

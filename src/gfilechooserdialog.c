@@ -145,10 +145,11 @@ zval *gfile_chooser_dialog_read_property(zval *object, zval *member, int type, v
 		if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_FILENAME)){
 			const char * tmp = gtk_file_chooser_get_filename(chooser);
 			ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
-		}else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_CURRENT_NAME)){
+		//Need to check the action type before
+		}/*else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_CURRENT_NAME)){
 			const char * tmp = gtk_file_chooser_get_current_name(chooser);
 			ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
-		}else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_CURRENT_FOLDER)){
+		}*/else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_CURRENT_FOLDER)){
 			const char * tmp = gtk_file_chooser_get_current_folder(chooser);
 			ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
 		}else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_URI)){
@@ -191,7 +192,8 @@ HashTable *gfile_chooser_dialog_get_properties(zval *object){
 	G_H_UPDATE_BOOL  (GFILE_CHOOSER_DIALOG_SELECT_MULTIPLE         , gtk_file_chooser_get_select_multiple          (chooser));
 	G_H_UPDATE_BOOL  (GFILE_CHOOSER_DIALOG_SHOW_HIDDEN             , gtk_file_chooser_get_show_hidden              (chooser));
 	G_H_UPDATE_STRING(GFILE_CHOOSER_DIALOG_FILENAME                , gtk_file_chooser_get_filename                 (chooser));
-	G_H_UPDATE_STRING(GFILE_CHOOSER_DIALOG_CURRENT_NAME            , gtk_file_chooser_get_current_name             (chooser));
+	//Need to check the action type before
+	//G_H_UPDATE_STRING(GFILE_CHOOSER_DIALOG_CURRENT_NAME            , gtk_file_chooser_get_current_name             (chooser));
 	G_H_UPDATE_STRING(GFILE_CHOOSER_DIALOG_CURRENT_FOLDER          , gtk_file_chooser_get_current_folder           (chooser));
 	G_H_UPDATE_STRING(GFILE_CHOOSER_DIALOG_URI                     , gtk_file_chooser_get_uri                      (chooser));
 	G_H_UPDATE_STRING(GFILE_CHOOSER_DIALOG_CURRENT_FOLDER_URI      , gtk_file_chooser_get_current_folder_uri       (chooser));
@@ -214,8 +216,9 @@ void gfile_chooser_dialog_write_property(zval *object, zval *member, zval *value
 			char * tmp_s = Z_STRVAL_P(value);
 			if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_FILENAME))
 				gtk_file_chooser_set_filename(chooser, tmp_s);
-			else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_CURRENT_NAME))
-				gtk_file_chooser_set_current_name(chooser, tmp_s);
+			//Need to check the action type before
+			//else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_CURRENT_NAME))
+				//gtk_file_chooser_set_current_name(chooser, tmp_s);
 			else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_CURRENT_FOLDER))
 				gtk_file_chooser_set_current_folder(chooser, tmp_s);
 			else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_URI))
@@ -286,7 +289,7 @@ void gfile_chooser_dialog_init(int module_number){
 	DECLARE_GFILE_CHOOSER_DIALOG_PROP(GFILE_CHOOSER_DIALOG_LOCAL_ONLY              );
 	DECLARE_GFILE_CHOOSER_DIALOG_PROP(GFILE_CHOOSER_DIALOG_SELECT_MULTIPLE         );
 	DECLARE_GFILE_CHOOSER_DIALOG_PROP(GFILE_CHOOSER_DIALOG_SHOW_HIDDEN             );
-	DECLARE_GFILE_CHOOSER_DIALOG_PROP(GFILE_CHOOSER_DIALOG_CURRENT_NAME            );
+	//DECLARE_GFILE_CHOOSER_DIALOG_PROP(GFILE_CHOOSER_DIALOG_CURRENT_NAME            );
 	DECLARE_GFILE_CHOOSER_DIALOG_PROP(GFILE_CHOOSER_DIALOG_FILENAME                );
 	DECLARE_GFILE_CHOOSER_DIALOG_PROP(GFILE_CHOOSER_DIALOG_CURRENT_FOLDER          );
 	DECLARE_GFILE_CHOOSER_DIALOG_PROP(GFILE_CHOOSER_DIALOG_URI                     );
