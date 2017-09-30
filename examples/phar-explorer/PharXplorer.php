@@ -21,11 +21,12 @@ class PharReader{
             $treeCurrent,
 			$window,
 			$phar,
-			$treeSelection;
+			$treeSelection,
+			$app;
 
 
 	function __construct($app){
-
+		$this->app = $app;
 		$treeCurrent = $treeRoot = null;
 		$contentbox = new GBox(ORIENTATION_HORIZONTAL, 5);
 
@@ -138,6 +139,10 @@ class PharReader{
 		$this->listFiles();
 	}
 
+	function editSelected(){
+		$this->treeSelection->forEach("PGGI\\foreach_edit", array($this->pharFileName, $this->app));
+	}
+
 	function extractAll($path){
 		$dialog = new GFileChooserDialog(GFileChooserDialog::ACTION_SELECT_FOLDER, "Add directory", $this->window, "Cancel", GDialog::RESPONSE_TYPE_CANCEL, "Choose", GDialog::RESPONSE_TYPE_ACCEPT);
 		$res = $dialog->run();
@@ -178,7 +183,6 @@ class PharReader{
 }
 
 function foreach_extract($iter, $data){
-	var_dump($data);
 	try{
 		$name = "";
 		$parent = $iter->getParent();
@@ -204,10 +208,32 @@ function foreach_addFile($iter, $data){
 	$data[0]->addFile($data[1], $name);
 }
 
+function foreach_edit($iter, $data){
+	$name = "";
+	$parent = $iter->getParent();
+	while($parent != false){
+		$name = $parent->getValue(0)."/".$name;
+		$parent = $parent->getParent();
+	}
+	$name = "phar://".$data[0]."/".$name.$iter->getValue(0);
+	var_dump($name);
+	$win = new GWindow($data[1], $iter->getValue(0));
+	$scroll = new GScrollWindow();
+	$buffer = new GTextBuffer();
+	try{
+		$buffer->text = file_get_contents($name);
+	}catch(Exception $e){
+		echo("couldn't open the file\n $e\n");
+	}
+	$scroll->add(new GTextView($buffer));
+	$box = new GBox(1, 2);
+	$box->packEnd($scroll, true, true);
+	$win->add($box);
+	$win->showAll();
+}
+
 
 function foreach_delete($iter, $data){
-	var_dump($iter);
-	var_dump($data);
 	$name = "";
 	$parent = $iter->getParent();
 	while($parent != false){
@@ -259,7 +285,7 @@ function menu_file($item, $data){
 }
 
 function menu_edit($item, $data){
-	//$data->loadFile($data);
+	$data->editSelected();
 }
 
 function menu_delete($item, $data){

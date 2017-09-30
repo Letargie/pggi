@@ -116,7 +116,9 @@ enum{
 
 	gsignal_gtree_view_column_clicked,
 
-	gsignal_gtree_selection_changed
+	gsignal_gtree_selection_changed,
+
+	gsignal_gentry_activate
 } gsignals;
 
 /**
@@ -148,6 +150,8 @@ enum{
 #define GSIGNAL_GTREE_VIEW_COLUMN_CLICKED   "clicked"
 
 #define GSIGNAL_GTREE_SELECTION_CHANGED     "changed"
+
+#define GSIGNAL_GENTRY_ACTIVATE             "activate"
 
 /****************************/
 /* Utils parsing parameters */

@@ -225,8 +225,8 @@ zval *gtext_buffer_read_property(zval *object, zval *member, int type, void **ca
 		}else{
 			ZVAL_NULL(rv);
 		}
-	}
-	return std_object_handlers.read_property(object, member, type, cache_slot, rv);
+	}else
+		return std_object_handlers.read_property(object, member, type, cache_slot, rv);
 }
 
 HashTable *gtext_buffer_get_properties(zval *object){

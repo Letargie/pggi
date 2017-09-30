@@ -260,6 +260,8 @@ PHP_MINIT_FUNCTION(pggi){
 
 	gfile_chooser_dialog_init(module_number);
 
+	gentry_buffer_init       (module_number);
+	gentry_init              (module_number);
 	return SUCCESS;
 }
 

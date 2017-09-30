@@ -97,9 +97,6 @@ zval *gcontainer_read_property(zval *object, zval *member, int type, void **cach
 	return rv;
 }
 
-#define G_H_UPDATE(name) \
-zend_hash_update(props, zend_string_init(name, sizeof(name)-1, 0), &zv)
-
 HashTable *gcontainer_get_properties(zval *object){
 	G_H_UPDATE_INIT(gwidget_get_properties(object));
 	const char * tmp;

@@ -412,7 +412,7 @@ void gwidget_write_property(zval *object, zval *member, zval *value, void **cach
 DECLARE_CLASS_PROPERTY(gwidget_class_entry_ce, name)
 
 #define GWIDGET_CONSTANT(name, value) \
-zend_declare_class_constant_double(gwidget_class_entry_ce, name, sizeof(name)-1, value);
+zend_declare_class_constant_long(gwidget_class_entry_ce, name, sizeof(name)-1, value);
 
 
 void gwidget_init(int module_number){

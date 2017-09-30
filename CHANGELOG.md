@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 ### Added
 	-new classes
 		- GTreeSelection
+		- GEntry
+		- GEntryBuffer
 ###Bugfixed
 	- GTreeIter functions not working
 	- segfault in 'on' function when passing a closure as a callback in

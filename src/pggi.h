@@ -52,6 +52,8 @@
 #include "gtreeselection.h"
 #include "gtreeview.h"
 #include "gfilechooserdialog.h"
+#include "gentrybuffer.h"
+#include "gentry.h"
 
 
 #define pphext_pggi_ptr &pggi_module_entry
