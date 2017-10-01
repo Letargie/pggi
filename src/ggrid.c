@@ -45,10 +45,16 @@ PHP_METHOD(GGrid, __construct){
 	widget->std.handlers = &ggrid_object_handlers;	
 	if (pggi_parse_parameters_none_throw() == FAILURE)
 		return;
-	zval * narray = ecalloc(1,sizeof(zval));
-	array_init(narray);
-	zend_hash_index_add(Z_ARRVAL_P(&widget->widget_ptr->data), GWIDGET_DATA_INDEX_GCONTAINER, narray);
-	zend_hash_index_add(Z_ARRVAL_P(&widget->widget_ptr->data), GWIDGET_DATA_INDEX_GGRID, narray);
+	widget->widget_ptr = gwidget_new();
+	widget->widget_ptr->intern = gtk_grid_new();
+	zval * narray_g = ecalloc(1,sizeof(zval));
+	array_init(narray_g);
+	zval * narray_c = ecalloc(1,sizeof(zval));
+	array_init(narray_c);
+	zend_hash_index_add(Z_ARRVAL_P(&widget->widget_ptr->data), GWIDGET_DATA_INDEX_GCONTAINER, narray_c);
+	zval_addref_p(narray_c);
+	zend_hash_index_add(Z_ARRVAL_P(&widget->widget_ptr->data), GWIDGET_DATA_INDEX_GGRID, narray_g);
+	zval_addref_p(narray_g);
 	g_signal_connect(widget->widget_ptr->intern, "destroy", G_CALLBACK (widget_destructed), widget);
 }
 

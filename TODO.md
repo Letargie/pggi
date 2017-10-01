@@ -8,7 +8,6 @@ If there is a specific widget you need, feel free to ask me for it, I'll priorit
 	-addling json interface builder
 	-adding AccelGroups
 	-adding widgets :
-		-GEntry
 		-GActionBar
 		-GFrame
 		-GSearchBar
@@ -29,3 +28,5 @@ If there is a specific widget you need, feel free to ask me for it, I'll priorit
 		-GTreeSelection
 		-GEntry
 		-GEntryBuffer
+		-GEvent
+		-GEventKey

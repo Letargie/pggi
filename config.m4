@@ -16,6 +16,8 @@ if test "$PHP_PGGI" != "no"; then
 		AC_MSG_ERROR(system gtk not found)
 	fi
 	PHP_NEW_EXTENSION(pggi,
+		src/gevent.c             \
+		src/geventkey.c          \
     	src/pggi.c               \
     	src/gapplication.c       \
 		src/gwidget.c            \

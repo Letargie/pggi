@@ -190,6 +190,9 @@ PHP_MINIT_FUNCTION(pggi){
 	REGISTER_CONST_LONG("PGGI\\SORT_DESCENDING"                   , GTK_SORT_DESCENDING                );
 
 
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GWIDGET_DESTROY"            , gsignal_gwidget_destroy            );
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GWIDGET_KEY_PRESS_EVENT"    , gsignal_gwidget_key_press_event    );
+
 	REGISTER_CONST_LONG("PGGI\\SIGNAL_GAPPLICATION_WINDOW_ADDED"  , gsignal_gapplication_window_added  );
 	REGISTER_CONST_LONG("PGGI\\SIGNAL_GAPPLICATION_WINDOW_REMOVED", gsignal_gapplication_window_removed);
 	REGISTER_CONST_LONG("PGGI\\SIGNAL_GAPPLICATION_STARTUP"       , gsignal_gapplication_startup       );
@@ -215,6 +218,9 @@ PHP_MINIT_FUNCTION(pggi){
 	REGISTER_CONST_LONG("PGGI\\SIGNAL_GTREE_SELECTION_CHANGED"    , gsignal_gtree_selection_changed    );
 
 	gexception_init          (module_number);
+	gevent_init              (module_number);
+	gevent_key_init          (module_number);
+
 
 	gapplication_init        (module_number);
 	gwidget_init             (module_number);
@@ -262,6 +268,7 @@ PHP_MINIT_FUNCTION(pggi){
 
 	gentry_buffer_init       (module_number);
 	gentry_init              (module_number);
+
 	return SUCCESS;
 }
 

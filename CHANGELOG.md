@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file.
 		- GTreeSelection
 		- GEntry
 		- GEntryBuffer
+		- GEvent
+		- GEventKey
 ###Bugfixed
 	- GTreeIter functions not working
 	- segfault in 'on' function when passing a closure as a callback in

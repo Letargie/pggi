@@ -83,14 +83,15 @@ GMENUITEM_METHOD(toggle_size_allocate){
 }*/
 
 void gmenuitem_func_activate(GtkWidget* w, gpointer data){
-	gwidget_function(data, gsignal_gmenuitem_activate);
+	zval args[2];
+	gwidget_function(data, gsignal_gmenuitem_activate, args, 2);
 }
 
 void gmenuitem_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * param){
 	zval * data, * narray;
 	switch(val){
 		case gsignal_gmenuitem_activate :
-			gwidget_adding_function(val, GSIGNAL_GMENUITEM_ACTIVATE, gmenuitem_func_activate, ze_obj, function, param);
+			gwidget_adding_function(val, GSIGNAL_GMENUITEM_ACTIVATE, G_CALLBACK(gmenuitem_func_activate), ze_obj, function, param);
 			break;
 		default :
 			gcontainer_on(val, ze_obj, function, param);

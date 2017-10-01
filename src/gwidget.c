@@ -88,11 +88,10 @@ void gwidget_free_resource(zend_resource *rsrc) {
 #define INDEX_ON_FUNCTION_NAME 1
 #define INDEX_ON_FUNCTION_PARAM 2
 
-void gwidget_function(gpointer data, unsigned int type){
+void gwidget_function(gpointer data, unsigned int type, zval * args, int nb){
 	zval retval;
 	ze_gwidget_object * w = data;
 	zval * array, * value, * zv;
-	zval args[2];
 	if(type){
 		zend_object * this = php_gwidget_reverse_object(w);
 		ZVAL_OBJ(&args[0], this);
@@ -107,7 +106,7 @@ void gwidget_function(gpointer data, unsigned int type){
 					ZVAL_COPY(&args[1], tmp);
 				}else
 					ZVAL_NULL(&args[1]);
-				if(call_user_function(EG(function_table), NULL, function, &retval, 2, args) != SUCCESS){
+				if(call_user_function(EG(function_table), NULL, function, &retval, nb, args) != SUCCESS){
 					zend_throw_exception_ex(pggi_exception_get(), 0, "Function call failed");
 				}
 			} ZEND_HASH_FOREACH_END();
@@ -120,10 +119,22 @@ void gwidget_function(gpointer data, unsigned int type){
 /*********************************/
 
 void gwidget_func_destroy(GtkWidget* w, gpointer data){
-	gwidget_function(data, gsignal_gwidget_destroy);
+	zval args[2];
+	gwidget_function(data, gsignal_gwidget_destroy, args, 2);
 }
 
-void gwidget_adding_function(long val, char * name, void (*f)(GtkWidget *, void *) ,ze_gwidget_object * ze_obj, zval * function, zval * param){
+int gwidget_func_key_press_event(GtkWidget* w, GdkEvent *event, gpointer data){
+	zval args[3];
+	zval state, keyval;
+	ZVAL_OBJ(&args[2], gevent_ctor(gevent_key_get_class_entry(), event));
+	ZVAL_LONG(&state, event->key.state);
+	ZVAL_LONG(&keyval, event->key.keyval);
+	zend_update_property(gevent_key_get_class_entry(), &args[2], GEVENT_KEY_STATE, sizeof(GEVENT_KEY_STATE) - 1, &state);
+	zend_update_property(gevent_key_get_class_entry(), &args[2], GEVENT_KEY_KEYVAL, sizeof(GEVENT_KEY_KEYVAL) - 1, &keyval);
+	gwidget_function(data, gsignal_gwidget_key_press_event, args, 3);
+	return FALSE;
+}
+void gwidget_adding_function(long val, char * name, GCallback f, ze_gwidget_object * ze_obj, zval * function, zval * param){
 	zval * data, * narray;
 	data = zend_hash_index_find(Z_ARRVAL_P(&ze_obj->widget_ptr->signals), val);
 	zval * data_to_insert = ecalloc(1,sizeof(zval));
@@ -139,7 +150,7 @@ void gwidget_adding_function(long val, char * name, void (*f)(GtkWidget *, void 
 		array_init(narray);
 		zend_hash_index_add(Z_ARRVAL_P(&ze_obj->widget_ptr->signals), val, narray);
 		zend_hash_next_index_insert(Z_ARRVAL_P(narray), data_to_insert);
-		g_signal_connect(ze_obj->widget_ptr->intern, name, G_CALLBACK (f), (gpointer) ze_obj);
+		g_signal_connect(ze_obj->widget_ptr->intern, name, f, (gpointer) ze_obj);
 	}else{
 		zend_hash_next_index_insert(Z_ARRVAL_P(data), data_to_insert);
 	}
@@ -148,7 +159,10 @@ void gwidget_adding_function(long val, char * name, void (*f)(GtkWidget *, void 
 void gwidget_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * param){
 	switch(val){
 		case gsignal_gwidget_destroy :
-			gwidget_adding_function(val, GSIGNAL_GWIDGET_DESTROY, gwidget_func_destroy, ze_obj, function, param);
+			gwidget_adding_function(val, GSIGNAL_GWIDGET_DESTROY, G_CALLBACK(gwidget_func_destroy), ze_obj, function, param);
+			break;
+		case gsignal_gwidget_key_press_event :
+			gwidget_adding_function(val, GSIGNAL_GWIDGET_KEY_PRESS_EVENT, G_CALLBACK(gwidget_func_key_press_event), ze_obj, function, param);
 			break;
 		default :
 			zend_throw_exception_ex(pggi_exception_get(), 0, "not handled signal");

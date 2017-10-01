@@ -45,14 +45,15 @@ GTREE_VIEW_METHOD(__construct){
 // on method
 
 void gtree_view_func_column_changed(GtkWidget * container, gpointer data){
-	gwidget_function(data, gsignal_gtree_view_column_changed);
+	zval args[2];
+	gwidget_function(data, gsignal_gtree_view_column_changed, args);
 }
 
 void gtree_view_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * param){
 	zval * data, * narray;
 	switch(val){
 		case gsignal_gtree_view_column_changed :
-			gwidget_adding_function(val, GSIGNAL_GTREE_VIEW_COLUMN_CHANGED, gtree_view_func_column_changed, ze_obj, function, param);
+			gwidget_adding_function(val, GSIGNAL_GTREE_VIEW_COLUMN_CHANGED, G_CALLBACK(gtree_view_func_column_changed), ze_obj, function, param);
 			break;
 		default :
 			gcontainer_on(val, ze_obj, function, param);

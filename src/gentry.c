@@ -35,14 +35,15 @@ zend_object_handlers * gentry_get_object_handlers(){
 /*****************/
 
 void gentry_func_activate(GtkWidget * entry, gpointer data){
-	gwidget_function(data, gsignal_gentry_activate);
+	zval args[2];
+	gwidget_function(data, gsignal_gentry_activate, args, 2);
 }
 
 void gentry_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * param){
 	zval * data, * narray;
 	switch(val){
 		case gsignal_gentry_activate :
-			gwidget_adding_function(val, GSIGNAL_GENTRY_ACTIVATE, gentry_func_activate, ze_obj, function, param);
+			gwidget_adding_function(val, GSIGNAL_GENTRY_ACTIVATE, G_CALLBACK(gentry_func_activate), ze_obj, function, param);
 			break;
 		default :
 			gwidget_on(val, ze_obj, function, param);

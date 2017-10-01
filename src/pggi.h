@@ -54,6 +54,8 @@
 #include "gfilechooserdialog.h"
 #include "gentrybuffer.h"
 #include "gentry.h"
+#include "gevent.h"
+#include "geventkey.h"
 
 
 #define pphext_pggi_ptr &pggi_module_entry

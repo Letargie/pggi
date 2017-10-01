@@ -35,6 +35,8 @@
 
 
 #include "gexception.h"
+#include "gevent.h"
+#include "geventkey.h"
 
 /*********************/
 /* Common prototypes */
@@ -100,6 +102,7 @@ enum{
 	gsignal_gapplication_activate,
 
 	gsignal_gwidget_destroy,
+	gsignal_gwidget_key_press_event,
 
 	gsignal_gcontainer_add,
 
@@ -133,6 +136,7 @@ enum{
 #define GSIGNAL_GAPPLICATION_ACTIVATE       "activate"
 
 #define GSIGNAL_GWIDGET_DESTROY             "destroy"
+#define GSIGNAL_GWIDGET_KEY_PRESS_EVENT     "key-press-event"
 
 #define GSIGNAL_GCONTAINER_ADD              "add"
 

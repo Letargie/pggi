@@ -74,8 +74,8 @@ zval *glabel_read_property(zval *object, zval *member, int type, void **cache_sl
 		ZVAL_DOUBLE(rv, gtk_label_get_xalign(label));
 	}else if(!strcmp(member_val, GLABEL_YALIGN)){
 		ZVAL_DOUBLE(rv, gtk_label_get_yalign(label));
-	}else if(!strcmp(member_val, GWIDGET_NAME)){
-		tmp = gtk_widget_get_name(w->intern);
+	}else if(!strcmp(member_val, GLABEL_TEXT)){
+		tmp = gtk_label_get_text(label);
 		if(tmp)
 			ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
 		else

@@ -55,14 +55,15 @@ PHP_METHOD(GContainer, add){
 }
 
 void gcontainer_func_add(GtkWidget * container, gpointer data){
-	gwidget_function(data, gsignal_gcontainer_add);
+	zval args[2];
+	gwidget_function(data, gsignal_gcontainer_add, args, 2);
 }
 
 void gcontainer_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * param){
 	zval * data, * narray;
 	switch(val){
 		case gsignal_gcontainer_add :
-			gwidget_adding_function(val, GSIGNAL_GCONTAINER_ADD, gcontainer_func_add, ze_obj, function, param);
+			gwidget_adding_function(val, GSIGNAL_GCONTAINER_ADD, G_CALLBACK(gcontainer_func_add), ze_obj, function, param);
 			break;
 		default :
 			gwidget_on(val, ze_obj, function, param);

@@ -126,10 +126,11 @@ typedef struct _on_data{
 } * on_data_ptr, on_data_t;
 
 void gwidget_func_destroy(GtkWidget* w, gpointer data);
+int gwidget_func_key_press_event(GtkWidget* w, GdkEvent *event, gpointer data);
 
-void gwidget_adding_function(long val, char * name, void (*f)(GtkWidget *, void *) ,ze_gwidget_object * ze_obj, zval * function, zval * param);
+void gwidget_adding_function(long val, char * name, GCallback f ,ze_gwidget_object * ze_obj, zval * function, zval * param);
 
-void gwidget_function(gpointer data, unsigned int type);
+void gwidget_function(gpointer data, unsigned int type, zval * args, int nb);
 void gwidget_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * param);
 
 /***************/

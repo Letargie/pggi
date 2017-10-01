@@ -48,21 +48,23 @@ GCOMBO_BOX_METHOD(__construct){
 }
 
 void gcombo_box_func_changed(GtkWidget* w, gpointer data){
-	gwidget_function(data, gsignal_gcombo_box_changed);
+	zval args[2];
+	gwidget_function(data, gsignal_gcombo_box_changed, args, 2);
 }
 
 void gcombo_box_func_move_active(GtkWidget* w, gpointer data){
-	gwidget_function(data, gsignal_gcombo_box_move_active);
+	zval args[2];
+	gwidget_function(data, gsignal_gcombo_box_move_active, args, 2);
 }
 
 void gcombo_box_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * param){
 	zval * data, * narray;
 	switch(val){
 		case gsignal_gcombo_box_changed :
-			gwidget_adding_function(val, GSIGNAL_GCOMBO_BOX_CHANGED, gcombo_box_func_changed, ze_obj, function, param);
+			gwidget_adding_function(val, GSIGNAL_GCOMBO_BOX_CHANGED, G_CALLBACK(gcombo_box_func_changed), ze_obj, function, param);
 			break;
 		case gsignal_gcombo_box_move_active :
-			gwidget_adding_function(val, GSIGNAL_GCOMBO_BOX_MOVE_ACTIVE, gcombo_box_func_move_active, ze_obj, function, param);
+			gwidget_adding_function(val, GSIGNAL_GCOMBO_BOX_MOVE_ACTIVE, G_CALLBACK(gcombo_box_func_move_active), ze_obj, function, param);
 			break;
 		default :
 			gcontainer_on(val, ze_obj, function, param);
