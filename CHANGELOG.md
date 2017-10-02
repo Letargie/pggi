@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 		- GScreen
 		- GCssProvider
 		- GStyleContext
+		- GMessageDialog
 ###Bugfixed
 	- GTreeIter functions not working
 	- segfault in 'on' function when passing a closure as a callback in

@@ -55,6 +55,7 @@ if test "$PHP_PGGI" != "no"; then
 		src/gcssprovider.c       \
 		src/gstylecontext.c      \
 		src/gscreen.c            \
+		src/gmessagedialog.c     \
     	, $ext_shared)
 	PHP_ADD_BUILD_DIR($ext_builddir/src)
 	PHP_SUBST(PGGI_SHARED_LIBADD)

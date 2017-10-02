@@ -13,14 +13,18 @@ function AddMenuItem($menu, $name = NULL, $callback = NULL, $param = NULL){
 }
 
 class G2048{
-	private $table, $grid, $labels, $score;
+	private $table, $grid, $images, $score, $scorelb, $window;
 	
 	public function __construct($app){
+		$this->app = $app;
 		$grid = new GGrid();
 		$this->grid = $grid;
 		$bar = new GMenuBar();
 
 		$fileMenu = new GMenu();
+		AddMenuItem($fileMenu, "new game", function($item, $data){
+			$data->newGame();
+		}, $this);
 		AddMenuItem($fileMenu, "quit", function($item, $data){
 			$data->quit();
 		}, $app);
@@ -51,10 +55,15 @@ class G2048{
 		
 		$box = new GBox(ORIENTATION_VERTICAL);
 		$box->packStart($bar);
+		$scorebox = new GBox(ORIENTATION_HORIZONTAL);
+		$this->scorelb = new GLabel("score : 0");
+		$scorebox->packStart($this->scorelb, true, true);
+		$box->packStart($scorebox, true, true);
 		$box->packStart($grid, true, true);
 		$box->marginStart = $box->marginTop = $box->marginBottom = $box->marginEnd = 10;
 		$w = new GWindow($app, "G2048");
-		$w->setDefaultSize(1000, 700);
+		$this->window = $w;
+		$w->setDefaultSize(400, 500);
 		$w->add($box);
 		
 		$w->on(SIGNAL_GWIDGET_KEY_PRESS_EVENT, function($window, $data, $event){
@@ -83,34 +92,44 @@ class G2048{
 		}, $this);
 
 		$this->initTable();
-
+		$this->theme = array("0" => "themes/default/0",
+		                     "2" => "themes/default/2",
+		                     "4" => "themes/default/4",
+		                     "8" => "themes/default/8",
+		                     "16" => "themes/default/16",
+		                     "32" => "themes/default/32",
+		                     "64" => "themes/default/64",
+		                     "128" => "themes/default/128",
+		                     "256" => "themes/default/256",
+		                     "512" => "themes/default/512",
+		                     "1024" => "themes/default/1024",
+		                     "2048" => "themes/default/2048");
+		$this->images[] = array(array(), array(), array(), array());
 		for($y = 0; $y < 4; ++$y)
 			for($x = 0; $x < 4; ++$x){
-				$digit = " ";
-				if($this->table[$y][$x])
-					$digit.= $this->table[$y][$x];
-				$this->labels[$y][$x] = new GLabel($digit);
-				$grid->attach($this->labels[$y][$x], $x, $y, 1, 1);
-				$this->labels[$y][$x]->widthChars = 15;
-				$this->labels[$y][$x]->show();
+				$this->images[$y][$x] = new GImage($this->theme[$this->table[$y][$x]]);
+				$grid->attach($this->images[$y][$x], $x, $y, 1, 1);
+				$this->images[$y][$x]->show();
 			}
 		$screen = $w->getScreen();
 		$provider = new GCssProvider();
 		$provider->loadFromPath("style.css");
 		$screen->addProvider($provider, GStyleContext::PRIORITY_USER);
-
 		$grid->showAll();
 		$w->showAll();
 	}
 
+	public function newGame(){
+		$this->initTable();
+		$this->show();
+	}
+
 	private function initTable(){
 		$this->table = array();
-		$this->labels = array();
 		for($i = 0; $i < 4; ++$i){
 			$this->table[] = array(0, 0, 0, 0);
-			$this->labels[] = array();
 		}
-		$score = 0;
+		$this->score = 0;
 		$this->insertADigit();
 		$this->insertADigit();
 	}
@@ -307,36 +326,35 @@ class G2048{
 					}
 	}
 
+	private function launchMessage($prim, $sec){
+		$dialog = new GMessageDialog($this->window, GDialog::FLAG_MODAL, GMessageDialog::MESSAGE_INFO,
+		                             GMessageDialog::BUTTONS_YES_NO, $prim, $sec);
+		$result = $dialog->run();
+		switch($result){
+			case GDialog::RESPONSE_TYPE_YES :
+				$this->newGame();
+				break;
+			case GDialog::RESPONSE_TYPE_NO :
+				$this->app->quit();
+				break;
+		}
+	}
+
+	private function didWin(){
+		for($y = 0; $y < 4; ++$y)
+			for($x = 0; $x < 4; ++$x)
+				if($this->table[$y][$x] == 2048)
+					return true;
+		return false;
+	}
+
 	private function doIfChanged(){
 		$this->insertADigit();
 		$this->show();
-		echo($this->score."\n");
-		if(!$this->canMove()){
-			/*GtkWidget *parent = ((struct wnd_grid *)ptr_wnd_widget)->window;
-			GtkWidget *msgdlg =
-		  	gtk_message_dialog_new(GTK_WINDOW(parent),
-				                 GTK_DIALOG_MODAL,
-				                 GTK_MESSAGE_INFO,
-				                 GTK_BUTTONS_YES_NO,
-				                 "Can not move anymore, \n"
-				                 " Press yes to play again, no to quit");
-			gint result = gtk_dialog_run(GTK_DIALOG(msgdlg));
-			switch (result)
-			{
-			case GTK_RESPONSE_YES:
-			init_table();
-			gtk_widget_destroy(msgdlg);
-			show(GTK_GRID (grid));
-			break;
-			case GTK_RESPONSE_NO:
-			  gtk_widget_destroy(msgdlg);
-			gtk_widget_destroy(parent);
-			break;
-			}
-			}
-			}*/
-			printf("PERDU!\n");
-		}
+		if($this->didWin())
+			$this->launchMessage("You won !", "Do you want to play again ?");
+		if(!$this->canMove())
+			$this->launchMessage("You lose !", "Do you want to play again ?");
 
 	}
 
@@ -346,10 +364,9 @@ class G2048{
 				$text = " ";
 				if($this->table[$y][$x])
 					$text.= $this->table[$y][$x];
-				// not working yet
-				//$label = $this->grid->getChildAt($x, $y);
-				$this->labels[$y][$x]->text = $text;
+				$this->images[$y][$x]->set($this->theme[$this->table[$y][$x]]);
 			}
+		$this->scorelb->text = "score : ".$this->score;
 	}
 
 	private function canMove(){

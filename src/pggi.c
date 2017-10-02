@@ -253,6 +253,7 @@ PHP_MINIT_FUNCTION(pggi){
 
 	gdialog_init             (module_number);
 	gabout_dialog_init       (module_number);
+	gmessage_dialog_init     (module_number);
 
 	ggrid_init               (module_number);
 

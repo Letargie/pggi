@@ -59,6 +59,7 @@
 #include "gstylecontext.h"
 #include "gcssprovider.h"
 #include "gscreen.h"
+#include "gmessagedialog.h"
 
 
 #define pphext_pggi_ptr &pggi_module_entry
