@@ -46,7 +46,7 @@ GTREE_VIEW_METHOD(__construct){
 
 void gtree_view_func_column_changed(GtkWidget * container, gpointer data){
 	zval args[2];
-	gwidget_function(data, gsignal_gtree_view_column_changed, args);
+	gwidget_function(data, gsignal_gtree_view_column_changed, args, 2);
 }
 
 void gtree_view_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * param){

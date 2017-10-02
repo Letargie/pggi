@@ -207,7 +207,7 @@ PHP_MINIT_FUNCTION(pggi){
 	REGISTER_CONST_LONG("PGGI\\SIGNAL_GCOMBO_BOX_MOVE_ACTIVE"     , gsignal_gcombo_box_move_active     );
 
 	REGISTER_CONST_LONG("PGGI\\SIGNAL_GTEXT_BUFFER_CHANGED"       , gsignal_gtext_buffer_changed       );
-
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_STYLE_CONTEXT_CHANGED"      , gsignal_gstyle_context_changed     );
 	REGISTER_CONST_LONG("PGGI\\SIGNAL_GDIALOG_RESPONSE"           , gsignal_gdialog_response           );
 	REGISTER_CONST_LONG("PGGI\\SIGNAL_GDIALOG_CLOSE"              , gsignal_gdialog_close              );
 
@@ -221,6 +221,9 @@ PHP_MINIT_FUNCTION(pggi){
 	gevent_init              (module_number);
 	gevent_key_init          (module_number);
 
+	gcss_provider_init       (module_number);
+	gscreen_init             (module_number);
+	gstyle_context_init      (module_number);
 
 	gapplication_init        (module_number);
 	gwidget_init             (module_number);

@@ -4,7 +4,6 @@ If there is a specific widget you need, feel free to ask me for it, I'll priorit
 
 ## [0.2.0]
 ### TODO
-	-adding css handling
 	-addling json interface builder
 	-adding AccelGroups
 	-adding widgets :
@@ -23,10 +22,9 @@ If there is a specific widget you need, feel free to ask me for it, I'll priorit
 		-GClipboard
 
 ### DONE
-
+	-adding css handling
+	-adding key event handling
 	-adding widgets :
 		-GTreeSelection
 		-GEntry
 		-GEntryBuffer
-		-GEvent
-		-GEventKey

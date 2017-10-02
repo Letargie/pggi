@@ -9,6 +9,9 @@ All notable changes to this project will be documented in this file.
 		- GEntryBuffer
 		- GEvent
 		- GEventKey
+		- GScreen
+		- GCssProvider
+		- GStyleContext
 ###Bugfixed
 	- GTreeIter functions not working
 	- segfault in 'on' function when passing a closure as a callback in

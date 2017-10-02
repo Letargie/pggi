@@ -187,7 +187,7 @@ GWIDGET_METHOD(on){
 GWIDGET_METHOD(show){
 	ze_gwidget_object *ze_obj = NULL;
 	zval * self = getThis();
-	if(pggi_parse_method_parameters_none(self) == FAILURE)
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return ;
 	ze_obj = Z_GWIDGET_P(self);
 	gtk_widget_show(ze_obj->widget_ptr->intern);
@@ -196,7 +196,7 @@ GWIDGET_METHOD(show){
 GWIDGET_METHOD(hide){
 	ze_gwidget_object *ze_obj = NULL;
 	zval * self = getThis();
-	if(pggi_parse_method_parameters_none(self) == FAILURE)
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return ;
 	ze_obj = Z_GWIDGET_P(self);
 	gtk_widget_hide(ze_obj->widget_ptr->intern);
@@ -206,17 +206,32 @@ GWIDGET_METHOD(hide){
 GWIDGET_METHOD(showAll){
 	ze_gwidget_object *ze_obj = NULL;
 	zval * self = getThis();
-	if(pggi_parse_method_parameters_none(self) == FAILURE)
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return ;
 	ze_obj = Z_GWIDGET_P(self);
 	gtk_widget_show_all(ze_obj->widget_ptr->intern);
 }
 
+GWIDGET_METHOD(getStyleContext){
+	ze_gwidget_object *ze_obj = NULL;
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+		return ;
+	ze_obj = Z_GWIDGET_P(self);
+	GtkStyleContext * context = gtk_widget_get_style_context(ze_obj->widget_ptr->intern);
+	zend_object * obj = gstyle_context_object_new(gstyle_context_get_class_entry());
+	ze_gstyle_context_object * tmp = php_gstyle_context_fetch_object(obj);
+	tmp->context_ptr = gstyle_context_new();
+	tmp->context_ptr->intern = context;
+	RETURN_OBJ(obj);
+}
+
 static const zend_function_entry gwidget_class_functions[] = {
-	PHP_ME(GWidget, on     , arginfo_pggi_on  , ZEND_ACC_PUBLIC)
-	PHP_ME(GWidget, show   , arginfo_pggi_void, ZEND_ACC_PUBLIC)
-	PHP_ME(GWidget, hide   , arginfo_pggi_void, ZEND_ACC_PUBLIC)
-	PHP_ME(GWidget, showAll, arginfo_pggi_void, ZEND_ACC_PUBLIC)
+	PHP_ME(GWidget, on             , arginfo_pggi_on                  , ZEND_ACC_PUBLIC)
+	PHP_ME(GWidget, show           , arginfo_pggi_void                , ZEND_ACC_PUBLIC)
+	PHP_ME(GWidget, hide           , arginfo_pggi_void                , ZEND_ACC_PUBLIC)
+	PHP_ME(GWidget, showAll        , arginfo_pggi_void                , ZEND_ACC_PUBLIC)
+	PHP_ME(GWidget, getStyleContext, arginfo_gwidget_get_style_context, ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 

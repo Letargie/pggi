@@ -20,6 +20,7 @@
 #include "zend.h"
 #include "zend_API.h"
 #include "hub.h"
+#include "gstylecontext.h"
 
 /*********************************/
 /* GWidget Intern Data Structure */
@@ -35,6 +36,10 @@ typedef struct{
 	gwidget_ptr widget_ptr;
 	zend_object std;
 } ze_gwidget_object;
+
+PGGI_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_gwidget_get_style_context, 0, 0, gstyle_context_get_class_entry(), 0)
+ZEND_END_ARG_INFO()
+
 
 /**********************/
 /* GWidget properties */
@@ -151,6 +156,8 @@ GWIDGET_METHOD(on                 );
 GWIDGET_METHOD(show               );
 GWIDGET_METHOD(hide               );
 GWIDGET_METHOD(showAll            );
+GWIDGET_METHOD(getStyleContext    );
+
 
 GWIDGET_METHOD(getScaleFactor     ); //ret int   //3.10
 GWIDGET_METHOD(activate           ); //ret bool

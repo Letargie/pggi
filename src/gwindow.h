@@ -22,6 +22,7 @@
 #include "hub.h"
 #include "gapplication.h"
 #include "gcontainer.h"
+#include "gscreen.h"
 
 zend_class_entry * gwindow_get_class_entry(void);
 
@@ -39,6 +40,9 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO_EX(arginfo_gwindow_construct, 0, 0, 1)
 	ZEND_ARG_OBJ_INFO(0, app, PGGI\\GApplication, 0)
 	ZEND_ARG_TYPE_INFO(0, title, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
+PGGI_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_gwindow_get_screen, 0, 0, gscreen_get_class_entry(), 0)
 ZEND_END_ARG_INFO()
 
 /**********************/

@@ -56,6 +56,7 @@ class G2048{
 		$w = new GWindow($app, "G2048");
 		$w->setDefaultSize(1000, 700);
 		$w->add($box);
+		
 		$w->on(SIGNAL_GWIDGET_KEY_PRESS_EVENT, function($window, $data, $event){
 			switch($event->keyval){
 				case GEventKey::KEY_Up:
@@ -90,8 +91,14 @@ class G2048{
 					$digit.= $this->table[$y][$x];
 				$this->labels[$y][$x] = new GLabel($digit);
 				$grid->attach($this->labels[$y][$x], $x, $y, 1, 1);
+				$this->labels[$y][$x]->widthChars = 15;
 				$this->labels[$y][$x]->show();
 			}
+		$screen = $w->getScreen();
+		$provider = new GCssProvider();
+		$provider->loadFromPath("style.css");
+		$screen->addProvider($provider, GStyleContext::PRIORITY_USER);
+
 		$grid->showAll();
 		$w->showAll();
 	}
@@ -110,7 +117,7 @@ class G2048{
 
 	private function insertADigit(){
 		$linear_index = $this->randomLocation();
-		$this->table[$linear_index / 4][$linear_index % 4] = 2;
+		$this->table[$linear_index / 4][$linear_index % 4] = (rand(0, 9) == 0 ? 4 : 2);
 	}
 
 	private function randomLocation(){
@@ -383,8 +390,5 @@ $a->on(SIGNAL_GAPPLICATION_ACTIVATE,function($app, $data){
 	$app->reader = new G2048($app);
 });
 $a->run();
-
-
-
 
 

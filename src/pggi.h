@@ -56,6 +56,9 @@
 #include "gentry.h"
 #include "gevent.h"
 #include "geventkey.h"
+#include "gstylecontext.h"
+#include "gcssprovider.h"
+#include "gscreen.h"
 
 
 #define pphext_pggi_ptr &pggi_module_entry

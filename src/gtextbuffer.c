@@ -197,8 +197,8 @@ GTEXT_BUFFER_METHOD(getCharCount){
 }
 
 static const zend_function_entry gtext_buffer_class_functions[] = {
-	PHP_ME(GTextBuffer, on          , arginfo_pggi_on	   , ZEND_ACC_PUBLIC)
-	PHP_ME(GTextBuffer, __construct , arginfo_pggi_void	   , ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	PHP_ME(GTextBuffer, on          , arginfo_pggi_on      , ZEND_ACC_PUBLIC)
+	PHP_ME(GTextBuffer, __construct , arginfo_pggi_void    , ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
 	PHP_ME(GTextBuffer, getLineCount, arginfo_pggi_get_long, ZEND_ACC_PUBLIC)
 	PHP_ME(GTextBuffer, getCharCount, arginfo_pggi_get_long, ZEND_ACC_PUBLIC)
 	PHP_FE_END
@@ -273,7 +273,7 @@ void gtext_buffer_write_property(zval *object, zval *member, zval *value, void *
 DECLARE_CLASS_PROPERTY(gtext_buffer_class_entry_ce, name)
 
 #define GTEXT_BUFFER_CONSTANT(name, value) \
-zend_declare_class_constant_double(gtext_buffer_class_entry_ce, name, sizeof(name)-1, value);
+zend_declare_class_constant_long(gtext_buffer_class_entry_ce, name, sizeof(name)-1, value);
 
 
 void gtext_buffer_init(int module_number){

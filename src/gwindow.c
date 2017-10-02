@@ -112,6 +112,19 @@ GWINDOW_METHOD(unfullscreen){
 	gtk_window_unfullscreen(GTK_WINDOW(ze_obj->widget_ptr->intern));
 }
 
+GWINDOW_METHOD(getScreen){
+	ze_gwidget_object *ze_obj = NULL;
+	zval * self = getThis();
+	if (pggi_parse_parameters_none_throw() == FAILURE)
+		return;
+	ze_obj = Z_GWIDGET_P(self);
+	GdkScreen * screen = gtk_window_get_screen(GTK_WINDOW(ze_obj->widget_ptr->intern));
+	zend_object * screen_obj = gscreen_object_new(gscreen_get_class_entry());
+	ze_gscreen_object * s = php_gscreen_fetch_object(screen_obj);
+	s->screen_ptr = gscreen_new();
+	s->screen_ptr->intern = screen;
+	RETURN_OBJ(screen_obj);
+}
 
 /**
  * List of GWindow functions and methods with their arguments
@@ -124,6 +137,7 @@ static const zend_function_entry gwindow_class_functions[] = {
 	PHP_ME(GWindow, setKeepBelow  , arginfo_pggi_set_bool           , ZEND_ACC_PUBLIC)
 	PHP_ME(GWindow, fullscreen    , arginfo_pggi_void               , ZEND_ACC_PUBLIC)
 	PHP_ME(GWindow, unfullscreen  , arginfo_pggi_void               , ZEND_ACC_PUBLIC)
+	PHP_ME(GWindow, getScreen     , arginfo_gwindow_get_screen      , ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 

@@ -81,10 +81,10 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_pggi_gwidget, 0, 0, 1)
 	ZEND_ARG_OBJ_INFO(0, widget, PGGI\\GWidget, 0)
 ZEND_END_ARG_INFO()
 
-PGGI_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_pggi_get_long, 0, 1, IS_LONG, 0)
+PGGI_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_pggi_get_long, 0, 0, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-PGGI_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_pggi_get_string, 0, 1, IS_STRING, 0)
+PGGI_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_pggi_get_string, 0, 0, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
 /************************/
@@ -112,6 +112,7 @@ enum{
 	gsignal_gcombo_box_move_active,
 
 	gsignal_gtext_buffer_changed,
+	gsignal_gstyle_context_changed,
 
 	gsignal_gdialog_close,
 	gsignal_gdialog_response,
@@ -146,6 +147,7 @@ enum{
 #define GSIGNAL_GCOMBO_BOX_MOVE_ACTIVE      "move-active"
 
 #define GSIGNAL_GTEXT_BUFFER_CHANGED        "changed"
+#define GSIGNAL_GSTYLE_CONTEXT_CHANGED      "changed"
 
 #define GSIGNAL_GDIALOG_CLOSE               "close"
 #define GSIGNAL_GDIALOG_RESPONSE            "response"
