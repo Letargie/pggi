@@ -148,36 +148,30 @@ static const zend_function_entry gwindow_class_functions[] = {
 zval *gwindow_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	zval zobj;
-	zend_long lval;
-
-	ZVAL_NULL(rv);
-	if(w){
-		convert_to_string(member);
-		char * member_val = Z_STRVAL_P(member);
-		GtkWindow * win = GTK_WINDOW(w->intern);
-		if(!strcmp(member_val, GWINDOW_TITLE)){
-			const char * tmp = gtk_window_get_title(GTK_WINDOW(intern->widget_ptr->intern));
-			ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
-		}else if(!strcmp(member_val, GWINDOW_FOCUS_VISIBLE))
-			ZVAL_BOOL(rv, gtk_window_get_focus_visible(win));
-		else if(!strcmp(member_val, GWINDOW_FOCUS_ON_MAP))
-			ZVAL_BOOL(rv, gtk_window_get_focus_on_map(win));
-		else if(!strcmp(member_val, GWINDOW_DECORATED))
-			ZVAL_BOOL(rv, gtk_window_get_decorated(win));
-		else if(!strcmp(member_val, GWINDOW_DELETABLE))
-			ZVAL_BOOL(rv, gtk_window_get_deletable(win));
-		else if(!strcmp(member_val, GWINDOW_MNEMONICS_VISIBLE))
-			ZVAL_BOOL(rv, gtk_window_get_mnemonics_visible(win));
-		else if(!strcmp(member_val, GWINDOW_RESIZABLE))
-			ZVAL_BOOL(rv, gtk_window_get_resizable(win));
-		else if(!strcmp(member_val, GWINDOW_HIDE_TITLEBAR_WHEN_MAXIMIZED))
-			ZVAL_BOOL(rv, gtk_window_get_hide_titlebar_when_maximized(win));
-		else if(!strcmp(member_val, GWINDOW_ACCEPT_FOCUS))
-			ZVAL_BOOL(rv, gtk_window_get_accept_focus(win));
-		else
-			return gcontainer_read_property(object, member, type, cache_slot, rv);
-	}
+	convert_to_string(member);
+	char * member_val = Z_STRVAL_P(member);
+	GtkWindow * win = GTK_WINDOW(w->intern);
+	if(!strcmp(member_val, GWINDOW_TITLE)){
+		const char * tmp = gtk_window_get_title(GTK_WINDOW(intern->widget_ptr->intern));
+		ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
+	}else if(!strcmp(member_val, GWINDOW_FOCUS_VISIBLE))
+		ZVAL_BOOL(rv, gtk_window_get_focus_visible(win));
+	else if(!strcmp(member_val, GWINDOW_FOCUS_ON_MAP))
+		ZVAL_BOOL(rv, gtk_window_get_focus_on_map(win));
+	else if(!strcmp(member_val, GWINDOW_DECORATED))
+		ZVAL_BOOL(rv, gtk_window_get_decorated(win));
+	else if(!strcmp(member_val, GWINDOW_DELETABLE))
+		ZVAL_BOOL(rv, gtk_window_get_deletable(win));
+	else if(!strcmp(member_val, GWINDOW_MNEMONICS_VISIBLE))
+		ZVAL_BOOL(rv, gtk_window_get_mnemonics_visible(win));
+	else if(!strcmp(member_val, GWINDOW_RESIZABLE))
+		ZVAL_BOOL(rv, gtk_window_get_resizable(win));
+	else if(!strcmp(member_val, GWINDOW_HIDE_TITLEBAR_WHEN_MAXIMIZED))
+		ZVAL_BOOL(rv, gtk_window_get_hide_titlebar_when_maximized(win));
+	else if(!strcmp(member_val, GWINDOW_ACCEPT_FOCUS))
+		ZVAL_BOOL(rv, gtk_window_get_accept_focus(win));
+	else
+		return gcontainer_read_property(object, member, type, cache_slot, rv);
 	return rv;
 }
 
@@ -185,9 +179,6 @@ HashTable *gwindow_get_properties(zval *object){
 	G_H_UPDATE_INIT(gcontainer_get_properties(object));
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	if(!w){
-		return NULL;
-	}
 	GtkWindow * win = GTK_WINDOW(w->intern);
 
 	G_H_UPDATE_STRING(GWINDOW_TITLE                       , gtk_window_get_title                       (win));
@@ -206,8 +197,6 @@ HashTable *gwindow_get_properties(zval *object){
 void gwindow_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	zval * tmp_member;
-	long tmp_l;
 	int tmp_b;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
@@ -223,21 +212,21 @@ void gwindow_write_property(zval *object, zval *member, zval *value, void **cach
 		case IS_FALSE :
 			tmp_b = Z_TYPE_P(value) == IS_TRUE ? 1 :0;
 			if(!strcmp(member_val, GWINDOW_FOCUS_VISIBLE))
-				gtk_window_set_focus_visible(win, tmp_l);
+				gtk_window_set_focus_visible(win, tmp_b);
 			else if(!strcmp(member_val, GWINDOW_FOCUS_ON_MAP))
-				gtk_window_set_focus_on_map(win, tmp_l);
+				gtk_window_set_focus_on_map(win, tmp_b);
 			else if(!strcmp(member_val, GWINDOW_DECORATED))
-				gtk_window_set_decorated(win, tmp_l);
+				gtk_window_set_decorated(win, tmp_b);
 			else if(!strcmp(member_val, GWINDOW_DELETABLE))
-				gtk_window_set_deletable(win, tmp_l);
+				gtk_window_set_deletable(win, tmp_b);
 			else if(!strcmp(member_val, GWINDOW_MNEMONICS_VISIBLE))
-				gtk_window_set_mnemonics_visible(win, tmp_l);
+				gtk_window_set_mnemonics_visible(win, tmp_b);
 			else if(!strcmp(member_val, GWINDOW_RESIZABLE))
-				gtk_window_set_resizable(win, tmp_l);
+				gtk_window_set_resizable(win, tmp_b);
 			else if(!strcmp(member_val, GWINDOW_HIDE_TITLEBAR_WHEN_MAXIMIZED))
-				gtk_window_set_hide_titlebar_when_maximized(win, tmp_l);
+				gtk_window_set_hide_titlebar_when_maximized(win, tmp_b);
 			else if(!strcmp(member_val, GWINDOW_ACCEPT_FOCUS))
-				gtk_window_set_accept_focus(win, tmp_l);
+				gtk_window_set_accept_focus(win, tmp_b);
 			else
 				gcontainer_write_property(object, member, value, cache_slot);
 			break;

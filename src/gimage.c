@@ -54,7 +54,7 @@ GIMAGE_METHOD(set){
 	zend_string * image = NULL;
 	ze_gwidget_object * ze_obj;
 	zval * self = getThis();
-	ze_obj = Z_GWIDGET_P(getThis());
+	ze_obj = Z_GWIDGET_P(self);
 	char * c = NULL;
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "S", &image) == FAILURE)
 		return;

@@ -53,7 +53,6 @@ zend_object *gtree_selection_object_new(zend_class_entry *class_type){
 }
 
 void gtree_selection_dtor(gtree_selection_ptr intern){
-	zval *  zv, * tmp;
 	if (intern->intern){	
 	/*unref tree selection?*/
 	}
@@ -204,14 +203,15 @@ GTREE_SELECTION_METHOD(getSelected){
 		zend_throw_exception_ex(pggi_exception_get(), 0, "you can't get the selected node if you're in mode SELECTION_MULTIPLE");
 		return;
 	}
-	GtkTreeIter * new;
+	GtkTreeIter new;
 	GtkTreeModel * parent;
-	gtk_tree_selection_get_selected(ze_obj->tree_selection_ptr->intern, &parent, new);
-	if(new){
+	if(gtk_tree_selection_get_selected(ze_obj->tree_selection_ptr->intern, &parent, &new)){
+		GtkTreeIter * new_node = ecalloc(1, sizeof(GtkTreeIter));
+		*new_node = new;
 		zend_object * ze_iter = gtree_iter_object_new(gtree_iter_get_class_entry());
 		ze_gtree_iter_object * iter = php_gtree_iter_fetch_object(ze_iter);
 		iter->tree_iter_ptr = gtree_iter_new();
-		iter->tree_iter_ptr->intern = new;
+		iter->tree_iter_ptr->intern = new_node;
 		iter->tree_iter_ptr->parent = parent;
 		RETURN_OBJ(ze_iter);
 	}else
@@ -305,7 +305,6 @@ static const zend_function_entry gtree_selection_class_functions[] = {
 zval *gtree_selection_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv){
 	ze_gtree_selection_object * intern = Z_GTREE_SELECTION_P(object);
 	gtree_selection_ptr b = intern->tree_selection_ptr;
-	const char * tmp;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkTreeSelection * tree = GTK_TREE_SELECTION(b->intern);
@@ -317,7 +316,6 @@ zval *gtree_selection_read_property(zval *object, zval *member, int type, void *
 
 HashTable *gtree_selection_get_properties(zval *object){
 	G_H_UPDATE_INIT(zend_std_get_properties(object));
-	const char * tmp;
 	ze_gtree_selection_object * intern = Z_GTREE_SELECTION_P(object);
 	gtree_selection_ptr b = intern->tree_selection_ptr;
 	GtkTreeSelection * tree = GTK_TREE_SELECTION(b->intern);
@@ -328,11 +326,7 @@ HashTable *gtree_selection_get_properties(zval *object){
 void gtree_selection_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gtree_selection_object * intern = Z_GTREE_SELECTION_P(object);
 	gtree_selection_ptr b = intern->tree_selection_ptr;
-	zval * tmp_member;
 	long tmp_l;
-	const char * tmp_s;
-	double tmp_d;
-	int tmp_b;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkTreeSelection * tree = GTK_TREE_SELECTION(b->intern);

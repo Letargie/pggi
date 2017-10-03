@@ -59,7 +59,6 @@ zend_object *gwidget_object_new(zend_class_entry *class_type){
 }
 
 void gwidget_dtor(gwidget_ptr intern){
-	zval *  zv, * tmp, * val;
 	if (intern->intern){
 		gtk_widget_destroy(intern->intern);
 	}
@@ -295,7 +294,6 @@ zval *gwidget_read_property(zval *object, zval *member, int type, void **cache_s
 
 HashTable *gwidget_get_properties(zval *object){
 	G_H_UPDATE_INIT(zend_std_get_properties(object));
-	const char * tmp;
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
 	G_H_UPDATE_STRING(GWIDGET_NAME         , gtk_widget_get_name         (w->intern));
@@ -324,7 +322,6 @@ HashTable *gwidget_get_properties(zval *object){
 void gwidget_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	zval * tmp_member;
 	long tmp_l;
 	const char * tmp_s;
 	double tmp_d;

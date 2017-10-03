@@ -53,7 +53,6 @@ zend_object *gtree_view_column_object_new(zend_class_entry *class_type){
 }
 
 void gtree_view_column_dtor(gtree_view_column_ptr intern){
-	zval *  zv, * tmp;
 	if (intern->intern){	
 	/*unref text tree?*/
 	}
@@ -204,7 +203,6 @@ static const zend_function_entry gtree_view_column_class_functions[] = {
 zval *gtree_view_column_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv){
 	ze_gtree_view_column_object * intern = Z_GTREE_VIEW_COLUMN_P(object);
 	gtree_view_column_ptr b = intern->tree_view_column_ptr;
-	const char * tmp;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkTreeViewColumn * tree = GTK_TREE_VIEW_COLUMN(b->intern);
@@ -244,7 +242,6 @@ zval *gtree_view_column_read_property(zval *object, zval *member, int type, void
 
 HashTable *gtree_view_column_get_properties(zval *object){
 	G_H_UPDATE_INIT(zend_std_get_properties(object));
-	const char * tmp;
 	ze_gtree_view_column_object * intern = Z_GTREE_VIEW_COLUMN_P(object);
 	gtree_view_column_ptr b = intern->tree_view_column_ptr;
 	GtkTreeViewColumn * tree = GTK_TREE_VIEW_COLUMN(b->intern);
@@ -267,11 +264,9 @@ HashTable *gtree_view_column_get_properties(zval *object){
 void gtree_view_column_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gtree_view_column_object * intern = Z_GTREE_VIEW_COLUMN_P(object);
 	gtree_view_column_ptr b = intern->tree_view_column_ptr;
-	zval * tmp_member;
 	long tmp_l;
-	const char * tmp_s;
-	double tmp_d;
 	int tmp_b;
+	int tmp_d;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkTreeViewColumn * tree = GTK_TREE_VIEW_COLUMN(b->intern);
@@ -308,7 +303,7 @@ void gtree_view_column_write_property(zval *object, zval *member, zval *value, v
 			break;
 		case IS_TRUE  :
 		case IS_FALSE :
-			tmp_b = Z_TYPE_P(value) == IS_TRUE ? 1 : 0;
+			tmp_b = (Z_TYPE_P(value) == IS_TRUE ? 1 : 0);
 			if(!strcmp(member_val, GTREE_VIEW_COLUMN_EXPAND)){
 				gtk_tree_view_column_set_expand(tree, tmp_b);
 			}else if(!strcmp(member_val, GTREE_VIEW_COLUMN_CLICKABLE)){
@@ -325,7 +320,7 @@ void gtree_view_column_write_property(zval *object, zval *member, zval *value, v
 		case IS_DOUBLE :
 			if(!strcmp(member_val, GTREE_VIEW_COLUMN_ALIGNMENT)){
 				tmp_d = Z_DVAL_P(value);
-				gtk_tree_view_column_set_resizable(tree, tmp_b);
+				gtk_tree_view_column_set_resizable(tree, tmp_d);
 			}else
 				std_object_handlers.write_property(object, member, value, cache_slot);
 			break;

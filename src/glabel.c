@@ -33,7 +33,7 @@ PHP_METHOD(GLabel, __construct){
 	zend_string * label = NULL;
 	ze_gwidget_object * ze_obj;
 	zval * self = getThis();
-	ze_obj = Z_GWIDGET_P(getThis());
+	ze_obj = Z_GWIDGET_P(self);
 		ze_obj->std.handlers = &glabel_object_handlers;
 	char * c = NULL;
 	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "|S", &label) == FAILURE)
@@ -118,10 +118,8 @@ HashTable *glabel_get_properties(zval *object){
 void glabel_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	zval * tmp_member;
 	GtkLabel * label = GTK_LABEL(w->intern);
 	long tmp_l;
-	const char * tmp_s;
 	double tmp_d;
 	int tmp_b;
 	convert_to_string(member);

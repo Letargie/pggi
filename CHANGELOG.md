@@ -14,6 +14,8 @@ All notable changes to this project will be documented in this file.
 		- GStyleContext
 		- GMessageDialog
 ###Bugfixed
+	- Fixing -Wall warnings
+	- Multiple bug fix for properties usage
 	- GTreeIter functions not working
 	- segfault in 'on' function when passing a closure as a callback in
 		- GApplication

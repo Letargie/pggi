@@ -110,7 +110,7 @@ PHP_METHOD(GGrid, getChildAt){
 	if(!child)
 		RETURN_NULL();
 	zval * add_folder = zend_hash_index_find(Z_ARRVAL_P(&ze_obj->widget_ptr->data), GWIDGET_DATA_INDEX_GGRID);
-	return_value = zend_hash_index_find(Z_ARRVAL_P(&ze_obj->widget_ptr->data), (long) child);
+	return_value = zend_hash_index_find(Z_ARRVAL_P(add_folder), (long) child);
 }
 
 PHP_METHOD(GGrid, insertRow){
@@ -193,7 +193,6 @@ static const zend_function_entry ggrid_class_functions[] = {
 zval *ggrid_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	const char * tmp;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	if(!strcmp(member_val, GGRID_BASELINE_ROW)){
@@ -213,7 +212,6 @@ zval *ggrid_read_property(zval *object, zval *member, int type, void **cache_slo
 
 HashTable *ggrid_get_properties(zval *object){
 	G_H_UPDATE_INIT(gcontainer_get_properties(object));
-	const char * tmp;
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
 
@@ -228,10 +226,7 @@ HashTable *ggrid_get_properties(zval *object){
 void ggrid_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	zval * tmp_member;
 	long tmp_l;
-	const char * tmp_s;
-	double tmp_d;
 	int tmp_b;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);

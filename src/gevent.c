@@ -100,8 +100,9 @@ zval *gevent_read_property(zval *object, zval *member, int type, void **cache_sl
 }
 
 HashTable *gevent_get_properties(zval *object){
-	G_H_UPDATE_INIT(zend_std_get_properties(object));
-	return G_H_UPDATE_RETURN;
+	//G_H_UPDATE_INIT(zend_std_get_properties(object));
+	//return G_H_UPDATE_RETURN;
+	return zend_std_get_properties(object);
 }
 
 void gevent_write_property(zval *object, zval *member, zval *value, void **cache_slot){

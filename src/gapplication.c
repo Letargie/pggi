@@ -50,8 +50,6 @@ gapplication_ptr gapplication_ctor(){
 }
 
 void gapplication_dtor(gapplication_ptr intern){
-	unsigned int i;
-	zval * zv, * tmp, *val;
 	if (intern->app){
 		g_object_unref(intern->app);
 	}

@@ -57,30 +57,31 @@ static const zend_function_entry gtext_view_class_functions[] = {
 /*****************************/
 
 zval *gtext_view_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv){
-	ze_gwidget_object * intern = Z_GWIDGET_P(object);
+	/*ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
 	zval zobj;
 	zend_long lval;
 	convert_to_string(member);
-	char * member_val = Z_STRVAL_P(member);
+	char * member_val = Z_STRVAL_P(member);*/
 	return gcontainer_read_property(object, member, type, cache_slot, rv);
 }
 
 HashTable *gtext_view_get_properties(zval *object){
-	G_H_UPDATE_INIT(gcontainer_get_properties(object));
+	/*G_H_UPDATE_INIT(gcontainer_get_properties(object));
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	return G_H_UPDATE_RETURN;
+	return G_H_UPDATE_RETURN;*/
+	return gcontainer_get_properties(object);
 }
 
 void gtext_view_write_property(zval *object, zval *member, zval *value, void **cache_slot){
-	ze_gwidget_object * intern = Z_GWIDGET_P(object);
+	/*ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
 	zval * tmp_member;
 	long tmp_l;
 	int tmp_b;
 	convert_to_string(member);
-	char * member_val = Z_STRVAL_P(member);
+	char * member_val = Z_STRVAL_P(member);*/
 	switch(Z_TYPE_P(value)){
 		default :
 			gcontainer_write_property(object, member, value, cache_slot);

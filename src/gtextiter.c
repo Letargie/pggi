@@ -44,7 +44,6 @@ zend_object *gtext_iter_object_new(zend_class_entry *class_type){
 }
 
 void gtext_iter_dtor(gtext_iter_ptr intern){
-	zval *  zv, * tmp;
 	if (intern->intern){    
 	/*unref text iter?*/
 	}
@@ -120,14 +119,14 @@ GTEXT_ITER_METHOD(getChar){
 	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
 		return;
 	ze_gtext_iter_object * ze_obj = Z_GTEXT_ITER_P(self);
-	char tmp[4]; 
+	unsigned char tmp[4]; 
 	int size = pggi_utf32_utf8(tmp, gtk_text_iter_get_char(ze_obj->iter_ptr->intern));
-	RETURN_STRINGL(tmp, size);
+	RETURN_STRINGL((char*)tmp, size);
 }
 
 GTEXT_ITER_METHOD(getSlice){
 	zval * beg, * end;
-	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "zz", beg, end) == FAILURE)
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "zz", &beg, &end) == FAILURE)
 		return;
 	ze_gtext_iter_object * beg_obj = Z_GTEXT_ITER_P(beg),
 	                     * end_obj = Z_GTEXT_ITER_P(end);
@@ -136,7 +135,7 @@ GTEXT_ITER_METHOD(getSlice){
 
 GTEXT_ITER_METHOD(getText){
 	zval * beg, * end;
-	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "zz", beg, end) == FAILURE)
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "zz", &beg, &end) == FAILURE)
 		return;
 	ze_gtext_iter_object * beg_obj = Z_GTEXT_ITER_P(beg),
 	                     * end_obj = Z_GTEXT_ITER_P(end);
@@ -145,7 +144,7 @@ GTEXT_ITER_METHOD(getText){
 
 GTEXT_ITER_METHOD(getVisibleSlice){
 	zval * beg, * end;
-	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "zz", beg, end) == FAILURE)
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "zz", &beg, &end) == FAILURE)
 		return;
 	ze_gtext_iter_object * beg_obj = Z_GTEXT_ITER_P(beg),
 	                     * end_obj = Z_GTEXT_ITER_P(end);
@@ -154,7 +153,7 @@ GTEXT_ITER_METHOD(getVisibleSlice){
 
 GTEXT_ITER_METHOD(getVisibleText){
 	zval * beg, * end;
-	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "zz", beg, end) == FAILURE)
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "zz", &beg, &end) == FAILURE)
 		return;
 	ze_gtext_iter_object * beg_obj = Z_GTEXT_ITER_P(beg),
 	                     * end_obj = Z_GTEXT_ITER_P(end);
@@ -666,10 +665,6 @@ static const zend_function_entry gtext_iter_class_functions[] = {
 zval *gtext_iter_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv){
 	ze_gtext_iter_object * intern = Z_GTEXT_ITER_P(object);
 	gtext_iter_ptr b = intern->iter_ptr;
-	const char * tmp;
-	ZVAL_NULL(rv);
-	if(!b)
-		return rv;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkTextIter * iter = b->intern;
@@ -685,19 +680,16 @@ zval *gtext_iter_read_property(zval *object, zval *member, int type, void **cach
 		ZVAL_LONG(rv, gtk_text_iter_get_visible_line_index(iter));
 	}else if(!strcmp(member_val, GTEXT_ITER_VISIBLE_LINE_OFFSET)){
 		ZVAL_LONG(rv, gtk_text_iter_get_visible_line_offset(iter));
-	}
-	return std_object_handlers.read_property(object, member, type, cache_slot, rv);
+	}else
+		return std_object_handlers.read_property(object, member, type, cache_slot, rv);
+	return rv;
 }
 
 HashTable *gtext_iter_get_properties(zval *object){
 	G_H_UPDATE_INIT(zend_std_get_properties(object));
-	const char * tmp;
 	ze_gtext_iter_object * intern = Z_GTEXT_ITER_P(object);
 	gtext_iter_ptr b = intern->iter_ptr;
 	GtkTextIter * iter = b->intern;
-	if(!b){
-		return NULL;
-	}
 	G_H_UPDATE_LONG(GTEXT_ITER_OFFSET             , gtk_text_iter_get_offset             (iter));
 	G_H_UPDATE_LONG(GTEXT_ITER_LINE               , gtk_text_iter_get_line               (iter));
 	G_H_UPDATE_LONG(GTEXT_ITER_LINE_OFFSET        , gtk_text_iter_get_line_offset        (iter));
@@ -710,11 +702,7 @@ HashTable *gtext_iter_get_properties(zval *object){
 void gtext_iter_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gtext_iter_object * intern = Z_GTEXT_ITER_P(object);
 	gtext_iter_ptr b = intern->iter_ptr;
-	zval * tmp_member;
 	long tmp_l;
-	const char * tmp_s;
-	double tmp_d;
-	int tmp_b;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkTextIter * iter = b->intern;

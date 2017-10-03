@@ -40,7 +40,6 @@ void gentry_func_activate(GtkWidget * entry, gpointer data){
 }
 
 void gentry_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * param){
-	zval * data, * narray;
 	switch(val){
 		case gsignal_gentry_activate :
 			gwidget_adding_function(val, GSIGNAL_GENTRY_ACTIVATE, G_CALLBACK(gentry_func_activate), ze_obj, function, param);
@@ -62,7 +61,6 @@ PHP_METHOD(GEntry, on){
 }
 
 GENTRY_METHOD(__construct){
-	//ze_gentry_object * ze_obj;
 	zval * obj;
 	ze_gwidget_object * widget;
 	if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "O", &obj, gentry_buffer_get_class_entry()) == FAILURE)
@@ -165,7 +163,6 @@ zval *gentry_read_property(zval *object, zval *member, int type, void **cache_sl
 
 HashTable *gentry_get_properties(zval *object){
 	G_H_UPDATE_INIT(gwidget_get_properties(object));
-	const char * tmp;
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
 	GtkEntry * e = GTK_ENTRY(w->intern);
@@ -188,7 +185,6 @@ HashTable *gentry_get_properties(zval *object){
 void gentry_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	zval * tmp_member;
 	long tmp_l;
 	const char * tmp_s;
 	double tmp_d;

@@ -53,7 +53,6 @@ zend_object *gstyle_context_object_new(zend_class_entry *class_type){
 }
 
 void gstyle_context_dtor(gstyle_context_ptr intern){
-	zval *  zv, * tmp;
 	if (intern->intern){
 	}
 	zend_hash_destroy(Z_ARRVAL_P(&intern->signals));
@@ -199,8 +198,9 @@ zval *gstyle_context_read_property(zval *object, zval *member, int type, void **
 }
 
 HashTable *gstyle_context_get_properties(zval *object){
-	G_H_UPDATE_INIT(zend_std_get_properties(object));
-	return G_H_UPDATE_RETURN;
+	//G_H_UPDATE_INIT(zend_std_get_properties(object));
+	//return G_H_UPDATE_RETURN;
+	return zend_std_get_properties(object);
 }
 
 void gstyle_context_write_property(zval *object, zval *member, zval *value, void **cache_slot){

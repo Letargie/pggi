@@ -53,7 +53,6 @@ zend_object *gtext_buffer_object_new(zend_class_entry *class_type){
 }
 
 void gtext_buffer_dtor(gtext_buffer_ptr intern){
-	zval *  zv, * tmp;
 	if (intern->intern){	
 	/*unref text buffer?*/
 	}/*
@@ -216,10 +215,10 @@ zval *gtext_buffer_read_property(zval *object, zval *member, int type, void **ca
 	char * member_val = Z_STRVAL_P(member);
 	GtkTextBuffer * buffer = GTK_TEXT_BUFFER(b->intern);
 	if(!strcmp(member_val, GTEXT_BUFFER_TEXT)){
-		GtkTextIter * start, * end;
-		gtk_text_buffer_get_start_iter(buffer, start);
-		gtk_text_buffer_get_end_iter(buffer, end);
-		tmp = gtk_text_buffer_get_text(buffer, start, end, 1);
+		GtkTextIter start, end;
+		gtk_text_buffer_get_start_iter(buffer, &start);
+		gtk_text_buffer_get_end_iter(buffer, &end);
+		tmp = gtk_text_buffer_get_text(buffer, &start, &end, 1);
 		if(tmp){
 			ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
 		}else{
@@ -227,29 +226,24 @@ zval *gtext_buffer_read_property(zval *object, zval *member, int type, void **ca
 		}
 	}else
 		return std_object_handlers.read_property(object, member, type, cache_slot, rv);
+	return rv;
 }
 
 HashTable *gtext_buffer_get_properties(zval *object){
 	G_H_UPDATE_INIT(zend_std_get_properties(object));
-	const char * tmp;
 	ze_gtext_buffer_object * intern = Z_GTEXT_BUFFER_P(object);
 	gtext_buffer_ptr b = intern->buffer_ptr;
 	GtkTextBuffer * buffer = GTK_TEXT_BUFFER(b->intern);
-	GtkTextIter * start, * end;
-	gtk_text_buffer_get_start_iter(buffer, start);
-	gtk_text_buffer_get_end_iter(buffer, end);
-	G_H_UPDATE_STRING	(GTEXT_BUFFER_TEXT, gtk_text_buffer_get_text(buffer, start, end, 1));
+	GtkTextIter start, end;
+	gtk_text_buffer_get_start_iter(buffer, &start);
+	gtk_text_buffer_get_end_iter(buffer, &end);
+	G_H_UPDATE_STRING	(GTEXT_BUFFER_TEXT, gtk_text_buffer_get_text(buffer, &start, &end, 1));
 	return G_H_UPDATE_RETURN;
 }
 
 void gtext_buffer_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gtext_buffer_object * intern = Z_GTEXT_BUFFER_P(object);
 	gtext_buffer_ptr b = intern->buffer_ptr;
-	zval * tmp_member;
-	long tmp_l;
-	const char * tmp_s;
-	double tmp_d;
-	int tmp_b;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkTextBuffer * buffer = GTK_TEXT_BUFFER(b->intern);

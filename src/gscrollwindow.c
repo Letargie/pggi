@@ -27,7 +27,6 @@ static zend_class_entry * gscroll_window_class_entry_ce;
 
 GSCROLL_WINDOW_METHOD(__construct){
 	ze_gwidget_object * widget;
-	zval * title = NULL;
 	widget = Z_GWIDGET_P(getThis());
 	if(pggi_parse_parameters_none_throw() == FAILURE)
 		return ;
@@ -51,35 +50,33 @@ static const zend_function_entry gscroll_window_class_functions[] = {
 /*****************************/
 
 zval *gscroll_window_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv){
-	ze_gwidget_object * intern = Z_GWIDGET_P(object);
+	/*ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	zval zobj;
-	zend_long lval;
-
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
-	GtkScrolledWindow * win = GTK_SCROLLED_WINDOW(w->intern);
+	GtkScrolledWindow * win = GTK_SCROLLED_WINDOW(w->intern);*/
 	return gcontainer_read_property(object, member, type, cache_slot, rv);
 }
 
 HashTable *gscroll_window_get_properties(zval *object){
-	G_H_UPDATE_INIT(gcontainer_get_properties(object));
+	/*G_H_UPDATE_INIT(gcontainer_get_properties(object));
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
 	GtkScrolledWindow * win = GTK_SCROLLED_WINDOW(w->intern);
-
-	return G_H_UPDATE_RETURN;
+	
+	return G_H_UPDATE_RETURN;*/
+	return gcontainer_get_properties(object);
 }
 
 void gscroll_window_write_property(zval *object, zval *member, zval *value, void **cache_slot){
-	ze_gwidget_object * intern = Z_GWIDGET_P(object);
+	/*ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
 	zval * tmp_member;
 	long tmp_l;
 	int tmp_b;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
-	GtkScrolledWindow * win = GTK_SCROLLED_WINDOW(w->intern);
+	GtkScrolledWindow * win = GTK_SCROLLED_WINDOW(w->intern);*/
 	switch(Z_TYPE_P(value)){
 		default :
 			gcontainer_write_property(object, member, value, cache_slot);

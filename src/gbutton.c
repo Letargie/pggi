@@ -72,57 +72,45 @@ static const zend_function_entry gbutton_class_functions[] = {
 zval *gbutton_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	zval zobj;
-	zend_long lval;
 	char * member_val = Z_STRVAL_P(member);
-	ZVAL_NULL(rv);
-	if(w){
-		GtkButton * but = GTK_BUTTON(w->intern);
-		convert_to_string(member);
+	GtkButton * but = GTK_BUTTON(w->intern);
+	convert_to_string(member);
 
-		if(!strcmp(member_val, GBUTTON_LABEL)){
-			const char * tmp = gtk_button_get_label(but);
-			ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
-		}else if(!strcmp(member_val, GBUTTON_IMAGE_POSITION)){
-			ZVAL_LONG(rv, gtk_button_get_image_position(but));
-		}else if(!strcmp(member_val, GBUTTON_RELIEF)){
-			ZVAL_LONG(rv, gtk_button_get_relief(but));
-		}else if(!strcmp(member_val, GBUTTON_ALWAYS_SHOW_IMAGE)){
-			ZVAL_LONG(rv, gtk_button_get_always_show_image(but));
-		}else if(!strcmp(member_val, GBUTTON_USE_UNDERLINE)){
-			ZVAL_LONG(rv, gtk_button_get_use_underline(but));
-		}else if(!strcmp(member_val, GBUTTON_IMAGE)){
-			return std_object_handlers.read_property(object, member, type, cache_slot, rv);
-		}else
-			return gcontainer_read_property(object, member, type, cache_slot, rv);
-	}
+	if(!strcmp(member_val, GBUTTON_LABEL)){
+		const char * tmp = gtk_button_get_label(but);
+		ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
+	}else if(!strcmp(member_val, GBUTTON_IMAGE_POSITION)){
+		ZVAL_LONG(rv, gtk_button_get_image_position(but));
+	}else if(!strcmp(member_val, GBUTTON_RELIEF)){
+		ZVAL_LONG(rv, gtk_button_get_relief(but));
+	}else if(!strcmp(member_val, GBUTTON_ALWAYS_SHOW_IMAGE)){
+		ZVAL_LONG(rv, gtk_button_get_always_show_image(but));
+	}else if(!strcmp(member_val, GBUTTON_USE_UNDERLINE)){
+		ZVAL_LONG(rv, gtk_button_get_use_underline(but));
+	}else if(!strcmp(member_val, GBUTTON_IMAGE)){
+		return std_object_handlers.read_property(object, member, type, cache_slot, rv);
+	}else
+		return gcontainer_read_property(object, member, type, cache_slot, rv);
 	return rv;
 }
 
 HashTable *gbutton_get_properties(zval *object){
-	HashTable *props;
-	zval zv;
+	G_H_UPDATE_INIT(gcontainer_get_properties(object));
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	if(!w){
-		return NULL;
-	}
 	GtkButton * but = GTK_BUTTON(w->intern);
-	props = gcontainer_get_properties(object);
 	G_H_UPDATE_STRING(GBUTTON_LABEL            , gtk_button_get_label            (but));
 	G_H_UPDATE_BOOL  (GBUTTON_ALWAYS_SHOW_IMAGE, gtk_button_get_always_show_image(but));
 	G_H_UPDATE_BOOL  (GBUTTON_USE_UNDERLINE    , gtk_button_get_use_underline    (but));
 	G_H_UPDATE_LONG  (GBUTTON_IMAGE_POSITION   , gtk_button_get_image_position   (but));
 	G_H_UPDATE_LONG  (GBUTTON_RELIEF           , gtk_button_get_relief           (but));
-
-	return props;
+	return G_H_UPDATE_RETURN;
 }
 
 void gbutton_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	ze_gwidget_object * tmp_widget;
 	gwidget_ptr w = intern->widget_ptr;
-	zval * tmp_member;
 	long tmp_l;
 	int tmp_b;
 	convert_to_string(member);

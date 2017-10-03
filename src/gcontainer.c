@@ -60,7 +60,6 @@ void gcontainer_func_add(GtkWidget * container, gpointer data){
 }
 
 void gcontainer_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * param){
-	zval * data, * narray;
 	switch(val){
 		case gsignal_gcontainer_add :
 			gwidget_adding_function(val, GSIGNAL_GCONTAINER_ADD, G_CALLBACK(gcontainer_func_add), ze_obj, function, param);
@@ -88,7 +87,6 @@ PHP_METHOD(GContainer, on){
 zval *gcontainer_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	const char * tmp;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	if(!strcmp(member_val, GCONTAINER_BORDER_WIDTH)){
@@ -100,7 +98,6 @@ zval *gcontainer_read_property(zval *object, zval *member, int type, void **cach
 
 HashTable *gcontainer_get_properties(zval *object){
 	G_H_UPDATE_INIT(gwidget_get_properties(object));
-	const char * tmp;
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
 	G_H_UPDATE_LONG(GCONTAINER_BORDER_WIDTH, gtk_container_get_border_width(GTK_CONTAINER(w->intern)));
@@ -110,11 +107,7 @@ HashTable *gcontainer_get_properties(zval *object){
 void gcontainer_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	zval * tmp_member;
 	long tmp_l;
-	const char * tmp_s;
-	double tmp_d;
-	int tmp_b;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	switch(Z_TYPE_P(value)){

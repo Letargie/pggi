@@ -100,7 +100,6 @@ static const zend_function_entry gbox_class_functions[] = {
 zval *gbox_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	const char * tmp;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	if(!strcmp(member_val, GBOX_SPACING)){
@@ -116,7 +115,6 @@ zval *gbox_read_property(zval *object, zval *member, int type, void **cache_slot
 
 HashTable *gbox_get_properties(zval *object){
 	G_H_UPDATE_INIT(gcontainer_get_properties(object));
-	const char * tmp;
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
 
@@ -130,10 +128,7 @@ HashTable *gbox_get_properties(zval *object){
 void gbox_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	zval * tmp_member;
 	long tmp_l;
-	const char * tmp_s;
-	double tmp_d;
 	int tmp_b;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);

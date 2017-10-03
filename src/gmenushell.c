@@ -96,8 +96,6 @@ static const zend_function_entry gmenushell_class_functions[] = {
 zval *gmenushell_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	zval zobj;
-	zend_long lval;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkMenuShell * menu = GTK_MENU_SHELL(w->intern);
@@ -122,8 +120,6 @@ HashTable *gmenushell_get_properties(zval *object){
 void gmenushell_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	zval * tmp_member;
-	long tmp_l;
 	int tmp_b;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
@@ -131,9 +127,9 @@ void gmenushell_write_property(zval *object, zval *member, zval *value, void **c
 	switch(Z_TYPE_P(value)){
 		case IS_TRUE :
 		case IS_FALSE :
-			tmp_l = Z_TYPE_P(value) == IS_TRUE ? 1 : 0;
+			tmp_b = Z_TYPE_P(value) == IS_TRUE ? 1 : 0;
 			if(!strcmp(member_val, GMENUSHELL_TAKE_FOCUS))
-				gtk_menu_shell_set_take_focus(menu, tmp_l);
+				gtk_menu_shell_set_take_focus(menu, tmp_b);
 			else
 				gcontainer_write_property(object, member, value, cache_slot);
 			break;

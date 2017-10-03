@@ -50,7 +50,6 @@ void gtree_view_func_column_changed(GtkWidget * container, gpointer data){
 }
 
 void gtree_view_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * param){
-	zval * data, * narray;
 	switch(val){
 		case gsignal_gtree_view_column_changed :
 			gwidget_adding_function(val, GSIGNAL_GTREE_VIEW_COLUMN_CHANGED, G_CALLBACK(gtree_view_func_column_changed), ze_obj, function, param);
@@ -156,8 +155,6 @@ static const zend_function_entry gtree_view_class_functions[] = {
 zval *gtree_view_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	zval zobj;
-	zend_long lval;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkTreeView * view = GTK_TREE_VIEW(w->intern);
@@ -195,6 +192,7 @@ zval *gtree_view_read_property(zval *object, zval *member, int type, void **cach
 		return std_object_handlers.read_property(object, member, type, cache_slot, rv);
 	}else
 		return gcontainer_read_property(object, member, type, cache_slot, rv);
+	return rv;
 }
 
 HashTable *gtree_view_get_properties(zval *object){
@@ -224,7 +222,6 @@ HashTable *gtree_view_get_properties(zval *object){
 void gtree_view_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	zval * tmp_member;
 	long tmp_l;
 	int tmp_b;
 	convert_to_string(member);

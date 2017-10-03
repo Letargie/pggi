@@ -58,7 +58,7 @@ showNewGAboutDialog(parameters.....) static
 
 add a property parent?
 
-*/
+*//*
 GABOUT_DIALOG_METHOD(showGAboutDialog){
 	ze_gwidget_object *ze_obj = NULL;
 	zval * parent = NULL, * args = NULL;
@@ -70,7 +70,7 @@ GABOUT_DIALOG_METHOD(showGAboutDialog){
 	if(parent)
 		p = (Z_GWIDGET_P(parent))->widget_ptr->intern;
 	// UNFINISHED need to check parameters
-}
+}*/
 
 
 /**
@@ -89,55 +89,50 @@ static const zend_function_entry gabout_dialog_class_functions[] = {
 zval *gabout_dialog_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	zval zobj;
-	zend_long lval;
-	ZVAL_NULL(rv);
-	if(w){
-		convert_to_string(member);
-		char * member_val = Z_STRVAL_P(member);
-		GtkAboutDialog * dialog = GTK_ABOUT_DIALOG(w->intern);
-		if(!strcmp(member_val, GABOUT_DIALOG_PROGRAM_NAME)){
-			const char * tmp = gtk_about_dialog_get_program_name(dialog);
-			ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
-		}else if(!strcmp(member_val, GABOUT_DIALOG_VERSION)){
-			const char * tmp = gtk_about_dialog_get_version(dialog);
-			ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
-		}else if(!strcmp(member_val, GABOUT_DIALOG_COPYRIGHT)){
-			const char * tmp = gtk_about_dialog_get_version(dialog);
-			ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
-		}else if(!strcmp(member_val, GABOUT_DIALOG_COMMENTS)){
-			const char * tmp = gtk_about_dialog_get_comments(dialog);
-			ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
-		}else if(!strcmp(member_val, GABOUT_DIALOG_LICENSE)){
-			const char * tmp = gtk_about_dialog_get_license(dialog);
-			ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
-		}else if(!strcmp(member_val, GABOUT_DIALOG_WRAP_LICENSE))
-			ZVAL_BOOL(rv, gtk_about_dialog_get_wrap_license(dialog));
-		else if(!strcmp(member_val, GABOUT_DIALOG_LICENSE_TYPE)){
-			ZVAL_LONG(rv, gtk_about_dialog_get_license_type(dialog));
-		}else if(!strcmp(member_val, GABOUT_DIALOG_WEBSITE)){
-			const char * tmp = gtk_about_dialog_get_website(dialog);
-			ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
-		}else if(!strcmp(member_val, GABOUT_DIALOG_WEBSITE_LABEL)){
-			const char * tmp = gtk_about_dialog_get_website_label(dialog);
-			ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
-		}/*else if(!strcmp(member_val, GABOUT_DIALOG_AUTHORS)){
+	convert_to_string(member);
+	char * member_val = Z_STRVAL_P(member);
+	GtkAboutDialog * dialog = GTK_ABOUT_DIALOG(w->intern);
+	if(!strcmp(member_val, GABOUT_DIALOG_PROGRAM_NAME)){
+		const char * tmp = gtk_about_dialog_get_program_name(dialog);
+		ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
+	}else if(!strcmp(member_val, GABOUT_DIALOG_VERSION)){
+		const char * tmp = gtk_about_dialog_get_version(dialog);
+		ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
+	}else if(!strcmp(member_val, GABOUT_DIALOG_COPYRIGHT)){
+		const char * tmp = gtk_about_dialog_get_version(dialog);
+		ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
+	}else if(!strcmp(member_val, GABOUT_DIALOG_COMMENTS)){
+		const char * tmp = gtk_about_dialog_get_comments(dialog);
+		ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
+	}else if(!strcmp(member_val, GABOUT_DIALOG_LICENSE)){
+		const char * tmp = gtk_about_dialog_get_license(dialog);
+		ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
+	}else if(!strcmp(member_val, GABOUT_DIALOG_WRAP_LICENSE))
+		ZVAL_BOOL(rv, gtk_about_dialog_get_wrap_license(dialog));
+	else if(!strcmp(member_val, GABOUT_DIALOG_LICENSE_TYPE)){
+		ZVAL_LONG(rv, gtk_about_dialog_get_license_type(dialog));
+	}else if(!strcmp(member_val, GABOUT_DIALOG_WEBSITE)){
+		const char * tmp = gtk_about_dialog_get_website(dialog);
+		ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
+	}else if(!strcmp(member_val, GABOUT_DIALOG_WEBSITE_LABEL)){
+		const char * tmp = gtk_about_dialog_get_website_label(dialog);
+		ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
+	}/*else if(!strcmp(member_val, GABOUT_DIALOG_AUTHORS)){
 
-		}else if(!strcmp(member_val, GABOUT_DIALOG_ARTISTS)){
-			
-		}else if(!strcmp(member_val, GABOUT_DIALOG_DOCUMENTERS)){
-			
-		}*/else if(!strcmp(member_val, GABOUT_DIALOG_TRANSLATOR_CREDITS)){
-			const char * tmp = gtk_about_dialog_get_translator_credits(dialog);
-			ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
-		}else if(!strcmp(member_val, GABOUT_DIALOG_LOGO_ICON_NAME)){
-			const char * tmp = gtk_about_dialog_get_logo_icon_name(dialog);
-			ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
-		}/*else if(!strcmp(member_val, GABOUT_DIALOG_LOGO)){
-			
-		}*/else
-			return gwindow_read_property(object, member, type, cache_slot, rv);
-	}
+	}else if(!strcmp(member_val, GABOUT_DIALOG_ARTISTS)){
+		
+	}else if(!strcmp(member_val, GABOUT_DIALOG_DOCUMENTERS)){
+		
+	}*/else if(!strcmp(member_val, GABOUT_DIALOG_TRANSLATOR_CREDITS)){
+		const char * tmp = gtk_about_dialog_get_translator_credits(dialog);
+		ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
+	}else if(!strcmp(member_val, GABOUT_DIALOG_LOGO_ICON_NAME)){
+		const char * tmp = gtk_about_dialog_get_logo_icon_name(dialog);
+		ZVAL_STRINGL(rv, estrdup(tmp), strlen(tmp));
+	}/*else if(!strcmp(member_val, GABOUT_DIALOG_LOGO)){
+		
+	}*/else
+		return gwindow_read_property(object, member, type, cache_slot, rv);
 	return rv;
 }
 
@@ -165,7 +160,6 @@ HashTable *gabout_dialog_get_properties(zval *object){
 void gabout_dialog_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	zval * tmp_member;
 	int tmp_b;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);

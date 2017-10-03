@@ -58,7 +58,6 @@ void gcombo_box_func_move_active(GtkWidget* w, gpointer data){
 }
 
 void gcombo_box_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * param){
-	zval * data, * narray;
 	switch(val){
 		case gsignal_gcombo_box_changed :
 			gwidget_adding_function(val, GSIGNAL_GCOMBO_BOX_CHANGED, G_CALLBACK(gcombo_box_func_changed), ze_obj, function, param);
@@ -98,8 +97,6 @@ static const zend_function_entry gcombo_box_class_functions[] = {
 zval *gcombo_box_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	zval zobj;
-	zend_long lval;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkComboBox * menu = GTK_COMBO_BOX(w->intern);
@@ -123,9 +120,6 @@ HashTable *gcombo_box_get_properties(zval *object){
 void gcombo_box_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	ze_gwidget_object * tmp_obj;
-	long tmp_l;
-	int tmp_b;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkComboBox * menu = GTK_COMBO_BOX(w->intern);

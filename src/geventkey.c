@@ -53,8 +53,9 @@ zval *gevent_key_read_property(zval *object, zval *member, int type, void **cach
 }
 
 HashTable *gevent_key_get_properties(zval *object){
-	G_H_UPDATE_INIT(gevent_get_properties(object));
-	return G_H_UPDATE_RETURN;
+	//G_H_UPDATE_INIT(gevent_get_properties(object));
+	//return G_H_UPDATE_RETURN;
+	return gevent_get_properties(object);
 }
 
 void gevent_key_write_property(zval *object, zval *member, zval *value, void **cache_slot){

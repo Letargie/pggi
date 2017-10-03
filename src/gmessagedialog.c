@@ -96,27 +96,26 @@ static const zend_function_entry gmessage_dialog_class_functions[] = {
 /*****************************/
 
 zval *gmessage_dialog_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv){
-	ze_gwidget_object * intern = Z_GWIDGET_P(object);
-	gwidget_ptr w = intern->widget_ptr;
+	//ze_gwidget_object * intern = Z_GWIDGET_P(object);
+	//gwidget_ptr w = intern->widget_ptr;
 	return gwindow_read_property(object, member, type, cache_slot, rv);
 }
 
 HashTable *gmessage_dialog_get_properties(zval *object){
-	G_H_UPDATE_INIT(gwindow_get_properties(object));
-	ze_gwidget_object * intern = Z_GWIDGET_P(object);
-	gwidget_ptr w = intern->widget_ptr;
-	GtkMessageDialog * dialog = GTK_MESSAGE_DIALOG(w->intern);
-	return G_H_UPDATE_RETURN;
+	//G_H_UPDATE_INIT(gwindow_get_properties(object));
+	//ze_gwidget_object * intern = Z_GWIDGET_P(object);
+	//gwidget_ptr w = intern->widget_ptr;
+	//GtkMessageDialog * dialog = GTK_MESSAGE_DIALOG(w->intern);
+	//return G_H_UPDATE_RETURN;
+	return gwindow_get_properties(object);
 }
 
 void gmessage_dialog_write_property(zval *object, zval *member, zval *value, void **cache_slot){
-	ze_gwidget_object * intern = Z_GWIDGET_P(object);
-	gwidget_ptr w = intern->widget_ptr;
-	zval * tmp_member;
-	int tmp_b;
-	convert_to_string(member);
-	char * member_val = Z_STRVAL_P(member);
-	GtkMessageDialog * dialog = GTK_MESSAGE_DIALOG(w->intern);
+	//ze_gwidget_object * intern = Z_GWIDGET_P(object);
+	//gwidget_ptr w = intern->widget_ptr;
+	//convert_to_string(member);
+	//char * member_val = Z_STRVAL_P(member);
+	//GtkMessageDialog * dialog = GTK_MESSAGE_DIALOG(w->intern);
 	switch(Z_TYPE_P(value)){
 		default :
 			gwindow_write_property(object, member, value, cache_slot);

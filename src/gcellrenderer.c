@@ -53,7 +53,6 @@ zend_object *gcell_renderer_object_new(zend_class_entry *class_type){
 }
 
 void gcell_renderer_dtor(gcell_renderer_ptr intern){
-	zval *  zv, * tmp;
 	if (intern->intern){	
 	/*unref text buffer?*/
 	}
@@ -173,15 +172,11 @@ static const zend_function_entry gcell_renderer_class_functions[] = {
 /*****************************/
 
 zval *gcell_renderer_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv){
-	ze_gcell_renderer_object * intern = Z_GCELL_RENDERER_P(object);
-	gcell_renderer_ptr b = intern->cell_renderer_ptr;
-	const char * tmp;
-	ZVAL_NULL(rv);
-	if(!b)
-		return rv;
-	convert_to_string(member);
-	char * member_val = Z_STRVAL_P(member);
-	GtkCellRenderer * buffer = GTK_CELL_RENDERER(b->intern);
+	//ze_gcell_renderer_object * intern = Z_GCELL_RENDERER_P(object);
+	//gcell_renderer_ptr b = intern->cell_renderer_ptr;
+	//convert_to_string(member);
+	//char * member_val = Z_STRVAL_P(member);
+	//GtkCellRenderer * buffer = GTK_CELL_RENDERER(b->intern);
 	/*if(!strcmp(member_val, GCELL_RENDERER_TEXT)){
 		GtkTextIter * start, * end;
 		gtk_cell_renderer_get_start_iter(buffer, start);
@@ -197,34 +192,26 @@ zval *gcell_renderer_read_property(zval *object, zval *member, int type, void **
 }
 
 HashTable *gcell_renderer_get_properties(zval *object){
-	G_H_UPDATE_INIT(zend_std_get_properties(object));
-	const char * tmp;
+	/*G_H_UPDATE_INIT(zend_std_get_properties(object));
 	ze_gcell_renderer_object * intern = Z_GCELL_RENDERER_P(object);
 	gcell_renderer_ptr b = intern->cell_renderer_ptr;
 	GtkCellRenderer * buffer = GTK_CELL_RENDERER(b->intern);
-	if(!b){
-		return NULL;
-	}
 	//G_H_UPDATE_BOOL(GCELL_RENDERER_VISIBLE, gtk_cell_renderer_get_text(renderer));
 	//G_H_UPDATE_BOOL(GCELL_RENDERER_SENSIBLE, gtk_cell_renderer_get_text(renderer));
-	/*G_H_UPDATE_LONG(GCELL_RENDERER_X_ALIGN, gtk_cell_renderer_get_text(renderer));
+	G_H_UPDATE_LONG(GCELL_RENDERER_X_ALIGN, gtk_cell_renderer_get_text(renderer));
 	G_H_UPDATE_LONG(GCELL_RENDERER_Y_ALIGN, gtk_cell_renderer_get_text(renderer));
 	G_H_UPDATE_LONG(GCELL_RENDERER_X_PAD, gtk_cell_renderer_get_text(renderer));
-	G_H_UPDATE_LONG(GCELL_RENDERER_Y_PAD, gtk_cell_renderer_get_text(renderer));*/
-	return G_H_UPDATE_RETURN;
+	G_H_UPDATE_LONG(GCELL_RENDERER_Y_PAD, gtk_cell_renderer_get_text(renderer));
+	return G_H_UPDATE_RETURN;*/
+	return zend_std_get_properties(object);
 }
 
 void gcell_renderer_write_property(zval *object, zval *member, zval *value, void **cache_slot){
-	ze_gcell_renderer_object * intern = Z_GCELL_RENDERER_P(object);
-	gcell_renderer_ptr b = intern->cell_renderer_ptr;
-	zval * tmp_member;
-	long tmp_l;
-	const char * tmp_s;
-	double tmp_d;
-	int tmp_b;
-	convert_to_string(member);
-	char * member_val = Z_STRVAL_P(member);
-	GtkCellRenderer * buffer = GTK_CELL_RENDERER(b->intern);
+	//ze_gcell_renderer_object * intern = Z_GCELL_RENDERER_P(object);
+	//gcell_renderer_ptr b = intern->cell_renderer_ptr;
+	//convert_to_string(member);
+	//char * member_val = Z_STRVAL_P(member);
+	//GtkCellRenderer * buffer = GTK_CELL_RENDERER(b->intern);
 	switch(Z_TYPE_P(value)){
 		/*case IS_FALSE :
 		case IS_TRUE :

@@ -52,7 +52,6 @@ zend_object *gtree_iter_object_new(zend_class_entry *class_type){
 }
 
 void gtree_iter_dtor(gtree_iter_ptr intern){
-	zval *  zv, * tmp;
 	if (intern->intern){	
 	/*unref text buffer?*/
 	}

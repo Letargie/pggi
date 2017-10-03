@@ -53,7 +53,6 @@ zend_object *gentry_buffer_object_new(zend_class_entry *class_type){
 }
 
 void gentry_buffer_dtor(gentry_buffer_ptr intern){
-	zval *  zv, * tmp;
 	if (intern->intern){	
 	/*unref entry buffer?*/
 	}
@@ -223,16 +222,15 @@ zval *gentry_buffer_read_property(zval *object, zval *member, int type, void **c
 		}else{
 			ZVAL_NULL(rv);
 		}
-	}
-	if(!strcmp(member_val, GENTRY_BUFFER_MAX_LENGTH)){
+	}else if(!strcmp(member_val, GENTRY_BUFFER_MAX_LENGTH)){
 		ZVAL_LONG(rv, gtk_entry_buffer_get_max_length(buffer));
 	}else
 		return std_object_handlers.read_property(object, member, type, cache_slot, rv);
+	return rv;
 }
 
 HashTable *gentry_buffer_get_properties(zval *object){
 	G_H_UPDATE_INIT(zend_std_get_properties(object));
-	const char * tmp;
 	ze_gentry_buffer_object * intern = Z_GENTRY_BUFFER_P(object);
 	gentry_buffer_ptr b = intern->buffer_ptr;
 	GtkEntryBuffer * buffer = b->intern;
@@ -244,11 +242,6 @@ HashTable *gentry_buffer_get_properties(zval *object){
 void gentry_buffer_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gentry_buffer_object * intern = Z_GENTRY_BUFFER_P(object);
 	gentry_buffer_ptr b = intern->buffer_ptr;
-	zval * tmp_member;
-	long tmp_l;
-	const char * tmp_s;
-	double tmp_d;
-	int tmp_b;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkEntryBuffer * buffer = b->intern;

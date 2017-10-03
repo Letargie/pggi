@@ -53,7 +53,6 @@ zend_object *gscreen_object_new(zend_class_entry *class_type){
 }
 
 void gscreen_dtor(gscreen_ptr intern){
-	zval *  zv, * tmp;
 	if (intern->intern){
 	}
 	zend_hash_destroy(Z_ARRVAL_P(&intern->signals));
@@ -191,8 +190,9 @@ zval *gscreen_read_property(zval *object, zval *member, int type, void **cache_s
 }
 
 HashTable *gscreen_get_properties(zval *object){
-	G_H_UPDATE_INIT(zend_std_get_properties(object));
-	return G_H_UPDATE_RETURN;
+	//G_H_UPDATE_INIT(zend_std_get_properties(object));
+	//return G_H_UPDATE_RETURN;
+	return zend_std_get_properties(object);
 }
 
 void gscreen_write_property(zval *object, zval *member, zval *value, void **cache_slot){
