@@ -79,9 +79,9 @@ GMESSAGE_DIALOG_METHOD(__construct){
 	}
 	widget->std.handlers = &gmessage_dialog_object_handlers;
 	widget->widget_ptr = gwidget_new();
-	widget->widget_ptr->intern = gtk_message_dialog_new(p, flag, message_type, button_type, (primary_len > 0 ? primary_message : NULL));
+	widget->widget_ptr->intern = gtk_message_dialog_new(p, flag, message_type, button_type, "%s", (primary_len > 0 ? primary_message : ""));
 	if(secondary_len > 0)
-		gtk_message_dialog_format_secondary_text(GTK_MESSAGE_DIALOG(widget->widget_ptr->intern) , secondary_message);
+		gtk_message_dialog_format_secondary_text(GTK_MESSAGE_DIALOG(widget->widget_ptr->intern) , "%s", secondary_message);
 	GCONTAINER_ADD_ELEMENT(widget);
 	g_signal_connect(widget->widget_ptr->intern, "destroy", G_CALLBACK (widget_destructed), widget);
 }
