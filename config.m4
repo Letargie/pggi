@@ -15,6 +15,7 @@ if test "$PHP_PGGI" != "no"; then
 	else
 		AC_MSG_ERROR(system gtk not found)
 	fi
+	CFLAGS="$CFLAGS -Wall -Werror=format-security"
 	PHP_NEW_EXTENSION(pggi,
 		src/gevent.c             \
 		src/geventkey.c          \
