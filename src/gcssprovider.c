@@ -54,6 +54,7 @@ zend_object *gcss_provider_object_new(zend_class_entry *class_type){
 
 void gcss_provider_dtor(gcss_provider_ptr intern){
 	if (intern->intern){
+		g_object_unref(intern->intern);
 	}
 	zend_hash_destroy(Z_ARRVAL_P(&intern->signals));
 	efree(intern);

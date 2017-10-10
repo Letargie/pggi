@@ -9,6 +9,11 @@
   +-----------------------------------------------------------+
 */
 
+#include "php.h"
+#include "php_ini.h"
+#include "ext/standard/info.h"
+#include "zend.h"
+#include "zend_API.h"
 
 #if PHP_VERSION_ID >= 70200
 
@@ -26,17 +31,12 @@
 #endif
 
 
-#ifndef __PGGI_HUB_DEF__
-#define __PGGI_HUB_DEF__
+#ifndef __CAIRO_HUB_DEF__
+#define __CAIRO_HUB_DEF__
 
 /**
  * This file is meant to provide common informations for all our classes
  */
-
-
-#include "gexception.h"
-#include "gevent.h"
-#include "geventkey.h"
 
 /*********************/
 /* Common prototypes */
@@ -52,132 +52,33 @@
 #define ZEND_ARG_VARIADIC_INFO(pass_by_ref, name)
 */
 
-ZEND_BEGIN_ARG_INFO(arginfo_pggi_void, 0)
+ZEND_BEGIN_ARG_INFO(arginfo_cairo_void, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_pggi_on, 0, 0, 2)
-	ZEND_ARG_TYPE_INFO(0, type, IS_LONG, 0)
-	ZEND_ARG_CALLABLE_INFO(0, callback, 0)
-	ZEND_ARG_INFO(0, param)
+PGGI_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_cairo_get_long, 0, 0, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_pggi_set, 0, 0, 1)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_cairo_set, 0, 0, 1)
 	ZEND_ARG_INFO(0, name)
 ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_INFO_EX(arginfo_pggi_set_bool, 0, 0, 1)
-	ZEND_ARG_TYPE_INFO(0, value, _IS_BOOL, 0)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_INFO_EX(arginfo_pggi_set_long, 0, 0, 1)
-	ZEND_ARG_TYPE_INFO(0, value, IS_LONG, 0)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_INFO_EX(arginfo_pggi_set_string, 0, 0, 1)
-	ZEND_ARG_TYPE_INFO(0, string, IS_STRING, 0)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_INFO_EX(arginfo_pggi_gwidget, 0, 0, 1)
-	ZEND_ARG_OBJ_INFO(0, widget, PGGI\\GWidget, 0)
-ZEND_END_ARG_INFO()
-
-PGGI_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_pggi_get_long, 0, 0, IS_LONG, 0)
-ZEND_END_ARG_INFO()
-
-PGGI_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_pggi_get_string, 0, 0, IS_STRING, 0)
-ZEND_END_ARG_INFO()
-
-/************************/
-/* Signals informations */
-/************************/
-
-/**
- * All types of signals are repertories here
- */
-enum{
-	gsignal_gapplication_window_added,
-	gsignal_gapplication_window_removed,
-	gsignal_gapplication_startup,
-	gsignal_gapplication_shutdown,
-	gsignal_gapplication_activate,
-
-	gsignal_gwidget_destroy,
-	gsignal_gwidget_draw,
-	gsignal_gwidget_key_press_event,
-
-	gsignal_gcontainer_add,
-
-	gsignal_gmenuitem_activate,
-
-	gsignal_gcombo_box_changed,
-	gsignal_gcombo_box_move_active,
-
-	gsignal_gtext_buffer_changed,
-	gsignal_gstyle_context_changed,
-
-	gsignal_gdialog_close,
-	gsignal_gdialog_response,
-	gsignal_gtree_view_column_changed,
-
-	gsignal_gtree_view_column_clicked,
-
-	gsignal_gtree_selection_changed,
-
-	gsignal_gentry_activate
-} gsignals;
-
-/**
- * Associating each signal with a string
- * Needed for GTK+ signal handling
- */
-
-#define GSIGNAL_GAPPLICATION_WINDOW_ADDED   "window-added"
-#define GSIGNAL_GAPPLICATION_WINDOW_REMOVED "window-removed"
-#define GSIGNAL_GAPPLICATION_STARTUP        "startup"
-#define GSIGNAL_GAPPLICATION_SHUTDOWN       "shutdown"
-#define GSIGNAL_GAPPLICATION_ACTIVATE       "activate"
-
-#define GSIGNAL_GWIDGET_DESTROY             "destroy"
-#define GSIGNAL_GWIDGET_DRAW                "draw"
-#define GSIGNAL_GWIDGET_KEY_PRESS_EVENT     "key-press-event"
-
-#define GSIGNAL_GCONTAINER_ADD              "add"
-
-#define GSIGNAL_GMENUITEM_ACTIVATE          "activate"
-
-#define GSIGNAL_GCOMBO_BOX_CHANGED          "changed"
-#define GSIGNAL_GCOMBO_BOX_MOVE_ACTIVE      "move-active"
-
-#define GSIGNAL_GTEXT_BUFFER_CHANGED        "changed"
-#define GSIGNAL_GSTYLE_CONTEXT_CHANGED      "changed"
-
-#define GSIGNAL_GDIALOG_CLOSE               "close"
-#define GSIGNAL_GDIALOG_RESPONSE            "response"
-
-#define GSIGNAL_GTREE_VIEW_COLUMN_CHANGED   "column-changed"
-#define GSIGNAL_GTREE_VIEW_COLUMN_CLICKED   "clicked"
-
-#define GSIGNAL_GTREE_SELECTION_CHANGED     "changed"
-
-#define GSIGNAL_GENTRY_ACTIVATE             "activate"
 
 /****************************/
 /* Utils parsing parameters */
 /****************************/
 
 // Not available for php versions below 7.2
-#define pggi_parse_parameters_none_throw() \
+#define cairo_parse_parameters_none_throw() \
     (EXPECTED(ZEND_NUM_ARGS() == 0) ? SUCCESS : zend_parse_parameters_throw(ZEND_NUM_ARGS(), ""))
 
 // what I think is missing
 
-#define pggi_parse_method_parameters_throw(                      num_arg, ptr, type, ...        ) \
+#define cairo_parse_method_parameters_throw(                     num_arg, ptr, type, ...        ) \
         zend_parse_method_parameters_ex(ZEND_PARSE_PARAMS_THROW, num_arg, ptr, type, __VA_ARGS__)
 
-#define pggi_parse_method_parameters_none(                                                    this_ptr)     \
+#define cairo_parse_method_parameters_none(                                                   this_ptr)     \
     (EXPECTED(ZEND_NUM_ARGS() == 0) ? SUCCESS : zend_parse_method_parameters(ZEND_NUM_ARGS(), this_ptr,""))
 
-#define pggi_parse_method_parameters_none_throw(                                                                           this_ptr)     \
+#define cairo_parse_method_parameters_none_throw(                                                                          this_ptr)     \
     (EXPECTED(ZEND_NUM_ARGS() == 0) ? SUCCESS : zend_parse_method_parameters_ex(ZEND_PARSE_PARAMS_THROW , ZEND_NUM_ARGS(), this_ptr,""))
 
 
@@ -190,6 +91,9 @@ zend_class_entry ce;
 
 #define DECLARE_CLASS_PROPERTY(ce, name)                                    \
 	zend_declare_property_null(ce, name, sizeof(name)-1, ZEND_ACC_PUBLIC)
+
+#define DECLARE_CLASS_CONST(ce, const_name, value)                                 \
+	zend_declare_class_constant_long(ce, const_name, sizeof(const_name)-1, value); \
 
 #define G_H_UPDATE_INIT(value)                                              \
 	HashTable *props;                                                       \

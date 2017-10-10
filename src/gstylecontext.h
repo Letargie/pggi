@@ -21,6 +21,8 @@
 #include "zend_API.h"
 #include "hub.h"
 #include "gcssprovider.h"
+#include "cairo/context.h"
+#include "gdk/rgba.h"
 
 /***************************************/
 /* GStyleContext Intern Data Structure */
@@ -28,6 +30,7 @@
 
 typedef struct{
 	GtkStyleContext * intern;
+	char own : 1;
 	zval signals;
 } * gstyle_context_ptr, gstyle_context_t;
 
@@ -39,6 +42,18 @@ typedef struct{
 ZEND_BEGIN_ARG_INFO_EX(arginfo_gstyle_context_add_provider, 0, 0, 2)
 	ZEND_ARG_OBJ_INFO(0, provider, PGGI\\GCssProvider, 0)
 	ZEND_ARG_TYPE_INFO(0, priority, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_gstyle_context_render_background, 0, 0, 5)
+	ZEND_ARG_OBJ_INFO(0, context, Cairo\\Context, 0)
+	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, width, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, height, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+PGGI_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_gstyle_context_get_color, 0, 1, rgba_get_class_entry(), 0)
+	ZEND_ARG_TYPE_INFO(0, flags, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 /****************************/
@@ -91,8 +106,12 @@ void gstyle_context_function(gpointer data, unsigned int type);
 #define GSTYLE_CONTEXT_METHOD(name) \
 PHP_METHOD(GStyleContext, name)
 
-GSTYLE_CONTEXT_METHOD(on          );
-GSTYLE_CONTEXT_METHOD(__construct );
+GSTYLE_CONTEXT_METHOD(on              );
+GSTYLE_CONTEXT_METHOD(__construct     );
+GSTYLE_CONTEXT_METHOD(addProvider     );
+GSTYLE_CONTEXT_METHOD(renderBackground);
+GSTYLE_CONTEXT_METHOD(getState        );
+GSTYLE_CONTEXT_METHOD(getColor        );
 
 /*****************************/
 /* Object handling functions */

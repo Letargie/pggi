@@ -122,6 +122,18 @@ void gwidget_func_destroy(GtkWidget* w, gpointer data){
 	gwidget_function(data, gsignal_gwidget_destroy, args, 2);
 }
 
+int gwidget_func_draw(GtkWidget* w, cairo_t *cr, gpointer data){
+	zval args[3];
+	zend_object * tor = pc_context_object_new(pc_context_get_class_entry());
+	ze_context_object * obj = php_context_fetch_object(tor);
+	obj->std.handlers = pc_context_get_object_handlers();
+	obj->context_ptr = pc_context_new();
+	obj->context_ptr->intern = cr;
+	ZVAL_OBJ(&args[2], tor);
+	gwidget_function(data, gsignal_gwidget_draw, args, 3);
+	return FALSE; // return gwidget function
+}
+
 int gwidget_func_key_press_event(GtkWidget* w, GdkEvent *event, gpointer data){
 	zval args[3];
 	zval state, keyval;
@@ -159,6 +171,9 @@ void gwidget_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * par
 	switch(val){
 		case gsignal_gwidget_destroy :
 			gwidget_adding_function(val, GSIGNAL_GWIDGET_DESTROY, G_CALLBACK(gwidget_func_destroy), ze_obj, function, param);
+			break;
+		case gsignal_gwidget_draw :
+			gwidget_adding_function(val, GSIGNAL_GWIDGET_DRAW, G_CALLBACK(gwidget_func_draw), ze_obj, function, param);
 			break;
 		case gsignal_gwidget_key_press_event :
 			gwidget_adding_function(val, GSIGNAL_GWIDGET_KEY_PRESS_EVENT, G_CALLBACK(gwidget_func_key_press_event), ze_obj, function, param);
@@ -225,12 +240,32 @@ GWIDGET_METHOD(getStyleContext){
 	RETURN_OBJ(obj);
 }
 
+GWIDGET_METHOD(getAllocatedWidth){
+	ze_gwidget_object *ze_obj = NULL;
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+		return ;
+	ze_obj = Z_GWIDGET_P(self);
+	RETURN_LONG(gtk_widget_get_allocated_width(ze_obj->widget_ptr->intern));
+}
+
+GWIDGET_METHOD(getAllocatedHeight){
+	ze_gwidget_object *ze_obj = NULL;
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+		return ;
+	ze_obj = Z_GWIDGET_P(self);
+	RETURN_LONG(gtk_widget_get_allocated_height(ze_obj->widget_ptr->intern));
+}
+
 static const zend_function_entry gwidget_class_functions[] = {
-	PHP_ME(GWidget, on             , arginfo_pggi_on                  , ZEND_ACC_PUBLIC)
-	PHP_ME(GWidget, show           , arginfo_pggi_void                , ZEND_ACC_PUBLIC)
-	PHP_ME(GWidget, hide           , arginfo_pggi_void                , ZEND_ACC_PUBLIC)
-	PHP_ME(GWidget, showAll        , arginfo_pggi_void                , ZEND_ACC_PUBLIC)
-	PHP_ME(GWidget, getStyleContext, arginfo_gwidget_get_style_context, ZEND_ACC_PUBLIC)
+	PHP_ME(GWidget, on                , arginfo_pggi_on                  , ZEND_ACC_PUBLIC)
+	PHP_ME(GWidget, show              , arginfo_pggi_void                , ZEND_ACC_PUBLIC)
+	PHP_ME(GWidget, hide              , arginfo_pggi_void                , ZEND_ACC_PUBLIC)
+	PHP_ME(GWidget, showAll           , arginfo_pggi_void                , ZEND_ACC_PUBLIC)
+	PHP_ME(GWidget, getStyleContext   , arginfo_gwidget_get_style_context, ZEND_ACC_PUBLIC)
+	PHP_ME(GWidget, getAllocatedWidth , arginfo_pggi_get_long            , ZEND_ACC_PUBLIC)
+	PHP_ME(GWidget, getAllocatedHeight, arginfo_pggi_get_long            , ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 

@@ -53,8 +53,8 @@ zend_object *gentry_buffer_object_new(zend_class_entry *class_type){
 }
 
 void gentry_buffer_dtor(gentry_buffer_ptr intern){
-	if (intern->intern){	
-	/*unref entry buffer?*/
+	if(intern->intern){	
+		g_object_unref(intern->intern);
 	}
 	zend_hash_destroy(Z_ARRVAL_P(&intern->signals));
 	efree(intern);
@@ -62,10 +62,10 @@ void gentry_buffer_dtor(gentry_buffer_ptr intern){
 
 void gentry_buffer_object_free_storage(zend_object *object){
 	ze_gentry_buffer_object *intern = php_gentry_buffer_fetch_object(object);
-	if (!intern) {
+	if(!intern){
 		return;
 	}
-	if (intern->buffer_ptr){
+	if(intern->buffer_ptr){
 		gentry_buffer_dtor(intern->buffer_ptr);
 	}
 	intern->buffer_ptr = NULL;

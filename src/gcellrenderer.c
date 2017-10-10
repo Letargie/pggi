@@ -53,8 +53,8 @@ zend_object *gcell_renderer_object_new(zend_class_entry *class_type){
 }
 
 void gcell_renderer_dtor(gcell_renderer_ptr intern){
-	if (intern->intern){	
-	/*unref text buffer?*/
+	if(intern->intern){	
+		g_object_unref(intern->intern);
 	}
 	zend_hash_destroy(Z_ARRVAL_P(&intern->signals));
 	efree(intern);

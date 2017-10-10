@@ -53,7 +53,8 @@ zend_object *gstyle_context_object_new(zend_class_entry *class_type){
 }
 
 void gstyle_context_dtor(gstyle_context_ptr intern){
-	if (intern->intern){
+	if (intern->intern  && intern->own){
+		g_object_unref(intern->intern);
 	}
 	zend_hash_destroy(Z_ARRVAL_P(&intern->signals));
 	efree(intern);
@@ -127,6 +128,7 @@ GSTYLE_CONTEXT_METHOD(__construct){
 	ze_obj = Z_GSTYLE_CONTEXT_P(self);
 	ze_obj->context_ptr = gstyle_context_new();
 	ze_obj->context_ptr->intern = gtk_style_context_new();
+	ze_obj->context_ptr->own = 1;
 }
 
 
@@ -182,10 +184,52 @@ GSTYLE_CONTEXT_METHOD(addProvider){
 	gtk_style_context_add_provider(ze_obj->context_ptr->intern, GTK_STYLE_PROVIDER(obj->provider_ptr->intern), priority);
 }
 
+GSTYLE_CONTEXT_METHOD(renderBackground){
+	ze_gstyle_context_object *ze_obj;
+	ze_context_object * context;
+	zval * self = getThis();
+	zval * obj;
+	double x, y, width, height;
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "Odddd", &obj, pc_context_get_class_entry(), &x, &y, &width, &height) == FAILURE)
+		return;
+	ze_obj = Z_GSTYLE_CONTEXT_P(self);
+	context = Z_CONTEXT_P(obj);
+	gtk_render_background(ze_obj->context_ptr->intern, context->context_ptr->intern, x, y, width, height);
+}
+
+GSTYLE_CONTEXT_METHOD(getState){
+	ze_gstyle_context_object *ze_obj;
+	zval * self = getThis();
+	if(pggi_parse_parameters_none_throw() == FAILURE)
+		return;
+	ze_obj = Z_GSTYLE_CONTEXT_P(self);
+	RETURN_LONG(gtk_style_context_get_state(ze_obj->context_ptr->intern));
+}
+
+GSTYLE_CONTEXT_METHOD(getColor){
+	ze_gstyle_context_object *ze_obj;
+	zval * self = getThis();
+	long flags;
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "l", &flags) == FAILURE)
+		return;
+	ze_obj = Z_GSTYLE_CONTEXT_P(self);
+	GdkRGBA color;
+	gtk_style_context_get_color(ze_obj->context_ptr->intern, flags, &color);
+	zend_object * tor = rgba_object_new(rgba_get_class_entry());
+	ze_rgba_object * tmp = php_rgba_fetch_object(tor);
+	tmp->ptr = rgba_new();
+	tmp->ptr->color = gdk_rgba_copy(&color);
+	tmp->ptr->to_destroy = 1;
+	RETURN_OBJ(tor);
+}
+
 static const zend_function_entry gstyle_context_class_functions[] = {
-	PHP_ME(GStyleContext, on         , arginfo_pggi_on                    , ZEND_ACC_PUBLIC)
-	PHP_ME(GStyleContext, __construct, arginfo_pggi_void                  , ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
-	PHP_ME(GStyleContext, addProvider, arginfo_gstyle_context_add_provider, ZEND_ACC_PUBLIC)
+	PHP_ME(GStyleContext, on              , arginfo_pggi_on                         , ZEND_ACC_PUBLIC)
+	PHP_ME(GStyleContext, __construct     , arginfo_pggi_void                       , ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	PHP_ME(GStyleContext, addProvider     , arginfo_gstyle_context_add_provider     , ZEND_ACC_PUBLIC)
+	PHP_ME(GStyleContext, renderBackground, arginfo_gstyle_context_render_background, ZEND_ACC_PUBLIC)
+	PHP_ME(GStyleContext, getState        , arginfo_pggi_get_long                   , ZEND_ACC_PUBLIC)
+	PHP_ME(GStyleContext, getColor        , arginfo_gstyle_context_get_color        , ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 

@@ -36,7 +36,7 @@ zend_object_handlers * gevent_get_object_handlers(){
 zend_object * gevent_ctor(zend_class_entry *ce, GdkEvent * event){
 	zend_object * tor = gevent_object_new(ce);
 	ze_gevent_object * obj = php_gevent_fetch_object(tor);
-	obj->std.handlers = &gevent_object_handlers;
+	//obj->std.handlers = &gevent_object_handlers;
 	obj->event_ptr = gevent_new();
 	return tor;
 }

@@ -17,6 +17,12 @@ if test "$PHP_PGGI" != "no"; then
 	fi
 	CFLAGS="$CFLAGS -Wall -Werror=format-security"
 	PHP_NEW_EXTENSION(pggi,
+		src/cairo/cairo.c        \
+		src/cairo/exception.c    \
+		src/cairo/context.c      \
+		src/cairo/surface.c      \
+		src/cairo/imagesurface.c \
+		src/gdk/rgba.c           \
 		src/gevent.c             \
 		src/geventkey.c          \
     	src/pggi.c               \
@@ -57,6 +63,7 @@ if test "$PHP_PGGI" != "no"; then
 		src/gstylecontext.c      \
 		src/gscreen.c            \
 		src/gmessagedialog.c     \
+		src/gdrawingarea.c       \
     	, $ext_shared)
 	PHP_ADD_BUILD_DIR($ext_builddir/src)
 	PHP_SUBST(PGGI_SHARED_LIBADD)

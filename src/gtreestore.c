@@ -53,7 +53,7 @@ zend_object *gtree_store_object_new(zend_class_entry *class_type){
 
 void gtree_store_dtor(gtree_store_ptr intern){
 	if (intern->intern){	
-	/*unref text buffer?*/
+		g_object_unref(intern->intern);
 	}
 	efree(intern);
 }

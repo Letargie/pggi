@@ -54,6 +54,7 @@ zend_object *gscreen_object_new(zend_class_entry *class_type){
 
 void gscreen_dtor(gscreen_ptr intern){
 	if (intern->intern){
+		// for now, only transfer none case
 	}
 	zend_hash_destroy(Z_ARRVAL_P(&intern->signals));
 	efree(intern);

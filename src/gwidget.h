@@ -21,6 +21,7 @@
 #include "zend_API.h"
 #include "hub.h"
 #include "gstylecontext.h"
+#include "cairo/context.h"
 
 /*********************************/
 /* GWidget Intern Data Structure */
@@ -131,6 +132,7 @@ typedef struct _on_data{
 } * on_data_ptr, on_data_t;
 
 void gwidget_func_destroy(GtkWidget* w, gpointer data);
+int gwidget_func_draw(GtkWidget* w, cairo_t *cr, gpointer data);
 int gwidget_func_key_press_event(GtkWidget* w, GdkEvent *event, gpointer data);
 
 void gwidget_adding_function(long val, char * name, GCallback f ,ze_gwidget_object * ze_obj, zval * function, zval * param);
@@ -157,6 +159,9 @@ GWIDGET_METHOD(show               );
 GWIDGET_METHOD(hide               );
 GWIDGET_METHOD(showAll            );
 GWIDGET_METHOD(getStyleContext    );
+
+GWIDGET_METHOD(getAllocatedWidth  );
+GWIDGET_METHOD(getAllocatedHeight );
 
 
 GWIDGET_METHOD(getScaleFactor     ); //ret int   //3.10

@@ -54,14 +54,8 @@ zend_object *gtext_buffer_object_new(zend_class_entry *class_type){
 
 void gtext_buffer_dtor(gtext_buffer_ptr intern){
 	if (intern->intern){	
-	/*unref text buffer?*/
-	}/*
-	ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(&intern->signals), zv){
-		ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(zv), tmp){
-			zval_ptr_dtor(tmp);		
-		} ZEND_HASH_FOREACH_END();
-		zend_hash_destroy(Z_ARRVAL_P(zv));
-	} ZEND_HASH_FOREACH_END();*/
+		g_object_unref(intern->intern);
+	}
 	zend_hash_destroy(Z_ARRVAL_P(&intern->signals));
 	efree(intern);
 }

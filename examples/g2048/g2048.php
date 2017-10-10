@@ -18,6 +18,8 @@ class G2048{
 	public function __construct($app){
 		$this->app = $app;
 		$grid = new GGrid();
+		$grid->rowSpacing = 1;
+		$grid->columnSpacing = 1;
 		$this->grid = $grid;
 		$bar = new GMenuBar();
 
@@ -36,7 +38,7 @@ class G2048{
 		$helpMenu = new GMenu();
 		AddMenuItem($helpMenu, "about", function($item, $data){
 			$data->about_dialog = new GAboutDialog();
-			$data->about_dialog->programName = "php reflection reader";
+			$data->about_dialog->programName = "G2048";
 			$data->about_dialog->copyright = "Valentin Collet - 2017";
 			$data->about_dialog->licenseType = GAboutDialog::LICENSE_BSD;
 			$data->about_dialog->version = "1.0";

@@ -20,6 +20,11 @@
 #include "ext/standard/info.h"
 #include "zend.h"
 #include "zend_API.h"
+
+#include "cairo/cairo.h"
+
+#include "gdk/rgba.h"
+
 #include "gexception.h"
 #include "gapplication.h"
 #include "hub.h"
@@ -60,6 +65,7 @@
 #include "gcssprovider.h"
 #include "gscreen.h"
 #include "gmessagedialog.h"
+#include "gdrawingarea.h"
 
 
 #define pphext_pggi_ptr &pggi_module_entry
