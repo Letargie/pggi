@@ -65,6 +65,7 @@ PHP_METHOD(GBox, packStart){
 	ze_obj = Z_GWIDGET_P(self);
 	gtk_box_pack_start(GTK_BOX(ze_obj->widget_ptr->intern), data->widget_ptr->intern, expand, fill, padding);
 	gcontainer_add_data(ze_obj->widget_ptr, obj);
+	//RETURN_ZVAL(self, 0, 0);
 }
 
 
@@ -79,11 +80,10 @@ PHP_METHOD(GBox, packEnd){
 	if(zend_parse_parameters(ZEND_NUM_ARGS(), "O|bbl", &obj, gwidget_get_class_entry() ,&expand, &fill, &padding) == FAILURE)
 		return;
 	data = Z_GWIDGET_P(obj);
-	if(self){
-		ze_obj = Z_GWIDGET_P(self);
-		gtk_box_pack_end(GTK_BOX(ze_obj->widget_ptr->intern), data->widget_ptr->intern, expand, fill, padding);
-		gcontainer_add_data(ze_obj->widget_ptr, obj);
-	}
+	ze_obj = Z_GWIDGET_P(self);
+	gtk_box_pack_end(GTK_BOX(ze_obj->widget_ptr->intern), data->widget_ptr->intern, expand, fill, padding);
+	gcontainer_add_data(ze_obj->widget_ptr, obj);
+	//RETURN_ZVAL(self, 0, 0);
 }
 
 

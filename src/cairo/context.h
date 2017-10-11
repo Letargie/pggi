@@ -21,6 +21,7 @@
 #include "hub.h"
 #include "exception.h"
 #include "../gdk/rgba.h"
+#include "surface.h"
 
 /*
 typedef struct _cairo_context_object {
@@ -66,9 +67,26 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_line_to, 0, 0, 2)
 	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
 
+
 ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_set_color, 0, 0, 1)
 	ZEND_ARG_OBJ_INFO(0, x, PGGI\\RGBA, 0)
 ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_set_source_rgb, 0, 0, 2)
+	ZEND_ARG_TYPE_INFO(0, r, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, g, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, b, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_construct, 0, 0, 1)
+	ZEND_ARG_OBJ_INFO(0, x, Cairo\\Surface, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_show_text, 0, 0, 1)
+	ZEND_ARG_TYPE_INFO(0, text, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
 
 /*************************/
 /* Intern Data Structure */
@@ -76,6 +94,7 @@ ZEND_END_ARG_INFO()
 
 typedef struct{
 	cairo_t * intern;
+	int to_destroy : 1;
 } * pc_context_ptr, pc_context_t;
 
 typedef struct{
@@ -223,6 +242,9 @@ void pc_context_write_property(zval *object, zval *member, zval *value, void **c
  * init the class
  */
 void pc_context_init(int module_number);
+
+
+
 
 
 #endif

@@ -62,6 +62,10 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_cairo_set, 0, 0, 1)
 	ZEND_ARG_INFO(0, name)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_cairo_set_double, 0, 0, 1)
+	ZEND_ARG_TYPE_INFO(0, name, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
 /****************************/
 /* Utils parsing parameters */
 /****************************/

@@ -52,6 +52,7 @@ PHP_METHOD(GContainer, add){
 	this = Z_GWIDGET_P(getThis());
 	gtk_container_add(GTK_CONTAINER(this->widget_ptr->intern), data->widget_ptr->intern);
 	gcontainer_add_data(this->widget_ptr, obj);
+	//RETURN_ZVAL(getThis(), 0, 0);
 }
 
 void gcontainer_func_add(GtkWidget * container, gpointer data){
