@@ -9,8 +9,8 @@
   +-----------------------------------------------------------+
 */
 
-#ifndef PHP_CAIRO_CONTEXT_DEF
-#define PHP_CAIRO_CONTEXT_DEF
+#ifndef PHP_CAIRO_EXCEPTION_DEF
+#define PHP_CAIRO_EXCEPTION_DEF
 
 #include <cairo.h>
 #include "php.h"
