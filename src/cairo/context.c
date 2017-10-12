@@ -102,7 +102,7 @@ CONTEXT_METHOD(fill){
 	ze_obj = Z_CONTEXT_P(self);
 	cairo_fill(ze_obj->context_ptr->intern);
 	pc_exception(cairo_status(ze_obj->context_ptr->intern));
-	RETURN_ZVAL(self, 0, 0);
+	RETURN_ZVAL(self, 1, 0);
 }
 
 
@@ -114,7 +114,7 @@ CONTEXT_METHOD(paint){
 	ze_obj = Z_CONTEXT_P(self);
 	cairo_paint(ze_obj->context_ptr->intern);
 	pc_exception(cairo_status(ze_obj->context_ptr->intern));
-	RETURN_ZVAL(self, 0, 0);
+	RETURN_ZVAL(self, 1, 0);
 }
 
 
@@ -126,7 +126,7 @@ CONTEXT_METHOD(stroke){
 	ze_obj = Z_CONTEXT_P(self);
 	cairo_stroke(ze_obj->context_ptr->intern);
 	pc_exception(cairo_status(ze_obj->context_ptr->intern));
-	RETURN_ZVAL(self, 0, 0);
+	RETURN_ZVAL(self, 1, 0);
 }
 
 CONTEXT_METHOD(strokePreserve){
@@ -137,7 +137,7 @@ CONTEXT_METHOD(strokePreserve){
 	ze_obj = Z_CONTEXT_P(self);
 	cairo_stroke(ze_obj->context_ptr->intern);
 	pc_exception(cairo_status(ze_obj->context_ptr->intern));
-	RETURN_ZVAL(self, 0, 0);
+	RETURN_ZVAL(self, 1, 0);
 }
 
 CONTEXT_METHOD(relCurveTo){
@@ -149,7 +149,7 @@ CONTEXT_METHOD(relCurveTo){
 	ze_obj = Z_CONTEXT_P(self);
 	cairo_rel_curve_to(ze_obj->context_ptr->intern, x1, y1, x2, y2, x3, y3); 
 	pc_exception(cairo_status(ze_obj->context_ptr->intern));
-	RETURN_ZVAL(self, 0, 0);
+	RETURN_ZVAL(self, 1, 0);
 }
 
 CONTEXT_METHOD(relLineTo){
@@ -161,7 +161,7 @@ CONTEXT_METHOD(relLineTo){
 	ze_obj = Z_CONTEXT_P(self);
 	cairo_rel_line_to(ze_obj->context_ptr->intern, x, y); 
 	pc_exception(cairo_status(ze_obj->context_ptr->intern));
-	RETURN_ZVAL(self, 0, 0);
+	RETURN_ZVAL(self, 1, 0);
 }
 
 
@@ -174,7 +174,7 @@ CONTEXT_METHOD(relMoveTo){
 	ze_obj = Z_CONTEXT_P(self);
 	cairo_rel_move_to(ze_obj->context_ptr->intern, x, y); 
 	pc_exception(cairo_status(ze_obj->context_ptr->intern));
-	RETURN_ZVAL(self, 0, 0);
+	RETURN_ZVAL(self, 1, 0);
 }
 
 CONTEXT_METHOD(curveTo){
@@ -186,7 +186,7 @@ CONTEXT_METHOD(curveTo){
 	ze_obj = Z_CONTEXT_P(self);
 	cairo_curve_to(ze_obj->context_ptr->intern, x1, y1, x2, y2, x3, y3); 
 	pc_exception(cairo_status(ze_obj->context_ptr->intern));
-	RETURN_ZVAL(self, 0, 0);
+	RETURN_ZVAL(self, 1, 0);
 }
 
 CONTEXT_METHOD(lineTo){
@@ -198,7 +198,7 @@ CONTEXT_METHOD(lineTo){
 	ze_obj = Z_CONTEXT_P(self);
 	cairo_line_to(ze_obj->context_ptr->intern, x, y); 
 	pc_exception(cairo_status(ze_obj->context_ptr->intern));
-	RETURN_ZVAL(self, 0, 0);
+	RETURN_ZVAL(self, 1, 0);
 }
 
 
@@ -211,7 +211,7 @@ CONTEXT_METHOD(moveTo){
 	ze_obj = Z_CONTEXT_P(self);
 	cairo_move_to(ze_obj->context_ptr->intern, x, y); 
 	pc_exception(cairo_status(ze_obj->context_ptr->intern));
-	RETURN_ZVAL(self, 0, 0);
+	RETURN_ZVAL(self, 1, 0);
 }
 
 CONTEXT_METHOD(rectangle){
@@ -223,7 +223,7 @@ CONTEXT_METHOD(rectangle){
 	ze_obj = Z_CONTEXT_P(self);
 	cairo_rectangle(ze_obj->context_ptr->intern, x, y, width, height); 
 	pc_exception(cairo_status(ze_obj->context_ptr->intern));
-	RETURN_ZVAL(self, 0, 0);
+	RETURN_ZVAL(self, 1, 0);
 }
 
 CONTEXT_METHOD(arc){
@@ -233,9 +233,9 @@ CONTEXT_METHOD(arc){
 	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "ddddd", &x, &y, &radius, &angle1, &angle2) == FAILURE)
 		return;
 	ze_obj = Z_CONTEXT_P(self);
-	cairo_arc(ze_obj->context_ptr->intern, x, y, radius, angle1, angle2); 
+	cairo_arc(ze_obj->context_ptr->intern, x, y, radius, angle1, angle2);
 	pc_exception(cairo_status(ze_obj->context_ptr->intern));
-	RETURN_ZVAL(self, 0, 0);
+	RETURN_ZVAL(self, 1, 0);
 }
 
 CONTEXT_METHOD(arcNegative){
@@ -247,7 +247,7 @@ CONTEXT_METHOD(arcNegative){
 	ze_obj = Z_CONTEXT_P(self);
 	cairo_arc_negative(ze_obj->context_ptr->intern, x, y, radius, angle1, angle2); 
 	pc_exception(cairo_status(ze_obj->context_ptr->intern));
-	RETURN_ZVAL(self, 0, 0);
+	RETURN_ZVAL(self, 1, 0);
 }
 
 CONTEXT_METHOD(setColor){
@@ -259,20 +259,22 @@ CONTEXT_METHOD(setColor){
 	ze_obj = Z_CONTEXT_P(self);
 	ze_rgba_object * c = Z_RGBA_P(color);
 	gdk_cairo_set_source_rgba(ze_obj->context_ptr->intern, c->ptr->color);
-	RETURN_ZVAL(self, 0, 0);
+	RETURN_ZVAL(self, 1, 0);
 }
 
-CONTEXT_METHOD(setSourceRGB){
+CONTEXT_METHOD(setSourceRGBA){
 	zval * self = getThis();
-	double r, g, b;
+	double r, g, b, a = -1;
 	ze_context_object * ze_obj;
-	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "ddd", &r, &g, &b) == FAILURE)
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "ddd|d", &r, &g, &b, &a) == FAILURE)
 		return;
 	ze_obj = Z_CONTEXT_P(self);
-	cairo_set_source_rgb(ze_obj->context_ptr->intern,r, g, b);
-	RETURN_ZVAL(self, 0, 0);
+	if(a != -1)
+		cairo_set_source_rgba(ze_obj->context_ptr->intern,r, g, b, a);
+	else
+		cairo_set_source_rgb(ze_obj->context_ptr->intern,r, g, b);
+	RETURN_ZVAL(self, 1, 0);
 }
-
 
 CONTEXT_METHOD(setSource){
 	zval * self = getThis();
@@ -280,21 +282,21 @@ CONTEXT_METHOD(setSource){
 	ze_context_object * ze_obj;
 	ze_obj = Z_CONTEXT_P(self);
 	double r, g, b, a=-1 /*, x, y*/;
-	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "ddd|d", &r, &g, &b, &a) != FAILURE){
+	if(zend_parse_parameters(ZEND_NUM_ARGS(), "ddd|d", &r, &g, &b, &a) != FAILURE){
 		if(a != -1)
 			cairo_set_source_rgba(ze_obj->context_ptr->intern, r, g, b, a);
 		else
 			cairo_set_source_rgb(ze_obj->context_ptr->intern, r, g, b);
-	}/*else if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "Odd", &color, pattern_get_class_entry(), &x, &y) != FAILURE){
+	}/*else if(zend_parse_parameters(ZEND_NUM_ARGS(), "Odd", &color, pattern_get_class_entry(), &x, &y) != FAILURE){
 
 	}*/else if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "O", &color, rgba_get_class_entry()) != FAILURE){
 		ze_rgba_object * c = Z_RGBA_P(color);
 		gdk_cairo_set_source_rgba(ze_obj->context_ptr->intern, c->ptr->color);
 	}else
 		return;
-	RETURN_ZVAL(self, 0, 0);
+	RETURN_ZVAL(self, 1, 0);
 }
-
+/*
 CONTEXT_METHOD(showText){
 	zval * self = getThis();
 	ze_context_object * ze_obj;
@@ -305,7 +307,7 @@ CONTEXT_METHOD(showText){
 	ze_obj = Z_CONTEXT_P(self);
 	cairo_show_text(ze_obj->context_ptr->intern, data);
 	pc_exception(cairo_status(ze_obj->context_ptr->intern));
-	RETURN_ZVAL(self, 0, 0);
+	RETURN_ZVAL(self, 1, 0);
 }
 
 CONTEXT_METHOD(setFontSize){
@@ -317,29 +319,28 @@ CONTEXT_METHOD(setFontSize){
 	ze_obj = Z_CONTEXT_P(self);
 	cairo_set_font_size(ze_obj->context_ptr->intern, size);
 	pc_exception(cairo_status(ze_obj->context_ptr->intern));
-	RETURN_ZVAL(self, 0, 0);
-}
+	RETURN_ZVAL(self, 1, 0);
+}*/
 
 
 static const zend_function_entry pc_context_class_functions[] = {
-	PHP_ME(Context, fill          , arginfo_pggi_void                , ZEND_ACC_PUBLIC) // to change to return self if it works
-	PHP_ME(Context, paint         , arginfo_pggi_void                , ZEND_ACC_PUBLIC)
-	PHP_ME(Context, stroke        , arginfo_pggi_void                , ZEND_ACC_PUBLIC)
-	PHP_ME(Context, strokePreserve, arginfo_pggi_void                , ZEND_ACC_PUBLIC)
-	PHP_ME(Context, arc           , arginfo_pc_context_arc           , ZEND_ACC_PUBLIC)
-	PHP_ME(Context, arcNegative   , arginfo_pc_context_arc           , ZEND_ACC_PUBLIC)
-	PHP_ME(Context, curveTo       , arginfo_pc_context_curved_to     , ZEND_ACC_PUBLIC)
-	PHP_ME(Context, lineTo        , arginfo_pc_context_line_to       , ZEND_ACC_PUBLIC)
-	PHP_ME(Context, moveTo        , arginfo_pc_context_line_to       , ZEND_ACC_PUBLIC)
-	PHP_ME(Context, relCurveTo    , arginfo_pc_context_curved_to     , ZEND_ACC_PUBLIC)
-	PHP_ME(Context, relLineTo     , arginfo_pc_context_line_to       , ZEND_ACC_PUBLIC)
-	PHP_ME(Context, relMoveTo     , arginfo_pc_context_line_to       , ZEND_ACC_PUBLIC)
-	PHP_ME(Context, rectangle     , arginfo_pc_context_rectangle     , ZEND_ACC_PUBLIC)
-	PHP_ME(Context, setColor      , arginfo_pc_context_set_color     , ZEND_ACC_PUBLIC)
-	PHP_ME(Context, setSourceRGB  , arginfo_pc_context_set_source_rgb, ZEND_ACC_PUBLIC)
-	PHP_ME(Context, showText      , arginfo_pc_context_show_text     , ZEND_ACC_PUBLIC)
-	PHP_ME(Context, setFontSize   , arginfo_cairo_set_double         , ZEND_ACC_PUBLIC)
-	PHP_ME(Context, __construct   , arginfo_pc_context_construct     , ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	PHP_ME(Context, fill          , arginfo_pggi_void                 , ZEND_ACC_PUBLIC) // to change to return self if it works
+	PHP_ME(Context, paint         , arginfo_pggi_void                 , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, stroke        , arginfo_pggi_void                 , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, strokePreserve, arginfo_pggi_void                 , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, arc           , arginfo_pc_context_arc            , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, arcNegative   , arginfo_pc_context_arc            , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, curveTo       , arginfo_pc_context_curved_to      , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, lineTo        , arginfo_pc_context_line_to        , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, moveTo        , arginfo_pc_context_line_to        , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, relCurveTo    , arginfo_pc_context_curved_to      , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, relLineTo     , arginfo_pc_context_line_to        , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, relMoveTo     , arginfo_pc_context_line_to        , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, rectangle     , arginfo_pc_context_rectangle      , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, setColor      , arginfo_pc_context_set_color      , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, setSource     , NULL                              , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, setSourceRGBA , arginfo_pc_context_set_source_rgba, ZEND_ACC_PUBLIC)
+	PHP_ME(Context, __construct   , arginfo_pc_context_construct      , ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
 	PHP_FE_END
 };
 
@@ -348,36 +349,46 @@ static const zend_function_entry pc_context_class_functions[] = {
 /*****************************/
 
 zval *pc_context_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv){
-	/*ze_context_object * intern = Z_CONTEXT_P(object);
+	ze_context_object * intern = Z_CONTEXT_P(object);
 	pc_context_ptr c = intern->context_ptr;
-	const char * tmp;
 	convert_to_string(member);
-	char * member_val = Z_STRVAL_P(member);*/
-
-	return std_object_handlers.read_property(object, member, type, cache_slot, rv);
+	char * member_val = Z_STRVAL_P(member);
+	 if(!strcmp(member_val, CONTEXT_LINE_WIDTH)){
+		ZVAL_DOUBLE(rv, cairo_get_line_width(c->intern));
+	}else
+		return std_object_handlers.read_property(object, member, type, cache_slot, rv);
+	pc_exception(cairo_status(c->intern));
+	return rv;
 }
 
 HashTable *pc_context_get_properties(zval *object){
-	/*G_H_UPDATE_INIT(zend_std_get_properties(object));
-	const char * tmp;
+	G_H_UPDATE_INIT(zend_std_get_properties(object));
 	ze_context_object * intern = Z_CONTEXT_P(object);
 	pc_context_ptr c = intern->context_ptr;
-
-	return G_H_UPDATE_RETURN;*/
-	return zend_std_get_properties(object);
+	G_H_UPDATE_DOUBLE(CONTEXT_LINE_WIDTH, cairo_get_line_width(c->intern));
+	pc_exception(cairo_status(c->intern));
+	return G_H_UPDATE_RETURN;
 }
 
 void pc_context_write_property(zval *object, zval *member, zval *value, void **cache_slot){
-	/*ze_context_object * intern = Z_CONTEXT_P(object);
+	ze_context_object * intern = Z_CONTEXT_P(object);
 	pc_context_ptr c = intern->context_ptr;
-
+	double tmp_d;
 	convert_to_string(member);
-	char * member_val = Z_STRVAL_P(member);*/
+	char * member_val = Z_STRVAL_P(member);
 	switch(Z_TYPE_P(value)){
-		
+		case IS_DOUBLE :
+			tmp_d = Z_DVAL_P(value);
+			if(!strcmp(member_val, CONTEXT_LINE_WIDTH)){
+				printf("we should eddit the line width value now\n");
+				cairo_set_line_width(c->intern, tmp_d);
+			}else
+				std_object_handlers.write_property(object, member, value, cache_slot);
+			break;
 		default:
 			std_object_handlers.write_property(object, member, value, cache_slot);
 	}
+	pc_exception(cairo_status(c->intern));
 }
 
 /********************************/
@@ -406,6 +417,6 @@ void pc_context_init(int module_number){
 	ce.create_object = pc_context_object_new;
 	context_class_entry_ce = zend_register_internal_class(&ce);
 
-
+	DECLARE_CONTEXT_PROP(CONTEXT_LINE_WIDTH);
 }
 

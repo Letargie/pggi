@@ -139,6 +139,19 @@ IMAGE_SURFACE_METHOD(getStride){
 	RETURN_LONG(cairo_image_surface_get_stride(s));
 }
 
+IMAGE_SURFACE_METHOD(writeToPNG){
+	ze_surface_object *surface_object;
+	zval * this = getThis();
+	char * data;
+	size_t data_len;
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "s", &data, &data_len) == FAILURE)
+		return;
+	surface_object = Z_SURFACE_P(this);
+	cairo_surface_t * s = surface_object->surface_ptr->intern;
+	cairo_surface_write_to_png(s, data);
+	pc_exception(cairo_surface_status(s));
+}
+
 PHP_FUNCTION(strideForWidth){
 	long format, width;
 	if(zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "ll", &format, &width) == FAILURE)
@@ -147,11 +160,13 @@ PHP_FUNCTION(strideForWidth){
 }
 
 static const zend_function_entry pc_image_surface_class_functions[] = {
-	PHP_ME(ImageSurface, __construct   , arginfo_image_surface_construct       , ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
-	PHP_ME(ImageSurface, getData       , arginfo_cairo_get_long                , ZEND_ACC_PUBLIC)
-	PHP_ME(ImageSurface, getWidth      , arginfo_cairo_get_long                , ZEND_ACC_PUBLIC)
-	PHP_ME(ImageSurface, getHeight     , arginfo_cairo_get_long                , ZEND_ACC_PUBLIC)
-	PHP_ME(ImageSurface, getStride     , arginfo_cairo_get_long                , ZEND_ACC_PUBLIC)
+	PHP_ME(ImageSurface, __construct   , arginfo_image_surface_construct   , ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
+	PHP_ME(ImageSurface, getData       , arginfo_cairo_get_long            , ZEND_ACC_PUBLIC)
+	PHP_ME(ImageSurface, getWidth      , arginfo_cairo_get_long            , ZEND_ACC_PUBLIC)
+	PHP_ME(ImageSurface, getHeight     , arginfo_cairo_get_long            , ZEND_ACC_PUBLIC)
+	PHP_ME(ImageSurface, getStride     , arginfo_cairo_get_long            , ZEND_ACC_PUBLIC)
+	PHP_ME(ImageSurface, writeToPNG    , arginfo_image_surface_write_to_png, ZEND_ACC_PUBLIC)
+
 	PHP_FE(strideForWidth              , arginfo_image_surface_stride_for_width)
 	PHP_FE_END
 };

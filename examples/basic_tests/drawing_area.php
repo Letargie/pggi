@@ -10,7 +10,7 @@ function draw_callback($widget, $data, $cairo_context){
 	$color = $context->getColor($context->getState());
 
 	$cairo_context->arc($w/2, $h/2, min($w, $h)/2, 0, 2 * pi())->setColor($color)->fill();
-
+	//$cairo_context->arc($w/2, $h/2, min($w, $h)/2, 0, 2 * pi())->setSource($color)->fill();
 	//return false;
 }
 

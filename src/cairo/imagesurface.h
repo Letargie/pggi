@@ -38,6 +38,9 @@ PGGI_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_image_surface_stride_for_width, 
 	ZEND_ARG_TYPE_INFO(0, width, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_image_surface_write_to_png, 0, 0, 1)
+	ZEND_ARG_TYPE_INFO(0, filename, IS_STRING, 0)
+ZEND_END_ARG_INFO()
 
 /**************/
 /* properties */

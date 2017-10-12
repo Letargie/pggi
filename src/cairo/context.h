@@ -72,10 +72,11 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_set_color, 0, 0, 1)
 	ZEND_ARG_OBJ_INFO(0, x, PGGI\\RGBA, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_set_source_rgb, 0, 0, 2)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_set_source_rgba, 0, 0, 3)
 	ZEND_ARG_TYPE_INFO(0, r, IS_DOUBLE, 0)
 	ZEND_ARG_TYPE_INFO(0, g, IS_DOUBLE, 0)
 	ZEND_ARG_TYPE_INFO(0, b, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, a, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
 
 
@@ -106,6 +107,7 @@ typedef struct{
 /* properties */
 /**************/
 
+#define CONTEXT_LINE_WIDTH "lineWidth"
 
 /*****************************/
 /* Class information getters */
