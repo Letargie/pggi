@@ -55,6 +55,12 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_line_to, 0, 0, 2)
 ZEND_END_ARG_INFO()
 
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_scale, 0, 0, 2)
+	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+
 ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_set_color, 0, 0, 1)
 	ZEND_ARG_OBJ_INFO(0, x, PGGI\\RGBA, 0)
 ZEND_END_ARG_INFO()

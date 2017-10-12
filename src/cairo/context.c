@@ -105,6 +105,27 @@ CONTEXT_METHOD(fill){
 	RETURN_ZVAL(self, 1, 0);
 }
 
+CONTEXT_METHOD(clip){
+	ze_context_object * ze_obj;
+	zval * self = getThis();
+	if(pggi_parse_parameters_none_throw() == FAILURE)
+		return;
+	ze_obj = Z_CONTEXT_P(self);
+	cairo_clip(ze_obj->context_ptr->intern);
+	pc_exception(cairo_status(ze_obj->context_ptr->intern));
+	RETURN_ZVAL(self, 1, 0);
+}
+
+CONTEXT_METHOD(newPath){
+	ze_context_object * ze_obj;
+	zval * self = getThis();
+	if(pggi_parse_parameters_none_throw() == FAILURE)
+		return;
+	ze_obj = Z_CONTEXT_P(self);
+	cairo_new_path(ze_obj->context_ptr->intern);
+	pc_exception(cairo_status(ze_obj->context_ptr->intern));
+	RETURN_ZVAL(self, 1, 0);
+}
 
 CONTEXT_METHOD(paint){
 	ze_context_object * ze_obj;
@@ -160,6 +181,18 @@ CONTEXT_METHOD(relLineTo){
 		return;
 	ze_obj = Z_CONTEXT_P(self);
 	cairo_rel_line_to(ze_obj->context_ptr->intern, x, y); 
+	pc_exception(cairo_status(ze_obj->context_ptr->intern));
+	RETURN_ZVAL(self, 1, 0);
+}
+
+CONTEXT_METHOD(scale){
+	zval * self = getThis();
+	double x, y;
+	ze_context_object * ze_obj;
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "dd", &x, &y) == FAILURE)
+		return;
+	ze_obj = Z_CONTEXT_P(self);
+	cairo_scale(ze_obj->context_ptr->intern, x, y); 
 	pc_exception(cairo_status(ze_obj->context_ptr->intern));
 	RETURN_ZVAL(self, 1, 0);
 }
@@ -278,28 +311,33 @@ CONTEXT_METHOD(setSourceRGBA){
 
 CONTEXT_METHOD(setSource){
 	zval * self = getThis();
-	zval * color;
+	zval * obj;
 	ze_context_object * ze_obj;
 	ze_obj = Z_CONTEXT_P(self);
-	double r, g, b, a=-1 /*, x, y*/;
+	double r, g, b, a=-1, x, y;
 	switch(ZEND_NUM_ARGS()){
 		case 1 :/*
 			if(zend_parse_parameters(ZEND_NUM_ARGS(), "Odd", &color, pattern_get_class_entry(), &x, &y) != FAILURE){
 				
 			}else */
-			if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "O", &color, rgba_get_class_entry()) != FAILURE){
-				ze_rgba_object * c = Z_RGBA_P(color);
+			if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "O", &obj, rgba_get_class_entry()) != FAILURE){
+				ze_rgba_object * c = Z_RGBA_P(obj);
 				gdk_cairo_set_source_rgba(ze_obj->context_ptr->intern, c->ptr->color);
 			}else
 				return;
-		case 3 :
+			break;
 		case 4 :
+		case 3 :
 		default :
-			if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "ddd|d", &r, &g, &b, &a) != FAILURE){
+			//generate a warning for now I know that
+			if(zend_parse_parameters(ZEND_NUM_ARGS(), "ddd|d", &r, &g, &b, &a) != FAILURE){
 				if(a != -1)
 					cairo_set_source_rgba(ze_obj->context_ptr->intern, r, g, b, a);
 				else
 					cairo_set_source_rgb(ze_obj->context_ptr->intern, r, g, b);
+			}else if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "Odd", &obj, pc_surface_get_class_entry(), &x, &y) != FAILURE){
+				ze_surface_object * c = Z_SURFACE_P(obj);
+				cairo_set_source_surface(ze_obj->context_ptr->intern, c->surface_ptr->intern, x, y);
 			}else
 				return;		
 	}
@@ -335,6 +373,8 @@ CONTEXT_METHOD(setFontSize){
 static const zend_function_entry pc_context_class_functions[] = {
 	PHP_ME(Context, fill          , arginfo_pggi_void                 , ZEND_ACC_PUBLIC) // to change to return self if it works
 	PHP_ME(Context, paint         , arginfo_pggi_void                 , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, clip          , arginfo_pggi_void                 , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, newPath       , arginfo_pggi_void                 , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, stroke        , arginfo_pggi_void                 , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, strokePreserve, arginfo_pggi_void                 , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, arc           , arginfo_pc_context_arc            , ZEND_ACC_PUBLIC)
@@ -345,6 +385,7 @@ static const zend_function_entry pc_context_class_functions[] = {
 	PHP_ME(Context, relCurveTo    , arginfo_pc_context_curved_to      , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, relLineTo     , arginfo_pc_context_line_to        , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, relMoveTo     , arginfo_pc_context_line_to        , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, scale         , arginfo_pc_context_scale          , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, rectangle     , arginfo_pc_context_rectangle      , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, setColor      , arginfo_pc_context_set_color      , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, setSource     , NULL                              , ZEND_ACC_PUBLIC)

@@ -31,6 +31,6 @@ $context->arc($xc, $yc, $radius, $angle1, $angle1)
         ->lineTo($xc, $yc)
         ->stroke();
 
-$surface->writeToPNG("arc.png");
+$surface->writeToPNG("arc_negative.png");
 
 

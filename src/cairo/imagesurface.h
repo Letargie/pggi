@@ -26,8 +26,8 @@
 /* Intern Data Structure */
 /*************************/
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_image_surface_construct, 0, 0, 3)
-	ZEND_ARG_TYPE_INFO(0, format, IS_LONG, 0)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_image_surface_construct, 0, 0, 1)
+	ZEND_ARG_INFO(0, format)
 	ZEND_ARG_TYPE_INFO(0, width, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, height, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, data, IS_STRING, 1)

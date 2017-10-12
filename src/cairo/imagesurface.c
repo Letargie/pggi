@@ -42,40 +42,51 @@ IMAGE_SURFACE_METHOD(__construct){
 	ze_surface_object *surface_object;
 	char * data;
 	int data_len = 0;
-	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "lll|s", &format, &width, &height, &data, &data_len) == FAILURE)
-		return;
-	switch(format){
-		case CAIRO_FORMAT_ARGB32    :
-		case CAIRO_FORMAT_RGB24     :
-		case CAIRO_FORMAT_A8        :
-		case CAIRO_FORMAT_A1        :
-		case CAIRO_FORMAT_RGB16_565 :
-		case CAIRO_FORMAT_RGB30     :
-			break;
-		default :
-			zend_throw_exception_ex(pc_exception_get(), 0, "the format should be a FORMAT_*");
-			return;
-	}
-	if (width < 1 || height < 1) {
-		zend_throw_exception_ex(pc_exception_get(), 0, "invalid dimension for a ImageSurface");
-		return;
-	}
 	zval * this = getThis();
 	surface_object = Z_SURFACE_P(this);
 	surface_object->surface_ptr = pc_surface_new();
-	if(data_len > 0){
-		long stride = -1;
-		stride = cairo_format_stride_for_width (format, width);
-		if(stride <= 0){
-			zend_throw_exception_ex(pc_exception_get(), 0, "could not calculate stride for ImageSurface");
-			return;
-		}
-		surface_object->surface_ptr->intern = cairo_image_surface_create_for_data((unsigned char *)data, format, width, height, stride);
-		zval prop;
-		ZVAL_STRINGL(&prop, data, data_len); 
-		zend_update_property(image_surface_class_entry_ce, this, "data", sizeof("data") - 1, &prop);
-	}else
-		surface_object->surface_ptr->intern = cairo_image_surface_create(format, width, height);
+	switch(ZEND_NUM_ARGS()){
+		case 1 :
+			if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "s", &data, &data_len) == FAILURE)
+				return;
+			surface_object->surface_ptr->intern = cairo_image_surface_create_from_png(data);
+			break;
+		default :
+			if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "lll|s", &format, &width, &height, &data, &data_len) == FAILURE)
+				return;
+			switch(format){
+				case CAIRO_FORMAT_ARGB32    :
+				case CAIRO_FORMAT_RGB24     :
+				case CAIRO_FORMAT_A8        :
+				case CAIRO_FORMAT_A1        :
+				case CAIRO_FORMAT_RGB16_565 :
+				case CAIRO_FORMAT_RGB30     :
+					break;
+				default :
+					zend_throw_exception_ex(pc_exception_get(), 0, "the format should be a FORMAT_*");
+					return;
+			}
+			if (width < 1 || height < 1) {
+				zend_throw_exception_ex(pc_exception_get(), 0, "invalid dimension for a ImageSurface");
+				return;
+			}
+
+			if(data_len > 0){
+				long stride = -1;
+				stride = cairo_format_stride_for_width (format, width);
+				if(stride <= 0){
+					zend_throw_exception_ex(pc_exception_get(), 0, "could not calculate stride for ImageSurface");
+					return;
+				}
+				surface_object->surface_ptr->intern = cairo_image_surface_create_for_data((unsigned char *)data, format, width, height, stride);
+				zval prop;
+				ZVAL_STRINGL(&prop, data, data_len); 
+				zend_update_property(image_surface_class_entry_ce, this, "data", sizeof("data") - 1, &prop);
+			}else
+				surface_object->surface_ptr->intern = cairo_image_surface_create(format, width, height);
+			break;
+	}
+	
 	pc_exception(cairo_surface_status(surface_object->surface_ptr->intern));
 }
 
