@@ -84,7 +84,7 @@ IMAGE_SURFACE_METHOD(getData){
 	unsigned char *data;	
 	long height, stride;
 	zval * this = getThis();
-	if(cairo_parse_method_parameters_none_throw(this) == FAILURE)
+	if(pggi_parse_method_parameters_none_throw(this) == FAILURE)
 		return;
 	surface_object = Z_SURFACE_P(this);
 	cairo_surface_t * s = surface_object->surface_ptr->intern;
@@ -98,7 +98,7 @@ IMAGE_SURFACE_METHOD(getData){
 IMAGE_SURFACE_METHOD(getFormat){
 	ze_surface_object *surface_object;
 	zval * this = getThis();
-	if(cairo_parse_method_parameters_none_throw(this) == FAILURE)
+	if(pggi_parse_method_parameters_none_throw(this) == FAILURE)
 		return;
 	surface_object = Z_SURFACE_P(this);
 	cairo_surface_t * s = surface_object->surface_ptr->intern;
@@ -109,7 +109,7 @@ IMAGE_SURFACE_METHOD(getFormat){
 IMAGE_SURFACE_METHOD(getWidth){
 	ze_surface_object *surface_object;
 	zval * this = getThis();
-	if(cairo_parse_method_parameters_none_throw(this) == FAILURE)
+	if(pggi_parse_method_parameters_none_throw(this) == FAILURE)
 		return;
 	surface_object = Z_SURFACE_P(this);
 	cairo_surface_t * s = surface_object->surface_ptr->intern;
@@ -120,7 +120,7 @@ IMAGE_SURFACE_METHOD(getWidth){
 IMAGE_SURFACE_METHOD(getHeight){
 	ze_surface_object *surface_object;
 	zval * this = getThis();
-	if(cairo_parse_method_parameters_none_throw(this) == FAILURE)
+	if(pggi_parse_method_parameters_none_throw(this) == FAILURE)
 		return;
 	surface_object = Z_SURFACE_P(this);
 	cairo_surface_t * s = surface_object->surface_ptr->intern;
@@ -131,7 +131,7 @@ IMAGE_SURFACE_METHOD(getHeight){
 IMAGE_SURFACE_METHOD(getStride){
 	ze_surface_object *surface_object;
 	zval * this = getThis();
-	if(cairo_parse_method_parameters_none_throw(this) == FAILURE)
+	if(pggi_parse_method_parameters_none_throw(this) == FAILURE)
 		return;
 	surface_object = Z_SURFACE_P(this);
 	cairo_surface_t * s = surface_object->surface_ptr->intern;
@@ -161,10 +161,10 @@ PHP_FUNCTION(strideForWidth){
 
 static const zend_function_entry pc_image_surface_class_functions[] = {
 	PHP_ME(ImageSurface, __construct   , arginfo_image_surface_construct   , ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
-	PHP_ME(ImageSurface, getData       , arginfo_cairo_get_long            , ZEND_ACC_PUBLIC)
-	PHP_ME(ImageSurface, getWidth      , arginfo_cairo_get_long            , ZEND_ACC_PUBLIC)
-	PHP_ME(ImageSurface, getHeight     , arginfo_cairo_get_long            , ZEND_ACC_PUBLIC)
-	PHP_ME(ImageSurface, getStride     , arginfo_cairo_get_long            , ZEND_ACC_PUBLIC)
+	PHP_ME(ImageSurface, getData       , arginfo_pggi_get_long             , ZEND_ACC_PUBLIC)
+	PHP_ME(ImageSurface, getWidth      , arginfo_pggi_get_long             , ZEND_ACC_PUBLIC)
+	PHP_ME(ImageSurface, getHeight     , arginfo_pggi_get_long             , ZEND_ACC_PUBLIC)
+	PHP_ME(ImageSurface, getStride     , arginfo_pggi_get_long             , ZEND_ACC_PUBLIC)
 	PHP_ME(ImageSurface, writeToPNG    , arginfo_image_surface_write_to_png, ZEND_ACC_PUBLIC)
 
 	PHP_FE(strideForWidth              , arginfo_image_surface_stride_for_width)
@@ -223,18 +223,18 @@ DECLARE_CLASS_PROPERTY(image_surface_class_entry_ce, name)
 zend_declare_property_null(image_surface_class_entry_ce, name, sizeof(name)-1, ZEND_ACC_PRIVATE)
 
 #define IMAGE_SURFACE_CONSTANT(name, value) \
-DECLARE_CLASS_CONST(image_surface_class_entry_ce, name, value);
+DECLARE_CLASS_CONSTANT(image_surface_class_entry_ce, name, value);
 
 
 void pc_image_surface_init(int module_number){
 	zend_class_entry ce;
-	le_image_surface = zend_register_list_destructors_ex(pc_surface_free_resource, NULL, "Cairo\\ImageSurface", module_number);
+	le_image_surface = zend_register_list_destructors_ex(pc_surface_free_resource, NULL, "PGGI\\Cairo\\ImageSurface", module_number);
 
 	memcpy(&image_surface_object_handlers, pc_surface_get_object_handlers(), sizeof(zend_object_handlers));
 	image_surface_object_handlers.read_property  = pc_image_surface_read_property;
 	image_surface_object_handlers.get_properties = pc_image_surface_get_properties;
 	image_surface_object_handlers.write_property = pc_image_surface_write_property;
-	INIT_CLASS_ENTRY(ce, "Cairo\\ImageSurface", pc_image_surface_class_functions);
+	INIT_CLASS_ENTRY(ce, "PGGI\\Cairo\\ImageSurface", pc_image_surface_class_functions);
 	image_surface_class_entry_ce = zend_register_internal_class_ex(&ce, pc_surface_get_class_entry());
 
 	DECLARE_IMAGE_SURFACE_PROP(IMAGE_SURFACE_DATA);

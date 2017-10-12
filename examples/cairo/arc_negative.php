@@ -15,7 +15,7 @@ $surface = new ImageSurface(ImageSurface::FORMAT_ARGB32, 300, 300);
 $context = new Context($surface);
 
 $context->lineWidth = 10;
-$context->arc($xc, $yc, $radius, $angle1, $angle2)
+$context->arcNegative($xc, $yc, $radius, $angle1, $angle2)
         ->stroke();
 
 		/*Drawing helping lines*/

@@ -132,7 +132,7 @@ zend_declare_class_constant_long(surface_class_entry_ce, name, sizeof(name)-1, v
 
 void pc_surface_init(int module_number){
 	zend_class_entry ce;
-	le_surface = zend_register_list_destructors_ex(pc_surface_free_resource, NULL, "Cairo\\Surface", module_number);
+	le_surface = zend_register_list_destructors_ex(pc_surface_free_resource, NULL, "PGGI\\Cairo\\Surface", module_number);
 
 	memcpy(&surface_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
 	surface_object_handlers.offset         = XtOffsetOf(ze_surface_object, std);
@@ -141,7 +141,7 @@ void pc_surface_init(int module_number){
 	surface_object_handlers.read_property  = pc_surface_read_property;
 	surface_object_handlers.get_properties = pc_surface_get_properties;
 	surface_object_handlers.write_property = pc_surface_write_property;
-	INIT_CLASS_ENTRY(ce, "Cairo\\Surface", pc_surface_class_functions);
+	INIT_CLASS_ENTRY(ce, "PGGI\\Cairo\\Surface", pc_surface_class_functions);
 	ce.create_object = pc_surface_object_new;
 	surface_class_entry_ce = zend_register_internal_class(&ce);
 	surface_class_entry_ce->ce_flags |= ZEND_ACC_ABSTRACT;

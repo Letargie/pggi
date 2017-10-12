@@ -18,23 +18,10 @@
 #include "ext/standard/info.h"
 #include "zend.h"
 #include "zend_API.h"
-#include "hub.h"
+#include "../commons/hub.h"
 #include "exception.h"
 #include "../gdk/rgba.h"
 #include "surface.h"
-
-/*
-typedef struct _cairo_context_object {
-	zend_object std;
-	zval *surface;
-	zval *matrix;
-	zval *pattern;
-	zval *font_face;
-	zval *font_matrix;
-	zval *font_options;
-	zval *scaled_font;
-	cairo_t *context;
-} cairo_context_object;*/
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_arc, 0, 0, 5)
 	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
@@ -81,7 +68,7 @@ ZEND_END_ARG_INFO()
 
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_construct, 0, 0, 1)
-	ZEND_ARG_OBJ_INFO(0, x, Cairo\\Surface, 0)
+	ZEND_ARG_OBJ_INFO(0, x, PGGI\\Cairo\\Surface, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_show_text, 0, 0, 1)
@@ -156,62 +143,6 @@ void pc_context_free_resource(zend_resource *rsrc);
 PHP_METHOD(Context, name)
 
 /* Context Functions */
-PHP_FUNCTION(cairo_create);
-PHP_FUNCTION(cairo_status);
-PHP_FUNCTION(cairo_save);
-PHP_FUNCTION(cairo_restore);
-PHP_FUNCTION(cairo_get_target);
-PHP_FUNCTION(cairo_push_group);
-PHP_FUNCTION(cairo_push_group_with_content);
-PHP_FUNCTION(cairo_pop_group);
-PHP_FUNCTION(cairo_pop_group_to_source);
-PHP_FUNCTION(cairo_get_group_target);
-PHP_FUNCTION(cairo_set_source_rgb);
-PHP_FUNCTION(cairo_set_source_rgba);
-PHP_FUNCTION(cairo_set_source);
-PHP_FUNCTION(cairo_set_source_surface);
-PHP_FUNCTION(cairo_get_source);
-PHP_FUNCTION(cairo_set_antialias);
-PHP_FUNCTION(cairo_get_antialias);
-PHP_FUNCTION(cairo_set_dash);
-PHP_FUNCTION(cairo_get_dash_count);
-PHP_FUNCTION(cairo_get_dash);
-PHP_FUNCTION(cairo_set_fill_rule);
-PHP_FUNCTION(cairo_get_fill_rule);
-PHP_FUNCTION(cairo_set_line_cap);
-PHP_FUNCTION(cairo_get_line_cap);
-PHP_FUNCTION(cairo_set_line_cap);
-PHP_FUNCTION(cairo_set_line_join);
-PHP_FUNCTION(cairo_get_line_join);
-PHP_FUNCTION(cairo_set_line_width);
-PHP_FUNCTION(cairo_get_line_width);
-PHP_FUNCTION(cairo_set_miter_limit);
-PHP_FUNCTION(cairo_get_miter_limit);
-PHP_FUNCTION(cairo_set_operator);
-PHP_FUNCTION(cairo_get_operator);
-PHP_FUNCTION(cairo_set_tolerance);
-PHP_FUNCTION(cairo_get_tolerance);
-PHP_FUNCTION(cairo_clip);
-PHP_FUNCTION(cairo_clip_preserve);
-PHP_FUNCTION(cairo_in_clip);
-PHP_FUNCTION(cairo_clip_extents);
-PHP_FUNCTION(cairo_clip_rectangle_list);
-PHP_FUNCTION(cairo_reset_clip);
-PHP_FUNCTION(cairo_fill);
-PHP_FUNCTION(cairo_fill_preserve);
-PHP_FUNCTION(cairo_fill_extents);
-PHP_FUNCTION(cairo_in_fill);
-PHP_FUNCTION(cairo_mask);
-PHP_FUNCTION(cairo_mask_surface);
-PHP_FUNCTION(cairo_paint);
-PHP_FUNCTION(cairo_paint_with_alpha);
-PHP_FUNCTION(cairo_stroke);
-PHP_FUNCTION(cairo_stroke_preserve);
-PHP_FUNCTION(cairo_stroke_extents);
-PHP_FUNCTION(cairo_in_stroke);
-PHP_FUNCTION(cairo_copy_page);
-PHP_FUNCTION(cairo_show_page);
-
 
 /*****************************/
 /* Object handling functions */

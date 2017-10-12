@@ -282,18 +282,27 @@ CONTEXT_METHOD(setSource){
 	ze_context_object * ze_obj;
 	ze_obj = Z_CONTEXT_P(self);
 	double r, g, b, a=-1 /*, x, y*/;
-	if(zend_parse_parameters(ZEND_NUM_ARGS(), "ddd|d", &r, &g, &b, &a) != FAILURE){
-		if(a != -1)
-			cairo_set_source_rgba(ze_obj->context_ptr->intern, r, g, b, a);
-		else
-			cairo_set_source_rgb(ze_obj->context_ptr->intern, r, g, b);
-	}/*else if(zend_parse_parameters(ZEND_NUM_ARGS(), "Odd", &color, pattern_get_class_entry(), &x, &y) != FAILURE){
-
-	}*/else if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "O", &color, rgba_get_class_entry()) != FAILURE){
-		ze_rgba_object * c = Z_RGBA_P(color);
-		gdk_cairo_set_source_rgba(ze_obj->context_ptr->intern, c->ptr->color);
-	}else
-		return;
+	switch(ZEND_NUM_ARGS()){
+		case 1 :/*
+			if(zend_parse_parameters(ZEND_NUM_ARGS(), "Odd", &color, pattern_get_class_entry(), &x, &y) != FAILURE){
+				
+			}else */
+			if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "O", &color, rgba_get_class_entry()) != FAILURE){
+				ze_rgba_object * c = Z_RGBA_P(color);
+				gdk_cairo_set_source_rgba(ze_obj->context_ptr->intern, c->ptr->color);
+			}else
+				return;
+		case 3 :
+		case 4 :
+		default :
+			if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "ddd|d", &r, &g, &b, &a) != FAILURE){
+				if(a != -1)
+					cairo_set_source_rgba(ze_obj->context_ptr->intern, r, g, b, a);
+				else
+					cairo_set_source_rgb(ze_obj->context_ptr->intern, r, g, b);
+			}else
+				return;		
+	}
 	RETURN_ZVAL(self, 1, 0);
 }
 /*
@@ -380,7 +389,6 @@ void pc_context_write_property(zval *object, zval *member, zval *value, void **c
 		case IS_DOUBLE :
 			tmp_d = Z_DVAL_P(value);
 			if(!strcmp(member_val, CONTEXT_LINE_WIDTH)){
-				printf("we should eddit the line width value now\n");
 				cairo_set_line_width(c->intern, tmp_d);
 			}else
 				std_object_handlers.write_property(object, member, value, cache_slot);
@@ -404,7 +412,7 @@ zend_declare_class_constant_long(context_class_entry_ce, name, sizeof(name)-1, v
 
 void pc_context_init(int module_number){
 	zend_class_entry ce;
-	le_context = zend_register_list_destructors_ex(pc_context_free_resource, NULL, "Cairo\\Context", module_number);
+	le_context = zend_register_list_destructors_ex(pc_context_free_resource, NULL, "PGGI\\Cairo\\Context", module_number);
 
 	memcpy(&context_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
 	context_object_handlers.offset         = XtOffsetOf(ze_context_object, std);
@@ -413,7 +421,7 @@ void pc_context_init(int module_number){
 	context_object_handlers.read_property  = pc_context_read_property;
 	context_object_handlers.get_properties = pc_context_get_properties;
 	context_object_handlers.write_property = pc_context_write_property;
-	INIT_CLASS_ENTRY(ce, "Cairo\\Context", pc_context_class_functions);
+	INIT_CLASS_ENTRY(ce, "PGGI\\Cairo\\Context", pc_context_class_functions);
 	ce.create_object = pc_context_object_new;
 	context_class_entry_ce = zend_register_internal_class(&ce);
 

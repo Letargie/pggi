@@ -18,17 +18,8 @@
 #include "ext/standard/info.h"
 #include "zend.h"
 #include "zend_API.h"
-#include "hub.h"
+#include "../commons/hub.h"
 #include "exception.h"
-
-/*
-typedef struct _cairo_surface_object {
-	zend_object std;
-	cairo_surface_t *surface;
-	char * buffer;
-	stream_closure *closure;
-	zval *parent_zval;
-} cairo_surface_object;*/
 
 /*************************/
 /* Intern Data Structure */

@@ -40,8 +40,6 @@ PHP_MINIT_FUNCTION(pggi){
 		return SUCCESS;
 	}*/
 
-	cairo_minit(module_number);
-
 	/* Whenever a container has some form of natural row it may align children in that row along a common typographical baseline.
 	* If the amount of verical space in the row is taller than the total requested height of the baseline-aligned children 
 	* then it can use a GtkBaselinePosition to select where to put the baseline inside the extra availible space.
@@ -220,6 +218,13 @@ PHP_MINIT_FUNCTION(pggi){
 
 	REGISTER_CONST_LONG("PGGI\\SIGNAL_GTREE_SELECTION_CHANGED"    , gsignal_gtree_selection_changed    );
 
+	
+	pc_exception_init        (module_number);
+	pc_context_init          (module_number);
+	pc_surface_init          (module_number);
+	pc_image_surface_init    (module_number);
+
+
 	gexception_init          (module_number);
 	gevent_init              (module_number);
 	gevent_key_init          (module_number);
@@ -279,6 +284,7 @@ PHP_MINIT_FUNCTION(pggi){
 	gentry_init              (module_number);
 
 	gdrawing_area_init       (module_number);
+
 
 	return SUCCESS;
 }

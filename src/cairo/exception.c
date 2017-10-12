@@ -25,7 +25,7 @@ zend_class_entry * pc_exception_get(){
 
 void pc_exception_init(int module_number){
 	zend_class_entry ce;
-	INIT_CLASS_ENTRY(ce, "Cairo\\Exception", NULL);
+	INIT_CLASS_ENTRY(ce, "PGGI\\Cairo\\Exception", NULL);
 	pc_exception_entry_ce = zend_register_internal_class_ex(&ce, zend_ce_exception);
 
 }

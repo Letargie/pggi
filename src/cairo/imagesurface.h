@@ -18,7 +18,7 @@
 #include "ext/standard/info.h"
 #include "zend.h"
 #include "zend_API.h"
-#include "hub.h"
+#include "../commons/hub.h"
 #include "exception.h"
 #include "surface.h"
 
