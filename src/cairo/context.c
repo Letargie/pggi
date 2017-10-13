@@ -105,6 +105,17 @@ CONTEXT_METHOD(fill){
 	RETURN_ZVAL(self, 1, 0);
 }
 
+CONTEXT_METHOD(fillPreserve){
+	ze_context_object * ze_obj;
+	zval * self = getThis();
+	if(pggi_parse_parameters_none_throw() == FAILURE)
+		return;
+	ze_obj = Z_CONTEXT_P(self);
+	cairo_fill_preserve(ze_obj->context_ptr->intern);
+	pc_exception(cairo_status(ze_obj->context_ptr->intern));
+	RETURN_ZVAL(self, 1, 0);
+}
+
 CONTEXT_METHOD(clip){
 	ze_context_object * ze_obj;
 	zval * self = getThis();
@@ -116,6 +127,18 @@ CONTEXT_METHOD(clip){
 	RETURN_ZVAL(self, 1, 0);
 }
 
+CONTEXT_METHOD(clipPreserve){
+	ze_context_object * ze_obj;
+	zval * self = getThis();
+	if(pggi_parse_parameters_none_throw() == FAILURE)
+		return;
+	ze_obj = Z_CONTEXT_P(self);
+	cairo_clip_preserve(ze_obj->context_ptr->intern);
+	pc_exception(cairo_status(ze_obj->context_ptr->intern));
+	RETURN_ZVAL(self, 1, 0);
+}
+
+
 CONTEXT_METHOD(newPath){
 	ze_context_object * ze_obj;
 	zval * self = getThis();
@@ -123,6 +146,29 @@ CONTEXT_METHOD(newPath){
 		return;
 	ze_obj = Z_CONTEXT_P(self);
 	cairo_new_path(ze_obj->context_ptr->intern);
+	pc_exception(cairo_status(ze_obj->context_ptr->intern));
+	RETURN_ZVAL(self, 1, 0);
+}
+
+CONTEXT_METHOD(newSubPath){
+	ze_context_object * ze_obj;
+	zval * self = getThis();
+	if(pggi_parse_parameters_none_throw() == FAILURE)
+		return;
+	ze_obj = Z_CONTEXT_P(self);
+	cairo_new_sub_path(ze_obj->context_ptr->intern);
+	pc_exception(cairo_status(ze_obj->context_ptr->intern));
+	RETURN_ZVAL(self, 1, 0);
+}
+
+
+CONTEXT_METHOD(closePath){
+	ze_context_object * ze_obj;
+	zval * self = getThis();
+	if(pggi_parse_parameters_none_throw() == FAILURE)
+		return;
+	ze_obj = Z_CONTEXT_P(self);
+	cairo_close_path(ze_obj->context_ptr->intern);
 	pc_exception(cairo_status(ze_obj->context_ptr->intern));
 	RETURN_ZVAL(self, 1, 0);
 }
@@ -193,6 +239,30 @@ CONTEXT_METHOD(scale){
 		return;
 	ze_obj = Z_CONTEXT_P(self);
 	cairo_scale(ze_obj->context_ptr->intern, x, y); 
+	pc_exception(cairo_status(ze_obj->context_ptr->intern));
+	RETURN_ZVAL(self, 1, 0);
+}
+
+CONTEXT_METHOD(rotate){
+	zval * self = getThis();
+	double angle;
+	ze_context_object * ze_obj;
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "d", &angle) == FAILURE)
+		return;
+	ze_obj = Z_CONTEXT_P(self);
+	cairo_rotate(ze_obj->context_ptr->intern, angle); 
+	pc_exception(cairo_status(ze_obj->context_ptr->intern));
+	RETURN_ZVAL(self, 1, 0);
+}
+
+CONTEXT_METHOD(translate){
+	zval * self = getThis();
+	double x, y;
+	ze_context_object * ze_obj;
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "dd", &x, &y) == FAILURE)
+		return;
+	ze_obj = Z_CONTEXT_P(self);
+	cairo_translate(ze_obj->context_ptr->intern, x, y); 
 	pc_exception(cairo_status(ze_obj->context_ptr->intern));
 	RETURN_ZVAL(self, 1, 0);
 }
@@ -372,9 +442,13 @@ CONTEXT_METHOD(setFontSize){
 
 static const zend_function_entry pc_context_class_functions[] = {
 	PHP_ME(Context, fill          , arginfo_pggi_void                 , ZEND_ACC_PUBLIC) // to change to return self if it works
+	PHP_ME(Context, fillPreserve  , arginfo_pggi_void                 , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, paint         , arginfo_pggi_void                 , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, clip          , arginfo_pggi_void                 , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, clipPreserve  , arginfo_pggi_void                 , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, newPath       , arginfo_pggi_void                 , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, newSubPath    , arginfo_pggi_void                 , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, closePath     , arginfo_pggi_void                 , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, stroke        , arginfo_pggi_void                 , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, strokePreserve, arginfo_pggi_void                 , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, arc           , arginfo_pc_context_arc            , ZEND_ACC_PUBLIC)
@@ -386,6 +460,8 @@ static const zend_function_entry pc_context_class_functions[] = {
 	PHP_ME(Context, relLineTo     , arginfo_pc_context_line_to        , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, relMoveTo     , arginfo_pc_context_line_to        , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, scale         , arginfo_pc_context_scale          , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, rotate        , arginfo_pc_context_rotate         , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, translate     , arginfo_pc_context_translate      , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, rectangle     , arginfo_pc_context_rectangle      , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, setColor      , arginfo_pc_context_set_color      , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, setSource     , NULL                              , ZEND_ACC_PUBLIC)
@@ -403,7 +479,13 @@ zval *pc_context_read_property(zval *object, zval *member, int type, void **cach
 	pc_context_ptr c = intern->context_ptr;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
-	 if(!strcmp(member_val, CONTEXT_LINE_WIDTH)){
+	 if(!strcmp(member_val, CONTEXT_LINE_CAP)){
+		ZVAL_LONG(rv, cairo_get_line_cap(c->intern));
+	}else if(!strcmp(member_val, CONTEXT_LINE_JOIN)){
+		ZVAL_LONG(rv, cairo_get_line_join(c->intern));
+	}else if(!strcmp(member_val, CONTEXT_FILL_RULE)){
+		ZVAL_LONG(rv, cairo_get_fill_rule(c->intern));
+	}else if(!strcmp(member_val, CONTEXT_LINE_WIDTH)){
 		ZVAL_DOUBLE(rv, cairo_get_line_width(c->intern));
 	}else
 		return std_object_handlers.read_property(object, member, type, cache_slot, rv);
@@ -415,6 +497,9 @@ HashTable *pc_context_get_properties(zval *object){
 	G_H_UPDATE_INIT(zend_std_get_properties(object));
 	ze_context_object * intern = Z_CONTEXT_P(object);
 	pc_context_ptr c = intern->context_ptr;
+	G_H_UPDATE_LONG  (CONTEXT_FILL_RULE , cairo_get_fill_rule (c->intern));
+	G_H_UPDATE_LONG  (CONTEXT_LINE_CAP  , cairo_get_line_cap  (c->intern));
+	G_H_UPDATE_LONG  (CONTEXT_LINE_JOIN , cairo_get_line_join (c->intern));
 	G_H_UPDATE_DOUBLE(CONTEXT_LINE_WIDTH, cairo_get_line_width(c->intern));
 	pc_exception(cairo_status(c->intern));
 	return G_H_UPDATE_RETURN;
@@ -424,9 +509,47 @@ void pc_context_write_property(zval *object, zval *member, zval *value, void **c
 	ze_context_object * intern = Z_CONTEXT_P(object);
 	pc_context_ptr c = intern->context_ptr;
 	double tmp_d;
+	long tmp_l;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	switch(Z_TYPE_P(value)){
+		case IS_LONG :
+			tmp_l = Z_LVAL_P(value);
+			if(!strcmp(member_val, CONTEXT_LINE_CAP)){
+				switch(tmp_l){
+					case CAIRO_LINE_CAP_BUTT  :
+					case CAIRO_LINE_CAP_ROUND :
+					case CAIRO_LINE_CAP_SQUARE:
+						break;
+					default:
+						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the lineCaps property, needs to be a Context::LINE_CAP_*");
+						break;
+				}
+				cairo_set_line_cap(c->intern, tmp_l);
+			}else if(!strcmp(member_val, CONTEXT_LINE_JOIN)){
+				switch(tmp_l){
+					case CAIRO_LINE_JOIN_MITER:
+					case CAIRO_LINE_JOIN_ROUND:
+					case CAIRO_LINE_JOIN_BEVEL:
+						break;
+					default:
+						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the lineJoin property, needs to be a Context::LINE_JOIN_*");
+						break;
+				}
+				cairo_set_line_join(c->intern, tmp_l);
+			}else if(!strcmp(member_val, CONTEXT_FILL_RULE)){
+				switch(tmp_l){
+					case CAIRO_FILL_RULE_WINDING :
+					case CAIRO_FILL_RULE_EVEN_ODD:
+						break;
+					default:
+						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the fillRule property, needs to be a Context::FILL_RULE_*");
+						break;
+				}
+				cairo_set_fill_rule(c->intern, tmp_l);
+			}else
+				std_object_handlers.write_property(object, member, value, cache_slot);
+			break;
 		case IS_DOUBLE :
 			tmp_d = Z_DVAL_P(value);
 			if(!strcmp(member_val, CONTEXT_LINE_WIDTH)){
@@ -467,5 +590,19 @@ void pc_context_init(int module_number){
 	context_class_entry_ce = zend_register_internal_class(&ce);
 
 	DECLARE_CONTEXT_PROP(CONTEXT_LINE_WIDTH);
+	DECLARE_CONTEXT_PROP(CONTEXT_FILL_RULE );
+	DECLARE_CONTEXT_PROP(CONTEXT_LINE_CAP  );
+	DECLARE_CONTEXT_PROP(CONTEXT_LINE_JOIN );
+
+	CONTEXT_CONSTANT("FILL_RULE_WINDING" , CAIRO_FILL_RULE_WINDING );
+	CONTEXT_CONSTANT("FILL_RULE_EVEN_ODD", CAIRO_FILL_RULE_EVEN_ODD);
+
+	CONTEXT_CONSTANT("LINE_CAP_BUTT"     , CAIRO_LINE_CAP_BUTT     );
+	CONTEXT_CONSTANT("LINE_CAP_ROUND"    , CAIRO_LINE_CAP_ROUND    );
+	CONTEXT_CONSTANT("LINE_CAP_SQUARE"   , CAIRO_LINE_CAP_SQUARE   );
+
+	CONTEXT_CONSTANT("LINE_JOIN_MITER"   , CAIRO_LINE_JOIN_MITER   );
+	CONTEXT_CONSTANT("LINE_JOIN_ROUND"   , CAIRO_LINE_JOIN_ROUND   );
+	CONTEXT_CONSTANT("LINE_JOIN_BEVEL"   , CAIRO_LINE_JOIN_BEVEL   );
 }
 

@@ -61,6 +61,16 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_scale, 0, 0, 2)
 ZEND_END_ARG_INFO()
 
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_rotate, 0, 0, 1)
+	ZEND_ARG_TYPE_INFO(0, angle, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_translate, 0, 0, 2)
+	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+
 ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_set_color, 0, 0, 1)
 	ZEND_ARG_OBJ_INFO(0, x, PGGI\\RGBA, 0)
 ZEND_END_ARG_INFO()
@@ -101,6 +111,9 @@ typedef struct{
 /**************/
 
 #define CONTEXT_LINE_WIDTH "lineWidth"
+#define CONTEXT_FILL_RULE  "fillRule"
+#define CONTEXT_LINE_CAP   "lineCap"
+#define CONTEXT_LINE_JOIN  "lineJoin"
 
 /*****************************/
 /* Class information getters */
