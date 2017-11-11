@@ -22,6 +22,9 @@
 #include "exception.h"
 #include "../gdk/rgba.h"
 #include "surface.h"
+#include "pattern.h"
+#include "../pango/layout.h"
+#include "../pango/context.h"
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_arc, 0, 0, 5)
 	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
@@ -91,6 +94,23 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_show_text, 0, 0, 1)
 	ZEND_ARG_TYPE_INFO(0, text, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_set_dash, 0, 0, 1)
+	ZEND_ARG_INFO(0, dashes)
+	ZEND_ARG_INFO(0, offset)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_update_context, 0, 0, 1)
+	ZEND_ARG_OBJ_INFO(0, x, PGGI\\Pango\\Context, 0)
+ZEND_END_ARG_INFO()
+
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_show_layout, 0, 0, 1)
+	ZEND_ARG_OBJ_INFO(0, x, PGGI\\Pango\\Layout, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_update_layout, 0, 0, 1)
+	ZEND_ARG_OBJ_INFO(0, x, PGGI\\Pango\\Layout, 0)
+ZEND_END_ARG_INFO()
 
 /*************************/
 /* Intern Data Structure */

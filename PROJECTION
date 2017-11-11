@@ -1,6 +1,6 @@
-Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
+Extension [ <persistent> extension #56 pggi version 0.2.0-dev ] {
 
-  - Constants [105] {
+  - Constants [112] {
     Constant [ integer PGGI\BASELINE_POSITION_TOP ] { 0 }
     Constant [ integer PGGI\BASELINE_POSITION_CENTER ] { 1 }
     Constant [ integer PGGI\BASELINE_POSITION_BOTTOM ] { 2 }
@@ -93,22 +93,776 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
     Constant [ integer PGGI\TOOLBAR_BOTH_HORIZ ] { 3 }
     Constant [ integer PGGI\SORT_ASCENDING ] { 0 }
     Constant [ integer PGGI\SORT_DESCENDING ] { 1 }
+    Constant [ integer PGGI\SIGNAL_GWIDGET_DESTROY ] { 5 }
+    Constant [ integer PGGI\SIGNAL_GWIDGET_DRAW ] { 6 }
+    Constant [ integer PGGI\SIGNAL_GWIDGET_KEY_PRESS_EVENT ] { 7 }
     Constant [ integer PGGI\SIGNAL_GAPPLICATION_WINDOW_ADDED ] { 0 }
     Constant [ integer PGGI\SIGNAL_GAPPLICATION_WINDOW_REMOVED ] { 1 }
     Constant [ integer PGGI\SIGNAL_GAPPLICATION_STARTUP ] { 2 }
     Constant [ integer PGGI\SIGNAL_GAPPLICATION_SHUTDOWN ] { 3 }
     Constant [ integer PGGI\SIGNAL_GAPPLICATION_ACTIVATE ] { 4 }
-    Constant [ integer PGGI\SIGNAL_GCONTAINER_ADD ] { 6 }
-    Constant [ integer PGGI\SIGNAL_GMENUITEM_ACTIVATE ] { 7 }
-    Constant [ integer PGGI\SIGNAL_GCOMBO_BOX_CHANGED ] { 8 }
-    Constant [ integer PGGI\SIGNAL_GCOMBO_BOX_MOVE_ACTIVE ] { 9 }
-    Constant [ integer PGGI\SIGNAL_GTEXT_BUFFER_CHANGED ] { 10 }
-    Constant [ integer PGGI\SIGNAL_GDIALOG_RESPONSE ] { 12 }
-    Constant [ integer PGGI\SIGNAL_GDIALOG_CLOSE ] { 11 }
-    Constant [ integer PGGI\SIGNAL_GTREE_VIEW_COLUMN_CLICKED ] { 14 }
+    Constant [ integer PGGI\SIGNAL_GCONTAINER_ADD ] { 8 }
+    Constant [ integer PGGI\SIGNAL_GMENUITEM_ACTIVATE ] { 9 }
+    Constant [ integer PGGI\SIGNAL_GCOMBO_BOX_CHANGED ] { 10 }
+    Constant [ integer PGGI\SIGNAL_GCOMBO_BOX_MOVE_ACTIVE ] { 11 }
+    Constant [ integer PGGI\SIGNAL_GTEXT_BUFFER_CHANGED ] { 12 }
+    Constant [ integer PGGI\SIGNAL_STYLE_CONTEXT_CHANGED ] { 13 }
+    Constant [ integer PGGI\SIGNAL_GDIALOG_RESPONSE ] { 15 }
+    Constant [ integer PGGI\SIGNAL_GDIALOG_CLOSE ] { 14 }
+    Constant [ integer PGGI\SIGNAL_GTREE_VIEW_COLUMN_CHANGED ] { 16 }
+    Constant [ integer PGGI\SIGNAL_GTREE_VIEW_COLUMN_CLICKED ] { 17 }
+    Constant [ integer PGGI\SIGNAL_GTREE_SELECTION_CHANGED ] { 18 }
+    Constant [ integer PGGI\Pango\SCALE ] { 1024 }
   }
 
-  - Classes [30] {
+  - Classes [53] {
+    Class [ <internal:pggi> class PGGI\Cairo\Exception extends Exception implements Throwable ] {
+
+      - Constants [0] {
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [4] {
+        Property [ <default> protected $message ]
+        Property [ <default> protected $code ]
+        Property [ <default> protected $file ]
+        Property [ <default> protected $line ]
+      }
+
+      - Methods [10] {
+        Method [ <internal:Core, inherits Exception, ctor> public method __construct ] {
+
+          - Parameters [3] {
+            Parameter #0 [ <optional> $message ]
+            Parameter #1 [ <optional> $code ]
+            Parameter #2 [ <optional> $previous ]
+          }
+        }
+
+        Method [ <internal:Core, inherits Exception> public method __wakeup ] {
+        }
+
+        Method [ <internal:Core, inherits Exception, prototype Throwable> final public method getMessage ] {
+        }
+
+        Method [ <internal:Core, inherits Exception, prototype Throwable> final public method getCode ] {
+        }
+
+        Method [ <internal:Core, inherits Exception, prototype Throwable> final public method getFile ] {
+        }
+
+        Method [ <internal:Core, inherits Exception, prototype Throwable> final public method getLine ] {
+        }
+
+        Method [ <internal:Core, inherits Exception, prototype Throwable> final public method getTrace ] {
+        }
+
+        Method [ <internal:Core, inherits Exception, prototype Throwable> final public method getPrevious ] {
+        }
+
+        Method [ <internal:Core, inherits Exception, prototype Throwable> final public method getTraceAsString ] {
+        }
+
+        Method [ <internal:Core, inherits Exception, prototype Throwable> public method __toString ] {
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\Cairo\Surface ] {
+
+      - Constants [3] {
+        Constant [ public integer CONTENT_COLOR ] { 4096 }
+        Constant [ public integer CONTENT_ALPHA ] { 8192 }
+        Constant [ public integer CONTENT_COLOR_ALPHA ] { 12288 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [0] {
+      }
+
+      - Methods [0] {
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\Cairo\ImageSurface extends PGGI\Cairo\Surface ] {
+
+      - Constants [9] {
+        Constant [ public integer CONTENT_COLOR ] { 4096 }
+        Constant [ public integer CONTENT_ALPHA ] { 8192 }
+        Constant [ public integer CONTENT_COLOR_ALPHA ] { 12288 }
+        Constant [ public integer FORMAT_ARGB32 ] { 0 }
+        Constant [ public integer FORMAT_RGB24 ] { 1 }
+        Constant [ public integer FORMAT_A8 ] { 2 }
+        Constant [ public integer FORMAT_A1 ] { 3 }
+        Constant [ public integer FORMAT_RGB16_565 ] { 4 }
+        Constant [ public integer FORMAT_RGB30 ] { 5 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [1] {
+        Property [ <default> public $data ]
+      }
+
+      - Methods [7] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
+
+          - Parameters [4] {
+            Parameter #0 [ <required> $format ]
+            Parameter #1 [ <optional> integer $width ]
+            Parameter #2 [ <optional> integer $height ]
+            Parameter #3 [ <optional> string or NULL $data ]
+          }
+        }
+
+        Method [ <internal:pggi> public method getData ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi> public method getWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi> public method getHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi> public method getStride ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi> public method writeToPNG ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> string $filename ]
+          }
+        }
+
+        Method [ <internal:pggi> public method strideForWidth ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <optional> integer $format ]
+            Parameter #1 [ <optional> integer $width ]
+          }
+          - Return [ integer ]
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\Cairo\Pattern ] {
+
+      - Constants [7] {
+        Constant [ public integer EXTEND_NONE ] { 0 }
+        Constant [ public integer EXTEND_REPEAT ] { 1 }
+        Constant [ public integer FILTER_FAST ] { 0 }
+        Constant [ public integer FILTER_GOOD ] { 1 }
+        Constant [ public integer FILTER_BEST ] { 2 }
+        Constant [ public integer FILTER_NEAREST ] { 3 }
+        Constant [ public integer FILTER_BILINEAR ] { 4 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [2] {
+        Property [ <default> public $extend ]
+        Property [ <default> public $filter ]
+      }
+
+      - Methods [0] {
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\Cairo\PatternSolid extends PGGI\Cairo\Pattern ] {
+
+      - Constants [7] {
+        Constant [ public integer EXTEND_NONE ] { 0 }
+        Constant [ public integer EXTEND_REPEAT ] { 1 }
+        Constant [ public integer FILTER_FAST ] { 0 }
+        Constant [ public integer FILTER_GOOD ] { 1 }
+        Constant [ public integer FILTER_BEST ] { 2 }
+        Constant [ public integer FILTER_NEAREST ] { 3 }
+        Constant [ public integer FILTER_BILINEAR ] { 4 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [3] {
+        Property [ <default> public $extend ]
+        Property [ <default> public $filter ]
+        Property [ <default> private $surface ]
+      }
+
+      - Methods [1] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
+
+          - Parameters [4] {
+            Parameter #0 [ <required> float $r ]
+            Parameter #1 [ <required> float $g ]
+            Parameter #2 [ <required> float $b ]
+            Parameter #3 [ <optional> float $a ]
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\Cairo\PatternSurface extends PGGI\Cairo\Pattern ] {
+
+      - Constants [9] {
+        Constant [ public integer EXTEND_NONE ] { 0 }
+        Constant [ public integer EXTEND_REPEAT ] { 1 }
+        Constant [ public integer FILTER_FAST ] { 0 }
+        Constant [ public integer FILTER_GOOD ] { 1 }
+        Constant [ public integer FILTER_BEST ] { 2 }
+        Constant [ public integer FILTER_NEAREST ] { 3 }
+        Constant [ public integer FILTER_BILINEAR ] { 4 }
+        Constant [ public integer EXTEND_REFLECT ] { 2 }
+        Constant [ public integer EXTEND_PAD ] { 3 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [3] {
+        Property [ <default> public $extend ]
+        Property [ <default> public $filter ]
+        Property [ <default> public $surface ]
+      }
+
+      - Methods [2] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> PGGI\Cairo\Surface $x ]
+          }
+        }
+
+        Method [ <internal:pggi> public method getSurface ] {
+
+          - Parameters [0] {
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\Cairo\Context ] {
+
+      - Constants [8] {
+        Constant [ public integer FILL_RULE_WINDING ] { 0 }
+        Constant [ public integer FILL_RULE_EVEN_ODD ] { 1 }
+        Constant [ public integer LINE_CAP_BUTT ] { 0 }
+        Constant [ public integer LINE_CAP_ROUND ] { 1 }
+        Constant [ public integer LINE_CAP_SQUARE ] { 2 }
+        Constant [ public integer LINE_JOIN_MITER ] { 0 }
+        Constant [ public integer LINE_JOIN_ROUND ] { 1 }
+        Constant [ public integer LINE_JOIN_BEVEL ] { 2 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [4] {
+        Property [ <default> public $lineWidth ]
+        Property [ <default> public $fillRule ]
+        Property [ <default> public $lineCap ]
+        Property [ <default> public $lineJoin ]
+      }
+
+      - Methods [33] {
+        Method [ <internal:pggi> public method fill ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method fillPreserve ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method paint ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method clip ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method clipPreserve ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method newPath ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method newSubPath ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method closePath ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method stroke ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method strokePreserve ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method save ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method restore ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method arc ] {
+
+          - Parameters [5] {
+            Parameter #0 [ <required> float $x ]
+            Parameter #1 [ <required> float $y ]
+            Parameter #2 [ <required> float $radius ]
+            Parameter #3 [ <required> float $angle1 ]
+            Parameter #4 [ <required> float $angle2 ]
+          }
+        }
+
+        Method [ <internal:pggi> public method arcNegative ] {
+
+          - Parameters [5] {
+            Parameter #0 [ <required> float $x ]
+            Parameter #1 [ <required> float $y ]
+            Parameter #2 [ <required> float $radius ]
+            Parameter #3 [ <required> float $angle1 ]
+            Parameter #4 [ <required> float $angle2 ]
+          }
+        }
+
+        Method [ <internal:pggi> public method curveTo ] {
+
+          - Parameters [6] {
+            Parameter #0 [ <required> float $x1 ]
+            Parameter #1 [ <required> float $y1 ]
+            Parameter #2 [ <required> float $x2 ]
+            Parameter #3 [ <required> float $y2 ]
+            Parameter #4 [ <required> float $x3 ]
+            Parameter #5 [ <required> float $y3 ]
+          }
+        }
+
+        Method [ <internal:pggi> public method lineTo ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> float $x ]
+            Parameter #1 [ <required> float $y ]
+          }
+        }
+
+        Method [ <internal:pggi> public method moveTo ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> float $x ]
+            Parameter #1 [ <required> float $y ]
+          }
+        }
+
+        Method [ <internal:pggi> public method relCurveTo ] {
+
+          - Parameters [6] {
+            Parameter #0 [ <required> float $x1 ]
+            Parameter #1 [ <required> float $y1 ]
+            Parameter #2 [ <required> float $x2 ]
+            Parameter #3 [ <required> float $y2 ]
+            Parameter #4 [ <required> float $x3 ]
+            Parameter #5 [ <required> float $y3 ]
+          }
+        }
+
+        Method [ <internal:pggi> public method relLineTo ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> float $x ]
+            Parameter #1 [ <required> float $y ]
+          }
+        }
+
+        Method [ <internal:pggi> public method relMoveTo ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> float $x ]
+            Parameter #1 [ <required> float $y ]
+          }
+        }
+
+        Method [ <internal:pggi> public method scale ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> float $x ]
+            Parameter #1 [ <required> float $y ]
+          }
+        }
+
+        Method [ <internal:pggi> public method rotate ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> float $angle ]
+          }
+        }
+
+        Method [ <internal:pggi> public method translate ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> float $x ]
+            Parameter #1 [ <required> float $y ]
+          }
+        }
+
+        Method [ <internal:pggi> public method rectangle ] {
+
+          - Parameters [4] {
+            Parameter #0 [ <required> float $x ]
+            Parameter #1 [ <required> float $y ]
+            Parameter #2 [ <required> float $width ]
+            Parameter #3 [ <required> float $height ]
+          }
+        }
+
+        Method [ <internal:pggi> public method setColor ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> PGGI\RGBA $x ]
+          }
+        }
+
+        Method [ <internal:pggi> public method setSource ] {
+        }
+
+        Method [ <internal:pggi> public method setSourceRGBA ] {
+
+          - Parameters [4] {
+            Parameter #0 [ <required> float $r ]
+            Parameter #1 [ <required> float $g ]
+            Parameter #2 [ <required> float $b ]
+            Parameter #3 [ <optional> float $a ]
+          }
+        }
+
+        Method [ <internal:pggi> public method setDash ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> $dashes ]
+            Parameter #1 [ <optional> $offset ]
+          }
+        }
+
+        Method [ <internal:pggi> public method getDash ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method updateContext ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> PGGI\Pango\Context $x ]
+          }
+        }
+
+        Method [ <internal:pggi> public method updateLayout ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> PGGI\Pango\Layout $x ]
+          }
+        }
+
+        Method [ <internal:pggi> public method showLayout ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> PGGI\Pango\Layout $x ]
+          }
+        }
+
+        Method [ <internal:pggi, ctor> public method __construct ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> PGGI\Cairo\Surface $x ]
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\Pango\Exception extends Exception implements Throwable ] {
+
+      - Constants [0] {
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [4] {
+        Property [ <default> protected $message ]
+        Property [ <default> protected $code ]
+        Property [ <default> protected $file ]
+        Property [ <default> protected $line ]
+      }
+
+      - Methods [10] {
+        Method [ <internal:Core, inherits Exception, ctor> public method __construct ] {
+
+          - Parameters [3] {
+            Parameter #0 [ <optional> $message ]
+            Parameter #1 [ <optional> $code ]
+            Parameter #2 [ <optional> $previous ]
+          }
+        }
+
+        Method [ <internal:Core, inherits Exception> public method __wakeup ] {
+        }
+
+        Method [ <internal:Core, inherits Exception, prototype Throwable> final public method getMessage ] {
+        }
+
+        Method [ <internal:Core, inherits Exception, prototype Throwable> final public method getCode ] {
+        }
+
+        Method [ <internal:Core, inherits Exception, prototype Throwable> final public method getFile ] {
+        }
+
+        Method [ <internal:Core, inherits Exception, prototype Throwable> final public method getLine ] {
+        }
+
+        Method [ <internal:Core, inherits Exception, prototype Throwable> final public method getTrace ] {
+        }
+
+        Method [ <internal:Core, inherits Exception, prototype Throwable> final public method getPrevious ] {
+        }
+
+        Method [ <internal:Core, inherits Exception, prototype Throwable> final public method getTraceAsString ] {
+        }
+
+        Method [ <internal:Core, inherits Exception, prototype Throwable> public method __toString ] {
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\Pango\FontDescription ] {
+
+      - Constants [29] {
+        Constant [ public integer FONT_MASK_FAMILY ] { 1 }
+        Constant [ public integer FONT_MASK_STYLE ] { 2 }
+        Constant [ public integer FONT_MASK_VARIANT ] { 4 }
+        Constant [ public integer FONT_MASK_WEIGHT ] { 8 }
+        Constant [ public integer FONT_MASK_SIZE ] { 32 }
+        Constant [ public integer FONT_MASK_GRAVITY ] { 64 }
+        Constant [ public integer STRETCH_ULTRA_CONDENSED ] { 0 }
+        Constant [ public integer STRETCH_EXTRA_CONDENSED ] { 1 }
+        Constant [ public integer STRETCH_CONDENSED ] { 2 }
+        Constant [ public integer STRETCH_SEMI_CONDENSED ] { 3 }
+        Constant [ public integer STRETCH_NORMAL ] { 4 }
+        Constant [ public integer STRETCH_SEMI_EXPANDED ] { 5 }
+        Constant [ public integer STRETCH_EXPANDED ] { 6 }
+        Constant [ public integer STRETCH_EXTRA_EXPANDED ] { 7 }
+        Constant [ public integer STRETCH_ULTRA_EXPANDED ] { 8 }
+        Constant [ public integer WEIGHT_LIGHT ] { 300 }
+        Constant [ public integer WEIGHT_ULTRALIGHT ] { 200 }
+        Constant [ public integer WEIGHT_THIN ] { 100 }
+        Constant [ public integer WEIGHT_ULTRAHEAVY ] { 1000 }
+        Constant [ public integer WEIGHT_HEAVY ] { 900 }
+        Constant [ public integer WEIGHT_ULTRABOLD ] { 800 }
+        Constant [ public integer WEIGHT_BOLD ] { 700 }
+        Constant [ public integer WEIGHT_SEMIBOLD ] { 600 }
+        Constant [ public integer WEIGHT_MEDIUM ] { 500 }
+        Constant [ public integer WEIGHT_NORMAL ] { 400 }
+        Constant [ public integer WEIGHT_BOOK ] { 380 }
+        Constant [ public integer WEIGHT_SEMILIGHT ] { 350 }
+        Constant [ public integer VARIANT_NORMAL ] { 0 }
+        Constant [ public integer VARIANT_SMALL_CAPS ] { 1 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [3] {
+        Property [ <default> public $stretch ]
+        Property [ <default> public $style ]
+        Property [ <default> public $variant ]
+      }
+
+      - Methods [2] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <optional> string $string ]
+          }
+        }
+
+        Method [ <internal:pggi> public method hash ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\Pango\Layout ] {
+
+      - Constants [3] {
+        Constant [ public integer WRAP_WORD ] { 0 }
+        Constant [ public integer WRAP_CHAR ] { 1 }
+        Constant [ public integer WRAP_WORD_CHAR ] { 2 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [4] {
+        Property [ <default> public $width ]
+        Property [ <default> public $height ]
+        Property [ <default> public $wrap ]
+        Property [ <default> public $text ]
+      }
+
+      - Methods [2] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $layout ]
+          }
+        }
+
+        Method [ <internal:pggi> public method getSize ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> integer &$value ]
+            Parameter #1 [ <required> integer &$value ]
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\Pango\Context ] {
+
+      - Constants [15] {
+        Constant [ public integer DIRECTION_LTR ] { 0 }
+        Constant [ public integer DIRECTION_RTL ] { 1 }
+        Constant [ public integer DIRECTION_TTB_LTR ] { 2 }
+        Constant [ public integer DIRECTION_TTB_RTL ] { 3 }
+        Constant [ public integer DIRECTION_WEAK_LTR ] { 4 }
+        Constant [ public integer DIRECTION_WEAK_RTL ] { 5 }
+        Constant [ public integer DIRECTION_NEUTRAL ] { 6 }
+        Constant [ public integer GRAVITY_SOUTH ] { 0 }
+        Constant [ public integer GRAVITY_EAST ] { 1 }
+        Constant [ public integer GRAVITY_NORTH ] { 2 }
+        Constant [ public integer GRAVITY_WEST ] { 3 }
+        Constant [ public integer GRAVITY_AUTO ] { 4 }
+        Constant [ public integer GRAVITY_HINT_NATURAL ] { 0 }
+        Constant [ public integer GRAVITY_HINT_STRONG ] { 1 }
+        Constant [ public integer GRAVITY_HINT_LINE ] { 2 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [3] {
+        Property [ <default> public $baseDir ]
+        Property [ <default> public $baseGravity ]
+        Property [ <default> public $gravityHint ]
+      }
+
+      - Methods [2] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> PGGI\GWidget $x ]
+          }
+        }
+
+        Method [ <internal:pggi> public method getGravity ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+      }
+    }
+
     Class [ <internal:pggi> class PGGI\Exception extends Exception implements Throwable ] {
 
       - Constants [0] {
@@ -166,6 +920,364 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
       }
     }
 
+    Class [ <internal:pggi> class PGGI\GEvent ] {
+
+      - Constants [0] {
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [0] {
+      }
+
+      - Methods [1] {
+        Method [ <internal:pggi, ctor> private method __construct ] {
+
+          - Parameters [0] {
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\GEventKey extends PGGI\GEvent ] {
+
+      - Constants [128] {
+        Constant [ public integer KEY_VoidSymbol ] { 16777215 }
+        Constant [ public integer KEY_BackSpace ] { 65288 }
+        Constant [ public integer KEY_Tab ] { 65289 }
+        Constant [ public integer KEY_Return ] { 65293 }
+        Constant [ public integer KEY_Escape ] { 65307 }
+        Constant [ public integer KEY_Delete ] { 65535 }
+        Constant [ public integer KEY_Home ] { 65360 }
+        Constant [ public integer KEY_Left ] { 65361 }
+        Constant [ public integer KEY_Up ] { 65362 }
+        Constant [ public integer KEY_Right ] { 65363 }
+        Constant [ public integer KEY_Down ] { 65364 }
+        Constant [ public integer KEY_Page_Up ] { 65365 }
+        Constant [ public integer KEY_Page_Down ] { 65366 }
+        Constant [ public integer KEY_Num_Lock ] { 65407 }
+        Constant [ public integer KEY_F1 ] { 65470 }
+        Constant [ public integer KEY_F2 ] { 65471 }
+        Constant [ public integer KEY_F3 ] { 65472 }
+        Constant [ public integer KEY_F4 ] { 65473 }
+        Constant [ public integer KEY_F5 ] { 65474 }
+        Constant [ public integer KEY_F6 ] { 65475 }
+        Constant [ public integer KEY_F7 ] { 65476 }
+        Constant [ public integer KEY_F8 ] { 65477 }
+        Constant [ public integer KEY_F9 ] { 65478 }
+        Constant [ public integer KEY_F10 ] { 65479 }
+        Constant [ public integer KEY_F11 ] { 65480 }
+        Constant [ public integer KEY_F12 ] { 65481 }
+        Constant [ public integer KEY_Shift_L ] { 65505 }
+        Constant [ public integer KEY_Shift_R ] { 65506 }
+        Constant [ public integer KEY_Control_L ] { 65507 }
+        Constant [ public integer KEY_Control_R ] { 65508 }
+        Constant [ public integer KEY_Caps_Lock ] { 65509 }
+        Constant [ public integer KEY_Shift_Lock ] { 65510 }
+        Constant [ public integer KEY_Alt_L ] { 65514 }
+        Constant [ public integer KEY_space ] { 32 }
+        Constant [ public integer KEY_exclam ] { 33 }
+        Constant [ public integer KEY_quotedbl ] { 34 }
+        Constant [ public integer KEY_numbersign ] { 35 }
+        Constant [ public integer KEY_dollar ] { 36 }
+        Constant [ public integer KEY_percent ] { 37 }
+        Constant [ public integer KEY_ampersand ] { 38 }
+        Constant [ public integer KEY_apostrophe ] { 39 }
+        Constant [ public integer KEY_quoteright ] { 39 }
+        Constant [ public integer KEY_parenleft ] { 40 }
+        Constant [ public integer KEY_parenright ] { 41 }
+        Constant [ public integer KEY_asterisk ] { 42 }
+        Constant [ public integer KEY_plus ] { 43 }
+        Constant [ public integer KEY_comma ] { 44 }
+        Constant [ public integer KEY_minus ] { 45 }
+        Constant [ public integer KEY_period ] { 46 }
+        Constant [ public integer KEY_slash ] { 47 }
+        Constant [ public integer KEY_1 ] { 49 }
+        Constant [ public integer KEY_2 ] { 50 }
+        Constant [ public integer KEY_3 ] { 51 }
+        Constant [ public integer KEY_4 ] { 52 }
+        Constant [ public integer KEY_5 ] { 53 }
+        Constant [ public integer KEY_6 ] { 54 }
+        Constant [ public integer KEY_7 ] { 55 }
+        Constant [ public integer KEY_8 ] { 56 }
+        Constant [ public integer KEY_9 ] { 57 }
+        Constant [ public integer KEY_colon ] { 58 }
+        Constant [ public integer KEY_semicolon ] { 59 }
+        Constant [ public integer KEY_less ] { 60 }
+        Constant [ public integer KEY_equal ] { 61 }
+        Constant [ public integer KEY_greater ] { 62 }
+        Constant [ public integer KEY_question ] { 63 }
+        Constant [ public integer KEY_at ] { 64 }
+        Constant [ public integer KEY_A ] { 65 }
+        Constant [ public integer KEY_B ] { 66 }
+        Constant [ public integer KEY_C ] { 67 }
+        Constant [ public integer KEY_D ] { 68 }
+        Constant [ public integer KEY_E ] { 69 }
+        Constant [ public integer KEY_F ] { 70 }
+        Constant [ public integer KEY_G ] { 71 }
+        Constant [ public integer KEY_H ] { 72 }
+        Constant [ public integer KEY_I ] { 73 }
+        Constant [ public integer KEY_J ] { 74 }
+        Constant [ public integer KEY_K ] { 75 }
+        Constant [ public integer KEY_L ] { 76 }
+        Constant [ public integer KEY_M ] { 77 }
+        Constant [ public integer KEY_N ] { 78 }
+        Constant [ public integer KEY_O ] { 79 }
+        Constant [ public integer KEY_P ] { 80 }
+        Constant [ public integer KEY_Q ] { 81 }
+        Constant [ public integer KEY_R ] { 82 }
+        Constant [ public integer KEY_S ] { 83 }
+        Constant [ public integer KEY_T ] { 84 }
+        Constant [ public integer KEY_U ] { 85 }
+        Constant [ public integer KEY_V ] { 86 }
+        Constant [ public integer KEY_W ] { 87 }
+        Constant [ public integer KEY_X ] { 88 }
+        Constant [ public integer KEY_Y ] { 89 }
+        Constant [ public integer KEY_Z ] { 90 }
+        Constant [ public integer KEY_bracketleft ] { 91 }
+        Constant [ public integer KEY_backslash ] { 92 }
+        Constant [ public integer KEY_bracketright ] { 93 }
+        Constant [ public integer KEY_asciicircum ] { 94 }
+        Constant [ public integer KEY_underscore ] { 95 }
+        Constant [ public integer KEY_grave ] { 96 }
+        Constant [ public integer KEY_quoteleft ] { 96 }
+        Constant [ public integer KEY_a ] { 97 }
+        Constant [ public integer KEY_b ] { 98 }
+        Constant [ public integer KEY_c ] { 99 }
+        Constant [ public integer KEY_d ] { 100 }
+        Constant [ public integer KEY_e ] { 101 }
+        Constant [ public integer KEY_f ] { 102 }
+        Constant [ public integer KEY_g ] { 103 }
+        Constant [ public integer KEY_h ] { 104 }
+        Constant [ public integer KEY_i ] { 105 }
+        Constant [ public integer KEY_j ] { 106 }
+        Constant [ public integer KEY_k ] { 107 }
+        Constant [ public integer KEY_l ] { 108 }
+        Constant [ public integer KEY_m ] { 109 }
+        Constant [ public integer KEY_n ] { 110 }
+        Constant [ public integer KEY_o ] { 111 }
+        Constant [ public integer KEY_p ] { 112 }
+        Constant [ public integer KEY_q ] { 113 }
+        Constant [ public integer KEY_r ] { 114 }
+        Constant [ public integer KEY_s ] { 115 }
+        Constant [ public integer KEY_t ] { 116 }
+        Constant [ public integer KEY_u ] { 117 }
+        Constant [ public integer KEY_v ] { 118 }
+        Constant [ public integer KEY_w ] { 119 }
+        Constant [ public integer KEY_x ] { 120 }
+        Constant [ public integer KEY_y ] { 121 }
+        Constant [ public integer KEY_z ] { 122 }
+        Constant [ public integer KEY_braceleft ] { 123 }
+        Constant [ public integer KEY_bar ] { 124 }
+        Constant [ public integer KEY_asciitilde ] { 126 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [2] {
+        Property [ <default> public $keyval ]
+        Property [ <default> public $state ]
+      }
+
+      - Methods [1] {
+        Method [ <internal:pggi, overwrites PGGI\GEvent, ctor> private method __construct ] {
+
+          - Parameters [0] {
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\RGBA ] {
+
+      - Constants [0] {
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [4] {
+        Property [ <default> public $red ]
+        Property [ <default> public $green ]
+        Property [ <default> public $blue ]
+        Property [ <default> public $alpha ]
+      }
+
+      - Methods [3] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> string $string ]
+          }
+        }
+
+        Method [ <internal:pggi> public method copy ] {
+
+          - Parameters [0] {
+          }
+          - Return [ rgba_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi> public method equals ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> PGGI\RGBA $widget ]
+          }
+          - Return [ boolean ]
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\GCssProvider ] {
+
+      - Constants [0] {
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [0] {
+      }
+
+      - Methods [3] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method loadFromPath ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> string $path ]
+          }
+        }
+
+        Method [ <internal:pggi> public method loadFromResource ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> string $path ]
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\GScreen ] {
+
+      - Constants [0] {
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [0] {
+      }
+
+      - Methods [2] {
+        Method [ <internal:pggi, ctor> private method __construct ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method addProvider ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> PGGI\GCssProvider $provider ]
+            Parameter #1 [ <required> integer $priority ]
+          }
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\GStyleContext ] {
+
+      - Constants [5] {
+        Constant [ public integer PRIORITY_FALLBACK ] { 1 }
+        Constant [ public integer PRIORITY_THEME ] { 200 }
+        Constant [ public integer PRIORITY_SETTINGS ] { 400 }
+        Constant [ public integer PRIORITY_APPLICATION ] { 600 }
+        Constant [ public integer PRIORITY_USER ] { 800 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [0] {
+      }
+
+      - Methods [6] {
+        Method [ <internal:pggi> public method on ] {
+
+          - Parameters [3] {
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
+            Parameter #2 [ <optional> $param ]
+          }
+        }
+
+        Method [ <internal:pggi, ctor> public method __construct ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method addProvider ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> PGGI\GCssProvider $provider ]
+            Parameter #1 [ <required> integer $priority ]
+          }
+        }
+
+        Method [ <internal:pggi> public method renderBackground ] {
+
+          - Parameters [5] {
+            Parameter #0 [ <required> PGGI\Cairo\Context $context ]
+            Parameter #1 [ <required> float $x ]
+            Parameter #2 [ <required> float $y ]
+            Parameter #3 [ <required> float $width ]
+            Parameter #4 [ <required> float $height ]
+          }
+        }
+
+        Method [ <internal:pggi> public method getState ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi> public method getColor ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> integer $flags ]
+          }
+          - Return [ rgba_get_class_entry() ]
+        }
+      }
+    }
+
     Class [ <internal:pggi> class PGGI\GApplication ] {
 
       - Constants [0] {
@@ -213,11 +1325,11 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
     Class [ <internal:pggi> class PGGI\GWidget ] {
 
       - Constants [5] {
-        Constant [ public float ALIGN_FILL ] { 0 }
-        Constant [ public float ALIGN_START ] { 1 }
-        Constant [ public float ALIGN_END ] { 2 }
-        Constant [ public float ALIGN_CENTER ] { 3 }
-        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
       }
 
       - Static properties [0] {
@@ -247,7 +1359,7 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
         Property [ <default> public $canFocus ]
       }
 
-      - Methods [4] {
+      - Methods [8] {
         Method [ <internal:pggi> public method on ] {
 
           - Parameters [3] {
@@ -274,17 +1386,45 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
           - Parameters [0] {
           }
         }
+
+        Method [ <internal:pggi> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
       }
     }
 
     Class [ <internal:pggi> class PGGI\GContainer extends PGGI\GWidget ] {
 
       - Constants [5] {
-        Constant [ public float ALIGN_FILL ] { 0 }
-        Constant [ public float ALIGN_START ] { 1 }
-        Constant [ public float ALIGN_END ] { 2 }
-        Constant [ public float ALIGN_CENTER ] { 3 }
-        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
       }
 
       - Static properties [0] {
@@ -315,7 +1455,7 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
         Property [ <default> public $borderWidth ]
       }
 
-      - Methods [5] {
+      - Methods [9] {
         Method [ <internal:pggi> public method add ] {
 
           - Parameters [1] {
@@ -349,17 +1489,45 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
           - Parameters [0] {
           }
         }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
       }
     }
 
     Class [ <internal:pggi> class PGGI\GWindow extends PGGI\GContainer ] {
 
       - Constants [5] {
-        Constant [ public float ALIGN_FILL ] { 0 }
-        Constant [ public float ALIGN_START ] { 1 }
-        Constant [ public float ALIGN_END ] { 2 }
-        Constant [ public float ALIGN_CENTER ] { 3 }
-        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
       }
 
       - Static properties [0] {
@@ -401,7 +1569,7 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
         Property [ <default> public $acceptFocus ]
       }
 
-      - Methods [12] {
+      - Methods [17] {
         Method [ <internal:pggi, ctor> public method __construct ] {
 
           - Parameters [2] {
@@ -450,6 +1618,13 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
           }
         }
 
+        Method [ <internal:pggi> public method getScreen ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gscreen_get_class_entry() ]
+        }
+
         Method [ <internal:pggi, inherits PGGI\GContainer> public method add ] {
 
           - Parameters [1] {
@@ -483,17 +1658,45 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
           - Parameters [0] {
           }
         }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
       }
     }
 
     Class [ <internal:pggi> class PGGI\GBox extends PGGI\GContainer ] {
 
       - Constants [5] {
-        Constant [ public float ALIGN_FILL ] { 0 }
-        Constant [ public float ALIGN_START ] { 1 }
-        Constant [ public float ALIGN_END ] { 2 }
-        Constant [ public float ALIGN_CENTER ] { 3 }
-        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
       }
 
       - Static properties [0] {
@@ -527,7 +1730,7 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
         Property [ <default> public $baselinePosition ]
       }
 
-      - Methods [8] {
+      - Methods [12] {
         Method [ <internal:pggi, ctor> public method __construct ] {
 
           - Parameters [2] {
@@ -589,17 +1792,45 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
           - Parameters [0] {
           }
         }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
       }
     }
 
     Class [ <internal:pggi> class PGGI\GButtonBox extends PGGI\GBox ] {
 
       - Constants [11] {
-        Constant [ public float ALIGN_FILL ] { 0 }
-        Constant [ public float ALIGN_START ] { 1 }
-        Constant [ public float ALIGN_END ] { 2 }
-        Constant [ public float ALIGN_CENTER ] { 3 }
-        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
         Constant [ public integer LAYOUT_SPREAD ] { 1 }
         Constant [ public integer LAYOUT_EDGE ] { 2 }
         Constant [ public integer LAYOUT_START ] { 3 }
@@ -639,7 +1870,7 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
         Property [ <default> public $baselinePosition ]
       }
 
-      - Methods [10] {
+      - Methods [14] {
         Method [ <internal:pggi, overwrites PGGI\GBox, ctor> public method __construct ] {
 
           - Parameters [1] {
@@ -714,17 +1945,45 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
           - Parameters [0] {
           }
         }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
       }
     }
 
     Class [ <internal:pggi> class PGGI\GButton extends PGGI\GContainer ] {
 
       - Constants [11] {
-        Constant [ public float ALIGN_FILL ] { 0 }
-        Constant [ public float ALIGN_START ] { 1 }
-        Constant [ public float ALIGN_END ] { 2 }
-        Constant [ public float ALIGN_CENTER ] { 3 }
-        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
         Constant [ public integer LABEL ] { 0 }
         Constant [ public integer MNEMONIC ] { 1 }
         Constant [ public integer IMAGE_16 ] { 2 }
@@ -767,7 +2026,7 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
         Property [ <default> public $useUnderline ]
       }
 
-      - Methods [6] {
+      - Methods [10] {
         Method [ <internal:pggi, ctor> public method __construct ] {
 
           - Parameters [0] {
@@ -807,17 +2066,45 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
           - Parameters [0] {
           }
         }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
       }
     }
 
     Class [ <internal:pggi> class PGGI\GLabel extends PGGI\GWidget ] {
 
       - Constants [9] {
-        Constant [ public float ALIGN_FILL ] { 0 }
-        Constant [ public float ALIGN_START ] { 1 }
-        Constant [ public float ALIGN_END ] { 2 }
-        Constant [ public float ALIGN_CENTER ] { 3 }
-        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
         Constant [ public float ELLIPSIZE_NONE ] { 0 }
         Constant [ public float ELLIPSIZE_START ] { 1 }
         Constant [ public float ELLIPSIZE_MIDDLE ] { 2 }
@@ -862,7 +2149,7 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
         Property [ <default> public $text ]
       }
 
-      - Methods [5] {
+      - Methods [9] {
         Method [ <internal:pggi, ctor> public method __construct ] {
 
           - Parameters [1] {
@@ -896,17 +2183,45 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
           - Parameters [0] {
           }
         }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
       }
     }
 
     Class [ <internal:pggi> class PGGI\GImage extends PGGI\GWidget ] {
 
       - Constants [5] {
-        Constant [ public float ALIGN_FILL ] { 0 }
-        Constant [ public float ALIGN_START ] { 1 }
-        Constant [ public float ALIGN_END ] { 2 }
-        Constant [ public float ALIGN_CENTER ] { 3 }
-        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
       }
 
       - Static properties [0] {
@@ -936,7 +2251,7 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
         Property [ <default> public $canFocus ]
       }
 
-      - Methods [6] {
+      - Methods [10] {
         Method [ <internal:pggi> public method set ] {
 
           - Parameters [1] {
@@ -977,17 +2292,45 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
           - Parameters [0] {
           }
         }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
       }
     }
 
     Class [ <internal:pggi> class PGGI\GMenuShell extends PGGI\GContainer ] {
 
       - Constants [5] {
-        Constant [ public float ALIGN_FILL ] { 0 }
-        Constant [ public float ALIGN_START ] { 1 }
-        Constant [ public float ALIGN_END ] { 2 }
-        Constant [ public float ALIGN_CENTER ] { 3 }
-        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
       }
 
       - Static properties [0] {
@@ -1019,7 +2362,7 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
         Property [ <default> public $takeFocus ]
       }
 
-      - Methods [5] {
+      - Methods [9] {
         Method [ <internal:pggi, inherits PGGI\GContainer> public method add ] {
 
           - Parameters [1] {
@@ -1052,6 +2395,34 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
 
           - Parameters [0] {
           }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
         }
       }
     }
@@ -1059,11 +2430,11 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
     Class [ <internal:pggi> class PGGI\GMenubar extends PGGI\GMenuShell ] {
 
       - Constants [5] {
-        Constant [ public float ALIGN_FILL ] { 0 }
-        Constant [ public float ALIGN_START ] { 1 }
-        Constant [ public float ALIGN_END ] { 2 }
-        Constant [ public float ALIGN_CENTER ] { 3 }
-        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
       }
 
       - Static properties [0] {
@@ -1095,7 +2466,7 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
         Property [ <default> public $takeFocus ]
       }
 
-      - Methods [6] {
+      - Methods [10] {
         Method [ <internal:pggi, ctor> public method __construct ] {
 
           - Parameters [0] {
@@ -1134,6 +2505,34 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
 
           - Parameters [0] {
           }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
         }
       }
     }
@@ -1141,11 +2540,11 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
     Class [ <internal:pggi> class PGGI\GMenu extends PGGI\GMenuShell ] {
 
       - Constants [5] {
-        Constant [ public float ALIGN_FILL ] { 0 }
-        Constant [ public float ALIGN_START ] { 1 }
-        Constant [ public float ALIGN_END ] { 2 }
-        Constant [ public float ALIGN_CENTER ] { 3 }
-        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
       }
 
       - Static properties [0] {
@@ -1177,7 +2576,7 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
         Property [ <default> public $takeFocus ]
       }
 
-      - Methods [6] {
+      - Methods [10] {
         Method [ <internal:pggi, ctor> public method __construct ] {
 
           - Parameters [0] {
@@ -1217,17 +2616,45 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
           - Parameters [0] {
           }
         }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
       }
     }
 
     Class [ <internal:pggi> class PGGI\GMenuItem extends PGGI\GContainer ] {
 
       - Constants [5] {
-        Constant [ public float ALIGN_FILL ] { 0 }
-        Constant [ public float ALIGN_START ] { 1 }
-        Constant [ public float ALIGN_END ] { 2 }
-        Constant [ public float ALIGN_CENTER ] { 3 }
-        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
       }
 
       - Static properties [0] {
@@ -1263,7 +2690,7 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
         Property [ <default> public $reserveIndicator ]
       }
 
-      - Methods [9] {
+      - Methods [13] {
         Method [ <internal:pggi, ctor> public method __construct ] {
 
           - Parameters [1] {
@@ -1322,17 +2749,45 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
           - Parameters [0] {
           }
         }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
       }
     }
 
     Class [ <internal:pggi> class PGGI\GTextView extends PGGI\GContainer ] {
 
       - Constants [5] {
-        Constant [ public float ALIGN_FILL ] { 0 }
-        Constant [ public float ALIGN_START ] { 1 }
-        Constant [ public float ALIGN_END ] { 2 }
-        Constant [ public float ALIGN_CENTER ] { 3 }
-        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
       }
 
       - Static properties [0] {
@@ -1363,7 +2818,7 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
         Property [ <default> public $borderWidth ]
       }
 
-      - Methods [6] {
+      - Methods [10] {
         Method [ <internal:pggi, ctor> public method __construct ] {
 
           - Parameters [0] {
@@ -1402,6 +2857,34 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
 
           - Parameters [0] {
           }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
         }
       }
     }
@@ -1456,11 +2939,11 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
     Class [ <internal:pggi> class PGGI\GScrollWindow extends PGGI\GContainer ] {
 
       - Constants [5] {
-        Constant [ public float ALIGN_FILL ] { 0 }
-        Constant [ public float ALIGN_START ] { 1 }
-        Constant [ public float ALIGN_END ] { 2 }
-        Constant [ public float ALIGN_CENTER ] { 3 }
-        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
       }
 
       - Static properties [0] {
@@ -1491,7 +2974,7 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
         Property [ <default> public $borderWidth ]
       }
 
-      - Methods [6] {
+      - Methods [10] {
         Method [ <internal:pggi, ctor> public method __construct ] {
 
           - Parameters [0] {
@@ -1531,17 +3014,45 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
           - Parameters [0] {
           }
         }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
       }
     }
 
     Class [ <internal:pggi> class PGGI\GComboBox extends PGGI\GContainer ] {
 
       - Constants [5] {
-        Constant [ public float ALIGN_FILL ] { 0 }
-        Constant [ public float ALIGN_START ] { 1 }
-        Constant [ public float ALIGN_END ] { 2 }
-        Constant [ public float ALIGN_CENTER ] { 3 }
-        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
       }
 
       - Static properties [0] {
@@ -1573,7 +3084,7 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
         Property [ <default> public $active ]
       }
 
-      - Methods [6] {
+      - Methods [10] {
         Method [ <internal:pggi, ctor> public method __construct ] {
 
           - Parameters [0] {
@@ -1613,17 +3124,45 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
           - Parameters [0] {
           }
         }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
       }
     }
 
     Class [ <internal:pggi> class PGGI\GComboBoxText extends PGGI\GComboBox ] {
 
       - Constants [5] {
-        Constant [ public float ALIGN_FILL ] { 0 }
-        Constant [ public float ALIGN_START ] { 1 }
-        Constant [ public float ALIGN_END ] { 2 }
-        Constant [ public float ALIGN_CENTER ] { 3 }
-        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
       }
 
       - Static properties [0] {
@@ -1655,7 +3194,7 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
         Property [ <default> public $active ]
       }
 
-      - Methods [12] {
+      - Methods [16] {
         Method [ <internal:pggi, overwrites PGGI\GComboBox, ctor> public method __construct ] {
 
           - Parameters [0] {
@@ -1740,17 +3279,45 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
           - Parameters [0] {
           }
         }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
       }
     }
 
     Class [ <internal:pggi> class PGGI\GDialog extends PGGI\GWindow ] {
 
       - Constants [19] {
-        Constant [ public float ALIGN_FILL ] { 0 }
-        Constant [ public float ALIGN_START ] { 1 }
-        Constant [ public float ALIGN_END ] { 2 }
-        Constant [ public float ALIGN_CENTER ] { 3 }
-        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
         Constant [ public integer FLAG_MODAL ] { 1 }
         Constant [ public integer FLAG_DESTROY_WITH_PARENT ] { 2 }
         Constant [ public integer FLAG_USE_HEADER_BAR ] { 4 }
@@ -1806,7 +3373,7 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
         Property [ <default> public $acceptFocus ]
       }
 
-      - Methods [13] {
+      - Methods [18] {
         Method [ <internal:pggi, overwrites PGGI\GWindow, ctor> public method __construct ] {
 
           - Parameters [4] {
@@ -1863,6 +3430,13 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
           }
         }
 
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method getScreen ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gscreen_get_class_entry() ]
+        }
+
         Method [ <internal:pggi, inherits PGGI\GContainer> public method add ] {
 
           - Parameters [1] {
@@ -1896,17 +3470,45 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
           - Parameters [0] {
           }
         }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
       }
     }
 
     Class [ <internal:pggi> class PGGI\GAboutDialog extends PGGI\GDialog ] {
 
       - Constants [32] {
-        Constant [ public float ALIGN_FILL ] { 0 }
-        Constant [ public float ALIGN_START ] { 1 }
-        Constant [ public float ALIGN_END ] { 2 }
-        Constant [ public float ALIGN_CENTER ] { 3 }
-        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
         Constant [ public integer FLAG_MODAL ] { 1 }
         Constant [ public integer FLAG_DESTROY_WITH_PARENT ] { 2 }
         Constant [ public integer FLAG_USE_HEADER_BAR ] { 4 }
@@ -1986,7 +3588,7 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
         Property [ <default> public $logoIconName ]
       }
 
-      - Methods [13] {
+      - Methods [18] {
         Method [ <internal:pggi, overwrites PGGI\GDialog, ctor> public method __construct ] {
 
           - Parameters [0] {
@@ -2039,6 +3641,13 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
           }
         }
 
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method getScreen ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gscreen_get_class_entry() ]
+        }
+
         Method [ <internal:pggi, inherits PGGI\GContainer> public method add ] {
 
           - Parameters [1] {
@@ -2072,17 +3681,243 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
           - Parameters [0] {
           }
         }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\GMessageDialog extends PGGI\GDialog ] {
+
+      - Constants [30] {
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
+        Constant [ public integer FLAG_MODAL ] { 1 }
+        Constant [ public integer FLAG_DESTROY_WITH_PARENT ] { 2 }
+        Constant [ public integer FLAG_USE_HEADER_BAR ] { 4 }
+        Constant [ public integer RESPONSE_TYPE_NONE ] { -1 }
+        Constant [ public integer RESPONSE_TYPE_REJECT ] { -2 }
+        Constant [ public integer RESPONSE_TYPE_ACCEPT ] { -3 }
+        Constant [ public integer RESPONSE_TYPE_DELETE_EVENT ] { -4 }
+        Constant [ public integer RESPONSE_TYPE_OK ] { -5 }
+        Constant [ public integer RESPONSE_TYPE_CANCEL ] { -6 }
+        Constant [ public integer RESPONSE_TYPE_CLOSE ] { -7 }
+        Constant [ public integer RESPONSE_TYPE_YES ] { -8 }
+        Constant [ public integer RESPONSE_TYPE_NO ] { -9 }
+        Constant [ public integer RESPONSE_TYPE_APPLY ] { -10 }
+        Constant [ public integer RESPONSE_TYPE_HELP ] { -11 }
+        Constant [ public integer MESSAGE_INFO ] { 0 }
+        Constant [ public integer MESSAGE_WARNING ] { 1 }
+        Constant [ public integer MESSAGE_QUESTION ] { 2 }
+        Constant [ public integer MESSAGE_ERROR ] { 3 }
+        Constant [ public integer MESSAGE_OTHER ] { 4 }
+        Constant [ public integer BUTTONS_NONE ] { 0 }
+        Constant [ public integer BUTTONS_OK ] { 1 }
+        Constant [ public integer BUTTONS_CLOSE ] { 2 }
+        Constant [ public integer BUTTONS_CANCEL ] { 3 }
+        Constant [ public integer BUTTONS_YES_NO ] { 4 }
+        Constant [ public integer BUTTONS_OK_CANCEL ] { 5 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [30] {
+        Property [ <default> public $vAlign ]
+        Property [ <default> public $hAlign ]
+        Property [ <default> public $marginStart ]
+        Property [ <default> public $marginEnd ]
+        Property [ <default> public $marginTop ]
+        Property [ <default> public $marginBottom ]
+        Property [ <default> public $hExpand ]
+        Property [ <default> public $hExpandSet ]
+        Property [ <default> public $vExpand ]
+        Property [ <default> public $vExpandSet ]
+        Property [ <default> public $opacity ]
+        Property [ <default> public $visible ]
+        Property [ <default> public $noShowAll ]
+        Property [ <default> public $direction ]
+        Property [ <default> public $sensitive ]
+        Property [ <default> public $name ]
+        Property [ <default> public $canDefault ]
+        Property [ <default> public $canFocus ]
+        Property [ <default> public $borderWidth ]
+        Property [ <default> public $title ]
+        Property [ <default> public $focusVisible ]
+        Property [ <default> public $focusOnMap ]
+        Property [ <default> public $decorated ]
+        Property [ <default> public $deletable ]
+        Property [ <default> public $mnemonicsVisible ]
+        Property [ <default> public $resizable ]
+        Property [ <default> public $defaultHeight ]
+        Property [ <default> public $defaultWidth ]
+        Property [ <default> public $hideTitlebarWhenMaximized ]
+        Property [ <default> public $acceptFocus ]
+      }
+
+      - Methods [18] {
+        Method [ <internal:pggi, overwrites PGGI\GDialog, ctor> public method __construct ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GDialog> public method run ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method setDefaultSize ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> integer $x ]
+            Parameter #1 [ <required> integer $y ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method close ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method setKeepAbove ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> boolean $value ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method setKeepBelow ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> boolean $value ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method fullscreen ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method unfullscreen ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method getScreen ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gscreen_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GContainer> public method add ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> PGGI\GWidget $widget ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GContainer, prototype PGGI\GWidget> public method on ] {
+
+          - Parameters [3] {
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
+            Parameter #2 [ <optional> $param ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method show ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method hide ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method showAll ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
       }
     }
 
     Class [ <internal:pggi> class PGGI\GGrid extends PGGI\GBox ] {
 
       - Constants [5] {
-        Constant [ public float ALIGN_FILL ] { 0 }
-        Constant [ public float ALIGN_START ] { 1 }
-        Constant [ public float ALIGN_END ] { 2 }
-        Constant [ public float ALIGN_CENTER ] { 3 }
-        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
       }
 
       - Static properties [0] {
@@ -2121,7 +3956,7 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
         Property [ <default> public $rowSpacing ]
       }
 
-      - Methods [16] {
+      - Methods [20] {
         Method [ <internal:pggi, overwrites PGGI\GBox, ctor> public method __construct ] {
 
           - Parameters [0] {
@@ -2247,6 +4082,34 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
 
           - Parameters [0] {
           }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
         }
       }
     }
@@ -2634,10 +4497,17 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
       - Properties [0] {
       }
 
-      - Methods [9] {
+      - Methods [10] {
         Method [ <internal:pggi, ctor> private method __construct ] {
 
           - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method getValue ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> $column ]
           }
         }
 
@@ -2846,14 +4716,103 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
       }
     }
 
+    Class [ <internal:pggi> class PGGI\GTreeSelection ] {
+
+      - Constants [0] {
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [1] {
+        Property [ <default> public $mode ]
+      }
+
+      - Methods [10] {
+        Method [ <internal:pggi, ctor> private method __construct ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method on ] {
+
+          - Parameters [3] {
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
+            Parameter #2 [ <optional> $param ]
+          }
+        }
+
+        Method [ <internal:pggi> public method selectAll ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method unselectAll ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method iterIsSelected ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> PGGI\GTreeIter $iter ]
+          }
+          - Return [ boolean ]
+        }
+
+        Method [ <internal:pggi> public method selectIter ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> PGGI\GTreeIter $iter ]
+          }
+        }
+
+        Method [ <internal:pggi> public method unselectIter ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> PGGI\GTreeIter $iter ]
+          }
+        }
+
+        Method [ <internal:pggi> public method countSelectedRows ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi> public method getSelected ] {
+
+          - Parameters [0] {
+          }
+          - Return [ "PGGI\\GTreeIter" or NULL ]
+        }
+
+        Method [ <internal:pggi> public method forEach ] {
+
+          - Parameters [2] {
+            Parameter #0 [ <required> callable $callback ]
+            Parameter #1 [ <optional> $param ]
+          }
+        }
+      }
+    }
+
     Class [ <internal:pggi> class PGGI\GTreeView extends PGGI\GContainer ] {
 
       - Constants [5] {
-        Constant [ public float ALIGN_FILL ] { 0 }
-        Constant [ public float ALIGN_START ] { 1 }
-        Constant [ public float ALIGN_END ] { 2 }
-        Constant [ public float ALIGN_CENTER ] { 3 }
-        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
       }
 
       - Static properties [0] {
@@ -2900,7 +4859,7 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
         Property [ <default> public $tooltipColumn ]
       }
 
-      - Methods [10] {
+      - Methods [15] {
         Method [ <internal:pggi, ctor> public method __construct ] {
 
           - Parameters [0] {
@@ -2942,6 +4901,13 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
           }
         }
 
+        Method [ <internal:pggi> public method getSelection ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gtree_selection_get_class_entry() ]
+        }
+
         Method [ <internal:pggi, inherits PGGI\GContainer> public method add ] {
 
           - Parameters [1] {
@@ -2966,17 +4932,45 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
           - Parameters [0] {
           }
         }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
       }
     }
 
     Class [ <internal:pggi> class PGGI\GFileChooserDialog extends PGGI\GDialog ] {
 
       - Constants [23] {
-        Constant [ public float ALIGN_FILL ] { 0 }
-        Constant [ public float ALIGN_START ] { 1 }
-        Constant [ public float ALIGN_END ] { 2 }
-        Constant [ public float ALIGN_CENTER ] { 3 }
-        Constant [ public float ALIGN_BASELINE ] { 4 }
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
         Constant [ public integer FLAG_MODAL ] { 1 }
         Constant [ public integer FLAG_DESTROY_WITH_PARENT ] { 2 }
         Constant [ public integer FLAG_USE_HEADER_BAR ] { 4 }
@@ -3003,7 +4997,7 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
       - Static methods [0] {
       }
 
-      - Properties [41] {
+      - Properties [40] {
         Property [ <default> public $vAlign ]
         Property [ <default> public $hAlign ]
         Property [ <default> public $marginStart ]
@@ -3040,14 +5034,13 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
         Property [ <default> public $localOnly ]
         Property [ <default> public $selectMultiple ]
         Property [ <default> public $showHidden ]
-        Property [ <default> public $currentName ]
         Property [ <default> public $fileName ]
         Property [ <default> public $currentFolder ]
         Property [ <default> public $uri ]
         Property [ <default> public $currentFolderURI ]
       }
 
-      - Methods [19] {
+      - Methods [24] {
         Method [ <internal:pggi, overwrites PGGI\GDialog, ctor> public method __construct ] {
 
           - Parameters [7] {
@@ -3147,6 +5140,13 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
           }
         }
 
+        Method [ <internal:pggi, inherits PGGI\GWindow> public method getScreen ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gscreen_get_class_entry() ]
+        }
+
         Method [ <internal:pggi, inherits PGGI\GContainer> public method add ] {
 
           - Parameters [1] {
@@ -3179,6 +5179,429 @@ Extension [ <persistent> extension #15 pggi version 0.1.0 ] {
 
           - Parameters [0] {
           }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\GEntryBuffer ] {
+
+      - Constants [0] {
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [2] {
+        Property [ <default> public $text ]
+        Property [ <default> public $maxLength ]
+      }
+
+      - Methods [3] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> string or NULL $string ]
+          }
+        }
+
+        Method [ <internal:pggi> public method getLength ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi> public method getBytes ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\GEntry extends PGGI\GWidget ] {
+
+      - Constants [5] {
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [32] {
+        Property [ <default> public $vAlign ]
+        Property [ <default> public $hAlign ]
+        Property [ <default> public $marginStart ]
+        Property [ <default> public $marginEnd ]
+        Property [ <default> public $marginTop ]
+        Property [ <default> public $marginBottom ]
+        Property [ <default> public $hExpand ]
+        Property [ <default> public $hExpandSet ]
+        Property [ <default> public $vExpand ]
+        Property [ <default> public $vExpandSet ]
+        Property [ <default> public $opacity ]
+        Property [ <default> public $visible ]
+        Property [ <default> public $noShowAll ]
+        Property [ <default> public $direction ]
+        Property [ <default> public $sensitive ]
+        Property [ <default> public $name ]
+        Property [ <default> public $canDefault ]
+        Property [ <default> public $canFocus ]
+        Property [ <default> public $buffer ]
+        Property [ <default> public $text ]
+        Property [ <default> public $visibility ]
+        Property [ <default> public $invisibleChar ]
+        Property [ <default> public $maxLength ]
+        Property [ <default> public $activatesDefault ]
+        Property [ <default> public $hasFrame ]
+        Property [ <default> public $widthChars ]
+        Property [ <default> public $maxWidthChars ]
+        Property [ <default> public $aligment ]
+        Property [ <default> public $placeholderText ]
+        Property [ <default> public $overwriteMode ]
+        Property [ <default> public $progressFraction ]
+        Property [ <default> public $progressPulseStep ]
+      }
+
+      - Methods [12] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
+
+          - Parameters [1] {
+            Parameter #0 [ <required> PGGI\GEntryBuffer $widget ]
+          }
+        }
+
+        Method [ <internal:pggi> public method getTextLength ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi> public method unsetInvisibleChar ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method progressPulse ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, overwrites PGGI\GWidget, prototype PGGI\GWidget> public method on ] {
+
+          - Parameters [3] {
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
+            Parameter #2 [ <optional> $param ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method show ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method hide ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method showAll ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\GDrawingArea extends PGGI\GWidget ] {
+
+      - Constants [5] {
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [18] {
+        Property [ <default> public $vAlign ]
+        Property [ <default> public $hAlign ]
+        Property [ <default> public $marginStart ]
+        Property [ <default> public $marginEnd ]
+        Property [ <default> public $marginTop ]
+        Property [ <default> public $marginBottom ]
+        Property [ <default> public $hExpand ]
+        Property [ <default> public $hExpandSet ]
+        Property [ <default> public $vExpand ]
+        Property [ <default> public $vExpandSet ]
+        Property [ <default> public $opacity ]
+        Property [ <default> public $visible ]
+        Property [ <default> public $noShowAll ]
+        Property [ <default> public $direction ]
+        Property [ <default> public $sensitive ]
+        Property [ <default> public $name ]
+        Property [ <default> public $canDefault ]
+        Property [ <default> public $canFocus ]
+      }
+
+      - Methods [9] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method on ] {
+
+          - Parameters [3] {
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
+            Parameter #2 [ <optional> $param ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method show ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method hide ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method showAll ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+      }
+    }
+
+    Class [ <internal:pggi> class PGGI\GSpinner extends PGGI\GWidget ] {
+
+      - Constants [5] {
+        Constant [ public integer ALIGN_FILL ] { 0 }
+        Constant [ public integer ALIGN_START ] { 1 }
+        Constant [ public integer ALIGN_END ] { 2 }
+        Constant [ public integer ALIGN_CENTER ] { 3 }
+        Constant [ public integer ALIGN_BASELINE ] { 4 }
+      }
+
+      - Static properties [0] {
+      }
+
+      - Static methods [0] {
+      }
+
+      - Properties [18] {
+        Property [ <default> public $vAlign ]
+        Property [ <default> public $hAlign ]
+        Property [ <default> public $marginStart ]
+        Property [ <default> public $marginEnd ]
+        Property [ <default> public $marginTop ]
+        Property [ <default> public $marginBottom ]
+        Property [ <default> public $hExpand ]
+        Property [ <default> public $hExpandSet ]
+        Property [ <default> public $vExpand ]
+        Property [ <default> public $vExpandSet ]
+        Property [ <default> public $opacity ]
+        Property [ <default> public $visible ]
+        Property [ <default> public $noShowAll ]
+        Property [ <default> public $direction ]
+        Property [ <default> public $sensitive ]
+        Property [ <default> public $name ]
+        Property [ <default> public $canDefault ]
+        Property [ <default> public $canFocus ]
+      }
+
+      - Methods [12] {
+        Method [ <internal:pggi, ctor> public method __construct ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method start ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method stop ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi> public method isActive ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method on ] {
+
+          - Parameters [3] {
+            Parameter #0 [ <required> integer $type ]
+            Parameter #1 [ <required> callable $callback ]
+            Parameter #2 [ <optional> $param ]
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method show ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method hide ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method showAll ] {
+
+          - Parameters [0] {
+          }
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getStyleContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ gstyle_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getPangoContext ] {
+
+          - Parameters [0] {
+          }
+          - Return [ pp_context_get_class_entry() ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedWidth ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
+        }
+
+        Method [ <internal:pggi, inherits PGGI\GWidget> public method getAllocatedHeight ] {
+
+          - Parameters [0] {
+          }
+          - Return [ integer ]
         }
       }
     }

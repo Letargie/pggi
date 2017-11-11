@@ -45,7 +45,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_gstyle_context_add_provider, 0, 0, 2)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_gstyle_context_render_background, 0, 0, 5)
-	ZEND_ARG_OBJ_INFO(0, context, Cairo\\Context, 0)
+	ZEND_ARG_OBJ_INFO(0, context, PGGI\\Cairo\\Context, 0)
 	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
 	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
 	ZEND_ARG_TYPE_INFO(0, width, IS_DOUBLE, 0)

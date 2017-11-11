@@ -1,8 +1,16 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] 0.2.0
+## [Unreleased] 0.3.0
+
+## 0.2.0
 ### Added
+	-css handling
+	-key event handling
+	-Pango
+	-Cairo
+	-new widgets
+	-new examples
 	-new classes
 		- GTreeSelection
 		- GEntry
@@ -13,6 +21,16 @@ All notable changes to this project will be documented in this file.
 		- GCssProvider
 		- GStyleContext
 		- GMessageDialog
+		- GSpinner
+		- Pango\Context
+		- Pango\FontDescription
+		- Pango\Layout
+		- Cairo\Context
+		- Cairo\Surface
+		- Cairo\ImageSurface
+		- Cairo\Pattern
+		- Cairo\PatternSolid
+		- Cairo\PatternSurface
 ###Bugfixed
 	- Fixing -Wall warnings
 	- Multiple bug fix for properties usage
@@ -24,6 +42,7 @@ All notable changes to this project will be documented in this file.
 		- GTreeViewColumn
 	- wrong parameter in GFileChooserDialog
 	- wrong signal used in GTreeViewColumn
+	- probably an handful of other bugs
 ## [0.1.0]
 * Tue September 26 2017 Valentin Collet <valentin@famillecollet.com> 0.1.0
 ### Added

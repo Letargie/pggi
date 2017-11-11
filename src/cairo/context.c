@@ -196,6 +196,28 @@ CONTEXT_METHOD(stroke){
 	RETURN_ZVAL(self, 1, 0);
 }
 
+CONTEXT_METHOD(save){
+	ze_context_object * ze_obj;
+	zval * self = getThis();
+	if(pggi_parse_parameters_none_throw() == FAILURE)
+		return;
+	ze_obj = Z_CONTEXT_P(self);
+	cairo_save(ze_obj->context_ptr->intern);
+	pc_exception(cairo_status(ze_obj->context_ptr->intern));
+	RETURN_ZVAL(self, 1, 0);
+}
+
+CONTEXT_METHOD(restore){
+	ze_context_object * ze_obj;
+	zval * self = getThis();
+	if(pggi_parse_parameters_none_throw() == FAILURE)
+		return;
+	ze_obj = Z_CONTEXT_P(self);
+	cairo_restore(ze_obj->context_ptr->intern);
+	pc_exception(cairo_status(ze_obj->context_ptr->intern));
+	RETURN_ZVAL(self, 1, 0);
+}
+
 CONTEXT_METHOD(strokePreserve){
 	ze_context_object * ze_obj;
 	zval * self = getThis();
@@ -386,10 +408,11 @@ CONTEXT_METHOD(setSource){
 	ze_obj = Z_CONTEXT_P(self);
 	double r, g, b, a=-1, x, y;
 	switch(ZEND_NUM_ARGS()){
-		case 1 :/*
-			if(zend_parse_parameters(ZEND_NUM_ARGS(), "Odd", &color, pattern_get_class_entry(), &x, &y) != FAILURE){
-				
-			}else */
+		case 1 :
+			if(zend_parse_parameters(ZEND_NUM_ARGS(), "O", &obj, pc_pattern_get_class_entry()) != FAILURE){
+				ze_pattern_object * c = Z_PATTERN_P(obj);
+				cairo_set_source(ze_obj->context_ptr->intern, c->pattern_ptr->intern);
+			}else
 			if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "O", &obj, rgba_get_class_entry()) != FAILURE){
 				ze_rgba_object * c = Z_RGBA_P(obj);
 				gdk_cairo_set_source_rgba(ze_obj->context_ptr->intern, c->ptr->color);
@@ -413,31 +436,94 @@ CONTEXT_METHOD(setSource){
 	}
 	RETURN_ZVAL(self, 1, 0);
 }
-/*
-CONTEXT_METHOD(showText){
+
+CONTEXT_METHOD(setDash){
+	double offset = 0.0;
+	long num_dashes = 0;
+	double *dashes_array;
+	zval * dashes = NULL;
+	int i = 0;
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "a|d", &dashes, &offset) == FAILURE)
+		return;
 	zval * self = getThis();
 	ze_context_object * ze_obj;
-	char * data;
-	size_t data_len;
-	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "s", &data, &data_len) == FAILURE)
-		return;
 	ze_obj = Z_CONTEXT_P(self);
-	cairo_show_text(ze_obj->context_ptr->intern, data);
+	num_dashes = zend_hash_num_elements(Z_ARRVAL_P(dashes));
+	dashes_array = emalloc(num_dashes * sizeof(double));
+	zval * zv;
+	ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(dashes), zv){
+		if(Z_TYPE_P(zv) != IS_DOUBLE){
+			convert_to_double(zv);
+		}
+		dashes_array[i++] = Z_DVAL_P(zv);
+	} ZEND_HASH_FOREACH_END();
+	cairo_set_dash(ze_obj->context_ptr->intern, dashes_array, i, offset);
+	efree(dashes_array);
 	pc_exception(cairo_status(ze_obj->context_ptr->intern));
 	RETURN_ZVAL(self, 1, 0);
 }
 
-CONTEXT_METHOD(setFontSize){
+CONTEXT_METHOD(getDash){
+	zval sub_array;
+	double *dashes = NULL;
+	double offset = 0;
+	int num_dashes, i;
+	if(pggi_parse_parameters_none_throw() == FAILURE)
+		return;
 	zval * self = getThis();
 	ze_context_object * ze_obj;
-	double size;
-	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "d", &size) == FAILURE)
+	ze_obj = Z_CONTEXT_P(self);
+
+	num_dashes = cairo_get_dash_count(ze_obj->context_ptr->intern);
+	dashes = emalloc(num_dashes * sizeof(double));
+
+	cairo_get_dash(ze_obj->context_ptr->intern, dashes, &offset);
+
+	array_init(&sub_array);
+	for(i = 0; i < num_dashes; i++){
+		add_next_index_double(&sub_array, dashes[i]);
+	}
+	efree(dashes);
+	
+	/* Put dashes and offset into return */
+	array_init(return_value);
+	add_assoc_zval(return_value, "dashes", &sub_array);
+	add_assoc_double(return_value, "offset", offset);
+}
+
+CONTEXT_METHOD(showLayout){
+	zval * self = getThis();
+	zval * layout;
+	ze_context_object * ze_obj;
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "O", &layout, pp_layout_get_class_entry()) == FAILURE)
 		return;
 	ze_obj = Z_CONTEXT_P(self);
-	cairo_set_font_size(ze_obj->context_ptr->intern, size);
-	pc_exception(cairo_status(ze_obj->context_ptr->intern));
-	RETURN_ZVAL(self, 1, 0);
-}*/
+	ze_layout_object * l = Z_LAYOUT_P(layout);
+	pango_cairo_show_layout(ze_obj->context_ptr->intern, l->layout_ptr->intern);
+}
+
+CONTEXT_METHOD(updateLayout){
+	zval * self = getThis();
+	zval * layout;
+	ze_context_object * ze_obj;
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "O", &layout, pp_layout_get_class_entry()) == FAILURE)
+		return;
+	ze_obj = Z_CONTEXT_P(self);
+	ze_layout_object * l = Z_LAYOUT_P(layout);
+	pango_cairo_update_layout(ze_obj->context_ptr->intern, l->layout_ptr->intern);
+}
+
+
+CONTEXT_METHOD(updateContext){
+	zval * self = getThis();
+	zval * layout;
+	ze_context_object * ze_obj;
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "O", &layout, pp_context_get_class_entry()) == FAILURE)
+		return;
+	ze_obj = Z_CONTEXT_P(self);
+	ze_pp_context_object * c = Z_PP_CONTEXT_P(layout);
+	pango_cairo_update_context(ze_obj->context_ptr->intern, c->context_ptr->intern);
+}
 
 
 static const zend_function_entry pc_context_class_functions[] = {
@@ -451,6 +537,8 @@ static const zend_function_entry pc_context_class_functions[] = {
 	PHP_ME(Context, closePath     , arginfo_pggi_void                 , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, stroke        , arginfo_pggi_void                 , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, strokePreserve, arginfo_pggi_void                 , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, save          , arginfo_pggi_void                 , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, restore       , arginfo_pggi_void                 , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, arc           , arginfo_pc_context_arc            , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, arcNegative   , arginfo_pc_context_arc            , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, curveTo       , arginfo_pc_context_curved_to      , ZEND_ACC_PUBLIC)
@@ -466,6 +554,11 @@ static const zend_function_entry pc_context_class_functions[] = {
 	PHP_ME(Context, setColor      , arginfo_pc_context_set_color      , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, setSource     , NULL                              , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, setSourceRGBA , arginfo_pc_context_set_source_rgba, ZEND_ACC_PUBLIC)
+	PHP_ME(Context, setDash       , arginfo_pc_context_set_dash       , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, getDash       , arginfo_pggi_void                 , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, updateContext , arginfo_pc_context_update_context , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, updateLayout  , arginfo_pc_context_update_layout  , ZEND_ACC_PUBLIC)
+	PHP_ME(Context, showLayout    , arginfo_pc_context_show_layout    , ZEND_ACC_PUBLIC)
 	PHP_ME(Context, __construct   , arginfo_pc_context_construct      , ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
 	PHP_FE_END
 };

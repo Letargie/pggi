@@ -218,13 +218,23 @@ PHP_MINIT_FUNCTION(pggi){
 
 	REGISTER_CONST_LONG("PGGI\\SIGNAL_GTREE_SELECTION_CHANGED"    , gsignal_gtree_selection_changed    );
 
+
+	REGISTER_CONST_LONG("PGGI\\Pango\\SCALE"                      , PANGO_SCALE                        );
 	
 	pc_exception_init        (module_number);
-	pc_context_init          (module_number);
 	pc_surface_init          (module_number);
 	pc_image_surface_init    (module_number);
 
+	pc_pattern_init          (module_number);
+	pc_pattern_solid_init    (module_number);
+	pc_pattern_surface_init  (module_number);
+	pc_context_init          (module_number);
 
+	pp_exception_init        (module_number);
+	font_description_init    (module_number);
+	pp_layout_init           (module_number);
+	pp_context_init          (module_number);
+	
 	gexception_init          (module_number);
 	gevent_init              (module_number);
 	gevent_key_init          (module_number);
@@ -284,6 +294,7 @@ PHP_MINIT_FUNCTION(pggi){
 	gentry_init              (module_number);
 
 	gdrawing_area_init       (module_number);
+	gspinner_init            (module_number);
 
 
 	return SUCCESS;

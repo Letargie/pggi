@@ -180,6 +180,11 @@ enum{
 #define pggi_parse_method_parameters_none_throw(                                                                           this_ptr)     \
     (EXPECTED(ZEND_NUM_ARGS() == 0) ? SUCCESS : zend_parse_method_parameters_ex(ZEND_PARSE_PARAMS_THROW , ZEND_NUM_ARGS(), this_ptr,""))
 
+#define PREFIX_METHOD(ns, classname, name) \
+	ZEND_NAMED_FUNCTION(ZEND_MN(ns##_##classname##_##name))
+
+#define PREFIX_ME(ns, classname, name, arg_info, flags) \
+	ZEND_NAMED_ME(name, ZEND_MN(ns##_##classname##_##name), arg_info, flags)
 
 /*****************/
 /* Utils defines */
@@ -190,6 +195,9 @@ zend_class_entry ce;
 
 #define DECLARE_CLASS_PROPERTY(ce, name)                                    \
 	zend_declare_property_null(ce, name, sizeof(name)-1, ZEND_ACC_PUBLIC)
+
+#define DECLARE_PRIVATE_CLASS_PROPERTY(ce, name)                            \
+	zend_declare_property_null(ce, name, sizeof(name)-1, ZEND_ACC_PRIVATE)
 
 #define DECLARE_CLASS_CONSTANT(class, name, value) \
 zend_declare_class_constant_long(class, name, sizeof(name)-1, value);

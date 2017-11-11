@@ -12,7 +12,7 @@
 #ifndef __PGGI_DEF__
 #define __PGGI_DEF__
 
-#define PGGI_VERSION "0.2.0-dev"
+#define PGGI_VERSION "0.2.0"
 #define PGGI_EXTNAME "pggi"
 
 #include "php.h"
@@ -20,8 +20,6 @@
 #include "ext/standard/info.h"
 #include "zend.h"
 #include "zend_API.h"
-
-#include "cairo/cairo.h"
 
 #include "gdk/rgba.h"
 
@@ -66,10 +64,20 @@
 #include "gdk/gscreen.h"
 #include "windows/gmessagedialog.h"
 #include "display/gdrawingarea.h"
+#include "display/gspinner.h"
 #include "cairo/exception.h"
+#include "cairo/pattern.h"
+#include "cairo/pattern_solid.h"
+#include "cairo/pattern_surface.h"
 #include "cairo/context.h"
 #include "cairo/surface.h"
 #include "cairo/imagesurface.h"
+
+#include "pango/context.h"
+#include "pango/exception.h"
+#include "pango/fontdescription.h"
+#include "pango/layout.h"
+
 
 #define pphext_pggi_ptr &pggi_module_entry
 

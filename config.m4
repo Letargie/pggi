@@ -24,10 +24,13 @@ if test "$PHP_PGGI" != "no"; then
 		src/abstracts/gmenushell.c         \
 		src/abstracts/gwidget.c            \
 		src/buttons/gbutton.c              \
-		src/cairo/exception.c              \
 		src/cairo/context.c                \
-		src/cairo/surface.c                \
+		src/cairo/exception.c              \
 		src/cairo/imagesurface.c           \
+		src/cairo/pattern.c                \
+		src/cairo/pattern_solid.c          \
+		src/cairo/pattern_surface.c        \
+		src/cairo/surface.c                \
 		src/containers/gbox.c              \
 		src/containers/gbuttonbox.c        \
 		src/containers/gcombobox.c         \
@@ -35,6 +38,7 @@ if test "$PHP_PGGI" != "no"; then
 		src/display/gdrawingarea.c         \
 		src/display/gimage.c               \
 		src/display/glabel.c               \
+		src/display/gspinner.c             \
 		src/entries/gentry.c               \
 		src/entries/gentrybuffer.c         \
 		src/exceptions/gexception.c        \
@@ -45,6 +49,10 @@ if test "$PHP_PGGI" != "no"; then
 		src/menus/gmenubar.c               \
 		src/menus/gmenu.c                  \
 		src/menus/gmenuitem.c              \
+		src/pango/context.c                \
+		src/pango/exception.c              \
+		src/pango/fontdescription.c        \
+		src/pango/layout.c                 \
 		src/selectors/gaboutdialog.c       \
 		src/selectors/gfilechooserdialog.c \
 		src/text/gtextbuffer.c             \
@@ -64,22 +72,23 @@ if test "$PHP_PGGI" != "no"; then
 		src/windows/gmessagedialog.c       \
 		src/windows/gscrollwindow.c        \
 		, $ext_shared)
-	PHP_ADD_BUILD_DIR($ext_builddir/src)
+	PHP_ADD_BUILD_DIR($ext_builddir/src             )
 	PHP_ADD_BUILD_DIR($ext_builddir/src/applications)
-	PHP_ADD_BUILD_DIR($ext_builddir/src/abstracts)
-	PHP_ADD_BUILD_DIR($ext_builddir/src/buttons)
-	PHP_ADD_BUILD_DIR($ext_builddir/src/cairo)
-	PHP_ADD_BUILD_DIR($ext_builddir/src/containers)
-	PHP_ADD_BUILD_DIR($ext_builddir/src/display)
-	PHP_ADD_BUILD_DIR($ext_builddir/src/entries)
-	PHP_ADD_BUILD_DIR($ext_builddir/src/exceptions)
-	PHP_ADD_BUILD_DIR($ext_builddir/src/gdk)
-	PHP_ADD_BUILD_DIR($ext_builddir/src/menus)
-	PHP_ADD_BUILD_DIR($ext_builddir/src/selectors)
-	PHP_ADD_BUILD_DIR($ext_builddir/src/text)
-	PHP_ADD_BUILD_DIR($ext_builddir/src/theming)
-	PHP_ADD_BUILD_DIR($ext_builddir/src/tree)
-	PHP_ADD_BUILD_DIR($ext_builddir/src/windows)
+	PHP_ADD_BUILD_DIR($ext_builddir/src/abstracts   )
+	PHP_ADD_BUILD_DIR($ext_builddir/src/buttons     )
+	PHP_ADD_BUILD_DIR($ext_builddir/src/cairo       )
+	PHP_ADD_BUILD_DIR($ext_builddir/src/containers  )
+	PHP_ADD_BUILD_DIR($ext_builddir/src/display     )
+	PHP_ADD_BUILD_DIR($ext_builddir/src/entries     )
+	PHP_ADD_BUILD_DIR($ext_builddir/src/exceptions  )
+	PHP_ADD_BUILD_DIR($ext_builddir/src/gdk         )
+	PHP_ADD_BUILD_DIR($ext_builddir/src/menus       )
+	PHP_ADD_BUILD_DIR($ext_builddir/src/pango       )
+	PHP_ADD_BUILD_DIR($ext_builddir/src/selectors   )
+	PHP_ADD_BUILD_DIR($ext_builddir/src/text        )
+	PHP_ADD_BUILD_DIR($ext_builddir/src/theming     )
+	PHP_ADD_BUILD_DIR($ext_builddir/src/tree        )
+	PHP_ADD_BUILD_DIR($ext_builddir/src/windows     )
 	PHP_SUBST(PGGI_SHARED_LIBADD)
 fi
 

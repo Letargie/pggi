@@ -22,6 +22,7 @@
 #include "../commons/hub.h"
 #include "../theming/gstylecontext.h"
 #include "../cairo/context.h"
+#include "../pango/context.h"
 
 /*********************************/
 /* GWidget Intern Data Structure */
@@ -39,6 +40,9 @@ typedef struct{
 } ze_gwidget_object;
 
 PGGI_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_gwidget_get_style_context, 0, 0, gstyle_context_get_class_entry(), 0)
+ZEND_END_ARG_INFO()
+
+PGGI_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_gwidget_get_pango_context, 0, 0, pp_context_get_class_entry(), 0)
 ZEND_END_ARG_INFO()
 
 

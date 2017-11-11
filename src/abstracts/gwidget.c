@@ -258,12 +258,29 @@ GWIDGET_METHOD(getAllocatedHeight){
 	RETURN_LONG(gtk_widget_get_allocated_height(ze_obj->widget_ptr->intern));
 }
 
+
+
+GWIDGET_METHOD(getPangoContext){
+	ze_gwidget_object *ze_obj = NULL;
+	zval * self = getThis();
+	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+		return ;
+	ze_obj = Z_GWIDGET_P(self);
+	PangoContext * context = gtk_widget_get_pango_context(ze_obj->widget_ptr->intern);
+	zend_object * obj = pp_context_object_new(pp_context_get_class_entry());
+	ze_pp_context_object * tmp = php_pp_context_fetch_object(obj);
+	tmp->context_ptr = pp_context_new();
+	tmp->context_ptr->intern = context;
+	RETURN_OBJ(obj);
+}
+
 static const zend_function_entry gwidget_class_functions[] = {
 	PHP_ME(GWidget, on                , arginfo_pggi_on                  , ZEND_ACC_PUBLIC)
 	PHP_ME(GWidget, show              , arginfo_pggi_void                , ZEND_ACC_PUBLIC)
 	PHP_ME(GWidget, hide              , arginfo_pggi_void                , ZEND_ACC_PUBLIC)
 	PHP_ME(GWidget, showAll           , arginfo_pggi_void                , ZEND_ACC_PUBLIC)
 	PHP_ME(GWidget, getStyleContext   , arginfo_gwidget_get_style_context, ZEND_ACC_PUBLIC)
+	PHP_ME(GWidget, getPangoContext   , arginfo_gwidget_get_pango_context, ZEND_ACC_PUBLIC)
 	PHP_ME(GWidget, getAllocatedWidth , arginfo_pggi_get_long            , ZEND_ACC_PUBLIC)
 	PHP_ME(GWidget, getAllocatedHeight, arginfo_pggi_get_long            , ZEND_ACC_PUBLIC)
 	PHP_FE_END

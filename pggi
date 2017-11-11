@@ -1,5 +1,9 @@
 #!/bin/sh
-PATH=$(dirname $0)
-exec /usr/bin/php -d extension=$PATH/modules/pggi.so -d phar.readonly=0 "$@"
-
-
+PTH=$(dirname $0)
+PHP=$(which php)
+if [ -x "$PHP" ]; then
+  exec $PHP -d extension=$PTH/modules/pggi.so -d phar.readonly=0 "$@"
+else
+  echo PHP not found
+  exit 1
+fi
