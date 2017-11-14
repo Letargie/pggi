@@ -77,7 +77,7 @@ static inline ze_gtree_selection_object *php_gtree_selection_fetch_object(zend_o
 	return (ze_gtree_selection_object *)((char*)(obj) - XtOffsetOf(ze_gtree_selection_object, std));
 }
 
-inline zend_object *php_gtree_selection_reverse_object(ze_gtree_selection_object *obj) {
+static inline zend_object *php_gtree_selection_reverse_object(ze_gtree_selection_object *obj) {
 	return (zend_object *)((char*)(obj) + sizeof(gtree_selection_ptr));
 }
 

@@ -74,7 +74,7 @@ static inline ze_font_description_object *php_font_description_fetch_object(zend
 	return (ze_font_description_object *)((char*)(obj) - XtOffsetOf(ze_font_description_object, std));
 }
 
-inline zend_object *php_font_description_reverse_object(ze_font_description_object *obj) {
+static inline zend_object *php_font_description_reverse_object(ze_font_description_object *obj) {
 	return (zend_object *)((char*)(obj) + sizeof(font_description_ptr));
 }
 

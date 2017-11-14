@@ -65,7 +65,7 @@ static inline ze_surface_object *php_surface_fetch_object(zend_object *obj) {
 	return (ze_surface_object *)((char*)(obj) - XtOffsetOf(ze_surface_object, std));
 }
 
-inline zend_object *php_surface_reverse_object(ze_surface_object *obj) {
+static inline zend_object *php_surface_reverse_object(ze_surface_object *obj) {
 	return (zend_object *)((char*)(obj) + sizeof(pc_surface_ptr));
 }
 

@@ -33,7 +33,7 @@ void ggrid_add_data(gwidget_ptr intern, GtkWidget * address, zval * data){
 	zval * add_folder = zend_hash_index_find(Z_ARRVAL_P(&intern->data), GWIDGET_DATA_INDEX_GGRID);
 	if(add_folder){
 		zend_hash_index_add(Z_ARRVAL_P(add_folder), (long) address, data);
-		zval_addref_p(data);
+		Z_TRY_ADDREF_P(data);
 	}else{
 		zend_throw_exception_ex(pggi_exception_get(), 0, "Problem when adding data, should not happened");
 	}
@@ -52,9 +52,9 @@ PHP_METHOD(GGrid, __construct){
 	zval * narray_c = ecalloc(1,sizeof(zval));
 	array_init(narray_c);
 	zend_hash_index_add(Z_ARRVAL_P(&widget->widget_ptr->data), GWIDGET_DATA_INDEX_GCONTAINER, narray_c);
-	zval_addref_p(narray_c);
+	Z_TRY_ADDREF_P(narray_c);
 	zend_hash_index_add(Z_ARRVAL_P(&widget->widget_ptr->data), GWIDGET_DATA_INDEX_GGRID, narray_g);
-	zval_addref_p(narray_g);
+	Z_TRY_ADDREF_P(narray_g);
 	g_signal_connect(widget->widget_ptr->intern, "destroy", G_CALLBACK (widget_destructed), widget);
 }
 

@@ -151,10 +151,10 @@ void gwidget_adding_function(long val, char * name, GCallback f, ze_gwidget_obje
 	zval * data_to_insert = ecalloc(1,sizeof(zval));
 	array_init(data_to_insert);
 	zend_hash_index_add(Z_ARRVAL_P(data_to_insert), INDEX_ON_FUNCTION_NAME, function);
-	zval_addref_p(function);
+	Z_TRY_ADDREF_P(function);
 	if(param){
 		zend_hash_index_add(Z_ARRVAL_P(data_to_insert), INDEX_ON_FUNCTION_PARAM, param);
-		zval_addref_p(param);
+		Z_TRY_ADDREF_P(param);
 	}
 	if(data == NULL){
 		narray = ecalloc(1,sizeof(zval));

@@ -82,7 +82,7 @@ static inline ze_layout_object *php_layout_fetch_object(zend_object *obj) {
 	return (ze_layout_object *)((char*)(obj) - XtOffsetOf(ze_layout_object, std));
 }
 
-inline zend_object *php_layout_reverse_object(ze_layout_object *obj) {
+static inline zend_object *php_layout_reverse_object(ze_layout_object *obj) {
 	return (zend_object *)((char*)(obj) + sizeof(pp_layout_ptr));
 }
 

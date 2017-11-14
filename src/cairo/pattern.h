@@ -69,7 +69,7 @@ static inline ze_pattern_object *php_pattern_fetch_object(zend_object *obj) {
 	return (ze_pattern_object *)((char*)(obj) - XtOffsetOf(ze_pattern_object, std));
 }
 
-inline zend_object *php_pattern_reverse_object(ze_pattern_object *obj) {
+static inline zend_object *php_pattern_reverse_object(ze_pattern_object *obj) {
 	return (zend_object *)((char*)(obj) + sizeof(pc_pattern_ptr));
 }
 

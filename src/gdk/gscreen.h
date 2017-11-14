@@ -61,7 +61,7 @@ static inline ze_gscreen_object *php_gscreen_fetch_object(zend_object *obj) {
 	return (ze_gscreen_object *)((char*)(obj) - XtOffsetOf(ze_gscreen_object, std));
 }
 
-inline zend_object *php_gscreen_reverse_object(ze_gscreen_object *obj) {
+static inline zend_object *php_gscreen_reverse_object(ze_gscreen_object *obj) {
 	return (zend_object *)((char*)(obj) + sizeof(gscreen_ptr));
 }
 

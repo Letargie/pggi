@@ -62,7 +62,7 @@ static inline ze_gcell_renderer_object *php_gcell_renderer_fetch_object(zend_obj
 	return (ze_gcell_renderer_object *)((char*)(obj) - XtOffsetOf(ze_gcell_renderer_object, std));
 }
 
-inline zend_object *php_gcell_renderer_reverse_object(ze_gcell_renderer_object *obj) {
+static inline zend_object *php_gcell_renderer_reverse_object(ze_gcell_renderer_object *obj) {
 	return (zend_object *)((char*)(obj) + sizeof(gcell_renderer_ptr));
 }
 

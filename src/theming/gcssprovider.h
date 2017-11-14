@@ -59,7 +59,7 @@ static inline ze_gcss_provider_object *php_gcss_provider_fetch_object(zend_objec
 	return (ze_gcss_provider_object *)((char*)(obj) - XtOffsetOf(ze_gcss_provider_object, std));
 }
 
-inline zend_object *php_gcss_provider_reverse_object(ze_gcss_provider_object *obj) {
+static inline zend_object *php_gcss_provider_reverse_object(ze_gcss_provider_object *obj) {
 	return (zend_object *)((char*)(obj) + sizeof(gcss_provider_ptr));
 }
 

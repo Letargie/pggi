@@ -77,7 +77,7 @@ static inline ze_gtree_view_column_object *php_gtree_view_column_fetch_object(ze
 	return (ze_gtree_view_column_object *)((char*)(obj) - XtOffsetOf(ze_gtree_view_column_object, std));
 }
 
-inline zend_object *php_gtree_view_column_reverse_object(ze_gtree_view_column_object *obj) {
+static inline zend_object *php_gtree_view_column_reverse_object(ze_gtree_view_column_object *obj) {
 	return (zend_object *)((char*)(obj) + sizeof(gtree_view_column_ptr));
 }
 

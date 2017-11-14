@@ -76,7 +76,7 @@ static inline ze_gtree_iter_object *php_gtree_iter_fetch_object(zend_object *obj
 	return (ze_gtree_iter_object *)((char*)(obj) - XtOffsetOf(ze_gtree_iter_object, std));
 }
 
-inline zend_object *php_gtree_iter_reverse_object(ze_gtree_iter_object *obj) {
+static inline zend_object *php_gtree_iter_reverse_object(ze_gtree_iter_object *obj) {
 	return (zend_object *)((char*)(obj) + sizeof(gtree_iter_ptr));
 }
 

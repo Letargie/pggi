@@ -113,7 +113,7 @@ static inline ze_gwidget_object *php_gwidget_fetch_object(zend_object *obj) {
 	return (ze_gwidget_object *)((char*)(obj) - XtOffsetOf(ze_gwidget_object, std));
 }
 
-inline zend_object *php_gwidget_reverse_object(ze_gwidget_object *obj) {
+static inline zend_object *php_gwidget_reverse_object(ze_gwidget_object *obj) {
 	return (zend_object *)((char*)(obj) + sizeof(gwidget_ptr));
 }
 

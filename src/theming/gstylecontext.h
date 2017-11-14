@@ -76,7 +76,7 @@ static inline ze_gstyle_context_object *php_gstyle_context_fetch_object(zend_obj
 	return (ze_gstyle_context_object *)((char*)(obj) - XtOffsetOf(ze_gstyle_context_object, std));
 }
 
-inline zend_object *php_gstyle_context_reverse_object(ze_gstyle_context_object *obj) {
+static inline zend_object *php_gstyle_context_reverse_object(ze_gstyle_context_object *obj) {
 	return (zend_object *)((char*)(obj) + sizeof(gstyle_context_ptr));
 }
 

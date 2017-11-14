@@ -55,7 +55,7 @@ static inline ze_gevent_object *php_gevent_fetch_object(zend_object *obj) {
 	return (ze_gevent_object *)((char*)(obj) - XtOffsetOf(ze_gevent_object, std));
 }
 
-inline zend_object *php_gevent_reverse_object(ze_gevent_object *obj) {
+static inline zend_object *php_gevent_reverse_object(ze_gevent_object *obj) {
 	return (zend_object *)((char*)(obj) + sizeof(gevent_ptr));
 }
 

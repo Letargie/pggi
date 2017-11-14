@@ -39,11 +39,11 @@ void gapplication_add_windows(gapplication_ptr intern, zval * window){
 	zend_object * this = php_gwidget_reverse_object(Z_GWIDGET_P(window));
 	ZVAL_OBJ(&obj, this);
 	zend_hash_next_index_insert(Z_ARRVAL_P(&intern->windows), &obj);
-	zval_addref_p(&obj);
+	Z_TRY_ADDREF_P(&obj);
 }
 
 gapplication_ptr gapplication_ctor(){
-	gapplication_ptr tor = ecalloc(1, sizeof(gapplication_len));	
+	gapplication_ptr tor = ecalloc(1, sizeof(gapplication_len));
 	array_init(&tor->windows);
 	array_init(&tor->signals);
 	return tor;
@@ -53,8 +53,9 @@ void gapplication_dtor(gapplication_ptr intern){
 	if (intern->app){
 		g_object_unref(intern->app);
 	}
-	zend_hash_destroy(Z_ARRVAL_P(&intern->signals));
-	zend_hash_destroy(Z_ARRVAL_P(&intern->windows));
+
+	zval_ptr_dtor(&intern->windows);
+	zval_ptr_dtor(&intern->signals);
 	
 	efree(intern);
 }
@@ -136,8 +137,8 @@ void gapplication_func_shutdown(GtkApplication* app, gpointer data){
 /***************/
 
 PHP_METHOD(GApplication, on){
-	zval * function, * data,* narray, * this, * param = NULL;
-	long val;
+	zval data_to_insert, narray, * function, * data, * this, * param = NULL;
+	zend_long val;
 	ze_gapplication_object *ze_obj = NULL;
 	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "lz|z", &val ,&function, &param) == FAILURE)
 		return;
@@ -151,20 +152,28 @@ PHP_METHOD(GApplication, on){
 		default :
 			zend_error(E_ERROR, "Signal unknown");
 	}
-	zval * data_to_insert = ecalloc(1,sizeof(zval));
-	array_init(data_to_insert);
-	zend_hash_index_add(Z_ARRVAL_P(data_to_insert), INDEX_ON_FUNCTION_NAME, function);
-	zval_addref_p(function);
-	if(param){
-		zend_hash_index_add(Z_ARRVAL_P(data_to_insert), INDEX_ON_FUNCTION_PARAM, param);
-		zval_addref_p(param);
+
+	array_init(&data_to_insert);
+	if (!zend_hash_index_add(Z_ARRVAL(data_to_insert), INDEX_ON_FUNCTION_NAME, function)) {
+		/* return early */
 	}
+
+	Z_TRY_ADDREF_P(function);
+
+	if(param){
+
+		if (!zend_hash_index_add(Z_ARRVAL(data_to_insert), INDEX_ON_FUNCTION_PARAM, param)) {
+			/* return early */
+		}
+
+		Z_TRY_ADDREF_P(param);
+	}
+
 	data = zend_hash_index_find(Z_ARRVAL_P(&ze_obj->app_ptr->signals), val);
 	if(data == NULL){
-		narray = ecalloc(1,sizeof(zval));
-		array_init(narray);
-		zend_hash_index_add(Z_ARRVAL_P(&ze_obj->app_ptr->signals), val, narray);
-		zend_hash_next_index_insert(Z_ARRVAL_P(narray), data_to_insert);
+		array_init(&narray);
+		zend_hash_next_index_insert(Z_ARRVAL(narray), &data_to_insert);
+		zend_hash_index_add(Z_ARRVAL_P(&ze_obj->app_ptr->signals), val, &narray);
 		switch(val){
 			case gsignal_gapplication_startup :
 				g_signal_connect(ze_obj->app_ptr->app, GSIGNAL_GAPPLICATION_STARTUP, G_CALLBACK (gapplication_func_startup), (gpointer) ze_obj);
@@ -177,7 +186,7 @@ PHP_METHOD(GApplication, on){
 				break;
 		}
 	}else{
-		zend_hash_next_index_insert(Z_ARRVAL_P(data), data_to_insert);
+		zend_hash_next_index_insert(Z_ARRVAL_P(data), &data_to_insert);
 	}
 }
 

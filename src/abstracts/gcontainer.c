@@ -34,7 +34,7 @@ void gcontainer_add_data(gwidget_ptr intern, zval * data){
 	zval * add_folder = zend_hash_index_find(Z_ARRVAL_P(&intern->data), GWIDGET_DATA_INDEX_GCONTAINER);
 	if(add_folder){
 		zend_hash_next_index_insert(Z_ARRVAL_P(add_folder), data);
-		zval_addref_p(data);
+		Z_TRY_ADDREF_P(data);
 	}
 }
 

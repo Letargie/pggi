@@ -57,7 +57,7 @@ static inline ze_gtext_buffer_object *php_gtext_buffer_fetch_object(zend_object 
 	return (ze_gtext_buffer_object *)((char*)(obj) - XtOffsetOf(ze_gtext_buffer_object, std));
 }
 
-inline zend_object *php_gtext_buffer_reverse_object(ze_gtext_buffer_object *obj) {
+static inline zend_object *php_gtext_buffer_reverse_object(ze_gtext_buffer_object *obj) {
 	return (zend_object *)((char*)(obj) + sizeof(gtext_buffer_ptr));
 }
 

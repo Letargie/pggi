@@ -66,12 +66,11 @@ void gcontainer_write_property(zval *object, zval *member, zval *value, void **c
 
 void gcontainer_init(int module_number);
 
-#define GCONTAINER_ADD_ELEMENT(ze_obj)                                                                     \
-	do{                                                                                                    \
-		zval * narray = ecalloc(1,sizeof(zval));                                                           \
-		array_init(narray);                                                                                \
-		zend_hash_index_add(Z_ARRVAL_P(&ze_obj->widget_ptr->data), GWIDGET_DATA_INDEX_GCONTAINER, narray); \
-		zval_addref_p(narray);                                                                             \
+#define GCONTAINER_ADD_ELEMENT(ze_obj)                                                                      \
+	do{                                                                                                     \
+		zval narray;                                                                                        \
+		array_init(&narray);                                                                                \
+		zend_hash_index_add(Z_ARRVAL_P(&ze_obj->widget_ptr->data), GWIDGET_DATA_INDEX_GCONTAINER, &narray); \
 	}while(0)
 
 #endif

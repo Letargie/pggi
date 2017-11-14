@@ -78,7 +78,7 @@ static inline ze_pp_context_object *php_pp_context_fetch_object(zend_object *obj
 	return (ze_pp_context_object *)((char*)(obj) - XtOffsetOf(ze_pp_context_object, std));
 }
 
-inline zend_object *php_pp_context_reverse_object(ze_pp_context_object *obj) {
+static inline zend_object *php_pp_context_reverse_object(ze_pp_context_object *obj) {
 	return (zend_object *)((char*)(obj) + sizeof(pp_context_ptr));
 }
 
