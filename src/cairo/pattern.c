@@ -134,6 +134,7 @@ void pc_pattern_write_property(zval *object, zval *member, zval *value, void **c
 						break;
 					default:
 						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the filter property, needs to be a Pattern::FILTER_*");
+						return;
 						break;
 				}
 			}else if(!strcmp(member_val, PATTERN_EXTEND)){
@@ -144,6 +145,7 @@ void pc_pattern_write_property(zval *object, zval *member, zval *value, void **c
 						break;
 					default:
 						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the extend property, needs to be a Pattern::EXTEND_*");
+						return;
 						break;
 				}
 			}else

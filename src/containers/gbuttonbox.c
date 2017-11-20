@@ -36,6 +36,7 @@ PHP_METHOD(GButtonBox, __construct){
 			break;
 		default :
 			zend_throw_exception_ex(pggi_exception_get(), 0, " the orientation needs to be an ORIENTATION_*");
+			return;
 	}
 	GCONTAINER_ADD_ELEMENT(widget);
 	g_signal_connect(widget->widget_ptr->intern, "destroy", G_CALLBACK (widget_destructed), widget);

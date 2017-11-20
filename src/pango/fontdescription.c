@@ -165,6 +165,7 @@ void font_description_write_property(zval *object, zval *member, zval *value, vo
 						break;
 					default:
 						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the stretch property, needs to be a FontDescription::STRETCH_*");
+						return;
 						break;
 				}
 				
@@ -178,6 +179,7 @@ void font_description_write_property(zval *object, zval *member, zval *value, vo
 						break;
 					default:
 						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the variant property, needs to be a FontDescription::VARIANT_*");
+						return;
 						break;
 				}
 			}else

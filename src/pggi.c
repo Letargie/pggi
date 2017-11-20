@@ -190,6 +190,9 @@ PHP_MINIT_FUNCTION(pggi){
 	REGISTER_CONST_LONG("PGGI\\SORT_DESCENDING"                   , GTK_SORT_DESCENDING                );
 
 
+	/* PGGI Signals Types */
+
+
 	REGISTER_CONST_LONG("PGGI\\SIGNAL_GWIDGET_DESTROY"            , gsignal_gwidget_destroy            );
 	REGISTER_CONST_LONG("PGGI\\SIGNAL_GWIDGET_DRAW"               , gsignal_gwidget_draw               );
 	REGISTER_CONST_LONG("PGGI\\SIGNAL_GWIDGET_KEY_PRESS_EVENT"    , gsignal_gwidget_key_press_event    );
@@ -221,6 +224,8 @@ PHP_MINIT_FUNCTION(pggi){
 
 	REGISTER_CONST_LONG("PGGI\\Pango\\SCALE"                      , PANGO_SCALE                        );
 	
+	// PGGI functions initialization
+
 	pc_exception_init        (module_number);
 	pc_surface_init          (module_number);
 	pc_image_surface_init    (module_number);
@@ -296,6 +301,9 @@ PHP_MINIT_FUNCTION(pggi){
 	gdrawing_area_init       (module_number);
 	gspinner_init            (module_number);
 
+	gnotebook_init           (module_number);
+	gtool_item_init          (module_number);
+	gtoolbar_init            (module_number);
 
 	return SUCCESS;
 }

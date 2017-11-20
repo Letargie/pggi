@@ -44,6 +44,7 @@ PHP_METHOD(GBox, __construct){
 			break;
 		default :
 			zend_throw_exception_ex(pggi_exception_get(), 0, "the orientation need to be an ORIENTATION_*");
+			return;
 			
 	}
 	GCONTAINER_ADD_ELEMENT(widget);

@@ -89,6 +89,7 @@ void pc_pattern_surface_write_property(zval *object, zval *member, zval *value, 
 						break;
 					default:
 						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the extend property, needs to be a Pattern::EXTEND_*");
+						return;
 						break;
 				}
 			}else

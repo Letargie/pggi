@@ -20,7 +20,6 @@
 #include "zend.h"
 #include "zend_API.h"
 #include "../commons/hub.h"
-#include "../applications/gapplication.h"
 #include "../abstracts/gcontainer.h"
 
 zend_class_entry * gbox_get_class_entry();

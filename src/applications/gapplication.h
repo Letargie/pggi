@@ -56,6 +56,7 @@ static inline zend_object *php_gapplication_reverse_object(ze_gapplication_objec
 
 #define Z_GAPPLICATION_P(zv) php_gapplication_fetch_object(Z_OBJ_P((zv)))
 
+
 void gapplication_add_windows(gapplication_ptr intern, zval * window);
 
 gapplication_ptr gapplication_ctor();

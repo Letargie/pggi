@@ -613,33 +613,36 @@ void pc_context_write_property(zval *object, zval *member, zval *value, void **c
 					case CAIRO_LINE_CAP_BUTT  :
 					case CAIRO_LINE_CAP_ROUND :
 					case CAIRO_LINE_CAP_SQUARE:
+						cairo_set_line_cap(c->intern, tmp_l);
 						break;
 					default:
 						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the lineCaps property, needs to be a Context::LINE_CAP_*");
+						return;
 						break;
 				}
-				cairo_set_line_cap(c->intern, tmp_l);
 			}else if(!strcmp(member_val, CONTEXT_LINE_JOIN)){
 				switch(tmp_l){
 					case CAIRO_LINE_JOIN_MITER:
 					case CAIRO_LINE_JOIN_ROUND:
 					case CAIRO_LINE_JOIN_BEVEL:
+						cairo_set_line_join(c->intern, tmp_l);
 						break;
 					default:
 						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the lineJoin property, needs to be a Context::LINE_JOIN_*");
+						return;
 						break;
 				}
-				cairo_set_line_join(c->intern, tmp_l);
 			}else if(!strcmp(member_val, CONTEXT_FILL_RULE)){
 				switch(tmp_l){
 					case CAIRO_FILL_RULE_WINDING :
 					case CAIRO_FILL_RULE_EVEN_ODD:
+						cairo_set_fill_rule(c->intern, tmp_l);
 						break;
 					default:
 						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the fillRule property, needs to be a Context::FILL_RULE_*");
+						return;
 						break;
 				}
-				cairo_set_fill_rule(c->intern, tmp_l);
 			}else
 				std_object_handlers.write_property(object, member, value, cache_slot);
 			break;

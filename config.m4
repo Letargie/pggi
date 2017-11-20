@@ -35,6 +35,7 @@ if test "$PHP_PGGI" != "no"; then
 		src/containers/gbuttonbox.c        \
 		src/containers/gcombobox.c         \
 		src/containers/gcomboboxtext.c     \
+		src/containers/gnotebook.c         \
 		src/display/gdrawingarea.c         \
 		src/display/gimage.c               \
 		src/display/glabel.c               \
@@ -60,6 +61,8 @@ if test "$PHP_PGGI" != "no"; then
 		src/text/gtextview.c               \
 		src/theming/gcssprovider.c         \
 		src/theming/gstylecontext.c        \
+		src/toolbar/gtoolitem.c            \
+		src/toolbar/gtoolbar.c             \
 		src/tree/gcellrenderer.c           \
 		src/tree/gcellrenderertext.c       \
 		src/tree/ggrid.c                   \
@@ -87,6 +90,7 @@ if test "$PHP_PGGI" != "no"; then
 	PHP_ADD_BUILD_DIR($ext_builddir/src/selectors   )
 	PHP_ADD_BUILD_DIR($ext_builddir/src/text        )
 	PHP_ADD_BUILD_DIR($ext_builddir/src/theming     )
+	PHP_ADD_BUILD_DIR($ext_builddir/src/toolbar     )
 	PHP_ADD_BUILD_DIR($ext_builddir/src/tree        )
 	PHP_ADD_BUILD_DIR($ext_builddir/src/windows     )
 	PHP_SUBST(PGGI_SHARED_LIBADD)

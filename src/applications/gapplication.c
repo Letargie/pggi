@@ -150,12 +150,14 @@ PHP_METHOD(GApplication, on){
 		case gsignal_gapplication_activate :
 			break;
 		default :
-			zend_error(E_ERROR, "Signal unknown");
+			zend_throw_exception_ex(pggi_exception_get(), 0, "Invalid signal for GApplication");
+			return;
 	}
 
 	array_init(&data_to_insert);
 	if (!zend_hash_index_add(Z_ARRVAL(data_to_insert), INDEX_ON_FUNCTION_NAME, function)) {
-		/* return early */
+		zend_throw_exception_ex(pggi_exception_get(), 0, "Problem during the saving of the callback function");
+		return;
 	}
 
 	Z_TRY_ADDREF_P(function);
@@ -163,7 +165,8 @@ PHP_METHOD(GApplication, on){
 	if(param){
 
 		if (!zend_hash_index_add(Z_ARRVAL(data_to_insert), INDEX_ON_FUNCTION_PARAM, param)) {
-			/* return early */
+			zend_throw_exception_ex(pggi_exception_get(), 0, "Problem during the saving of the callback function");
+			return;
 		}
 
 		Z_TRY_ADDREF_P(param);
