@@ -70,24 +70,24 @@ class G2048{
 		
 		$w->on(SIGNAL_GWIDGET_KEY_PRESS_EVENT, function($window, $data, $event){
 			switch($event->keyval){
-				case GEventKey::KEY_Up:
-				case GEventKey::KEY_W:
-				case GEventKey::KEY_w:
+				case GDK\EventKey::KEY_Up:
+				case GDK\EventKey::KEY_W:
+				case GDK\EventKey::KEY_w:
 					$this->moveUp();
 					break;
-				case GEventKey::KEY_Down:
-				case GEventKey::KEY_S:
-				case GEventKey::KEY_s:
+				case GDK\EventKey::KEY_Down:
+				case GDK\EventKey::KEY_S:
+				case GDK\EventKey::KEY_s:
 					$this->moveDown();
 					break;
-				case GEventKey::KEY_Left:
-				case GEventKey::KEY_A:
-				case GEventKey::KEY_a:
+				case GDK\EventKey::KEY_Left:
+				case GDK\EventKey::KEY_A:
+				case GDK\EventKey::KEY_a:
 					$this->moveLeft();
 					break;
-				case GEventKey::KEY_Right:
-				case GEventKey::KEY_D:
-				case GEventKey::KEY_d:
+				case GDK\EventKey::KEY_Right:
+				case GDK\EventKey::KEY_D:
+				case GDK\EventKey::KEY_d:
 					$this->moveRight();
 					break;
 			}

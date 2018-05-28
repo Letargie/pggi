@@ -23,6 +23,7 @@
 #include "../theming/gstylecontext.h"
 #include "../cairo/context.h"
 #include "../pango/context.h"
+#include "../gdk/gwindow.h"
 
 /*********************************/
 /* GWidget Intern Data Structure */
@@ -45,6 +46,13 @@ ZEND_END_ARG_INFO()
 PGGI_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_gwidget_get_pango_context, 0, 0, pp_context_get_class_entry(), 0)
 ZEND_END_ARG_INFO()
 
+PGGI_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_pggi_get_window, 0, 0, gdk_window_get_class_entry(), 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_pggi_get_size_request, 0, 0, 2)
+	ZEND_ARG_TYPE_INFO(0, width , IS_LONG , 0)
+	ZEND_ARG_TYPE_INFO(0, height, IS_LONG , 0)
+ZEND_END_ARG_INFO()
 
 /**********************/
 /* GWidget properties */

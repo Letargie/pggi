@@ -75,13 +75,13 @@ zend_declare_class_constant_long(gevent_key_class_entry_ce, name, sizeof(name)-1
 
 void gevent_key_init(int module_number){
 	zend_class_entry ce;
-	le_gevent_key = zend_register_list_destructors_ex(gevent_free_resource, NULL, "PGGI\\GEventKey", module_number);
+	le_gevent_key = zend_register_list_destructors_ex(gevent_free_resource, NULL, "PGGI\\GDK\\EventKey", module_number);
 
 	memcpy(&gevent_key_object_handlers, gevent_get_object_handlers(), sizeof(zend_object_handlers));
 	gevent_key_object_handlers.read_property  = gevent_key_read_property;
 	gevent_key_object_handlers.get_properties = gevent_key_get_properties;
 	gevent_key_object_handlers.write_property = gevent_key_write_property;
-	INIT_CLASS_ENTRY(ce, "PGGI\\GEventKey", gevent_key_class_functions);
+	INIT_CLASS_ENTRY(ce, "PGGI\\GDK\\EventKey", gevent_key_class_functions);
 	gevent_key_class_entry_ce = zend_register_internal_class_ex(&ce, gevent_get_class_entry());
 
 	DECLARE_GEVENT_KEY_PROP(GEVENT_KEY_KEYVAL);

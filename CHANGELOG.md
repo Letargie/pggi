@@ -1,7 +1,18 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] 0.3.0
+For now as the extension in its early development phase, the api will change a lot.
+
+## [Unreleased] 0.4.0
+
+## 0.3.0
+### Added
+	-mouse event handling
+	-new classes
+	-changing the file rights
+		-GToolButton
+		-GDK\GWindow
+		-GDK\GPixbuf
 
 ## 0.2.0
 ### Added

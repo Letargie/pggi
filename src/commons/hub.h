@@ -104,6 +104,9 @@ enum{
 	gsignal_gwidget_destroy,
 	gsignal_gwidget_draw,
 	gsignal_gwidget_key_press_event,
+	gsignal_gwidget_key_release_event,
+	gsignal_gwidget_button_press_event,
+	gsignal_gwidget_button_release_event,
 
 	gsignal_gcontainer_add,
 
@@ -123,7 +126,9 @@ enum{
 
 	gsignal_gtree_selection_changed,
 
-	gsignal_gentry_activate
+	gsignal_gentry_activate,
+
+	gsignal_gtool_button_clicked
 } gsignals;
 
 /**
@@ -131,35 +136,40 @@ enum{
  * Needed for GTK+ signal handling
  */
 
-#define GSIGNAL_GAPPLICATION_WINDOW_ADDED   "window-added"
-#define GSIGNAL_GAPPLICATION_WINDOW_REMOVED "window-removed"
-#define GSIGNAL_GAPPLICATION_STARTUP        "startup"
-#define GSIGNAL_GAPPLICATION_SHUTDOWN       "shutdown"
-#define GSIGNAL_GAPPLICATION_ACTIVATE       "activate"
+#define GSIGNAL_GAPPLICATION_WINDOW_ADDED    "window-added"
+#define GSIGNAL_GAPPLICATION_WINDOW_REMOVED  "window-removed"
+#define GSIGNAL_GAPPLICATION_STARTUP         "startup"
+#define GSIGNAL_GAPPLICATION_SHUTDOWN        "shutdown"
+#define GSIGNAL_GAPPLICATION_ACTIVATE        "activate"
 
-#define GSIGNAL_GWIDGET_DESTROY             "destroy"
-#define GSIGNAL_GWIDGET_DRAW                "draw"
-#define GSIGNAL_GWIDGET_KEY_PRESS_EVENT     "key-press-event"
+#define GSIGNAL_GWIDGET_DESTROY              "destroy"
+#define GSIGNAL_GWIDGET_DRAW                 "draw"
+#define GSIGNAL_GWIDGET_KEY_PRESS_EVENT      "key-press-event"
+#define GSIGNAL_GWIDGET_KEY_RELEASE_EVENT    "key-release-event"
+#define GSIGNAL_GWIDGET_BUTTON_PRESS_EVENT   "button-press-event"
+#define GSIGNAL_GWIDGET_BUTTON_RELEASE_EVENT "button-release-event"
 
-#define GSIGNAL_GCONTAINER_ADD              "add"
+#define GSIGNAL_GCONTAINER_ADD               "add"
 
-#define GSIGNAL_GMENUITEM_ACTIVATE          "activate"
+#define GSIGNAL_GMENUITEM_ACTIVATE           "activate"
 
-#define GSIGNAL_GCOMBO_BOX_CHANGED          "changed"
-#define GSIGNAL_GCOMBO_BOX_MOVE_ACTIVE      "move-active"
+#define GSIGNAL_GCOMBO_BOX_CHANGED           "changed"
+#define GSIGNAL_GCOMBO_BOX_MOVE_ACTIVE       "move-active"
 
-#define GSIGNAL_GTEXT_BUFFER_CHANGED        "changed"
-#define GSIGNAL_GSTYLE_CONTEXT_CHANGED      "changed"
+#define GSIGNAL_GTEXT_BUFFER_CHANGED         "changed"
+#define GSIGNAL_GSTYLE_CONTEXT_CHANGED       "changed"
 
-#define GSIGNAL_GDIALOG_CLOSE               "close"
-#define GSIGNAL_GDIALOG_RESPONSE            "response"
+#define GSIGNAL_GDIALOG_CLOSE                "close"
+#define GSIGNAL_GDIALOG_RESPONSE             "response"
 
-#define GSIGNAL_GTREE_VIEW_COLUMN_CHANGED   "column-changed"
-#define GSIGNAL_GTREE_VIEW_COLUMN_CLICKED   "clicked"
+#define GSIGNAL_GTREE_VIEW_COLUMN_CHANGED    "column-changed"
+#define GSIGNAL_GTREE_VIEW_COLUMN_CLICKED    "clicked"
 
-#define GSIGNAL_GTREE_SELECTION_CHANGED     "changed"
+#define GSIGNAL_GTREE_SELECTION_CHANGED      "changed"
 
-#define GSIGNAL_GENTRY_ACTIVATE             "activate"
+#define GSIGNAL_GENTRY_ACTIVATE              "activate"
+
+#define GSIGNAL_GTOOL_BUTTON_CLICKED         "clicked"
 
 /****************************/
 /* Utils parsing parameters */

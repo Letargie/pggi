@@ -12,7 +12,7 @@
 #ifndef __PGGI_DEF__
 #define __PGGI_DEF__
 
-#define PGGI_VERSION "0.3.0-dev"
+#define PGGI_VERSION "0.4.0-dev"
 #define PGGI_EXTNAME "pggi"
 
 #include "php.h"
@@ -59,6 +59,8 @@
 #include "entries/gentry.h"
 #include "gdk/gevent.h"
 #include "gdk/geventkey.h"
+#include "gdk/gpixbuf.h"
+#include "gdk/gwindow.h"
 #include "theming/gstylecontext.h"
 #include "theming/gcssprovider.h"
 #include "gdk/gscreen.h"
@@ -68,6 +70,7 @@
 #include "containers/gnotebook.h"
 #include "toolbar/gtoolitem.h"
 #include "toolbar/gtoolbar.h"
+#include "toolbar/gtoolbutton.h"
 #include "cairo/exception.h"
 #include "cairo/pattern.h"
 #include "cairo/pattern_solid.h"

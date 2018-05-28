@@ -122,7 +122,7 @@ zend_declare_class_constant_long(gevent_class_entry_ce, name, sizeof(name)-1, va
 
 void gevent_init(int module_number){
 	zend_class_entry ce;
-	le_gevent = zend_register_list_destructors_ex(gevent_free_resource, NULL, "PGGI\\GEvent", module_number);
+	le_gevent = zend_register_list_destructors_ex(gevent_free_resource, NULL, "PGGI\\GDK\\Event", module_number);
 
 	memcpy(&gevent_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
 	gevent_object_handlers.offset         = XtOffsetOf(ze_gevent_object, std);
@@ -131,7 +131,7 @@ void gevent_init(int module_number){
 	gevent_object_handlers.read_property  = gevent_read_property;
 	gevent_object_handlers.get_properties = gevent_get_properties;
 	gevent_object_handlers.write_property = gevent_write_property;
-	INIT_CLASS_ENTRY(ce, "PGGI\\GEvent", gevent_class_functions);
+	INIT_CLASS_ENTRY(ce, "PGGI\\GDK\\Event", gevent_class_functions);
 	ce.create_object = gevent_object_new;
 	gevent_class_entry_ce = zend_register_internal_class(&ce);
 }

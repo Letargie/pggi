@@ -36,7 +36,7 @@ PHP_METHOD(GToolItem, __construct){
 	widget = Z_GWIDGET_P(getThis());
 	widget->std.handlers = &gtool_item_object_handlers;
 	widget->widget_ptr = gwidget_new();
-	widget->widget_ptr->intern = gtk_tool_item_new();
+	widget->widget_ptr->intern = GTK_WIDGET(gtk_tool_item_new());
 	GCONTAINER_ADD_ELEMENT(widget);
 	g_signal_connect(widget->widget_ptr->intern, "destroy", G_CALLBACK (widget_destructed), widget);
 }

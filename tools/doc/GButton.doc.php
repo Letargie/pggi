@@ -7,7 +7,7 @@
 include_once("../Gasped/DocArray.class.php");
 
 $GButtonDoc = new ClassDocArray();
-$GButtonDoc->setHeader(array())
+$GButtonDoc->setHeader(array());/*
 		   ->setConstant("LABEL", array("button using a label"))
 		   ->setConstant("MNEMONIC", array("button using a label with a mnemonic"))
 		   ->setConstant("IMAGE_16", array("button using an image of size 16"))
@@ -20,4 +20,4 @@ $GButtonDoc->setHeader(array())
 		   ->setProperty("imagePosition", array("@var long The position of the image relative to the text inside the button."))
 		   ->setProperty("label", array("@var string Text of the label widget inside the button, if the button contains a label widget."))
 		   ->setProperty("relief", array("@var long The border relief style."))
-		   ->setProperty("useUnderline", array("@var boolean If set, an underline in the text indicates the next character should be used for the mnemonic accelerator key."));
+		   ->setProperty("useUnderline", array("@var boolean If set, an underline in the text indicates the next character should be used for the mnemonic accelerator key."));*/

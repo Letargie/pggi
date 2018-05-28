@@ -45,8 +45,10 @@ if test "$PHP_PGGI" != "no"; then
 		src/exceptions/gexception.c        \
 		src/gdk/gevent.c                   \
 		src/gdk/geventkey.c                \
+		src/gdk/gpixbuf.c                  \
 		src/gdk/gscreen.c                  \
 		src/gdk/rgba.c                     \
+		src/gdk/gwindow.c                  \
 		src/menus/gmenubar.c               \
 		src/menus/gmenu.c                  \
 		src/menus/gmenuitem.c              \
@@ -63,6 +65,7 @@ if test "$PHP_PGGI" != "no"; then
 		src/theming/gstylecontext.c        \
 		src/toolbar/gtoolitem.c            \
 		src/toolbar/gtoolbar.c             \
+		src/toolbar/gtoolbutton.c          \
 		src/tree/gcellrenderer.c           \
 		src/tree/gcellrenderertext.c       \
 		src/tree/ggrid.c                   \

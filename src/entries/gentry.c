@@ -245,7 +245,7 @@ void gentry_write_property(zval *object, zval *member, zval *value, void **cache
 				ze_gentry_buffer_object *ze_obj = NULL;
 				ze_obj = Z_GENTRY_BUFFER_P(value);
 				if(!ze_obj){
-
+					zend_throw_exception_ex(pggi_exception_get(), 0, "Object of invalid type");
 				}
 				gtk_entry_set_buffer(e, ze_obj->buffer_ptr->intern);
 				std_object_handlers.write_property(object, member, value, cache_slot);

@@ -45,184 +45,194 @@ PHP_MINIT_FUNCTION(pggi){
 	* then it can use a GtkBaselinePosition to select where to put the baseline inside the extra availible space.
 	*/
 	#if GTK_MINOR_VERSION >= 10
-	REGISTER_CONST_LONG("PGGI\\BASELINE_POSITION_TOP"             , GTK_BASELINE_POSITION_TOP          );
-	REGISTER_CONST_LONG("PGGI\\BASELINE_POSITION_CENTER"          , GTK_BASELINE_POSITION_CENTER       );
-	REGISTER_CONST_LONG("PGGI\\BASELINE_POSITION_BOTTOM"          , GTK_BASELINE_POSITION_BOTTOM       );
+	REGISTER_CONST_LONG("PGGI\\BASELINE_POSITION_TOP"              , GTK_BASELINE_POSITION_TOP           );
+	REGISTER_CONST_LONG("PGGI\\BASELINE_POSITION_CENTER"           , GTK_BASELINE_POSITION_CENTER        );
+	REGISTER_CONST_LONG("PGGI\\BASELINE_POSITION_BOTTOM"           , GTK_BASELINE_POSITION_BOTTOM        );
 	#endif
 	/*
 	* See GEntry
 	*/
-	REGISTER_CONST_LONG("PGGI\\DELETE_CHARS"                      , GTK_DELETE_CHARS                   );
-	REGISTER_CONST_LONG("PGGI\\DELETE_WORD_ENDS"                  , GTK_DELETE_WORD_ENDS               );
-	REGISTER_CONST_LONG("PGGI\\DELETE_WORDS"                      , GTK_DELETE_WORDS                   );
-	REGISTER_CONST_LONG("PGGI\\DELETE_DISPLAY_LINES"              , GTK_DELETE_DISPLAY_LINES           );
-	REGISTER_CONST_LONG("PGGI\\DELETE_DISPLAY_LINE_ENDS"          , GTK_DELETE_DISPLAY_LINE_ENDS       );
-	REGISTER_CONST_LONG("PGGI\\DELETE_PARAGRAPH_ENDS"             , GTK_DELETE_PARAGRAPH_ENDS          );
-	REGISTER_CONST_LONG("PGGI\\DELETE_PARAGRAPHS"                 , GTK_DELETE_PARAGRAPHS              );
-	REGISTER_CONST_LONG("PGGI\\DELETE_WHITESPACE"                 , GTK_DELETE_WHITESPACE              );
+	REGISTER_CONST_LONG("PGGI\\DELETE_CHARS"                       , GTK_DELETE_CHARS                    );
+	REGISTER_CONST_LONG("PGGI\\DELETE_WORD_ENDS"                   , GTK_DELETE_WORD_ENDS                );
+	REGISTER_CONST_LONG("PGGI\\DELETE_WORDS"                       , GTK_DELETE_WORDS                    );
+	REGISTER_CONST_LONG("PGGI\\DELETE_DISPLAY_LINES"               , GTK_DELETE_DISPLAY_LINES            );
+	REGISTER_CONST_LONG("PGGI\\DELETE_DISPLAY_LINE_ENDS"           , GTK_DELETE_DISPLAY_LINE_ENDS        );
+	REGISTER_CONST_LONG("PGGI\\DELETE_PARAGRAPH_ENDS"              , GTK_DELETE_PARAGRAPH_ENDS           );
+	REGISTER_CONST_LONG("PGGI\\DELETE_PARAGRAPHS"                  , GTK_DELETE_PARAGRAPHS               );
+	REGISTER_CONST_LONG("PGGI\\DELETE_WHITESPACE"                  , GTK_DELETE_WHITESPACE               );
 	/*
 	* Focus movement types.
 	*/
-	REGISTER_CONST_LONG("PGGI\\DIR_TAB_FORWARD"                   , GTK_DIR_TAB_FORWARD                );
-	REGISTER_CONST_LONG("PGGI\\DIR_TAB_BACKWARD"                  , GTK_DIR_TAB_BACKWARD               );
-	REGISTER_CONST_LONG("PGGI\\DIR_UP"                            , GTK_DIR_UP                         );
-	REGISTER_CONST_LONG("PGGI\\DIR_DOWN"                          , GTK_DIR_DOWN                       );
-	REGISTER_CONST_LONG("PGGI\\DIR_LEFT"                          , GTK_DIR_LEFT                       );
-	REGISTER_CONST_LONG("PGGI\\DIR_RIGHT"                         , GTK_DIR_RIGHT                      );
+	REGISTER_CONST_LONG("PGGI\\DIR_TAB_FORWARD"                    , GTK_DIR_TAB_FORWARD                 );
+	REGISTER_CONST_LONG("PGGI\\DIR_TAB_BACKWARD"                   , GTK_DIR_TAB_BACKWARD                );
+	REGISTER_CONST_LONG("PGGI\\DIR_UP"                             , GTK_DIR_UP                          );
+	REGISTER_CONST_LONG("PGGI\\DIR_DOWN"                           , GTK_DIR_DOWN                        );
+	REGISTER_CONST_LONG("PGGI\\DIR_LEFT"                           , GTK_DIR_LEFT                        );
+	REGISTER_CONST_LONG("PGGI\\DIR_RIGHT"                          , GTK_DIR_RIGHT                       );
 	/*
 	* Used for justifying the text inside a GLabel widget.
 	*/
-	REGISTER_CONST_LONG("PGGI\\JUSTIFY_LEFT"                      , GTK_JUSTIFY_LEFT                   );
-	REGISTER_CONST_LONG("PGGI\\JUSTIFY_RIGHT"                     , GTK_JUSTIFY_RIGHT                  );
-	REGISTER_CONST_LONG("PGGI\\JUSTIFY_CENTER"                    , GTK_JUSTIFY_CENTER                 );
-	REGISTER_CONST_LONG("PGGI\\JUSTIFY_FILL"                      , GTK_JUSTIFY_FILL                   );
+	REGISTER_CONST_LONG("PGGI\\JUSTIFY_LEFT"                       , GTK_JUSTIFY_LEFT                    );
+	REGISTER_CONST_LONG("PGGI\\JUSTIFY_RIGHT"                      , GTK_JUSTIFY_RIGHT                   );
+	REGISTER_CONST_LONG("PGGI\\JUSTIFY_CENTER"                     , GTK_JUSTIFY_CENTER                  );
+	REGISTER_CONST_LONG("PGGI\\JUSTIFY_FILL"                       , GTK_JUSTIFY_FILL                    );
 
-	REGISTER_CONST_LONG("PGGI\\MOVEMENT_LOGICAL_POSITIONS"        , GTK_MOVEMENT_LOGICAL_POSITIONS     );
-	REGISTER_CONST_LONG("PGGI\\MOVEMENT_VISUAL_POSITIONS"         , GTK_MOVEMENT_VISUAL_POSITIONS      );
-	REGISTER_CONST_LONG("PGGI\\MOVEMENT_WORDS"                    , GTK_MOVEMENT_WORDS                 );
-	REGISTER_CONST_LONG("PGGI\\MOVEMENT_DISPLAY_LINES"            , GTK_MOVEMENT_DISPLAY_LINES         );
-	REGISTER_CONST_LONG("PGGI\\MOVEMENT_DISPLAY_LINE_ENDS"        , GTK_MOVEMENT_DISPLAY_LINE_ENDS     );
-	REGISTER_CONST_LONG("PGGI\\MOVEMENT_PARAGRAPHS"               , GTK_MOVEMENT_PARAGRAPHS            );
-	REGISTER_CONST_LONG("PGGI\\MOVEMENT_PARAGRAPH_ENDS"           , GTK_MOVEMENT_PARAGRAPH_ENDS        );
-	REGISTER_CONST_LONG("PGGI\\MOVEMENT_PAGES"                    , GTK_MOVEMENT_PAGES                 );
-	REGISTER_CONST_LONG("PGGI\\MOVEMENT_BUFFER_ENDS"              , GTK_MOVEMENT_BUFFER_ENDS           );
-	REGISTER_CONST_LONG("PGGI\\MOVEMENT_HORIZONTAL_PAGES"         , GTK_MOVEMENT_HORIZONTAL_PAGES      );
+	REGISTER_CONST_LONG("PGGI\\MOVEMENT_LOGICAL_POSITIONS"         , GTK_MOVEMENT_LOGICAL_POSITIONS      );
+	REGISTER_CONST_LONG("PGGI\\MOVEMENT_VISUAL_POSITIONS"          , GTK_MOVEMENT_VISUAL_POSITIONS       );
+	REGISTER_CONST_LONG("PGGI\\MOVEMENT_WORDS"                     , GTK_MOVEMENT_WORDS                  );
+	REGISTER_CONST_LONG("PGGI\\MOVEMENT_DISPLAY_LINES"             , GTK_MOVEMENT_DISPLAY_LINES          );
+	REGISTER_CONST_LONG("PGGI\\MOVEMENT_DISPLAY_LINE_ENDS"         , GTK_MOVEMENT_DISPLAY_LINE_ENDS      );
+	REGISTER_CONST_LONG("PGGI\\MOVEMENT_PARAGRAPHS"                , GTK_MOVEMENT_PARAGRAPHS             );
+	REGISTER_CONST_LONG("PGGI\\MOVEMENT_PARAGRAPH_ENDS"            , GTK_MOVEMENT_PARAGRAPH_ENDS         );
+	REGISTER_CONST_LONG("PGGI\\MOVEMENT_PAGES"                     , GTK_MOVEMENT_PAGES                  );
+	REGISTER_CONST_LONG("PGGI\\MOVEMENT_BUFFER_ENDS"               , GTK_MOVEMENT_BUFFER_ENDS            );
+	REGISTER_CONST_LONG("PGGI\\MOVEMENT_HORIZONTAL_PAGES"          , GTK_MOVEMENT_HORIZONTAL_PAGES       );
 	/*
 	* Represents the orientation of widgets and other objects which can be switched between horizontal and vertical orientation on the fly
 	*/
-	REGISTER_CONST_LONG("PGGI\\ORIENTATION_HORIZONTAL"            , GTK_ORIENTATION_HORIZONTAL         );
-	REGISTER_CONST_LONG("PGGI\\ORIENTATION_VERTICAL"              , GTK_ORIENTATION_VERTICAL           );
+	REGISTER_CONST_LONG("PGGI\\ORIENTATION_HORIZONTAL"             , GTK_ORIENTATION_HORIZONTAL          );
+	REGISTER_CONST_LONG("PGGI\\ORIENTATION_VERTICAL"               , GTK_ORIENTATION_VERTICAL            );
 	/*
 	* Represents the packing location GtkBox children.
 	*/
-	REGISTER_CONST_LONG("PGGI\\PACK_START"                        , GTK_PACK_START                     );
-	REGISTER_CONST_LONG("PGGI\\PACK_END"                          , GTK_PACK_END                       );
+	REGISTER_CONST_LONG("PGGI\\PACK_START"                         , GTK_PACK_START                      );
+	REGISTER_CONST_LONG("PGGI\\PACK_END"                           , GTK_PACK_END                        );
 	/*
 	* Describes which edge of a widget a certain feature is positioned at.
 	*/
-	REGISTER_CONST_LONG("PGGI\\POS_LEFT"                          , GTK_POS_LEFT                       );
-	REGISTER_CONST_LONG("PGGI\\POS_RIGHT"                         , GTK_POS_RIGHT                      );
-	REGISTER_CONST_LONG("PGGI\\POS_TOP"                           , GTK_POS_TOP                        );
-	REGISTER_CONST_LONG("PGGI\\POS_BOTTOM"                        , GTK_POS_BOTTOM                     );
+	REGISTER_CONST_LONG("PGGI\\POS_LEFT"                           , GTK_POS_LEFT                        );
+	REGISTER_CONST_LONG("PGGI\\POS_RIGHT"                          , GTK_POS_RIGHT                       );
+	REGISTER_CONST_LONG("PGGI\\POS_TOP"                            , GTK_POS_TOP                         );
+	REGISTER_CONST_LONG("PGGI\\POS_BOTTOM"                         , GTK_POS_BOTTOM                      );
 	/*
 	* Indicated the relief to be drawn around a GButton.
 	*/
-	REGISTER_CONST_LONG("PGGI\\RELIEF_NORMAL"                     , GTK_RELIEF_NORMAL                  );
-	REGISTER_CONST_LONG("PGGI\\RELIEF_NONE"                       , GTK_RELIEF_NONE                    );
+	REGISTER_CONST_LONG("PGGI\\RELIEF_NORMAL"                      , GTK_RELIEF_NORMAL                   );
+	REGISTER_CONST_LONG("PGGI\\RELIEF_NONE"                        , GTK_RELIEF_NONE                     );
 
-	REGISTER_CONST_LONG("PGGI\\SCROLL_STEPS"                      , GTK_SCROLL_STEPS                   );
-	REGISTER_CONST_LONG("PGGI\\SCROLL_PAGES"                      , GTK_SCROLL_PAGES                   );
-	REGISTER_CONST_LONG("PGGI\\SCROLL_ENDS"                       , GTK_SCROLL_ENDS                    );
-	REGISTER_CONST_LONG("PGGI\\SCROLL_HORIZONTAL_STEPS"           , GTK_SCROLL_HORIZONTAL_STEPS        );
-	REGISTER_CONST_LONG("PGGI\\SCROLL_HORIZONTAL_PAGES"           , GTK_SCROLL_HORIZONTAL_PAGES        );
-	REGISTER_CONST_LONG("PGGI\\SCROLL_HORIZONTAL_ENDS"            , GTK_SCROLL_HORIZONTAL_ENDS         );
+	REGISTER_CONST_LONG("PGGI\\SCROLL_STEPS"                       , GTK_SCROLL_STEPS                    );
+	REGISTER_CONST_LONG("PGGI\\SCROLL_PAGES"                       , GTK_SCROLL_PAGES                    );
+	REGISTER_CONST_LONG("PGGI\\SCROLL_ENDS"                        , GTK_SCROLL_ENDS                     );
+	REGISTER_CONST_LONG("PGGI\\SCROLL_HORIZONTAL_STEPS"            , GTK_SCROLL_HORIZONTAL_STEPS         );
+	REGISTER_CONST_LONG("PGGI\\SCROLL_HORIZONTAL_PAGES"            , GTK_SCROLL_HORIZONTAL_PAGES         );
+	REGISTER_CONST_LONG("PGGI\\SCROLL_HORIZONTAL_ENDS"             , GTK_SCROLL_HORIZONTAL_ENDS          );
 	/*
 	* Scrolling types.
 	*/
-	REGISTER_CONST_LONG("PGGI\\SCROLL_NONE"                       , GTK_SCROLL_NONE                    );
-	REGISTER_CONST_LONG("PGGI\\SCROLL_JUMP"                       , GTK_SCROLL_JUMP                    );
-	REGISTER_CONST_LONG("PGGI\\SCROLL_STEP_BACKWARD"              , GTK_SCROLL_STEP_BACKWARD           );
-	REGISTER_CONST_LONG("PGGI\\SCROLL_STEP_FORWARD"               , GTK_SCROLL_STEP_FORWARD            );
-	REGISTER_CONST_LONG("PGGI\\SCROLL_PAGE_BACKWARD"              , GTK_SCROLL_PAGE_BACKWARD           );
-	REGISTER_CONST_LONG("PGGI\\SCROLL_PAGE_FORWARD"               , GTK_SCROLL_PAGE_FORWARD            );
-	REGISTER_CONST_LONG("PGGI\\SCROLL_STEP_UP"                    , GTK_SCROLL_STEP_UP                 );
-	REGISTER_CONST_LONG("PGGI\\SCROLL_STEP_DOWN"                  , GTK_SCROLL_STEP_DOWN               );
-	REGISTER_CONST_LONG("PGGI\\SCROLL_PAGE_UP"                    , GTK_SCROLL_PAGE_UP                 );
-	REGISTER_CONST_LONG("PGGI\\SCROLL_PAGE_DOWN"                  , GTK_SCROLL_PAGE_DOWN               );
-	REGISTER_CONST_LONG("PGGI\\SCROLL_STEP_LEFT"                  , GTK_SCROLL_STEP_LEFT               );
-	REGISTER_CONST_LONG("PGGI\\SCROLL_STEP_RIGHT"                 , GTK_SCROLL_STEP_RIGHT              );
-	REGISTER_CONST_LONG("PGGI\\SCROLL_PAGE_LEFT"                  , GTK_SCROLL_PAGE_LEFT               );
-	REGISTER_CONST_LONG("PGGI\\SCROLL_PAGE_RIGHT"                 , GTK_SCROLL_PAGE_RIGHT              );
-	REGISTER_CONST_LONG("PGGI\\SCROLL_START"                      , GTK_SCROLL_START                   );
-	REGISTER_CONST_LONG("PGGI\\SCROLL_END"                        , GTK_SCROLL_END                     );
+	REGISTER_CONST_LONG("PGGI\\SCROLL_NONE"                        , GTK_SCROLL_NONE                     );
+	REGISTER_CONST_LONG("PGGI\\SCROLL_JUMP"                        , GTK_SCROLL_JUMP                     );
+	REGISTER_CONST_LONG("PGGI\\SCROLL_STEP_BACKWARD"               , GTK_SCROLL_STEP_BACKWARD            );
+	REGISTER_CONST_LONG("PGGI\\SCROLL_STEP_FORWARD"                , GTK_SCROLL_STEP_FORWARD             );
+	REGISTER_CONST_LONG("PGGI\\SCROLL_PAGE_BACKWARD"               , GTK_SCROLL_PAGE_BACKWARD            );
+	REGISTER_CONST_LONG("PGGI\\SCROLL_PAGE_FORWARD"                , GTK_SCROLL_PAGE_FORWARD             );
+	REGISTER_CONST_LONG("PGGI\\SCROLL_STEP_UP"                     , GTK_SCROLL_STEP_UP                  );
+	REGISTER_CONST_LONG("PGGI\\SCROLL_STEP_DOWN"                   , GTK_SCROLL_STEP_DOWN                );
+	REGISTER_CONST_LONG("PGGI\\SCROLL_PAGE_UP"                     , GTK_SCROLL_PAGE_UP                  );
+	REGISTER_CONST_LONG("PGGI\\SCROLL_PAGE_DOWN"                   , GTK_SCROLL_PAGE_DOWN                );
+	REGISTER_CONST_LONG("PGGI\\SCROLL_STEP_LEFT"                   , GTK_SCROLL_STEP_LEFT                );
+	REGISTER_CONST_LONG("PGGI\\SCROLL_STEP_RIGHT"                  , GTK_SCROLL_STEP_RIGHT               );
+	REGISTER_CONST_LONG("PGGI\\SCROLL_PAGE_LEFT"                   , GTK_SCROLL_PAGE_LEFT                );
+	REGISTER_CONST_LONG("PGGI\\SCROLL_PAGE_RIGHT"                  , GTK_SCROLL_PAGE_RIGHT               );
+	REGISTER_CONST_LONG("PGGI\\SCROLL_START"                       , GTK_SCROLL_START                    );
+	REGISTER_CONST_LONG("PGGI\\SCROLL_END"                         , GTK_SCROLL_END                      );
 	/*
 	* Used to control what selections users are allowed to make.
 	*/
-	REGISTER_CONST_LONG("PGGI\\SELECTION_NONE"                    , GTK_SELECTION_NONE                 );
-	REGISTER_CONST_LONG("PGGI\\SELECTION_SINGLE"                  , GTK_SELECTION_SINGLE               );
-	REGISTER_CONST_LONG("PGGI\\SELECTION_BROWSE"                  , GTK_SELECTION_BROWSE               );
-	REGISTER_CONST_LONG("PGGI\\SELECTION_MULTIPLE"                , GTK_SELECTION_MULTIPLE             );
+	REGISTER_CONST_LONG("PGGI\\SELECTION_NONE"                     , GTK_SELECTION_NONE                  );
+	REGISTER_CONST_LONG("PGGI\\SELECTION_SINGLE"                   , GTK_SELECTION_SINGLE                );
+	REGISTER_CONST_LONG("PGGI\\SELECTION_BROWSE"                   , GTK_SELECTION_BROWSE                );
+	REGISTER_CONST_LONG("PGGI\\SELECTION_MULTIPLE"                 , GTK_SELECTION_MULTIPLE              );
 	/*
 	* Used to change the appearance of an outline 
 	*/
-	REGISTER_CONST_LONG("PGGI\\SHADOW_NONE"                       , GTK_SHADOW_NONE                    );
-	REGISTER_CONST_LONG("PGGI\\SHADOW_IN"                         , GTK_SHADOW_IN                      );
-	REGISTER_CONST_LONG("PGGI\\SHADOW_OUT"                        , GTK_SHADOW_OUT                     );
-	REGISTER_CONST_LONG("PGGI\\SHADOW_ETCHED_IN"                  , GTK_SHADOW_ETCHED_IN               );
-	REGISTER_CONST_LONG("PGGI\\SHADOW_ETCHED_OUT"                 , GTK_SHADOW_ETCHED_OUT              );
+	REGISTER_CONST_LONG("PGGI\\SHADOW_NONE"                        , GTK_SHADOW_NONE                     );
+	REGISTER_CONST_LONG("PGGI\\SHADOW_IN"                          , GTK_SHADOW_IN                       );
+	REGISTER_CONST_LONG("PGGI\\SHADOW_OUT"                         , GTK_SHADOW_OUT                      );
+	REGISTER_CONST_LONG("PGGI\\SHADOW_ETCHED_IN"                   , GTK_SHADOW_ETCHED_IN                );
+	REGISTER_CONST_LONG("PGGI\\SHADOW_ETCHED_OUT"                  , GTK_SHADOW_ETCHED_OUT               );
 	/*
 	* Describes a widget state. Widget states are used to match the widget against CSS pseudo-classes. Note that GTK extends the regular CSS classes and sometimes uses different names.
 	*/
-	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_NORMAL"                 , GTK_STATE_FLAG_NORMAL              );
-	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_ACTIVE"                 , GTK_STATE_FLAG_ACTIVE              );
-	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_PRELIGHT"               , GTK_STATE_FLAG_PRELIGHT            );
-	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_SELECTED"               , GTK_STATE_FLAG_SELECTED            );
-	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_INSENSITIVE"            , GTK_STATE_FLAG_INSENSITIVE         );
-	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_INCONSISTENT"           , GTK_STATE_FLAG_INCONSISTENT        );
-	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_FOCUSED"                , GTK_STATE_FLAG_FOCUSED             );
-	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_BACKDROP"               , GTK_STATE_FLAG_BACKDROP            );
+	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_NORMAL"                  , GTK_STATE_FLAG_NORMAL               );
+	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_ACTIVE"                  , GTK_STATE_FLAG_ACTIVE               );
+	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_PRELIGHT"                , GTK_STATE_FLAG_PRELIGHT             );
+	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_SELECTED"                , GTK_STATE_FLAG_SELECTED             );
+	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_INSENSITIVE"             , GTK_STATE_FLAG_INSENSITIVE          );
+	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_INCONSISTENT"            , GTK_STATE_FLAG_INCONSISTENT         );
+	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_FOCUSED"                 , GTK_STATE_FLAG_FOCUSED              );
+	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_BACKDROP"                , GTK_STATE_FLAG_BACKDROP             );
 	#if GTK_MINOR_VERSION >= 8
-	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_DIR_LTR"                , GTK_STATE_FLAG_DIR_LTR             );
-	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_DIR_RTL"                , GTK_STATE_FLAG_DIR_RTL             );
+	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_DIR_LTR"                 , GTK_STATE_FLAG_DIR_LTR              );
+	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_DIR_RTL"                 , GTK_STATE_FLAG_DIR_RTL              );
 	#endif
 	#if GTK_MINOR_VERSION >= 12
-	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_LINK"                   , GTK_STATE_FLAG_LINK                );
-	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_VISITED"                , GTK_STATE_FLAG_VISITED             );
+	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_LINK"                    , GTK_STATE_FLAG_LINK                 );
+	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_VISITED"                 , GTK_STATE_FLAG_VISITED              );
 	#endif
 	#if GTK_MINOR_VERSION >= 14
-	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_CHECKED"                , GTK_STATE_FLAG_CHECKED             );
+	REGISTER_CONST_LONG("PGGI\\STATE_FLAG_CHECKED"                 , GTK_STATE_FLAG_CHECKED              );
 	#endif
 	#if GTK_MINOR_VERSION >= 20
-	REGISTER_CONST_LONG("PGGI\\PGGI_STATE_FLAG_DROP_ACTIVE"        , GTK_STATE_FLAG_DROP_ACTIVE        );
+	REGISTER_CONST_LONG("PGGI\\PGGI_STATE_FLAG_DROP_ACTIVE"        , GTK_STATE_FLAG_DROP_ACTIVE          );
 	#endif
 	/*
 	* Used to customize the appearance of a GToolbar. Note that setting the toolbar style overrides the user’s preferences for the default toolbar style.
 	* Note that if the button has only a label set and PGGI_TOOLBAR_ICONS is used, the label will be visible, and vice versa.
 	*/
-	REGISTER_CONST_LONG("PGGI\\TOOLBAR_ICONS"                     , GTK_TOOLBAR_ICONS                  );
-	REGISTER_CONST_LONG("PGGI\\TOOLBAR_TEXT"                      , GTK_TOOLBAR_TEXT                   );
-	REGISTER_CONST_LONG("PGGI\\TOOLBAR_BOTH"                      , GTK_TOOLBAR_BOTH                   );
-	REGISTER_CONST_LONG("PGGI\\TOOLBAR_BOTH_HORIZ"                , GTK_TOOLBAR_BOTH_HORIZ             );
+	REGISTER_CONST_LONG("PGGI\\TOOLBAR_ICONS"                      , GTK_TOOLBAR_ICONS                   );
+	REGISTER_CONST_LONG("PGGI\\TOOLBAR_TEXT"                       , GTK_TOOLBAR_TEXT                    );
+	REGISTER_CONST_LONG("PGGI\\TOOLBAR_BOTH"                       , GTK_TOOLBAR_BOTH                    );
+	REGISTER_CONST_LONG("PGGI\\TOOLBAR_BOTH_HORIZ"                 , GTK_TOOLBAR_BOTH_HORIZ              );
 	/*
 	* Determines the direction of a sort.
 	*/
-	REGISTER_CONST_LONG("PGGI\\SORT_ASCENDING"                    , GTK_SORT_ASCENDING                 );
-	REGISTER_CONST_LONG("PGGI\\SORT_DESCENDING"                   , GTK_SORT_DESCENDING                );
+	REGISTER_CONST_LONG("PGGI\\SORT_ASCENDING"                     , GTK_SORT_ASCENDING                  );
+	REGISTER_CONST_LONG("PGGI\\SORT_DESCENDING"                    , GTK_SORT_DESCENDING                 );
 
 
+	/** Cairo constants */
+	REGISTER_CONST_LONG("PGGI\\Cairo\\CONTENT_COLOR"               ,CAIRO_CONTENT_COLOR                  );
+	REGISTER_CONST_LONG("PGGI\\Cairo\\CONTENT_ALPHA"               ,CAIRO_CONTENT_ALPHA                  );
+	REGISTER_CONST_LONG("PGGI\\Cairo\\CONTENT_COLOR_ALPHA"         ,CAIRO_CONTENT_COLOR_ALPHA            );
+	
 	/* PGGI Signals Types */
 
 
-	REGISTER_CONST_LONG("PGGI\\SIGNAL_GWIDGET_DESTROY"            , gsignal_gwidget_destroy            );
-	REGISTER_CONST_LONG("PGGI\\SIGNAL_GWIDGET_DRAW"               , gsignal_gwidget_draw               );
-	REGISTER_CONST_LONG("PGGI\\SIGNAL_GWIDGET_KEY_PRESS_EVENT"    , gsignal_gwidget_key_press_event    );
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GWIDGET_DESTROY"             , gsignal_gwidget_destroy             );
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GWIDGET_DRAW"                , gsignal_gwidget_draw                );
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GWIDGET_KEY_PRESS_EVENT"     , gsignal_gwidget_key_press_event     );
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GWIDGET_KEY_RELEASE_EVENT"   , gsignal_gwidget_key_release_event   );
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GWIDGET_BUTTON_PRESS_EVENT"  , gsignal_gwidget_button_press_event  );
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GWIDGET_BUTTON_RELEASE_EVENT", gsignal_gwidget_button_release_event);
 
-	REGISTER_CONST_LONG("PGGI\\SIGNAL_GAPPLICATION_WINDOW_ADDED"  , gsignal_gapplication_window_added  );
-	REGISTER_CONST_LONG("PGGI\\SIGNAL_GAPPLICATION_WINDOW_REMOVED", gsignal_gapplication_window_removed);
-	REGISTER_CONST_LONG("PGGI\\SIGNAL_GAPPLICATION_STARTUP"       , gsignal_gapplication_startup       );
-	REGISTER_CONST_LONG("PGGI\\SIGNAL_GAPPLICATION_SHUTDOWN"      , gsignal_gapplication_shutdown      );
-	REGISTER_CONST_LONG("PGGI\\SIGNAL_GAPPLICATION_ACTIVATE"      , gsignal_gapplication_activate      );
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GAPPLICATION_WINDOW_ADDED"   , gsignal_gapplication_window_added   );
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GAPPLICATION_WINDOW_REMOVED" , gsignal_gapplication_window_removed );
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GAPPLICATION_STARTUP"        , gsignal_gapplication_startup        );
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GAPPLICATION_SHUTDOWN"       , gsignal_gapplication_shutdown       );
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GAPPLICATION_ACTIVATE"       , gsignal_gapplication_activate       );
 
-	REGISTER_CONST_LONG("PGGI\\SIGNAL_GCONTAINER_ADD"             , gsignal_gcontainer_add             );
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GCONTAINER_ADD"              , gsignal_gcontainer_add              );
 
-	REGISTER_CONST_LONG("PGGI\\SIGNAL_GMENUITEM_ACTIVATE"         , gsignal_gmenuitem_activate         );
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GMENUITEM_ACTIVATE"          , gsignal_gmenuitem_activate          );
 
-	REGISTER_CONST_LONG("PGGI\\SIGNAL_GCOMBO_BOX_CHANGED"         , gsignal_gcombo_box_changed         );
-	REGISTER_CONST_LONG("PGGI\\SIGNAL_GCOMBO_BOX_MOVE_ACTIVE"     , gsignal_gcombo_box_move_active     );
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GCOMBO_BOX_CHANGED"          , gsignal_gcombo_box_changed          );
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GCOMBO_BOX_MOVE_ACTIVE"      , gsignal_gcombo_box_move_active      );
 
-	REGISTER_CONST_LONG("PGGI\\SIGNAL_GTEXT_BUFFER_CHANGED"       , gsignal_gtext_buffer_changed       );
-	REGISTER_CONST_LONG("PGGI\\SIGNAL_STYLE_CONTEXT_CHANGED"      , gsignal_gstyle_context_changed     );
-	REGISTER_CONST_LONG("PGGI\\SIGNAL_GDIALOG_RESPONSE"           , gsignal_gdialog_response           );
-	REGISTER_CONST_LONG("PGGI\\SIGNAL_GDIALOG_CLOSE"              , gsignal_gdialog_close              );
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GTEXT_BUFFER_CHANGED"        , gsignal_gtext_buffer_changed        );
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_STYLE_CONTEXT_CHANGED"       , gsignal_gstyle_context_changed      );
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GDIALOG_RESPONSE"            , gsignal_gdialog_response            );
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GDIALOG_CLOSE"               , gsignal_gdialog_close               );
 
-	REGISTER_CONST_LONG("PGGI\\SIGNAL_GTREE_VIEW_COLUMN_CHANGED"  , gsignal_gtree_view_column_changed  );
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GTREE_VIEW_COLUMN_CHANGED"   , gsignal_gtree_view_column_changed   );
 
-	REGISTER_CONST_LONG("PGGI\\SIGNAL_GTREE_VIEW_COLUMN_CLICKED"  , gsignal_gtree_view_column_clicked  );
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GTREE_VIEW_COLUMN_CLICKED"   , gsignal_gtree_view_column_clicked   );
 
-	REGISTER_CONST_LONG("PGGI\\SIGNAL_GTREE_SELECTION_CHANGED"    , gsignal_gtree_selection_changed    );
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GTREE_SELECTION_CHANGED"     , gsignal_gtree_selection_changed     );
+
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GTOOL_BUTTON_CLICKED"        , gsignal_gtool_button_clicked        );
 
 
-	REGISTER_CONST_LONG("PGGI\\Pango\\SCALE"                      , PANGO_SCALE                        );
+	REGISTER_CONST_LONG("PGGI\\Pango\\SCALE"                       , PANGO_SCALE                         );
 	
 	// PGGI functions initialization
 
@@ -243,6 +253,7 @@ PHP_MINIT_FUNCTION(pggi){
 	gexception_init          (module_number);
 	gevent_init              (module_number);
 	gevent_key_init          (module_number);
+	gpixbuf_init             (module_number);
 
 	rgba_init                (module_number);
 
@@ -304,6 +315,9 @@ PHP_MINIT_FUNCTION(pggi){
 	gnotebook_init           (module_number);
 	gtool_item_init          (module_number);
 	gtoolbar_init            (module_number);
+	gtool_button_init        (module_number);
+
+	gdk_gwindow_init         (module_number);
 
 	return SUCCESS;
 }

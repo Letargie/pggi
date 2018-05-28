@@ -126,14 +126,25 @@ void gbutton_write_property(zval *object, zval *member, zval *value, void **cach
 		case IS_LONG :
 			tmp_l = Z_LVAL_P(value);
 			if(!strcmp(Z_STRVAL_P(member), GBUTTON_IMAGE_POSITION))
-				gtk_button_set_image_position(but, tmp_l);
-				/*switch(tmp_l){
-				TODO
-				}*/
+				switch(tmp_l){
+					case GTK_POS_LEFT  :
+					case GTK_POS_RIGHT :
+					case GTK_POS_TOP   :
+					case GTK_POS_BOTTOM:
+						gtk_button_set_image_position(but, tmp_l);
+						break;
+					default :
+						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the image position property. New value should be a POS_*");
+				}
 			else if(!strcmp(Z_STRVAL_P(member), GBUTTON_RELIEF))
-				gtk_button_set_relief(but, tmp_l);
-				/* TODO
-				*/
+				switch(tmp_l){
+					case GTK_RELIEF_NORMAL:
+					case GTK_RELIEF_NONE  :
+						gtk_button_set_relief(but, tmp_l);
+						break;
+					default :
+						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the relief property. New value should be a RELIEF_*");
+				}
 			else
 				gcontainer_write_property(object, member, value, cache_slot);
 			break;

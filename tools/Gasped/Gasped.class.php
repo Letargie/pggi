@@ -57,11 +57,14 @@ class Gasped{
 	 * @param $comments array the data of the comments
 	 * @return string the code php fo the class
 	 */
-	public function buildClass($className, $comments) {
+	public function buildClass($className, $comments=null) {
 		$result = '';
 		if( class_exists($className) ){
 			$refClass = new ReflectionClass($className);
-			$className = $refClass->getName();
+			$className = $refClass->getShortName();
+			$namespace = $refClass->getNamespaceName();
+			if($namespace != '')
+				$result.= "namespace {$namespace};\n";
 			if( isset($comments) &&
 				isset($comments["header"])){
 				$docLines = array();
@@ -71,7 +74,7 @@ class Gasped{
 			}
 			$result.= 'class '.$className.' ';
 			if( $refClass->getParentClass() ){
-				$result.= 'extends '.$refClass->getParentClass()->getName().' ';
+				$result.= 'extends \\'.$refClass->getParentClass()->getName().' ';
 			}
 			$result.= '{'.PHP_EOL;
 
@@ -238,15 +241,17 @@ class Gasped{
 			}
 
 			// classes
-			foreach( $refExtension->getClassNames() as $className ){
+			foreach( $refExtension->getClasses() as $class){
+				$className = $class->getName();
+				$name = $class->getShortName();
 				$classResult = "";
-				$classResult.= $this->buildClass($className, isset($comments) &&
+				$classResult.= $this->buildClass($className,isset($comments) &&
 															 isset($comments["classes"]) &&
 															 isset($comments["classes"][$className]) ? 
 															 $comments["classes"][$className] :
 															 NULL);
 				if($target != NULL){
-					$file = fopen("{$target}/{$className}.class.php", "w");
+					$file = fopen("{$target}/{$name}.class.php", "w");
 					if($file)
 						fwrite($file, $header.$classResult);
 				}

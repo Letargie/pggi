@@ -22,14 +22,34 @@ static int le_gcontainer;
 static zend_object_handlers gcontainer_object_handlers;
 static zend_class_entry * gcontainer_class_entry_ce;
 
+/*==========================================================================*/
+/**
+ * Get the PGGI\Container class entry
+ *
+ * @return zend_class_entry * The class entry
+ */
 zend_class_entry * gcontainer_get_class_entry(){
 	return gcontainer_class_entry_ce;
 }
 
+/*==========================================================================*/
+/**
+ * Get the PGGI\Container object handlers
+ *
+ * @return zend_object_handlers * The object handlers
+ */
 zend_object_handlers * gcontainer_get_object_handlers(){
 	return &gcontainer_object_handlers;
 }
 
+/*==========================================================================*/
+/**
+ * Add a zval in our container
+ * Needs to be done in order to keep references of contained objects
+ *
+ * @param gwidget_ptr intern the data structure of the container
+ * @param zval * data the data to put in the container
+ */
 void gcontainer_add_data(gwidget_ptr intern, zval * data){
 	zval * add_folder = zend_hash_index_find(Z_ARRVAL_P(&intern->data), GWIDGET_DATA_INDEX_GCONTAINER);
 	if(add_folder){
@@ -41,6 +61,12 @@ void gcontainer_add_data(gwidget_ptr intern, zval * data){
 /*****************/
 /* PHP FUNCTIONS */
 /*****************/
+
+
+/*==========================================================================*/
+/*
+ * The base class for Widgets that contains other widgets
+ */
 
 PHP_METHOD(GContainer, add){
 	ze_gwidget_object * data;

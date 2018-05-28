@@ -216,7 +216,7 @@ zend_declare_class_constant_long(gscreen_class_entry_ce, name, sizeof(name)-1, v
 
 void gscreen_init(int module_number){
 	zend_class_entry ce;
-	le_gscreen = zend_register_list_destructors_ex(gscreen_free_resource, NULL, "PGGI\\GScreen", module_number);
+	le_gscreen = zend_register_list_destructors_ex(gscreen_free_resource, NULL, "PGGI\\GDK\\Screen", module_number);
 
 	memcpy(&gscreen_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
 	gscreen_object_handlers.offset         = XtOffsetOf(ze_gscreen_object, std);
@@ -225,7 +225,7 @@ void gscreen_init(int module_number){
 	gscreen_object_handlers.read_property  = gscreen_read_property;
 	gscreen_object_handlers.get_properties = gscreen_get_properties;
 	gscreen_object_handlers.write_property = gscreen_write_property;
-	INIT_CLASS_ENTRY(ce, "PGGI\\GScreen", gscreen_class_functions);
+	INIT_CLASS_ENTRY(ce, "PGGI\\GDK\\Screen", gscreen_class_functions);
 	ce.create_object = gscreen_object_new;
 	gscreen_class_entry_ce = zend_register_internal_class(&ce);
 

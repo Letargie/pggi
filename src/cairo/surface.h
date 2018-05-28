@@ -21,12 +21,21 @@
 #include "../commons/hub.h"
 #include "exception.h"
 
+
+PGGI_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_surface_create_similar, 0, 3, pc_surface_get_class_entry(), 0)
+	ZEND_ARG_TYPE_INFO(0, content, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, width  , IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, height , IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+
 /*************************/
 /* Intern Data Structure */
 /*************************/
 
 typedef struct{
 	cairo_surface_t * intern;
+	int to_destroy;
 } * pc_surface_ptr, pc_surface_t;
 
 typedef struct{
@@ -72,6 +81,8 @@ static inline zend_object *php_surface_reverse_object(ze_surface_object *obj) {
 #define Z_SURFACE_P(zv) php_surface_fetch_object(Z_OBJ_P((zv)))
 
 zend_object *pc_surface_object_new(zend_class_entry *class_type);
+
+zend_object * pc_surface_ctor(zend_class_entry *ce, cairo_surface_t * surface, int to_destroy);
 
 void pc_surface_dtor(pc_surface_ptr intern);
 

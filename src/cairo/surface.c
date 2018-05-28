@@ -39,6 +39,7 @@ zend_object_handlers * pc_surface_get_object_handlers(){
 
 pc_surface_ptr pc_surface_new(){
 	pc_surface_ptr tor = ecalloc(1, sizeof(pc_surface_t));
+	tor->to_destroy = 0;
 	return tor;
 }
 
@@ -51,8 +52,18 @@ zend_object *pc_surface_object_new(zend_class_entry *class_type){
 	return &intern->std;
 }
 
+zend_object * pc_surface_ctor(zend_class_entry *ce, cairo_surface_t * surface, int to_destroy){
+	zend_object * tor = pc_surface_object_new(ce);
+	ze_surface_object * obj = php_surface_fetch_object(tor);
+	//obj->std.handlers = &gevent_object_handlers;
+	obj->surface_ptr =pc_surface_new();
+	obj->surface_ptr->intern = surface;
+	obj->surface_ptr->to_destroy = to_destroy;
+	return tor;
+}
+
 void pc_surface_dtor(pc_surface_ptr intern){
-	if (intern->intern){
+	if (intern->intern && intern->to_destroy){
 		cairo_surface_destroy(intern->intern);
 	}
 	efree(intern);
@@ -79,7 +90,35 @@ void pc_surface_free_resource(zend_resource *rsrc) {
 /* PHP Methods */
 /***************/
 
+
+SURFACE_METHOD(createSimilar){
+	ze_surface_object *surface_object;
+	zval * this = getThis();
+	long content, width, height;
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "lll", &content, &width, &height) == FAILURE)
+		return;
+	switch(content){
+		case CAIRO_CONTENT_COLOR       :
+		case CAIRO_CONTENT_ALPHA       :
+		case CAIRO_CONTENT_COLOR_ALPHA :
+			break;
+		default :
+			zend_throw_exception_ex(pc_exception_get(), 0, "The content needs to be a PGGI\\Cairo::CONTENT_*");
+			break;
+	}
+	surface_object = Z_SURFACE_P(this);
+	cairo_surface_t * s = surface_object->surface_ptr->intern;
+	cairo_surface_t * new = cairo_surface_create_similar(s, content, width, height);
+	pc_exception(cairo_surface_status(s));
+	zval * new_surface;
+	ZVAL_OBJ(new_surface, pc_surface_ctor(surface_object->std.ce, new, 1));  
+	pc_exception(cairo_surface_status(new));
+	RETURN_ZVAL(new_surface, 1, 0);
+}
+
+
 static const zend_function_entry pc_surface_class_functions[] = {
+	PHP_ME(Surface, createSimilar, arginfo_surface_create_similar, ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 
@@ -145,9 +184,5 @@ void pc_surface_init(int module_number){
 	ce.create_object = pc_surface_object_new;
 	surface_class_entry_ce = zend_register_internal_class(&ce);
 	surface_class_entry_ce->ce_flags |= ZEND_ACC_ABSTRACT;
-
-	SURFACE_CONSTANT("CONTENT_COLOR"      ,CAIRO_CONTENT_COLOR      );
-	SURFACE_CONSTANT("CONTENT_ALPHA"      ,CAIRO_CONTENT_ALPHA      );
-	SURFACE_CONSTANT("CONTENT_COLOR_ALPHA",CAIRO_CONTENT_COLOR_ALPHA);
 }
 

@@ -25,6 +25,15 @@
 #include "pattern.h"
 #include "../pango/layout.h"
 #include "../pango/context.h"
+#include "../gdk/gpixbuf.h"
+
+/**
+ * @brief PGGI\Cairo\Context is the main object used when drawing with cairo. 
+ * To draw with cairo, you create a Context, set the target surface, and drawing options,
+ * create shapes with functions like moveTo() and lineTo(), and then draw shapes with stroke() or fill().
+ *
+ * Contexts can be pushed to a stack via save(). They may then safely be changed, without losing the current state. Use restore() to restore to the saved state.
+ */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_arc, 0, 0, 5)
 	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
@@ -75,7 +84,7 @@ ZEND_END_ARG_INFO()
 
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_set_color, 0, 0, 1)
-	ZEND_ARG_OBJ_INFO(0, x, PGGI\\RGBA, 0)
+	ZEND_ARG_OBJ_INFO(0, x, PGGI\\GDK\\RGBA, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_set_source_rgba, 0, 0, 3)
@@ -112,6 +121,9 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_pc_context_update_layout, 0, 0, 1)
 	ZEND_ARG_OBJ_INFO(0, x, PGGI\\Pango\\Layout, 0)
 ZEND_END_ARG_INFO()
 
+PGGI_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_pc_context_get_target, 0, 0, "PGGI\\Cairo\\Surface", 0)
+ZEND_END_ARG_INFO()
+
 /*************************/
 /* Intern Data Structure */
 /*************************/
@@ -119,6 +131,7 @@ ZEND_END_ARG_INFO()
 typedef struct{
 	cairo_t * intern;
 	int to_destroy : 1;
+	zval * target;
 } * pc_context_ptr, pc_context_t;
 
 typedef struct{
@@ -134,6 +147,7 @@ typedef struct{
 #define CONTEXT_FILL_RULE  "fillRule"
 #define CONTEXT_LINE_CAP   "lineCap"
 #define CONTEXT_LINE_JOIN  "lineJoin"
+#define CONTEXT_OPERATOR   "operator"
 
 /*****************************/
 /* Class information getters */
@@ -141,7 +155,9 @@ typedef struct{
 
 /*==========================================================================*/
 /** 
- * get the class entry
+ * Get the PGGI\Cairo\Context class entry
+ *
+ * @return zend_class_entry * The class entry
  */
 zend_class_entry * pc_context_get_class_entry(void);
 
@@ -149,18 +165,41 @@ zend_class_entry * pc_context_get_class_entry(void);
 /** 
  * get the object handler
  */
-zend_object_handlers * pc_context_get_object_handlers();
+zend_object_handlers * pc_context_get_object_handlers(void);
 
 /****************************/
 /* Memory handling function */
 /****************************/
 
+/*==========================================================================*/
+/**
+ * Construct a new pc_context_ptr used to contains data for a PGGI\Cairo\Context
+ * @constructor
+ *
+ * @return pp_context_ptr A pointer to the newly created context
+ */
 pc_context_ptr pc_context_new(void);
 
+/*==========================================================================*/
+/**
+ * Retrieve the ze_context_object used to contains data for a PGGI\Cairo\Context from a zend object
+ *
+ * @param zend_object * obj The object
+ *
+ * @return ze_context_object 
+ */
 static inline ze_context_object *php_context_fetch_object(zend_object *obj) {
 	return (ze_context_object *)((char*)(obj) - XtOffsetOf(ze_context_object, std));
 }
 
+/*==========================================================================*/
+/**
+ * from a ze_context_object * retrieve the zend object that it contains
+ *
+ * @param ze_context_object * obj The object
+ *
+ * @return zend_object * the object
+ */
 static inline zend_object *php_context_reverse_object(ze_context_object *obj) {
 	return (zend_object *)((char*)(obj) + sizeof(pc_context_ptr));
 }

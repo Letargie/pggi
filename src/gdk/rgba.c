@@ -195,7 +195,7 @@ DECLARE_CLASS_PROPERTY(rgba_class_entry_ce, name)
 
 void rgba_init(int module_number){
 	zend_class_entry ce;
-	le_rgba = zend_register_list_destructors_ex(rgba_free_resource, NULL, "PGGI\\RGBA", module_number);
+	le_rgba = zend_register_list_destructors_ex(rgba_free_resource, NULL, "PGGI\\GDK\\RGBA", module_number);
 
 	memcpy(&rgba_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
 	rgba_object_handlers.offset         = XtOffsetOf(ze_rgba_object, std);
@@ -204,7 +204,7 @@ void rgba_init(int module_number){
 	rgba_object_handlers.read_property  = rgba_read_property;
 	rgba_object_handlers.get_properties = rgba_get_properties;
 	rgba_object_handlers.write_property = rgba_write_property;
-	INIT_CLASS_ENTRY(ce, "PGGI\\RGBA", rgba_class_functions);
+	INIT_CLASS_ENTRY(ce, "PGGI\\GDK\\RGBA", rgba_class_functions);
 	ce.create_object = rgba_object_new;
 	rgba_class_entry_ce = zend_register_internal_class(&ce);
 
