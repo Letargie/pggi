@@ -336,7 +336,6 @@ PHP_MINFO_FUNCTION(pggi){
 		php_info_print_table_row(2, "PGGI version"           , PGGI_VERSION );
 		php_info_print_table_row(2, "Gtk compilation version", bufferC      );
 		php_info_print_table_row(2, "Gtk runtime version"    , bufferL      );
-		php_info_print_table_row(2, "Git reference"          , "$Id:  $"    );
 	}
 	php_info_print_table_end();
 }
