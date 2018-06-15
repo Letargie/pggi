@@ -10,8 +10,8 @@
 */
 
 
-#ifndef __GWINDOW_DEF__
-#define __GWINDOW_DEF__
+#ifndef __APPLICATONS_GWINDOW_DEF__
+#define __APPLICATONS_GWINDOW_DEF__
 
 #include <gtk/gtk.h>
 #include "php.h"
