@@ -117,7 +117,7 @@ GPIXBUF_METHOD(createFromFile){
 		pix = gdk_pixbuf_new_from_file_at_scale (filename, width, height, preserve_ratio, &error);
 	}
 	if(!pix){
-		zend_throw_exception_ex(pggi_exception_get(), 0, error->message);
+		zend_throw_exception_ex(pggi_exception_get(), 0, "%s", error->message);
 		return;
 	}
 	zval * new_pixbuf;
