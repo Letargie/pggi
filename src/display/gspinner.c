@@ -66,7 +66,7 @@ PHP_METHOD(GSpinner, isActive){
 	this = Z_GWIDGET_P(getThis());
 	GValue tmp = G_VALUE_INIT;
 	g_value_init (&tmp, G_TYPE_BOOLEAN);
-	g_object_get(G_OBJECT(this->widget_ptr->intern),"active", &tmp);
+	g_object_get(G_OBJECT(this->widget_ptr->intern), "active", &tmp, NULL);
 	RETURN_BOOL(g_value_get_boolean(&tmp));
 }
 
