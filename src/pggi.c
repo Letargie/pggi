@@ -231,6 +231,7 @@ PHP_MINIT_FUNCTION(pggi){
 
 	REGISTER_CONST_LONG("PGGI\\SIGNAL_GTOOL_BUTTON_CLICKED"        , gsignal_gtool_button_clicked        );
 
+	REGISTER_CONST_LONG("PGGI\\SIGNAL_GBUTTON_CLICKED"             , gsignal_gbutton_clicked             );
 
 	REGISTER_CONST_LONG("PGGI\\Pango\\SCALE"                       , PANGO_SCALE                         );
 	
@@ -268,6 +269,7 @@ PHP_MINIT_FUNCTION(pggi){
 	gwindow_init             (module_number);
 	gbox_init                (module_number);
 	gbuttonbox_init          (module_number);
+	gfixed_init              (module_number);
 
 	gbutton_init             (module_number);
 

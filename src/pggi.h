@@ -34,6 +34,7 @@
 #include "containers/gbox.h"
 #include "buttons/gbutton.h"
 #include "containers/gbuttonbox.h"
+#include "containers/gfixed.h"
 #include "abstracts/gmenushell.h"
 #include "menus/gmenubar.h"
 #include "menus/gmenu.h"

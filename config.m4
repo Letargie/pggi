@@ -35,6 +35,7 @@ if test "$PHP_PGGI" != "no"; then
 		src/containers/gbuttonbox.c        \
 		src/containers/gcombobox.c         \
 		src/containers/gcomboboxtext.c     \
+		src/containers/gfixed.c            \
 		src/containers/gnotebook.c         \
 		src/display/gdrawingarea.c         \
 		src/display/gimage.c               \

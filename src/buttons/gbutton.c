@@ -64,8 +64,36 @@ PHP_METHOD(GButton, __construct){
 	g_signal_connect(widget->widget_ptr->intern, "destroy", G_CALLBACK (widget_destructed), widget);
 }
 
+
+void gbutton_func_clicked(GtkWidget * button, gpointer data){
+	zval args[2];
+	gwidget_function(data, gsignal_gbutton_clicked, args, 2);
+}
+
+void gbutton_on(long val,ze_gwidget_object * ze_obj, zval * function, zval * param){
+	switch(val){
+		case gsignal_gbutton_clicked :
+			gwidget_adding_function(val, GSIGNAL_GBUTTON_CLICKED, G_CALLBACK(gbutton_func_clicked), ze_obj, function, param);
+			break;
+		default :
+			gcontainer_on(val, ze_obj, function, param);
+	}
+}
+
+PHP_METHOD(GButton, on){
+	zval * function, * this, *param = NULL;
+	long val;
+	ze_gwidget_object *ze_obj = NULL;
+	if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "lz|z", &val ,&function, &param) == FAILURE)
+		return;
+	this = getThis();
+	ze_obj = Z_GWIDGET_P(this);
+	gbutton_on(val, ze_obj, function, param);
+}
+
 static const zend_function_entry gbutton_class_functions[] = {
 	PHP_ME(GButton, __construct, arginfo_pggi_void, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	PHP_ME(GButton, on         , arginfo_pggi_on  , ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 

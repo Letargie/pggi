@@ -2,25 +2,20 @@
 namespace PGGI;
 chdir(__DIR__);
 
-function shutdown($app){
-	echo("fermeture\n");
-}
-
-function starting(GApplication $app){
-	echo "starting\n";
-}
-
-function activate($app){
+function activate($app, $data){
 	echo "activate\n";
 	$w = new GWindow($app, "example button");
 	$w->setDefaultSize(200, 200);
 	$button = new GButton("hey !");
 	$w->add($button);
+	$button->on(SIGNAL_GBUTTON_CLICKED, function($button, $parent){
+var_dump($parent);
+		$dialog = new GMessageDialog($parent, GDialog::FLAG_MODAL, GMessageDialog::MESSAGE_INFO, GMessageDialog::BUTTONS_OK, 'You\'ve clicked on the button !');
+		$dialog->run();
+	}, $w);
 	$w->showAll();
 }
 
 $a = new GApplication();
-$a->on(SIGNAL_GAPPLICATION_SHUTDOWN,"PGGI\\shutdown");
-$a->on(SIGNAL_GAPPLICATION_STARTUP,"PGGI\\starting");
 $a->on(SIGNAL_GAPPLICATION_ACTIVATE,"PGGI\\activate");
 $a->run();

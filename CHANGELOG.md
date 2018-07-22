@@ -4,17 +4,27 @@ All notable changes to this project will be documented in this file.
 For now as the extension in its early development phase, the api will change a lot.
 
 ## [Unreleased] 0.4.0
-
+### Added
+	-new classes
+		-GFixed
+	-clicked event for GButton
+### Bugfixed
+	- gwindow_init implicit-function-declaration (issue #7)
+	- src/display/gspinner.c:69:2: warning: missing sentinel in functio… (issue #8)
+	- duplicated macro name (issue #9)
+	- src/gdk/gpixbuf.c:120:3: error: format not a string literal and … (issue #11)
 ## 0.3.0
+* Mon May 28 2017 Valentin Collet <valentin@famillecollet.com> 0.3.0
 ### Added
 	-mouse event handling
 	-new classes
-	-changing the file rights
 		-GToolButton
 		-GDK\GWindow
 		-GDK\GPixbuf
+	-changing the file rights
 
 ## 0.2.0
+* Sat November 11 2017 Valentin Collet <valentin@famillecollet.com> 0.2.0
 ### Added
 	-css handling
 	-key event handling

@@ -9,6 +9,9 @@
   +-----------------------------------------------------------+
 */
 
+#ifndef __PGGI_HUB_DEF__
+#define __PGGI_HUB_DEF__
+
 
 #if PHP_VERSION_ID >= 70200
 
@@ -25,9 +28,6 @@
 
 #endif
 
-
-#ifndef __PGGI_HUB_DEF__
-#define __PGGI_HUB_DEF__
 
 /**
  * This file is meant to provide common informations for all our classes
@@ -110,6 +110,8 @@ enum{
 
 	gsignal_gcontainer_add,
 
+	gsignal_gbutton_clicked,
+
 	gsignal_gmenuitem_activate,
 
 	gsignal_gcombo_box_changed,
@@ -170,6 +172,8 @@ enum{
 #define GSIGNAL_GENTRY_ACTIVATE              "activate"
 
 #define GSIGNAL_GTOOL_BUTTON_CLICKED         "clicked"
+
+#define GSIGNAL_GBUTTON_CLICKED              "clicked"
 
 /****************************/
 /* Utils parsing parameters */

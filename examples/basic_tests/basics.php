@@ -3,7 +3,7 @@
 namespace PGGI;
 
 function shutdown($app){
-	echo("fermeture\n");
+	echo("closing\n");
 }
 
 function starting(GApplication $app){
