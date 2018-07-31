@@ -28,7 +28,11 @@ PGGI supports GTK+ 3.10 or greater (It should work with previous versions or GTK
 
 ### Installing
 
-For now you have to install it manually.
+For linux users a .rpm is available in the [remi repository](https://blog.remirepo.net/pages/Config-en) (link to configure it)
+You can also download the rpm directly : https://rpms.remirepo.net/SRPMS/ under php-pggi-x.x.x-x.remi.src.rpm
+Many many thanks to him.
+
+If you can't install a .rpm you'll have to install it manually :
 
 In terminal move to the pggi directory and run.
 
