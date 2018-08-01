@@ -174,12 +174,12 @@ GTREE_VIEW_COLUMN_METHOD(on){
 	}
 }
 
-GTREE_VIEW_COLUMN_METHOD(addAttribute){
+GTREE_VIEW_COLUMN_METHOD(addCellRendererText){
 	ze_gtree_view_column_object *ze_obj = NULL;
 	zval * self = getThis();
 	zval * renderer;
-	long attribute, col;
-	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "zll", &renderer, &attribute, &col) == FAILURE)
+	long col;
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "Ol", &renderer, gcell_renderer_get_class_entry(), &col) == FAILURE)
 		return;
 	if(self){
 		ze_obj = Z_GTREE_VIEW_COLUMN_P(self);
@@ -190,9 +190,9 @@ GTREE_VIEW_COLUMN_METHOD(addAttribute){
 }
 
 static const zend_function_entry gtree_view_column_class_functions[] = {
-	PHP_ME(GTreeViewColumn, on          , arginfo_pggi_on                        , ZEND_ACC_PUBLIC)
-	PHP_ME(GTreeViewColumn, __construct , arginfo_pggi_void                      , ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
-	PHP_ME(GTreeViewColumn, addAttribute, arginfo_gtree_view_column_add_attribute, ZEND_ACC_PUBLIC)
+	PHP_ME(GTreeViewColumn, on                 , arginfo_pggi_on                                 , ZEND_ACC_PUBLIC)
+	PHP_ME(GTreeViewColumn, __construct        , arginfo_pggi_void                               , ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	PHP_ME(GTreeViewColumn, addCellRendererText, arginfo_gtree_view_column_add_cell_renderer_text, ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 

@@ -56,7 +56,7 @@ PHP_METHOD(GButton, __construct){
 				widget->widget_ptr->intern = gtk_button_new_from_icon_name(ZSTR_VAL(label), type);
 				break;
 			default :
-				RETURN_NULL();
+				zend_throw_exception_ex(pggi_exception_get(), 0, "the type of the button is invalid, needs to be a GButton:: Constant");
 		}
 	}else
 		widget->widget_ptr->intern = gtk_button_new();

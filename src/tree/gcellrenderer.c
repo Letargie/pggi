@@ -54,7 +54,7 @@ zend_object *gcell_renderer_object_new(zend_class_entry *class_type){
 
 void gcell_renderer_dtor(gcell_renderer_ptr intern){
 	if(intern->intern){	
-		g_object_unref(intern->intern);
+		//g_object_unref(intern->intern);
 	}
 	zend_hash_destroy(Z_ARRVAL_P(&intern->signals));
 	efree(intern);
@@ -225,9 +225,9 @@ void gcell_renderer_write_property(zval *object, zval *member, zval *value, void
 	}
 }
 
-/************************************/
+/**************************************/
 /* GCellRenderer Class Initialization */
-/************************************/
+/**************************************/
 
 #define DECLARE_GCELL_RENDERER_PROP(name) \
 DECLARE_CLASS_PROPERTY(gcell_renderer_class_entry_ce, name)

@@ -70,7 +70,7 @@ void gcell_renderer_text_init(int module_number){
 	memcpy(&gcell_renderer_text_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
 	INIT_CLASS_ENTRY(ce, "PGGI\\GCellRendererText", gcell_renderer_text_class_functions);
 	ce.create_object = gcell_renderer_object_new;
-	gcell_renderer_text_class_entry_ce = zend_register_internal_class(&ce);
+	gcell_renderer_text_class_entry_ce = zend_register_internal_class_ex(&ce, gcell_renderer_get_class_entry());
 
 }
 

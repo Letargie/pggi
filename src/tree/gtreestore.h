@@ -22,6 +22,11 @@
 #include "../commons/hub.h"
 #include "gtreeiter.h"
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_gtree_store_construct, 0, 0, 1)
+	ZEND_ARG_TYPE_INFO(0, length, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+
 ZEND_BEGIN_ARG_INFO_EX(arginfo_gtree_store_remove, 0, 0, 1)
 	ZEND_ARG_INFO(0, iter)
 ZEND_END_ARG_INFO()

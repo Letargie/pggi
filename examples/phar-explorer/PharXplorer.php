@@ -22,7 +22,7 @@ class PharReader{
 			$window,
 			$phar,
 			$treeSelection,
-			$app;
+			$app, $column, $cell;
 
 
 	function __construct($app){
@@ -62,15 +62,18 @@ class PharReader{
 		$item->submenu = $helpMenu;
 		$bar->add($item);
 
-		$this->tree = new GTreeStore();
+		$this->tree = new GTreeStore(1);
 		$this->view = new GTreeView();
 		$this->treeSelection = $this->view->getSelection();
 		$this->treeSelection->mode = SELECTION_MULTIPLE;
-		$column = new GTreeViewColumn();
-		$column->title = "Files";
-		$cell = new GCellRendererText();
-		$column->addAttribute($cell, 0, 0);
-		$this->view->appendColumn($column);
+
+		$this->column = new GTreeViewColumn();
+		$this->column->title = "Files";
+		$this->cell = new GCellRendererText();
+
+		$this->column->addCellRendererText($this->cell, 0);
+
+		$this->view->appendColumn($this->column);
 		$this->view->model = $this->tree;
 		$scroll = new GScrollWindow();
 		$scroll->add($this->view);

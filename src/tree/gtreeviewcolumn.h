@@ -22,9 +22,8 @@
 #include "../commons/hub.h"
 #include "gcellrenderer.h"
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_gtree_view_column_add_attribute, 0, 0, 3)
-	ZEND_ARG_INFO(0, renderer)
-	ZEND_ARG_INFO(0, attribute)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_gtree_view_column_add_cell_renderer_text, 0, 0, 2)
+	ZEND_ARG_OBJ_INFO(0, renderer, PGGI\\GCellRenderer, 0)
 	ZEND_ARG_INFO(0, col)
 ZEND_END_ARG_INFO()
 

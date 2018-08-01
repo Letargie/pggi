@@ -83,11 +83,16 @@ void gtree_store_free_resource(zend_resource *rsrc) {
 GTREE_STORE_METHOD(__construct){
 	ze_gtree_store_object *ze_obj = NULL;
 	zval * self = getThis();
-	if(pggi_parse_method_parameters_none_throw(self) == FAILURE)
+	long length;
+	if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "l", &length) == FAILURE)
 		return;
 	ze_obj = Z_GTREE_STORE_P(self);
 	ze_obj->tree_store_ptr = gtree_store_new();
-	ze_obj->tree_store_ptr->intern = gtk_tree_store_new(1, G_TYPE_STRING);
+	GType * types = malloc(length * sizeof(GType));
+	for(int i = 0; i < length; ++i){
+		types[i] = G_TYPE_STRING;
+	}
+	ze_obj->tree_store_ptr->intern = gtk_tree_store_newv(length, types);
 }
 
 GTREE_STORE_METHOD(clear){
@@ -193,7 +198,7 @@ GTREE_STORE_METHOD(getIterFirst){
 }
 
 static const zend_function_entry gtree_store_class_functions[] = {
-	PHP_ME(GTreeStore, __construct , arginfo_pggi_void              , ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	PHP_ME(GTreeStore, __construct , arginfo_gtree_store_construct  , ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
 	PHP_ME(GTreeStore, clear       , arginfo_pggi_void              , ZEND_ACC_PUBLIC)
 	PHP_ME(GTreeStore, appendRow   , arginfo_gtree_store_pend       , ZEND_ACC_PUBLIC)
 	PHP_ME(GTreeStore, prepend     , arginfo_gtree_store_pend       , ZEND_ACC_PUBLIC)

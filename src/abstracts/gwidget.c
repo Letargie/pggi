@@ -420,7 +420,7 @@ GWIDGET_METHOD(setSizeRequest){
 	ze_gwidget_object *ze_obj = NULL;
 	zval * self = getThis();
 	long width, height;
-	if(zend_parse_parameters_throw(ZEND_NUM_ARGS() TSRMLS_CC, "ll", &width, &height) == FAILURE)
+	if(zend_parse_parameters_throw(ZEND_NUM_ARGS(), "ll", &width, &height) == FAILURE)
 		return;
 	ze_obj = Z_GWIDGET_P(self);
 	gtk_widget_set_size_request(ze_obj->widget_ptr->intern, width, height);
