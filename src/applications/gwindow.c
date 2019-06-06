@@ -194,7 +194,7 @@ HashTable *gwindow_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gwindow_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gwindow_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
 	int tmp_b;
@@ -206,7 +206,7 @@ void gwindow_write_property(zval *object, zval *member, zval *value, void **cach
 			if(!strcmp(member_val, GWINDOW_TITLE))
 				gtk_window_set_title(win, Z_STRVAL_P(value));
 			else
-				gcontainer_write_property(object, member, value, cache_slot);
+				PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
 			break;
 		case IS_TRUE :
 		case IS_FALSE :
@@ -228,11 +228,12 @@ void gwindow_write_property(zval *object, zval *member, zval *value, void **cach
 			else if(!strcmp(member_val, GWINDOW_ACCEPT_FOCUS))
 				gtk_window_set_accept_focus(win, tmp_b);
 			else
-				gcontainer_write_property(object, member, value, cache_slot);
+				PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
 			break;
 		default :
-			gcontainer_write_property(object, member, value, cache_slot);
+			PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
 	}
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 /********************************/

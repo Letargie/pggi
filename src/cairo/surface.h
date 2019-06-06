@@ -137,7 +137,7 @@ HashTable *pc_surface_get_properties(zval *object);
 /** 
  * write property handling function
  */
-void pc_surface_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE pc_surface_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 /************************/
 /* Class Initialization */

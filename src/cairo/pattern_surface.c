@@ -70,7 +70,7 @@ static const zend_function_entry pc_pattern_surface_class_functions[] = {
 };
 
 
-void pc_pattern_surface_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE pc_pattern_surface_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_pattern_object * intern = Z_PATTERN_P(object);
 	pc_pattern_ptr c = intern->pattern_ptr;
 	long tmp_l;
@@ -89,16 +89,17 @@ void pc_pattern_surface_write_property(zval *object, zval *member, zval *value, 
 						break;
 					default:
 						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the extend property, needs to be a Pattern::EXTEND_*");
-						return;
+						PHP_WRITE_PROP_HANDLER_RETURN(value);
 						break;
 				}
 			}else
-				std_object_handlers.write_property(object, member, value, cache_slot);
+				PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
 			break;
 		default:
-			std_object_handlers.write_property(object, member, value, cache_slot);
+			PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
 	}
 	pc_exception(cairo_pattern_status(c->intern));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 /********************************/

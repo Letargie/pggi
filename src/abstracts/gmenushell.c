@@ -117,7 +117,7 @@ HashTable *gmenushell_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gmenushell_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gmenushell_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
 	int tmp_b;
@@ -131,11 +131,12 @@ void gmenushell_write_property(zval *object, zval *member, zval *value, void **c
 			if(!strcmp(member_val, GMENUSHELL_TAKE_FOCUS))
 				gtk_menu_shell_set_take_focus(menu, tmp_b);
 			else
-				gcontainer_write_property(object, member, value, cache_slot);
+				PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
 			break;
 		default :
-			gcontainer_write_property(object, member, value, cache_slot);
+			PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
 	}
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 /***********************************/

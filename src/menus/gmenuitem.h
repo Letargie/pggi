@@ -63,7 +63,7 @@ HashTable *gmenuitem_get_properties(zval *object);
 /** 
  * Write property handling function
  */
-void gmenuitem_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE gmenuitem_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 
 /***************/

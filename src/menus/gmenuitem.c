@@ -163,7 +163,7 @@ HashTable *gmenuitem_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gmenuitem_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gmenuitem_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
 	ze_gwidget_object * tmp_obj;
@@ -178,7 +178,7 @@ void gmenuitem_write_property(zval *object, zval *member, zval *value, void **ca
 			else if(!strcmp(member_val, GMENUITEM_ACCEL_PATH))
 				gtk_menu_item_set_accel_path(menu, Z_STRVAL_P(value));
 			else
-				gcontainer_write_property(object, member, value, cache_slot);
+				PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
 			break;
 		case IS_FALSE :
 		case IS_TRUE  :
@@ -188,24 +188,25 @@ void gmenuitem_write_property(zval *object, zval *member, zval *value, void **ca
 			else if(!strcmp(member_val, GMENUITEM_RESERVE_INDICATOR))
 				gtk_menu_item_set_reserve_indicator(menu, tmp_b);
 			else
-				gcontainer_write_property(object, member, value, cache_slot);
+				PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
 			break;
 		case IS_OBJECT :
 				if(!strcmp(member_val, GMENUITEM_SUBMENU)){
 					tmp_obj = Z_GWIDGET_P(value);
 					if(!tmp_obj){
 						zend_throw_exception_ex(pggi_exception_get(), 0, "the submenu need to be a widget");
-						return ;
+						PHP_WRITE_PROP_HANDLER_RETURN(value);
 					}
 					w = tmp_obj->widget_ptr;
-					std_object_handlers.write_property(object, member, value, cache_slot);
+					PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
 					gtk_menu_item_set_submenu(menu, w->intern);
 				}else
-					gcontainer_write_property(object, member, value, cache_slot);
+					PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
 			break;
 		default :
-			gcontainer_write_property(object, member, value, cache_slot);
+			PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
 	}
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 /**********************************/

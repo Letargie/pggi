@@ -526,7 +526,7 @@ HashTable *gwidget_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gwidget_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gwidget_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
 	long tmp_l;
@@ -587,7 +587,7 @@ void gwidget_write_property(zval *object, zval *member, zval *value, void **cach
 						break;
 				}
 			else
-				std_object_handlers.write_property(object, member, value, cache_slot);
+				PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
 			break;
 		case IS_FALSE :
 		case IS_TRUE :
@@ -613,14 +613,14 @@ void gwidget_write_property(zval *object, zval *member, zval *value, void **cach
 			else if(!strcmp(member_val, GWIDGET_SENSITIVE))
 				gtk_widget_set_sensitive(w->intern, tmp_b);
 			else
-				std_object_handlers.write_property(object, member, value, cache_slot);
+				PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
 			break;
 		case IS_STRING :
 			tmp_s = Z_STRVAL_P(value);
 			if(!strcmp(Z_STRVAL_P(member), GWIDGET_NAME))
 				gtk_widget_set_name(w->intern, tmp_s);
 			else
-				std_object_handlers.write_property(object, member, value, cache_slot);
+				PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
 			break;
 		case IS_DOUBLE :
 			tmp_d = Z_DVAL_P(value);
@@ -630,11 +630,12 @@ void gwidget_write_property(zval *object, zval *member, zval *value, void **cach
 				else
 				zend_throw_exception_ex(pggi_exception_get(), 0, "the opacity property should be between 0 and 1");
 			}else
-				std_object_handlers.write_property(object, member, value, cache_slot);
+				PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
 			break;
 		default:
-			std_object_handlers.write_property(object, member, value, cache_slot);
+			PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
 	}
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 /********************************/

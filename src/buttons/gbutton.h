@@ -35,7 +35,7 @@ PHP_METHOD(GButton, __construct);
 
 zval *gbutton_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv);
 HashTable *gbutton_get_properties(zval *object);
-void gbutton_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE gbutton_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 void gbutton_init(int module_number);
 

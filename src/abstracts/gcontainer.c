@@ -131,7 +131,7 @@ HashTable *gcontainer_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gcontainer_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gcontainer_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
 	long tmp_l;
@@ -143,11 +143,12 @@ void gcontainer_write_property(zval *object, zval *member, zval *value, void **c
 			if(!strcmp(member_val, GCONTAINER_BORDER_WIDTH))
 				gtk_container_set_border_width(GTK_CONTAINER(w->intern), tmp_l);
 			else
-				gwidget_write_property(object, member, value, cache_slot);
+				PHP_WRITE_PROP_HANDLER_RETURN(gwidget_write_property(object, member, value, cache_slot));
 			break;
 		default:
-			gwidget_write_property(object, member, value, cache_slot);
+			PHP_WRITE_PROP_HANDLER_RETURN(gwidget_write_property(object, member, value, cache_slot));
 	}
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 

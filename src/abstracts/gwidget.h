@@ -219,7 +219,7 @@ HashTable *gwidget_get_properties(zval *object);
 /** 
  * write property handling function
  */
-void gwidget_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE gwidget_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 /********************************/
 /* GWidget Class Initialization */

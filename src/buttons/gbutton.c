@@ -135,7 +135,7 @@ HashTable *gbutton_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gbutton_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gbutton_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	ze_gwidget_object * tmp_widget;
 	gwidget_ptr w = intern->widget_ptr;
@@ -149,7 +149,7 @@ void gbutton_write_property(zval *object, zval *member, zval *value, void **cach
 			if(!strcmp(Z_STRVAL_P(member), GBUTTON_LABEL))
 				gtk_button_set_label(but, Z_STRVAL_P(value));
 			else
-				gcontainer_write_property(object, member, value, cache_slot);
+				PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
 			break;
 		case IS_LONG :
 			tmp_l = Z_LVAL_P(value);
@@ -174,7 +174,7 @@ void gbutton_write_property(zval *object, zval *member, zval *value, void **cach
 						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the relief property. New value should be a RELIEF_*");
 				}
 			else
-				gcontainer_write_property(object, member, value, cache_slot);
+				PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
 			break;
 		case IS_TRUE  :
 		case IS_FALSE :
@@ -184,7 +184,7 @@ void gbutton_write_property(zval *object, zval *member, zval *value, void **cach
 			else if(!strcmp(member_val, GBUTTON_USE_UNDERLINE))
 				gtk_button_set_use_underline(but, tmp_b);
 			else
-				gcontainer_write_property(object, member, value, cache_slot);
+				PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
 			break;
 		case IS_OBJECT :
 				if(!strcmp(member_val, GBUTTON_IMAGE)){
@@ -194,14 +194,15 @@ void gbutton_write_property(zval *object, zval *member, zval *value, void **cach
 						return ;
 					}
 					w = tmp_widget->widget_ptr;
-					std_object_handlers.write_property(object, member, value, cache_slot);
 					gtk_button_set_image(but, w->intern);
+					PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
 				}else
-					gcontainer_write_property(object, member, value, cache_slot);
+					PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
 			break;
 		default :
-			gcontainer_write_property(object, member, value, cache_slot);
+			PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
 	}
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 

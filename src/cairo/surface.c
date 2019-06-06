@@ -146,7 +146,7 @@ HashTable *pc_surface_get_properties(zval *object){
 	return zend_std_get_properties(object);
 }
 
-void pc_surface_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE pc_surface_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	/*ze_surface_object * intern = Z_SURFACE_P(object);
 	pc_surface_ptr c = intern->surface_ptr;
 
@@ -154,7 +154,7 @@ void pc_surface_write_property(zval *object, zval *member, zval *value, void **c
 	char * member_val = Z_STRVAL_P(member);*/
 	switch(Z_TYPE_P(value)){
 		default:
-			std_object_handlers.write_property(object, member, value, cache_slot);
+			PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
 	}
 }
 

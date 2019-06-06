@@ -28,6 +28,15 @@
 
 #endif
 
+#if PHP_VERSION_ID >= 70400
+#	define PHP_WRITE_PROP_HANDLER_TYPE zval *
+#	define PHP_WRITE_PROP_HANDLER_RETURN(v) return v
+#else
+#	define PHP_WRITE_PROP_HANDLER_TYPE void
+#	define PHP_WRITE_PROP_HANDLER_RETURN(v) (void)v; return
+#endif
+
+
 
 /**
  * This file is meant to provide common informations for all our classes
