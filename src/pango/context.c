@@ -256,61 +256,61 @@ HashTable *pp_context_get_properties(zval *object){
  * @param zval * value       The value we want to use to set the property
  * @param void ** cache_slot The cache slot
  */
-void pp_context_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE pp_context_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_pp_context_object * intern = Z_PP_CONTEXT_P(object);
 	pp_context_ptr c = intern->context_ptr;
 	long tmp_l;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
-	switch(Z_TYPE_P(value)){
-		case IS_LONG :
-			tmp_l = Z_LVAL_P(value);
-			if(!strcmp(member_val, CONTEXT_BASE_DIR)){
-				switch(tmp_l){
-					case PANGO_DIRECTION_LTR     :
-					case PANGO_DIRECTION_RTL     :
-					case PANGO_DIRECTION_WEAK_LTR:
-					case PANGO_DIRECTION_WEAK_RTL:
-					case PANGO_DIRECTION_NEUTRAL :
-						pango_context_set_base_dir(c->intern, tmp_l);
-						break;
-					default:
-						zend_throw_exception_ex(pp_exception_get(), 0, "Can't change the baseDir property, needs to be a Context::DIRECTION_*");
-						return;
-						break;
-				}
-			}else if(!strcmp(member_val, CONTEXT_BASE_GRAVITY)){
-				switch(tmp_l){
-					case PANGO_GRAVITY_SOUTH:
-					case PANGO_GRAVITY_EAST :
-					case PANGO_GRAVITY_NORTH:
-					case PANGO_GRAVITY_WEST :
-					case PANGO_GRAVITY_AUTO :
-						pango_context_set_base_gravity(c->intern, tmp_l);
-						break;
-					default:
-						zend_throw_exception_ex(pp_exception_get(), 0, "Can't change the baseGravity property, needs to be a Context::GRAVITY_*");
-						return;
-						break;
-				}
-			}else if(!strcmp(member_val, CONTEXT_GRAVITY_HINT)){
-				switch(tmp_l){
-					case PANGO_GRAVITY_HINT_NATURAL:
-					case PANGO_GRAVITY_HINT_STRONG :
-					case PANGO_GRAVITY_HINT_LINE   :
-						pango_context_set_gravity_hint(c->intern, tmp_l);
-						break;
-					default:
-						zend_throw_exception_ex(pp_exception_get(), 0, "Can't change the gravityHint property, needs to be a Context::GRAVITY_HINT_*");
-						return;
-						break;
-				}
-			}else
-				std_object_handlers.write_property(object, member, value, cache_slot);
-			break;
-		default:
-			std_object_handlers.write_property(object, member, value, cache_slot);
-	}
+	if(!strcmp(member_val, CONTEXT_BASE_DIR)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		switch(tmp_l){
+			case PANGO_DIRECTION_LTR     :
+			case PANGO_DIRECTION_RTL     :
+			case PANGO_DIRECTION_WEAK_LTR:
+			case PANGO_DIRECTION_WEAK_RTL:
+			case PANGO_DIRECTION_NEUTRAL :
+				pango_context_set_base_dir(c->intern, tmp_l);
+				break;
+			default:
+				zend_throw_exception_ex(pp_exception_get(), 0, "Can't change the baseDir property, needs to be a Context::DIRECTION_*");
+				return;
+				break;
+		}
+	}else if(!strcmp(member_val, CONTEXT_BASE_GRAVITY)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		switch(tmp_l){
+			case PANGO_GRAVITY_SOUTH:
+			case PANGO_GRAVITY_EAST :
+			case PANGO_GRAVITY_NORTH:
+			case PANGO_GRAVITY_WEST :
+			case PANGO_GRAVITY_AUTO :
+				pango_context_set_base_gravity(c->intern, tmp_l);
+				break;
+			default:
+				zend_throw_exception_ex(pp_exception_get(), 0, "Can't change the baseGravity property, needs to be a Context::GRAVITY_*");
+				return;
+				break;
+		}
+	}else if(!strcmp(member_val, CONTEXT_GRAVITY_HINT)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		switch(tmp_l){
+			case PANGO_GRAVITY_HINT_NATURAL:
+			case PANGO_GRAVITY_HINT_STRONG :
+			case PANGO_GRAVITY_HINT_LINE   :
+				pango_context_set_gravity_hint(c->intern, tmp_l);
+				break;
+			default:
+				zend_throw_exception_ex(pp_exception_get(), 0, "Can't change the gravityHint property, needs to be a Context::GRAVITY_HINT_*");
+				return;
+				break;
+		}
+	}else
+		PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 /********************************/

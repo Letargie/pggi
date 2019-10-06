@@ -138,7 +138,7 @@ HashTable *gtree_selection_get_properties(zval *object);
 /** 
  * write property handling function
  */
-void gtree_selection_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE gtree_selection_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 /***************************************/
 /* GTreeSelection Class Initialization */

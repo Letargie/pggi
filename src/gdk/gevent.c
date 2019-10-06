@@ -105,8 +105,8 @@ HashTable *gevent_get_properties(zval *object){
 	return zend_std_get_properties(object);
 }
 
-void gevent_write_property(zval *object, zval *member, zval *value, void **cache_slot){
-	std_object_handlers.write_property(object, member, value, cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE gevent_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+	PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
 }
 
 /*******************************/

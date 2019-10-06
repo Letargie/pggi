@@ -181,58 +181,42 @@ HashTable *gtool_button_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gtool_button_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gtool_button_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	int tmp_b = 0;
-	const char * tmp_s;
 	ze_gwidget_object * tmp_widget;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
-	switch(Z_TYPE_P(value)){
-		case IS_STRING :
-			if(!strcmp(member_val, GTOOL_BUTTON_ICON_LABEL)){
-				tmp_s = Z_STRVAL_P(value);
-				gtk_tool_button_set_label(GTK_TOOL_BUTTON(w->intern), tmp_s);
-			}else if(!strcmp(member_val, GTOOL_BUTTON_ICON_NAME)){
-				tmp_s = Z_STRVAL_P(value);
-				gtk_tool_button_set_icon_name(GTK_TOOL_BUTTON(w->intern), tmp_s);
-			}else
-				gcontainer_write_property(object, member, value, cache_slot);
-			break;
-		case IS_FALSE :
-		case IS_TRUE :
-			tmp_b = Z_TYPE_P(value) == IS_TRUE ? 1 : 0;
-			if(!strcmp(member_val, GTOOL_BUTTON_USE_UNDERLINE))
-				gtk_tool_button_set_use_underline(GTK_TOOL_BUTTON(w->intern), tmp_b);
-			else
-				gcontainer_write_property(object, member, value, cache_slot);
-			break;
-		case IS_OBJECT :
-			if(!strcmp(member_val, GTOOL_BUTTON_ICON_WIDGET)){
-					tmp_widget = Z_GWIDGET_P(value);
-					if(!tmp_widget){
-						zend_throw_exception_ex(pggi_exception_get(), 0, "the icon needs to be a widget");
-						return ;
-					}
-					w = tmp_widget->widget_ptr;
-					std_object_handlers.write_property(object, member, value, cache_slot);
-					gtk_tool_button_set_icon_widget(GTK_TOOL_BUTTON(w->intern), w->intern);
-				}else if(!strcmp(member_val, GTOOL_BUTTON_LABEL_WIDGET)){
-					tmp_widget = Z_GWIDGET_P(value);
-					if(!tmp_widget){
-						zend_throw_exception_ex(pggi_exception_get(), 0, "the label needs to be a widget");
-						return ;
-					}
-					w = tmp_widget->widget_ptr;
-					std_object_handlers.write_property(object, member, value, cache_slot);
-					gtk_tool_button_set_label_widget(GTK_TOOL_BUTTON(w->intern), w->intern);
-				}else
-				gcontainer_write_property(object, member, value, cache_slot);
-			break;
-		default:
-			gcontainer_write_property(object, member, value, cache_slot);
-	}
+	if(!strcmp(member_val, GTOOL_BUTTON_ICON_LABEL)){
+		convert_to_string(value);
+		gtk_tool_button_set_label(GTK_TOOL_BUTTON(w->intern), Z_STRVAL_P(value));
+	}else if(!strcmp(member_val, GTOOL_BUTTON_ICON_NAME)){
+		convert_to_string(value);
+		gtk_tool_button_set_icon_name(GTK_TOOL_BUTTON(w->intern), Z_STRVAL_P(value));
+	}else if(!strcmp(member_val, GTOOL_BUTTON_USE_UNDERLINE)){
+		convert_to_boolean(value);
+		gtk_tool_button_set_use_underline(GTK_TOOL_BUTTON(w->intern), GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GTOOL_BUTTON_ICON_WIDGET)){
+		tmp_widget = Z_GWIDGET_P(value);
+		if(!tmp_widget){
+			zend_throw_exception_ex(pggi_exception_get(), 0, "the icon needs to be a widget");
+			return ;
+		}
+		w = tmp_widget->widget_ptr;
+		std_object_handlers.write_property(object, member, value, cache_slot);
+		gtk_tool_button_set_icon_widget(GTK_TOOL_BUTTON(w->intern), w->intern);
+	}else if(!strcmp(member_val, GTOOL_BUTTON_LABEL_WIDGET)){
+		tmp_widget = Z_GWIDGET_P(value);
+		if(!tmp_widget){
+			zend_throw_exception_ex(pggi_exception_get(), 0, "the label needs to be a widget");
+			return ;
+		}
+		w = tmp_widget->widget_ptr;
+		std_object_handlers.write_property(object, member, value, cache_slot);
+		gtk_tool_button_set_label_widget(GTK_TOOL_BUTTON(w->intern), w->intern);
+	}else
+		PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 

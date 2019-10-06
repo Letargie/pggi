@@ -206,23 +206,16 @@ HashTable *gcell_renderer_get_properties(zval *object){
 	return zend_std_get_properties(object);
 }
 
-void gcell_renderer_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gcell_renderer_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	//ze_gcell_renderer_object * intern = Z_GCELL_RENDERER_P(object);
 	//gcell_renderer_ptr b = intern->cell_renderer_ptr;
 	//convert_to_string(member);
 	//char * member_val = Z_STRVAL_P(member);
 	//GtkCellRenderer * buffer = GTK_CELL_RENDERER(b->intern);
-	switch(Z_TYPE_P(value)){
-		/*case IS_FALSE :
-		case IS_TRUE :
-			if(!strcmp(member_val, GCELL_RENDERER_VISIBLE)){
-				gtk_cell_renderer_set_text(buffer, Z_STRVAL_P(value), Z_STRLEN_P(value));
-			}else
-				std_object_handlers.write_property(object, member, value, cache_slot);
-			break;*/
-		default:
-			std_object_handlers.write_property(object, member, value, cache_slot);
-	}
+	/*if(!strcmp(member_val, GCELL_RENDERER_VISIBLE)){
+		gtk_cell_renderer_set_text(buffer, Z_STRVAL_P(value), Z_STRLEN_P(value));
+	}else*/
+	PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
 }
 
 /**************************************/

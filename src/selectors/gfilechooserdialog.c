@@ -190,58 +190,49 @@ HashTable *gfile_chooser_dialog_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gfile_chooser_dialog_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gfile_chooser_dialog_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	long tmp_l;
-	int tmp_b;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkFileChooser * chooser = GTK_FILE_CHOOSER(GTK_FILE_CHOOSER_DIALOG(w->intern));
-	switch(Z_TYPE_P(value)){
-		case IS_STRING :
-			;
-			char * tmp_s = Z_STRVAL_P(value);
-			if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_FILENAME))
-				gtk_file_chooser_set_filename(chooser, tmp_s);
-			//Need to check the action type before
-			//else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_CURRENT_NAME))
-				//gtk_file_chooser_set_current_name(chooser, tmp_s);
-			else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_CURRENT_FOLDER))
-				gtk_file_chooser_set_current_folder(chooser, tmp_s);
-			else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_URI))
-				gtk_file_chooser_set_uri(chooser, tmp_s);
-			else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_CURRENT_FOLDER_URI))
-				gtk_file_chooser_set_current_folder_uri(chooser, tmp_s);
-			else
-				gwindow_write_property(object, member, value, cache_slot);
-			break;
-		case IS_LONG :
-			tmp_l = Z_LVAL_P(value);
-			if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_ACTION))
-				gtk_file_chooser_set_action(chooser, tmp_l);
-			else
-				gwindow_write_property(object, member, value, cache_slot);
-			break;
-		case IS_TRUE :
-		case IS_FALSE :
-			tmp_b = Z_TYPE_P(value) == IS_TRUE ? 1 :0;
-			if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_CREATE_FOLDERS))
-				gtk_file_chooser_set_create_folders(chooser, tmp_b);
-			else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_DO_OVERRIDE_CONFIRMATION))
-				gtk_file_chooser_set_do_overwrite_confirmation(chooser, tmp_b);
-			else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_LOCAL_ONLY))
-				gtk_file_chooser_set_local_only(chooser, tmp_b);
-			else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_SELECT_MULTIPLE))
-				gtk_file_chooser_set_select_multiple(chooser, tmp_b);
-			else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_SHOW_HIDDEN))
-				gtk_file_chooser_set_show_hidden(chooser, tmp_b);
-			else
-				gwindow_write_property(object, member, value, cache_slot);
-			break;
-		default :
-			gwindow_write_property(object, member, value, cache_slot);
-	}
+	if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_FILENAME)){
+		convert_to_string(value);
+		gtk_file_chooser_set_filename(chooser, Z_STRVAL_P(value));
+	//Need to check the action type before
+	//}else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_CURRENT_NAME)){
+		//convert_to_string(value);
+		//gtk_file_chooser_set_current_name(chooser, Z_STRVAL_P(value));
+	}else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_CURRENT_FOLDER)){
+		convert_to_string(value);
+		gtk_file_chooser_set_current_folder(chooser, Z_STRVAL_P(value));
+	}else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_URI)){
+		convert_to_string(value);
+		gtk_file_chooser_set_uri(chooser, Z_STRVAL_P(value));
+	}else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_CURRENT_FOLDER_URI)){
+		convert_to_string(value);
+		gtk_file_chooser_set_current_folder_uri(chooser, Z_STRVAL_P(value));
+	}else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_ACTION)){
+		convert_to_long(value);
+		gtk_file_chooser_set_action(chooser, Z_LVAL_P(value));
+	}else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_CREATE_FOLDERS)){
+		convert_to_boolean(value);
+		gtk_file_chooser_set_create_folders(chooser, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_DO_OVERRIDE_CONFIRMATION)){
+		convert_to_boolean(value);
+		gtk_file_chooser_set_do_overwrite_confirmation(chooser, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_LOCAL_ONLY)){
+		convert_to_boolean(value);
+		gtk_file_chooser_set_local_only(chooser, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_SELECT_MULTIPLE)){
+		convert_to_boolean(value);
+		gtk_file_chooser_set_select_multiple(chooser, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_SHOW_HIDDEN)){
+		convert_to_boolean(value);
+		gtk_file_chooser_set_show_hidden(chooser, GET_BOOL_FROM_ZVAL(value));
+	}else
+		PHP_WRITE_PROP_HANDLER_RETURN(gwindow_write_property(object, member, value, cache_slot));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 /*******************************************/

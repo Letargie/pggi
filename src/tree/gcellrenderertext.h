@@ -63,7 +63,7 @@ HashTable *gcell_renderer_text_get_properties(zval *object);
 /** 
  * write property handling function
  */
-void gcell_renderer_text_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE gcell_renderer_text_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 /************************************/
 /* GCellRenderer Class Initialization */

@@ -242,7 +242,7 @@ HashTable *pc_context_get_properties(zval *object);
 /** 
  * write property handling function
  */
-void pc_context_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE pc_context_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 /************************/
 /* Class Initialization */

@@ -113,7 +113,7 @@ HashTable *gpixbuf_get_properties(zval *object);
 /** 
  * write property handling function
  */
-void gpixbuf_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE gpixbuf_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 /********************************/
 /* GPixbuf Class Initialization */

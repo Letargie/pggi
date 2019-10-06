@@ -126,43 +126,36 @@ HashTable *gbox_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gbox_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gbox_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
 	long tmp_l;
-	int tmp_b;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
-	switch(Z_TYPE_P(value)){
-		case IS_LONG :
-			tmp_l = Z_LVAL_P(value);
-			if(!strcmp(member_val, GBOX_SPACING))
-				gtk_box_set_spacing(GTK_BOX(w->intern), tmp_l);
-			else if(!strcmp(member_val, GBOX_BASELINE_POSITION))
-				switch(tmp_l){
-					case GTK_BASELINE_POSITION_TOP :
-					case GTK_BASELINE_POSITION_CENTER :
-					case GTK_BASELINE_POSITION_BOTTOM :
-						gtk_box_set_baseline_position(GTK_BOX(w->intern), tmp_l);
-						break;
-					default:
-						zend_throw_exception_ex(pggi_exception_get(), 0, "the baselinePosition need to be a BASELINE_POSITION_*");
-						break;
-				}
-			else
-				gcontainer_write_property(object, member, value, cache_slot);
-			break;
-		case IS_FALSE :
-		case IS_TRUE :
-			tmp_b = Z_TYPE_P(value) == IS_TRUE ? 1 : 0;
-			if(!strcmp(member_val, GBOX_HOMOGENEOUS))
-				gtk_box_set_homogeneous(GTK_BOX(w->intern), tmp_b);
-			else
-				gcontainer_write_property(object, member, value, cache_slot);
-			break;
-		default:
-			gcontainer_write_property(object, member, value, cache_slot);
-	}
+			
+	if(!strcmp(member_val, GBOX_SPACING)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		gtk_box_set_spacing(GTK_BOX(w->intern), tmp_l);
+	}else if(!strcmp(member_val, GBOX_BASELINE_POSITION)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		switch(tmp_l){
+			case GTK_BASELINE_POSITION_TOP :
+			case GTK_BASELINE_POSITION_CENTER :
+			case GTK_BASELINE_POSITION_BOTTOM :
+				gtk_box_set_baseline_position(GTK_BOX(w->intern), tmp_l);
+				break;
+			default:
+				zend_throw_exception_ex(pggi_exception_get(), 0, "the baselinePosition need to be a BASELINE_POSITION_*");
+				break;
+		}
+	}else if(!strcmp(member_val, GBOX_HOMOGENEOUS)){
+		convert_to_boolean(value);
+		gtk_box_set_homogeneous(GTK_BOX(w->intern), GET_BOOL_FROM_ZVAL(value));
+	}else
+		PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 

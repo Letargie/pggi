@@ -231,7 +231,7 @@ HashTable *font_description_get_properties(zval *object);
  * @param zval * value       The value we want to use to set the property
  * @param void ** cache_slot The cache slot
  */
-void font_description_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE font_description_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 /************************/
 /* Class Initialization */

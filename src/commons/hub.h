@@ -28,6 +28,17 @@
 
 #endif
 
+#if PHP_VERSION_ID >= 70400
+#	define PHP_WRITE_PROP_HANDLER_TYPE zval *
+#	define PHP_WRITE_PROP_HANDLER_RETURN(v) return v
+#else
+#	define PHP_WRITE_PROP_HANDLER_TYPE void
+#	define PHP_WRITE_PROP_HANDLER_RETURN(v) (void)v; return
+#endif
+
+
+
+
 
 /**
  * This file is meant to provide common informations for all our classes
@@ -254,6 +265,8 @@ do{                                                                         \
 		ZVAL_NULL(&zv);                                                     \
 	G_H_UPDATE(name);                                                       \
 }while(0)
+
+#define GET_BOOL_FROM_ZVAL(value) (Z_TYPE_P(value) == IS_TRUE ? 1 : 0)
 
 /* PGGI_HUB_DEF */
 #endif

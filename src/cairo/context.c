@@ -1029,102 +1029,100 @@ HashTable *pc_context_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void pc_context_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE pc_context_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_context_object * intern = Z_CONTEXT_P(object);
 	pc_context_ptr c = intern->context_ptr;
 	double tmp_d;
 	long tmp_l;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
-	switch(Z_TYPE_P(value)){
-		case IS_LONG :
-			tmp_l = Z_LVAL_P(value);
-			if(!strcmp(member_val, CONTEXT_OPERATOR)){
-				switch(tmp_l){
-					case CAIRO_OPERATOR_CLEAR:
-					case CAIRO_OPERATOR_IN:
-					case CAIRO_OPERATOR_OUT:
-					case CAIRO_OPERATOR_ATOP:
-					case CAIRO_OPERATOR_DEST:
-					case CAIRO_OPERATOR_DEST_OVER:
-					case CAIRO_OPERATOR_DEST_IN:
-					case CAIRO_OPERATOR_DEST_OUT :
-					case CAIRO_OPERATOR_DEST_ATOP:
-					case CAIRO_OPERATOR_XOR:
-					case CAIRO_OPERATOR_ADD:
-					case CAIRO_OPERATOR_SATURATE:
-					case CAIRO_OPERATOR_MULTIPLY :
-					case CAIRO_OPERATOR_SCREEN:
-					case CAIRO_OPERATOR_OVERLAY:
-					case CAIRO_OPERATOR_DARKEN:
-					case CAIRO_OPERATOR_LIGHTEN:
-					case CAIRO_OPERATOR_COLOR_DODGE:
-					case CAIRO_OPERATOR_COLOR_BURN:
-					case CAIRO_OPERATOR_HARD_LIGHT:
-					case CAIRO_OPERATOR_SOFT_LIGHT:
-					case CAIRO_OPERATOR_DIFFERENCE:
-					case CAIRO_OPERATOR_EXCLUSION:
-					case CAIRO_OPERATOR_HSL_HUE:
-					case CAIRO_OPERATOR_HSL_SATURATION:
-					case CAIRO_OPERATOR_HSL_COLOR:
-					case CAIRO_OPERATOR_HSL_LUMINOSITY:
-						// If the operator is valid
-						cairo_set_operator(c->intern, tmp_l);
-						break;
-					default:
-						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the operator property, needs to be a Context::OPERATOR_*");
-						return;
-						break;
-				}
-			}if(!strcmp(member_val, CONTEXT_LINE_CAP)){
-				switch(tmp_l){
-					case CAIRO_LINE_CAP_BUTT  :
-					case CAIRO_LINE_CAP_ROUND :
-					case CAIRO_LINE_CAP_SQUARE:
-						cairo_set_line_cap(c->intern, tmp_l);
-						break;
-					default:
-						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the lineCaps property, needs to be a Context::LINE_CAP_*");
-						return;
-						break;
-				}
-			}else if(!strcmp(member_val, CONTEXT_LINE_JOIN)){
-				switch(tmp_l){
-					case CAIRO_LINE_JOIN_MITER:
-					case CAIRO_LINE_JOIN_ROUND:
-					case CAIRO_LINE_JOIN_BEVEL:
-						cairo_set_line_join(c->intern, tmp_l);
-						break;
-					default:
-						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the lineJoin property, needs to be a Context::LINE_JOIN_*");
-						return;
-						break;
-				}
-			}else if(!strcmp(member_val, CONTEXT_FILL_RULE)){
-				switch(tmp_l){
-					case CAIRO_FILL_RULE_WINDING :
-					case CAIRO_FILL_RULE_EVEN_ODD:
-						cairo_set_fill_rule(c->intern, tmp_l);
-						break;
-					default:
-						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the fillRule property, needs to be a Context::FILL_RULE_*");
-						return;
-						break;
-				}
-			}else
-				std_object_handlers.write_property(object, member, value, cache_slot);
-			break;
-		case IS_DOUBLE :
-			tmp_d = Z_DVAL_P(value);
-			if(!strcmp(member_val, CONTEXT_LINE_WIDTH)){
-				cairo_set_line_width(c->intern, tmp_d);
-			}else
-				std_object_handlers.write_property(object, member, value, cache_slot);
-			break;
-		default:
-			std_object_handlers.write_property(object, member, value, cache_slot);
-	}
+	if(!strcmp(member_val, CONTEXT_OPERATOR)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		switch(tmp_l){
+			case CAIRO_OPERATOR_CLEAR:
+			case CAIRO_OPERATOR_IN:
+			case CAIRO_OPERATOR_OUT:
+			case CAIRO_OPERATOR_ATOP:
+			case CAIRO_OPERATOR_DEST:
+			case CAIRO_OPERATOR_DEST_OVER:
+			case CAIRO_OPERATOR_DEST_IN:
+			case CAIRO_OPERATOR_DEST_OUT :
+			case CAIRO_OPERATOR_DEST_ATOP:
+			case CAIRO_OPERATOR_XOR:
+			case CAIRO_OPERATOR_ADD:
+			case CAIRO_OPERATOR_SATURATE:
+			case CAIRO_OPERATOR_MULTIPLY :
+			case CAIRO_OPERATOR_SCREEN:
+			case CAIRO_OPERATOR_OVERLAY:
+			case CAIRO_OPERATOR_DARKEN:
+			case CAIRO_OPERATOR_LIGHTEN:
+			case CAIRO_OPERATOR_COLOR_DODGE:
+			case CAIRO_OPERATOR_COLOR_BURN:
+			case CAIRO_OPERATOR_HARD_LIGHT:
+			case CAIRO_OPERATOR_SOFT_LIGHT:
+			case CAIRO_OPERATOR_DIFFERENCE:
+			case CAIRO_OPERATOR_EXCLUSION:
+			case CAIRO_OPERATOR_HSL_HUE:
+			case CAIRO_OPERATOR_HSL_SATURATION:
+			case CAIRO_OPERATOR_HSL_COLOR:
+			case CAIRO_OPERATOR_HSL_LUMINOSITY:
+				// If the operator is valid
+				cairo_set_operator(c->intern, tmp_l);
+				break;
+			default:
+				zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the operator property, needs to be a Context::OPERATOR_*");
+				break;
+		}
+	}else if(!strcmp(member_val, CONTEXT_LINE_CAP)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		switch(tmp_l){
+			case CAIRO_LINE_CAP_BUTT  :
+			case CAIRO_LINE_CAP_ROUND :
+			case CAIRO_LINE_CAP_SQUARE:
+				cairo_set_line_cap(c->intern, tmp_l);
+				break;
+			default:
+				zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the lineCaps property, needs to be a Context::LINE_CAP_*");
+				return;
+				break;
+		}
+	}else if(!strcmp(member_val, CONTEXT_LINE_JOIN)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		switch(tmp_l){
+			case CAIRO_LINE_JOIN_MITER:
+			case CAIRO_LINE_JOIN_ROUND:
+			case CAIRO_LINE_JOIN_BEVEL:
+				cairo_set_line_join(c->intern, tmp_l);
+				break;
+			default:
+				zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the lineJoin property, needs to be a Context::LINE_JOIN_*");
+				return;
+				break;
+		}
+	}else if(!strcmp(member_val, CONTEXT_FILL_RULE)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		switch(tmp_l){
+			case CAIRO_FILL_RULE_WINDING :
+			case CAIRO_FILL_RULE_EVEN_ODD:
+				cairo_set_fill_rule(c->intern, tmp_l);
+				break;
+			default:
+				zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the fillRule property, needs to be a Context::FILL_RULE_*");
+				return;
+				break;
+		}
+	}else if(!strcmp(member_val, CONTEXT_LINE_WIDTH)){
+		convert_to_double(value);
+		tmp_d = Z_DVAL_P(value);
+		cairo_set_line_width(c->intern, tmp_d);
+	}else
+		PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
 	pc_exception(cairo_status(c->intern));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 /********************************/

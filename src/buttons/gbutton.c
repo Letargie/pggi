@@ -135,73 +135,59 @@ HashTable *gbutton_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gbutton_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gbutton_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	ze_gwidget_object * tmp_widget;
 	gwidget_ptr w = intern->widget_ptr;
 	long tmp_l;
-	int tmp_b;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkButton * but = GTK_BUTTON(w->intern);
-	switch(Z_TYPE_P(value)){
-		case IS_STRING :
-			if(!strcmp(Z_STRVAL_P(member), GBUTTON_LABEL))
-				gtk_button_set_label(but, Z_STRVAL_P(value));
-			else
-				gcontainer_write_property(object, member, value, cache_slot);
-			break;
-		case IS_LONG :
-			tmp_l = Z_LVAL_P(value);
-			if(!strcmp(Z_STRVAL_P(member), GBUTTON_IMAGE_POSITION))
-				switch(tmp_l){
-					case GTK_POS_LEFT  :
-					case GTK_POS_RIGHT :
-					case GTK_POS_TOP   :
-					case GTK_POS_BOTTOM:
-						gtk_button_set_image_position(but, tmp_l);
-						break;
-					default :
-						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the image position property. New value should be a POS_*");
-				}
-			else if(!strcmp(Z_STRVAL_P(member), GBUTTON_RELIEF))
-				switch(tmp_l){
-					case GTK_RELIEF_NORMAL:
-					case GTK_RELIEF_NONE  :
-						gtk_button_set_relief(but, tmp_l);
-						break;
-					default :
-						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the relief property. New value should be a RELIEF_*");
-				}
-			else
-				gcontainer_write_property(object, member, value, cache_slot);
-			break;
-		case IS_TRUE  :
-		case IS_FALSE :
-			tmp_b = Z_LVAL_P(value);
-			if(!strcmp(member_val, GBUTTON_ALWAYS_SHOW_IMAGE))
-				gtk_button_set_always_show_image(but, tmp_b);
-			else if(!strcmp(member_val, GBUTTON_USE_UNDERLINE))
-				gtk_button_set_use_underline(but, tmp_b);
-			else
-				gcontainer_write_property(object, member, value, cache_slot);
-			break;
-		case IS_OBJECT :
-				if(!strcmp(member_val, GBUTTON_IMAGE)){
-					tmp_widget = Z_GWIDGET_P(value);
-					if(!tmp_widget){
-						zend_throw_exception_ex(pggi_exception_get(), 0, "the image need to be an image");
-						return ;
-					}
-					w = tmp_widget->widget_ptr;
-					std_object_handlers.write_property(object, member, value, cache_slot);
-					gtk_button_set_image(but, w->intern);
-				}else
-					gcontainer_write_property(object, member, value, cache_slot);
-			break;
-		default :
-			gcontainer_write_property(object, member, value, cache_slot);
-	}
+	if(!strcmp(Z_STRVAL_P(member), GBUTTON_LABEL)){
+		convert_to_string(value);
+		gtk_button_set_label(but, Z_STRVAL_P(value));
+	}else if(!strcmp(Z_STRVAL_P(member), GBUTTON_IMAGE_POSITION)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		switch(tmp_l){
+			case GTK_POS_LEFT  :
+			case GTK_POS_RIGHT :
+			case GTK_POS_TOP   :
+			case GTK_POS_BOTTOM:
+				gtk_button_set_image_position(but, tmp_l);
+				break;
+			default :
+				zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the image position property. New value should be a POS_*");
+		}
+	}else if(!strcmp(Z_STRVAL_P(member), GBUTTON_RELIEF)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		switch(tmp_l){
+			case GTK_RELIEF_NORMAL:
+			case GTK_RELIEF_NONE  :
+				gtk_button_set_relief(but, tmp_l);
+				break;
+			default :
+				zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the relief property. New value should be a RELIEF_*");
+		}
+	}else if(!strcmp(member_val, GBUTTON_ALWAYS_SHOW_IMAGE)){
+		convert_to_boolean(value);
+		gtk_button_set_always_show_image(but, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GBUTTON_USE_UNDERLINE)){
+		convert_to_boolean(value);
+		gtk_button_set_use_underline(but, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GBUTTON_IMAGE)){
+		tmp_widget = Z_GWIDGET_P(value);
+		if(!tmp_widget){
+			zend_throw_exception_ex(pggi_exception_get(), 0, "the image need to be an image");
+			return ;
+		}
+		w = tmp_widget->widget_ptr;
+		std_object_handlers.write_property(object, member, value, cache_slot);
+		gtk_button_set_image(but, w->intern);
+	}else
+		PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 

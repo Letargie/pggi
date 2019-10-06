@@ -113,7 +113,7 @@ HashTable *gcss_provider_get_properties(zval *object);
 /** 
  * write property handling function
  */
-void gcss_provider_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE gcss_provider_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 /**************************************/
 /* GCssProvider Class Initialization */

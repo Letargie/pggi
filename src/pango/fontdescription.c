@@ -260,53 +260,53 @@ HashTable *font_description_get_properties(zval *object){
  * @param zval * value       The value we want to use to set the property
  * @param void ** cache_slot The cache slot
  */
-void font_description_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE font_description_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_font_description_object * intern = Z_FONT_DESCRIPTION_P(object);
 	font_description_ptr d = intern->description_ptr;
 	long tmp_l;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
-	switch(Z_TYPE_P(value)){
-		case IS_LONG :
-			tmp_l = Z_LVAL_P(value);
-			if(!strcmp(member_val, FONT_DESCRIPTION_STRETCH)){
-				switch(tmp_l){
-					case PANGO_STRETCH_ULTRA_CONDENSED :
-					case PANGO_STRETCH_EXTRA_CONDENSED :
-					case PANGO_STRETCH_CONDENSED       :
-					case PANGO_STRETCH_SEMI_CONDENSED  :
-					case PANGO_STRETCH_NORMAL          :
-					case PANGO_STRETCH_SEMI_EXPANDED   :
-					case PANGO_STRETCH_EXPANDED        :
-					case PANGO_STRETCH_EXTRA_EXPANDED  :
-					case PANGO_STRETCH_ULTRA_EXPANDED  :
-						pango_font_description_set_stretch(d->intern, tmp_l);
-						break;
-					default:
-						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the stretch property, needs to be a FontDescription::STRETCH_*");
-						return;
-						break;
-				}
-				
-			}else if(!strcmp(member_val, FONT_DESCRIPTION_STYLE)){
-				pango_font_description_set_style(d->intern, tmp_l);
-			}else if(!strcmp(member_val, FONT_DESCRIPTION_VARIANT)){
-				switch(tmp_l){
-					case PANGO_VARIANT_NORMAL     :
-					case PANGO_VARIANT_SMALL_CAPS :
-						pango_font_description_set_variant(d->intern, tmp_l);
-						break;
-					default:
-						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the variant property, needs to be a FontDescription::VARIANT_*");
-						return;
-						break;
-				}
-			}else
-				std_object_handlers.write_property(object, member, value, cache_slot);
-			break;
-		default:
-			std_object_handlers.write_property(object, member, value, cache_slot);
-	}
+	if(!strcmp(member_val, FONT_DESCRIPTION_STRETCH)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		switch(tmp_l){
+			case PANGO_STRETCH_ULTRA_CONDENSED :
+			case PANGO_STRETCH_EXTRA_CONDENSED :
+			case PANGO_STRETCH_CONDENSED       :
+			case PANGO_STRETCH_SEMI_CONDENSED  :
+			case PANGO_STRETCH_NORMAL          :
+			case PANGO_STRETCH_SEMI_EXPANDED   :
+			case PANGO_STRETCH_EXPANDED        :
+			case PANGO_STRETCH_EXTRA_EXPANDED  :
+			case PANGO_STRETCH_ULTRA_EXPANDED  :
+				pango_font_description_set_stretch(d->intern, tmp_l);
+				break;
+			default:
+				zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the stretch property, needs to be a FontDescription::STRETCH_*");
+				return;
+				break;
+		}
+		
+	}else if(!strcmp(member_val, FONT_DESCRIPTION_STYLE)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		pango_font_description_set_style(d->intern, tmp_l);
+	}else if(!strcmp(member_val, FONT_DESCRIPTION_VARIANT)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		switch(tmp_l){
+			case PANGO_VARIANT_NORMAL     :
+			case PANGO_VARIANT_SMALL_CAPS :
+				pango_font_description_set_variant(d->intern, tmp_l);
+				break;
+			default:
+				zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the variant property, needs to be a FontDescription::VARIANT_*");
+				return;
+				break;
+		}
+	}else
+		PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 /************************/

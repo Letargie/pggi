@@ -235,22 +235,18 @@ HashTable *gtext_buffer_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gtext_buffer_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gtext_buffer_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gtext_buffer_object * intern = Z_GTEXT_BUFFER_P(object);
 	gtext_buffer_ptr b = intern->buffer_ptr;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkTextBuffer * buffer = GTK_TEXT_BUFFER(b->intern);
-	switch(Z_TYPE_P(value)){
-		case IS_STRING :
-			if(!strcmp(member_val, GTEXT_BUFFER_TEXT)){
-				gtk_text_buffer_set_text(buffer, Z_STRVAL_P(value), Z_STRLEN_P(value));
-			}else
-				std_object_handlers.write_property(object, member, value, cache_slot);
-			break;
-		default:
-			std_object_handlers.write_property(object, member, value, cache_slot);
-	}
+	if(!strcmp(member_val, GTEXT_BUFFER_TEXT)){
+		convert_to_string(value);
+		gtk_text_buffer_set_text(buffer, Z_STRVAL_P(value), Z_STRLEN_P(value));
+	}else
+		PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 /************************************/

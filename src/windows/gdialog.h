@@ -70,19 +70,19 @@ ZEND_END_ARG_INFO()
 /** 
  * Read property handling function
  */
-zval *gdialog_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv);
+//zval *gdialog_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv);
 
 /*==========================================================================*/
 /** 
  * Get property handling function
  */
-HashTable * gdialog_get_properties(zval *object);
+//HashTable * gdialog_get_properties(zval *object);
 
 /*==========================================================================*/
 /** 
  * Write property handling function
  */
-void gdialog_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+//PHP_WRITE_PROP_HANDLER_TYPE gdialog_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 
 /***************/

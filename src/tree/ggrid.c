@@ -223,38 +223,29 @@ HashTable *ggrid_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void ggrid_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE ggrid_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	long tmp_l;
-	int tmp_b;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
-	switch(Z_TYPE_P(value)){
-		case IS_LONG :
-			tmp_l = Z_LVAL_P(value);
-			if(!strcmp(member_val, GGRID_BASELINE_ROW))
-				gtk_grid_set_baseline_row(GTK_GRID(w->intern), tmp_l);
-			else if(!strcmp(member_val, GGRID_COLUMN_SPACING))
-				gtk_grid_set_column_spacing(GTK_GRID(w->intern), tmp_l);
-			else if(!strcmp(member_val, GGRID_ROW_SPACING))
-				gtk_grid_set_row_spacing(GTK_GRID(w->intern), tmp_l);
-			else
-				gbox_write_property(object, member, value, cache_slot);
-			break;
-		case IS_FALSE :
-		case IS_TRUE :
-			tmp_b = Z_TYPE_P(value) == IS_TRUE ? 1 : 0;
-			if(!strcmp(member_val, GGRID_COLUMN_HOMOGENEOUS))
-				gtk_grid_set_column_homogeneous(GTK_GRID(w->intern), tmp_b);
-			else if(!strcmp(member_val, GGRID_ROW_HOMOGENEOUS))
-				gtk_grid_set_row_homogeneous(GTK_GRID(w->intern), tmp_b);
-			else
-				gcontainer_write_property(object, member, value, cache_slot);
-			break;
-		default:
-			gcontainer_write_property(object, member, value, cache_slot);
-	}
+	if(!strcmp(member_val, GGRID_BASELINE_ROW)){
+		convert_to_long(value);
+		gtk_grid_set_baseline_row(GTK_GRID(w->intern), Z_LVAL_P(value));
+	}else if(!strcmp(member_val, GGRID_COLUMN_SPACING)){
+		convert_to_long(value);
+		gtk_grid_set_column_spacing(GTK_GRID(w->intern), Z_LVAL_P(value));
+	}else if(!strcmp(member_val, GGRID_ROW_SPACING)){
+		convert_to_long(value);
+		gtk_grid_set_row_spacing(GTK_GRID(w->intern), Z_LVAL_P(value));
+	}else if(!strcmp(member_val, GGRID_COLUMN_HOMOGENEOUS)){
+		convert_to_boolean(value);
+		gtk_grid_set_column_homogeneous(GTK_GRID(w->intern), GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GGRID_ROW_HOMOGENEOUS)){
+		convert_to_boolean(value);
+		gtk_grid_set_row_homogeneous(GTK_GRID(w->intern), GET_BOOL_FROM_ZVAL(value));
+	}else
+		PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 

@@ -35,7 +35,7 @@ zval *gtool_item_read_property(zval *object, zval *member, int type, void **cach
 
 HashTable *gtool_item_get_properties(zval *object);
 
-void gtool_item_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE gtool_item_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 void gtool_item_init(int module_number);
 

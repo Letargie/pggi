@@ -110,16 +110,13 @@ HashTable *gmessage_dialog_get_properties(zval *object){
 	return gwindow_get_properties(object);
 }
 
-void gmessage_dialog_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gmessage_dialog_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	//ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	//gwidget_ptr w = intern->widget_ptr;
 	//convert_to_string(member);
 	//char * member_val = Z_STRVAL_P(member);
 	//GtkMessageDialog * dialog = GTK_MESSAGE_DIALOG(w->intern);
-	switch(Z_TYPE_P(value)){
-		default :
-			gwindow_write_property(object, member, value, cache_slot);
-	}
+	PHP_WRITE_PROP_HANDLER_RETURN(gwindow_write_property(object, member, value, cache_slot));
 }
 
 /***************************************/

@@ -66,7 +66,7 @@ zval *gnotebook_read_property(zval *object, zval *member, int type, void **cache
 
 HashTable *gnotebook_get_properties(zval *object);
 
-void gnotebook_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE gnotebook_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 void gnotebook_init(int module_number);
 

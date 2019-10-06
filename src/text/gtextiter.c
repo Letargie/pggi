@@ -699,34 +699,34 @@ HashTable *gtext_iter_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gtext_iter_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gtext_iter_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gtext_iter_object * intern = Z_GTEXT_ITER_P(object);
 	gtext_iter_ptr b = intern->iter_ptr;
-	long tmp_l;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkTextIter * iter = b->intern;
-	switch(Z_TYPE_P(value)){
-		case IS_LONG :
-		    tmp_l = Z_LVAL_P(value);
-		    if(!strcmp(member_val, GTEXT_ITER_OFFSET)){
-		        gtk_text_iter_set_offset(iter, tmp_l);
-		    }else if(!strcmp(member_val, GTEXT_ITER_LINE)){
-		        gtk_text_iter_set_line(iter, tmp_l);
-		    }else if(!strcmp(member_val, GTEXT_ITER_LINE_OFFSET)){
-		        gtk_text_iter_set_line_offset(iter, tmp_l);
-		    }else if(!strcmp(member_val, GTEXT_ITER_LINE_INDEX)){
-		        gtk_text_iter_set_line_index(iter, tmp_l);
-		    }else if(!strcmp(member_val, GTEXT_ITER_VISIBLE_LINE_INDEX)){
-		        gtk_text_iter_set_visible_line_index(iter, tmp_l);
-		    }else if(!strcmp(member_val, GTEXT_ITER_VISIBLE_LINE_OFFSET)){
-		        gtk_text_iter_set_visible_line_offset(iter, tmp_l);
-		    }else
-		        std_object_handlers.write_property(object, member, value, cache_slot);
-		    break;
-		default:
-		    std_object_handlers.write_property(object, member, value, cache_slot);
-	}
+    if(!strcmp(member_val, GTEXT_ITER_OFFSET)){
+		convert_to_string(value);
+        gtk_text_iter_set_offset(iter, Z_LVAL_P(value));
+    }else if(!strcmp(member_val, GTEXT_ITER_LINE)){
+		convert_to_string(value);
+        gtk_text_iter_set_line(iter, Z_LVAL_P(value));
+    }else if(!strcmp(member_val, GTEXT_ITER_LINE_OFFSET)){
+		convert_to_string(value);
+        gtk_text_iter_set_line_offset(iter, Z_LVAL_P(value));
+    }else if(!strcmp(member_val, GTEXT_ITER_LINE_INDEX)){
+		convert_to_string(value);
+        gtk_text_iter_set_line_index(iter, Z_LVAL_P(value));
+    }else if(!strcmp(member_val, GTEXT_ITER_VISIBLE_LINE_INDEX)){
+		convert_to_string(value);
+        gtk_text_iter_set_visible_line_index(iter, Z_LVAL_P(value));
+    }else if(!strcmp(member_val, GTEXT_ITER_VISIBLE_LINE_OFFSET)){
+		convert_to_string(value);
+        gtk_text_iter_set_visible_line_offset(iter, Z_LVAL_P(value));
+    }else
+        PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
+
 }
 
 /************************************/

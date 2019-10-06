@@ -58,8 +58,8 @@ HashTable *gevent_key_get_properties(zval *object){
 	return gevent_get_properties(object);
 }
 
-void gevent_key_write_property(zval *object, zval *member, zval *value, void **cache_slot){
-	gevent_write_property(object, member, value, cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE gevent_key_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+	PHP_WRITE_PROP_HANDLER_RETURN(gevent_write_property(object, member, value, cache_slot));
 }
 
 /*******************************/

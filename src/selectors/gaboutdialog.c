@@ -157,72 +157,68 @@ HashTable *gabout_dialog_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gabout_dialog_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gabout_dialog_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	int tmp_b;
+	long tmp_l;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkAboutDialog * dialog = GTK_ABOUT_DIALOG(w->intern);
-	switch(Z_TYPE_P(value)){
-		case IS_STRING :
-			if(!strcmp(member_val, GABOUT_DIALOG_PROGRAM_NAME))
-				gtk_about_dialog_set_program_name(dialog, Z_STRVAL_P(value));
-			else if(!strcmp(member_val, GABOUT_DIALOG_VERSION))
-				gtk_about_dialog_set_version(dialog, Z_STRVAL_P(value));
-			else if(!strcmp(member_val, GABOUT_DIALOG_COPYRIGHT))
-				gtk_about_dialog_set_copyright(dialog, Z_STRVAL_P(value));
-			else if(!strcmp(member_val, GABOUT_DIALOG_COMMENTS))
-				gtk_about_dialog_set_comments(dialog, Z_STRVAL_P(value));
-			else if(!strcmp(member_val, GABOUT_DIALOG_LICENSE))
-				gtk_about_dialog_set_license(dialog, Z_STRVAL_P(value));
-			else if(!strcmp(member_val, GABOUT_DIALOG_WEBSITE))
-				gtk_about_dialog_set_website(dialog, Z_STRVAL_P(value));
-			else if(!strcmp(member_val, GABOUT_DIALOG_WEBSITE_LABEL))
-				gtk_about_dialog_set_website_label(dialog, Z_STRVAL_P(value));
-			else if(!strcmp(member_val, GABOUT_DIALOG_TRANSLATOR_CREDITS))
-				gtk_about_dialog_set_translator_credits(dialog, Z_STRVAL_P(value));
-			else if(!strcmp(member_val, GABOUT_DIALOG_LOGO_ICON_NAME))
-				gtk_about_dialog_set_logo_icon_name(dialog, Z_STRVAL_P(value));
-			else
-				gwindow_write_property(object, member, value, cache_slot);
-			break;
-		case IS_LONG :
-			if(!strcmp(member_val, GABOUT_DIALOG_LICENSE_TYPE)){
-				switch(Z_LVAL_P(value)){
-					case GABOUT_DIALOG_LICENSE_UNKNOWN:
-					case GABOUT_DIALOG_LICENSE_CUSTOM        :
-					case GABOUT_DIALOG_LICENSE_GPL_2_0       :
-					case GABOUT_DIALOG_LICENSE_GPL_3_0       :
-					case GABOUT_DIALOG_LICENSE_BSD           :
-					case GABOUT_DIALOG_LICENSE_MIT_X11       :
-					case GABOUT_DIALOG_LICENSE_ARTISTIC      :
-					case GABOUT_DIALOG_LICENSE_GPL_2_0_ONLY  :
-					case GABOUT_DIALOG_LICENSE_GPL_3_0_ONLY  :
-					case GABOUT_DIALOG_LICENSE_LGPL_2_1_ONLY :
-					case GABOUT_DIALOG_LICENSE_LGPL_3_0_ONLY :
-					//case GABOUT_DIALOG_LICENSE_AGPL_3_0    :
-						gtk_about_dialog_set_license_type(dialog, Z_LVAL_P(value));
-						break;
-					default :
-						zend_throw_exception_ex(pggi_exception_get(), 0, "The licence type property need to be a LICENCE_*");
-						break;
-				}
-			}else{
-				gwindow_write_property(object, member, value, cache_slot);
-			}
-			break;
-		case IS_TRUE :
-		case IS_FALSE :
-			tmp_b = Z_TYPE_P(value) == IS_TRUE ? 1 :0;
-			if(!strcmp(member_val, GABOUT_DIALOG_WRAP_LICENSE))
-				gtk_about_dialog_set_wrap_license(dialog, tmp_b);
-			else
-				gwindow_write_property(object, member, value, cache_slot);
-			break;
-		default :
-			gwindow_write_property(object, member, value, cache_slot);
-	}
+	if(!strcmp(member_val, GABOUT_DIALOG_PROGRAM_NAME)){
+		convert_to_string(value);
+		gtk_about_dialog_set_program_name(dialog, Z_STRVAL_P(value));
+	}else if(!strcmp(member_val, GABOUT_DIALOG_VERSION)){
+		convert_to_string(value);
+		gtk_about_dialog_set_version(dialog, Z_STRVAL_P(value));
+	}else if(!strcmp(member_val, GABOUT_DIALOG_COPYRIGHT)){
+		convert_to_string(value);
+		gtk_about_dialog_set_copyright(dialog, Z_STRVAL_P(value));
+	}else if(!strcmp(member_val, GABOUT_DIALOG_COMMENTS)){
+		convert_to_string(value);
+		gtk_about_dialog_set_comments(dialog, Z_STRVAL_P(value));
+	}else if(!strcmp(member_val, GABOUT_DIALOG_LICENSE)){
+		convert_to_string(value);
+		gtk_about_dialog_set_license(dialog, Z_STRVAL_P(value));
+	}else if(!strcmp(member_val, GABOUT_DIALOG_WEBSITE)){
+		convert_to_string(value);
+		gtk_about_dialog_set_website(dialog, Z_STRVAL_P(value));
+	}else if(!strcmp(member_val, GABOUT_DIALOG_WEBSITE_LABEL)){
+		convert_to_string(value);
+		gtk_about_dialog_set_website_label(dialog, Z_STRVAL_P(value));
+	}else if(!strcmp(member_val, GABOUT_DIALOG_TRANSLATOR_CREDITS)){
+		convert_to_string(value);
+		gtk_about_dialog_set_translator_credits(dialog, Z_STRVAL_P(value));
+	}else if(!strcmp(member_val, GABOUT_DIALOG_LOGO_ICON_NAME)){
+		convert_to_string(value);
+		gtk_about_dialog_set_logo_icon_name(dialog, Z_STRVAL_P(value));
+	}else if(!strcmp(member_val, GABOUT_DIALOG_LICENSE_TYPE)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		switch(tmp_l){
+			case GABOUT_DIALOG_LICENSE_UNKNOWN:
+			case GABOUT_DIALOG_LICENSE_CUSTOM        :
+			case GABOUT_DIALOG_LICENSE_GPL_2_0       :
+			case GABOUT_DIALOG_LICENSE_GPL_3_0       :
+			case GABOUT_DIALOG_LICENSE_BSD           :
+			case GABOUT_DIALOG_LICENSE_MIT_X11       :
+			case GABOUT_DIALOG_LICENSE_ARTISTIC      :
+			case GABOUT_DIALOG_LICENSE_GPL_2_0_ONLY  :
+			case GABOUT_DIALOG_LICENSE_GPL_3_0_ONLY  :
+			case GABOUT_DIALOG_LICENSE_LGPL_2_1_ONLY :
+			case GABOUT_DIALOG_LICENSE_LGPL_3_0_ONLY :
+			//case GABOUT_DIALOG_LICENSE_AGPL_3_0    :
+				gtk_about_dialog_set_license_type(dialog, tmp_l);
+				break;
+			default :
+				zend_throw_exception_ex(pggi_exception_get(), 0, "The licence type property need to be a LICENCE_*");
+				break;
+		}
+	}else if(!strcmp(member_val, GABOUT_DIALOG_WRAP_LICENSE)){
+		convert_to_boolean(value);
+		gtk_about_dialog_set_wrap_license(dialog, GET_BOOL_FROM_ZVAL(value));
+	}else
+		PHP_WRITE_PROP_HANDLER_RETURN(gwindow_write_property(object, member, value, cache_slot));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 /*************************************/

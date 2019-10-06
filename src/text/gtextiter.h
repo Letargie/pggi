@@ -174,7 +174,7 @@ HashTable *gtext_iter_get_properties(zval *object);
 /** 
  * write property handling function
  */
-void gtext_iter_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE gtext_iter_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 /**********************************/
 /* GTextIter Class Initialization */

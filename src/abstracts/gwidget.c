@@ -526,115 +526,119 @@ HashTable *gwidget_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gwidget_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gwidget_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	long tmp_l;
-	const char * tmp_s;
 	double tmp_d;
-	int tmp_b;
+	long tmp_l;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
-	switch(Z_TYPE_P(value)){
-		case IS_LONG :
-			tmp_l = Z_LVAL_P(value);
-			if(!strcmp(member_val, GWIDGET_HALIGN))
-				switch(tmp_l){
-					case GTK_ALIGN_FILL:
-					case GTK_ALIGN_START :
-					case GTK_ALIGN_END :
-					case GTK_ALIGN_CENTER :
-					case GTK_ALIGN_BASELINE :
-						gtk_widget_set_halign(w->intern, tmp_l);
-						break;
-					default :
-						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the hAlign property with something not a ALIGN_* constant");
-						break;
-				}
-			else if(!strcmp(member_val, GWIDGET_VALIGN))
-				switch(tmp_l){
-					case GTK_ALIGN_FILL:
-					case GTK_ALIGN_START :
-					case GTK_ALIGN_END :
-					case GTK_ALIGN_CENTER :
-					case GTK_ALIGN_BASELINE :
-						gtk_widget_set_valign(w->intern, tmp_l);
-						break;
-					default :
-						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the vAlign property with something not a ALIGN_* constant");
-						break;
-				}
-			else if(!strcmp(member_val, GWIDGET_MARGIN_START))
-				gtk_widget_set_margin_start(w->intern, tmp_l);
-			else if(!strcmp(member_val, GWIDGET_MARGIN_END))
-				gtk_widget_set_margin_end(w->intern, tmp_l);
-			else if(!strcmp(member_val, GWIDGET_MARGIN_TOP))
-				gtk_widget_set_margin_top(w->intern, tmp_l);
-			else if(!strcmp(member_val, GWIDGET_MARGIN_BOTTOM))
-				gtk_widget_set_margin_bottom(w->intern, tmp_l);
-			else if(!strcmp(member_val, GWIDGET_DIRECTION))
-				switch(tmp_l){
-					case GTK_DIR_TAB_FORWARD :
-					case GTK_DIR_TAB_BACKWARD :
-					case GTK_DIR_UP :
-					case GTK_DIR_DOWN :
-					case GTK_DIR_LEFT :
-					case GTK_DIR_RIGHT :
-						gtk_widget_set_direction(w->intern, tmp_l);
-						break;
-					default :
-						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the direction property with something not a DIR_* constant");
-						break;
-				}
+
+
+	if(!strcmp(member_val, GWIDGET_HALIGN)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		switch(tmp_l){
+			case GTK_ALIGN_FILL:
+			case GTK_ALIGN_START :
+			case GTK_ALIGN_END :
+			case GTK_ALIGN_CENTER :
+			case GTK_ALIGN_BASELINE :
+				gtk_widget_set_halign(w->intern, tmp_l);
+				break;
+			default :
+				zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the hAlign property with something not a ALIGN_* constant");
+				break;
+		}
+	}else if(!strcmp(member_val, GWIDGET_VALIGN)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		switch(tmp_l){
+			case GTK_ALIGN_FILL:
+			case GTK_ALIGN_START :
+			case GTK_ALIGN_END :
+			case GTK_ALIGN_CENTER :
+			case GTK_ALIGN_BASELINE :
+				gtk_widget_set_valign(w->intern, tmp_l);
+				break;
+			default :
+				zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the vAlign property with something not a ALIGN_* constant");
+				break;
+		}
+	}else if(!strcmp(member_val, GWIDGET_MARGIN_START)){
+		convert_to_long(value);
+		gtk_widget_set_margin_start(w->intern, Z_LVAL_P(value));
+	}else if(!strcmp(member_val, GWIDGET_MARGIN_END)){
+		convert_to_long(value);
+		gtk_widget_set_margin_end(w->intern, Z_LVAL_P(value));
+	}else if(!strcmp(member_val, GWIDGET_MARGIN_TOP)){
+		convert_to_long(value);
+		gtk_widget_set_margin_top(w->intern, Z_LVAL_P(value));
+	}else if(!strcmp(member_val, GWIDGET_MARGIN_BOTTOM)){
+		convert_to_long(value);
+		gtk_widget_set_margin_bottom(w->intern, Z_LVAL_P(value));
+	}else if(!strcmp(member_val, GWIDGET_DIRECTION)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		switch(tmp_l){
+			case GTK_DIR_TAB_FORWARD :
+			case GTK_DIR_TAB_BACKWARD :
+			case GTK_DIR_UP :
+			case GTK_DIR_DOWN :
+			case GTK_DIR_LEFT :
+			case GTK_DIR_RIGHT :
+				gtk_widget_set_direction(w->intern, tmp_l);
+				break;
+			default :
+				zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the direction property with something not a DIR_* constant");
+				break;
+		}
+	}else if(!strcmp(member_val, GWIDGET_HEXPAND)){
+		convert_to_boolean(value);
+		gtk_widget_set_hexpand(w->intern, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GWIDGET_HEXPAND_SET)){
+		convert_to_boolean(value);
+		gtk_widget_set_hexpand_set(w->intern, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GWIDGET_VEXPAND)){
+		convert_to_boolean(value);
+		gtk_widget_set_vexpand(w->intern, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GWIDGET_VEXPAND_SET)){
+		convert_to_boolean(value);
+		gtk_widget_set_vexpand_set(w->intern, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GWIDGET_VISIBLE)){
+		convert_to_boolean(value);
+		gtk_widget_set_visible(w->intern, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GWIDGET_CAN_FOCUS)){
+		convert_to_boolean(value);
+		gtk_widget_set_can_focus(w->intern, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GWIDGET_CAN_DEFAULT)){
+		convert_to_boolean(value);
+		gtk_widget_set_can_default(w->intern, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GWIDGET_HAS_TOOLTIP)){
+		convert_to_boolean(value);
+		gtk_widget_set_has_tooltip(w->intern, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GWIDGET_NO_SHOW_ALL)){
+		convert_to_boolean(value);
+		gtk_widget_set_no_show_all(w->intern, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GWIDGET_SENSITIVE)){
+		convert_to_boolean(value);
+		gtk_widget_set_sensitive(w->intern, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(Z_STRVAL_P(member), GWIDGET_NAME)){
+		convert_to_string(value);
+		gtk_widget_set_name(w->intern, Z_STRVAL_P(value));
+	}else if(!strcmp(member_val, GWIDGET_OPACITY)){
+		convert_to_double(value);
+		tmp_d = Z_DVAL_P(value);
+		if(!strcmp(member_val, GWIDGET_OPACITY)){
+			if(tmp_d >= 0 && tmp_d <= 1)
+				gtk_widget_set_opacity(w->intern, tmp_d);
 			else
-				std_object_handlers.write_property(object, member, value, cache_slot);
-			break;
-		case IS_FALSE :
-		case IS_TRUE :
-			tmp_b = Z_TYPE_P(value) == IS_TRUE ? 1 : 0;
-			if(!strcmp(member_val, GWIDGET_HEXPAND))
-				gtk_widget_set_hexpand(w->intern, tmp_b);
-			else if(!strcmp(member_val, GWIDGET_HEXPAND_SET))
-				gtk_widget_set_hexpand_set(w->intern, tmp_b);
-			else if(!strcmp(member_val, GWIDGET_VEXPAND))
-				gtk_widget_set_vexpand(w->intern, tmp_b);
-			else if(!strcmp(member_val, GWIDGET_VEXPAND_SET))
-				gtk_widget_set_vexpand_set(w->intern, tmp_b);
-			else if(!strcmp(member_val, GWIDGET_VISIBLE))
-				gtk_widget_set_visible(w->intern, tmp_b);
-			else if(!strcmp(member_val, GWIDGET_CAN_FOCUS))
-				gtk_widget_set_can_focus(w->intern, tmp_b);
-			else if(!strcmp(member_val, GWIDGET_CAN_DEFAULT))
-				gtk_widget_set_can_default(w->intern, tmp_b);
-			else if(!strcmp(member_val, GWIDGET_HAS_TOOLTIP))
-				gtk_widget_set_has_tooltip(w->intern, tmp_b);
-			else if(!strcmp(member_val, GWIDGET_NO_SHOW_ALL))
-				gtk_widget_set_no_show_all(w->intern, tmp_b);
-			else if(!strcmp(member_val, GWIDGET_SENSITIVE))
-				gtk_widget_set_sensitive(w->intern, tmp_b);
-			else
-				std_object_handlers.write_property(object, member, value, cache_slot);
-			break;
-		case IS_STRING :
-			tmp_s = Z_STRVAL_P(value);
-			if(!strcmp(Z_STRVAL_P(member), GWIDGET_NAME))
-				gtk_widget_set_name(w->intern, tmp_s);
-			else
-				std_object_handlers.write_property(object, member, value, cache_slot);
-			break;
-		case IS_DOUBLE :
-			tmp_d = Z_DVAL_P(value);
-			if(!strcmp(member_val, GWIDGET_OPACITY)){
-				if(tmp_d >= 0 && tmp_d <= 1)
-					gtk_widget_set_opacity(w->intern, tmp_d);
-				else
 				zend_throw_exception_ex(pggi_exception_get(), 0, "the opacity property should be between 0 and 1");
-			}else
-				std_object_handlers.write_property(object, member, value, cache_slot);
-			break;
-		default:
-			std_object_handlers.write_property(object, member, value, cache_slot);
+		}
+	}else{
+		PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
 	}
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 /********************************/

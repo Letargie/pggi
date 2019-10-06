@@ -161,11 +161,8 @@ HashTable *gpixbuf_get_properties(zval *object){
 	return zend_std_get_properties(object);
 }
 
-void gpixbuf_write_property(zval *object, zval *member, zval *value, void **cache_slot){
-	switch(Z_TYPE_P(value)){
-		default:
-			std_object_handlers.write_property(object, member, value, cache_slot);
-	}
+PHP_WRITE_PROP_HANDLER_TYPE gpixbuf_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+	PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
 }
 
 /********************************/

@@ -156,38 +156,39 @@ HashTable *rgba_get_properties(zval *object){
 	return zend_std_get_properties(object);
 }
 
-void rgba_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE rgba_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_rgba_object * intern = Z_RGBA_P(object);
 	rgba_ptr c = intern->ptr;
 	double tmp_d;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
-	switch(Z_TYPE_P(value)){
-		case IS_DOUBLE :
-			tmp_d = Z_DVAL_P(value);
-			if(!strcmp(member_val, RGBA_RED)){
-				if(tmp_d < 0 || tmp_d > 1)
-					zend_throw_exception_ex(pggi_exception_get(), 0, "the value should be between 0 and 1");
-				c->color->red = tmp_d;
-			}else if(!strcmp(member_val, RGBA_GREEN)){
-				if(tmp_d < 0 || tmp_d > 1)
-					zend_throw_exception_ex(pggi_exception_get(), 0, "the value should be between 0 and 1");
-				c->color->green = tmp_d;
-			}else if(!strcmp(member_val, RGBA_BLUE)){
-				if(tmp_d < 0 || tmp_d > 1)
-					zend_throw_exception_ex(pggi_exception_get(), 0, "the value should be between 0 and 1");
-				c->color->blue = tmp_d;
-			}else if(!strcmp(member_val, RGBA_ALPHA)){
-				if(tmp_d < 0 || tmp_d > 1)
-					zend_throw_exception_ex(pggi_exception_get(), 0, "the value should be between 0 and 1");
-				c->color->alpha = tmp_d;
-			}else
-				std_object_handlers.write_property(object, member, value, cache_slot);
-			break;
-		default :
-			std_object_handlers.write_property(object, member, value, cache_slot);
-			break;
-	}
+	if(!strcmp(member_val, RGBA_RED)){
+		convert_to_double(value);
+		tmp_d = Z_DVAL_P(value);
+		if(tmp_d < 0 || tmp_d > 1)
+			zend_throw_exception_ex(pggi_exception_get(), 0, "the value should be between 0 and 1");
+		c->color->red = tmp_d;
+	}else if(!strcmp(member_val, RGBA_GREEN)){
+		convert_to_double(value);
+		tmp_d = Z_DVAL_P(value);
+		if(tmp_d < 0 || tmp_d > 1)
+			zend_throw_exception_ex(pggi_exception_get(), 0, "the value should be between 0 and 1");
+		c->color->green = tmp_d;
+	}else if(!strcmp(member_val, RGBA_BLUE)){
+		convert_to_double(value);
+		tmp_d = Z_DVAL_P(value);
+		if(tmp_d < 0 || tmp_d > 1)
+			zend_throw_exception_ex(pggi_exception_get(), 0, "the value should be between 0 and 1");
+		c->color->blue = tmp_d;
+	}else if(!strcmp(member_val, RGBA_ALPHA)){
+		convert_to_double(value);
+		tmp_d = Z_DVAL_P(value);
+		if(tmp_d < 0 || tmp_d > 1)
+			zend_throw_exception_ex(pggi_exception_get(), 0, "the value should be between 0 and 1");
+		c->color->alpha = tmp_d;
+	}else
+		PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 #define DECLARE_RGBA_PROP(name) \

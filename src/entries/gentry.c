@@ -182,80 +182,62 @@ HashTable *gentry_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gentry_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gentry_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	long tmp_l;
-	const char * tmp_s;
-	double tmp_d;
-	int tmp_b;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkEntry * e = GTK_ENTRY(w->intern);
-	switch(Z_TYPE_P(value)){
-		case IS_LONG :
-			tmp_l = Z_LVAL_P(value);
-			if(!strcmp(member_val, GENTRY_INVISIBLE_CHAR))
-				gtk_entry_set_invisible_char(e, tmp_l);
-			else if(!strcmp(member_val, GENTRY_MAX_LENGTH))
-				gtk_entry_set_max_length(e, tmp_l);
-			else if(!strcmp(member_val, GENTRY_WIDTH_CHARS))
-				gtk_entry_set_width_chars(e, tmp_l);
-			else if(!strcmp(member_val, GENTRY_MAX_WIDTH_CHARS))
-				gtk_entry_set_max_width_chars(e, tmp_l);
-			else
-				gwidget_write_property(object, member, value, cache_slot);
-			break;
-		case IS_STRING :
-			tmp_s = Z_STRVAL_P(value);
-			if(!strcmp(member_val, GENTRY_TEXT))
-				gtk_entry_set_text(e, tmp_s);
-			else if(!strcmp(member_val, GENTRY_PLACEHOLDER_TEXT))
-				gtk_entry_set_placeholder_text(e, tmp_s);
-			else
-				gwidget_write_property(object, member, value, cache_slot);
-			break;
-		case IS_DOUBLE :
-			tmp_d = Z_DVAL_P(value);
-			if(!strcmp(member_val, GENTRY_ALIGNMENT))
-				gtk_entry_set_alignment(e, tmp_d);
-			else if(!strcmp(member_val, GENTRY_PROGRESS_FRACTION))
-				gtk_entry_set_progress_fraction(e, tmp_d);
-			else if(!strcmp(member_val, GENTRY_PROGRESS_PULSE_STEP))
-				gtk_entry_set_progress_pulse_step(e, tmp_d);
-			else
-				gwidget_write_property(object, member, value, cache_slot);
-			break;
-		case IS_FALSE :
-		case IS_TRUE :
-			tmp_b = Z_TYPE_P(value) == IS_TRUE ? 1 : 0;
-			if(!strcmp(member_val, GENTRY_VISIBILITY))
-				gtk_entry_set_visibility(e, tmp_b);
-			else if(!strcmp(member_val, GENTRY_ACTIVATES_DEFAULT))
-				gtk_entry_set_activates_default(e, tmp_b);
-			else if(!strcmp(member_val, GENTRY_HAS_FRAME))
-				gtk_entry_set_has_frame(e, tmp_b);
-			else if(!strcmp(member_val, GENTRY_OVERWRITE_MODE))
-				gtk_entry_set_overwrite_mode(e, tmp_b);
-			else
-				gwidget_write_property(object, member, value, cache_slot);
-			break;
-		case IS_OBJECT :
-			if(!strcmp(member_val, GENTRY_BUFFER)){
-				ze_gentry_buffer_object *ze_obj = NULL;
-				ze_obj = Z_GENTRY_BUFFER_P(value);
-				if(!ze_obj){
-					zend_throw_exception_ex(pggi_exception_get(), 0, "Object of invalid type");
-				}
-				gtk_entry_set_buffer(e, ze_obj->buffer_ptr->intern);
-				std_object_handlers.write_property(object, member, value, cache_slot);
-			}else
-				gwidget_write_property(object, member, value, cache_slot);
-			break;
-		default:
-			gwidget_write_property(object, member, value, cache_slot);
-
-	}
+	if(!strcmp(member_val, GENTRY_INVISIBLE_CHAR)){
+		convert_to_long(value);
+		gtk_entry_set_invisible_char(e, Z_LVAL_P(value));
+	}else if(!strcmp(member_val, GENTRY_MAX_LENGTH)){
+		convert_to_long(value);
+		gtk_entry_set_max_length(e, Z_LVAL_P(value));
+	}else if(!strcmp(member_val, GENTRY_WIDTH_CHARS)){
+		convert_to_long(value);
+		gtk_entry_set_width_chars(e, Z_LVAL_P(value));
+	}else if(!strcmp(member_val, GENTRY_MAX_WIDTH_CHARS)){
+		convert_to_long(value);
+		gtk_entry_set_max_width_chars(e, Z_LVAL_P(value));
+	}else if(!strcmp(member_val, GENTRY_TEXT)){
+		convert_to_string(value);
+		gtk_entry_set_text(e, Z_STRVAL_P(value));
+	}else if(!strcmp(member_val, GENTRY_PLACEHOLDER_TEXT)){
+		convert_to_string(value);
+		gtk_entry_set_placeholder_text(e, Z_STRVAL_P(value));
+	}else if(!strcmp(member_val, GENTRY_ALIGNMENT)){
+		convert_to_double(value);
+		gtk_entry_set_alignment(e, Z_DVAL_P(value));
+	}else if(!strcmp(member_val, GENTRY_PROGRESS_FRACTION)){
+		convert_to_double(value);
+		gtk_entry_set_progress_fraction(e, Z_DVAL_P(value));
+	}else if(!strcmp(member_val, GENTRY_PROGRESS_PULSE_STEP)){
+		convert_to_double(value);
+		gtk_entry_set_progress_pulse_step(e, Z_DVAL_P(value));
+	}else if(!strcmp(member_val, GENTRY_VISIBILITY)){
+		convert_to_boolean(value);
+		gtk_entry_set_visibility(e, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GENTRY_ACTIVATES_DEFAULT)){
+		convert_to_boolean(value);
+		gtk_entry_set_activates_default(e, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GENTRY_HAS_FRAME)){
+		convert_to_boolean(value);
+		gtk_entry_set_has_frame(e, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GENTRY_OVERWRITE_MODE)){
+		convert_to_boolean(value);
+		gtk_entry_set_overwrite_mode(e, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GENTRY_BUFFER)){
+		ze_gentry_buffer_object *ze_obj = NULL;
+		ze_obj = Z_GENTRY_BUFFER_P(value);
+		if(!ze_obj){
+			zend_throw_exception_ex(pggi_exception_get(), 0, "Object of invalid type");
+		}
+		gtk_entry_set_buffer(e, ze_obj->buffer_ptr->intern);
+		std_object_handlers.write_property(object, member, value, cache_slot);
+	}else
+		PHP_WRITE_PROP_HANDLER_RETURN(gwidget_write_property(object, member, value, cache_slot));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 /***********************************/

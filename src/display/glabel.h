@@ -66,7 +66,7 @@ zval *glabel_read_property(zval *object, zval *member, int type, void **cache_sl
 
 HashTable *glabel_get_properties(zval *object);
 
-void glabel_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE glabel_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 
 /********************************/

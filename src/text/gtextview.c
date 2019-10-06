@@ -74,7 +74,7 @@ HashTable *gtext_view_get_properties(zval *object){
 	return gcontainer_get_properties(object);
 }
 
-void gtext_view_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gtext_view_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	/*ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
 	zval * tmp_member;
@@ -82,10 +82,7 @@ void gtext_view_write_property(zval *object, zval *member, zval *value, void **c
 	int tmp_b;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);*/
-	switch(Z_TYPE_P(value)){
-		default :
-			gcontainer_write_property(object, member, value, cache_slot);
-	}
+	PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
 }
 
 /**********************************/

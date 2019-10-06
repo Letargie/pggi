@@ -74,26 +74,20 @@ HashTable *gtool_item_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gtool_item_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gtool_item_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	int tmp_b;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
-	switch(Z_TYPE_P(value)){
-		case IS_FALSE :
-		case IS_TRUE :
-			tmp_b = Z_TYPE_P(value) == IS_TRUE ? 1 : 0;
-			if(!strcmp(member_val, GTOOL_ITEM_HOMOGENEOUS))
-				gtk_tool_item_set_homogeneous(GTK_TOOL_ITEM(w->intern), tmp_b);
-			else if(!strcmp(member_val, GTOOL_ITEM_EXPAND))
-				gtk_tool_item_set_expand(GTK_TOOL_ITEM(w->intern), tmp_b);
-			else
-				gcontainer_write_property(object, member, value, cache_slot);
-			break;
-		default:
-			gcontainer_write_property(object, member, value, cache_slot);
-	}
+	if(!strcmp(member_val, GTOOL_ITEM_HOMOGENEOUS)){
+		convert_to_boolean(value);
+		gtk_tool_item_set_homogeneous(GTK_TOOL_ITEM(w->intern), GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GTOOL_ITEM_EXPAND)){
+		convert_to_boolean(value);
+		gtk_tool_item_set_expand(GTK_TOOL_ITEM(w->intern), GET_BOOL_FROM_ZVAL(value));
+	}else
+		PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 

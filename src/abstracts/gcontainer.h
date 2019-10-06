@@ -58,7 +58,7 @@ zval *gcontainer_read_property(zval *object, zval *member, int type, void **cach
 
 HashTable *gcontainer_get_properties(zval *object);
 
-void gcontainer_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE gcontainer_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 /***********************************/
 /* GContainer class initialisation */

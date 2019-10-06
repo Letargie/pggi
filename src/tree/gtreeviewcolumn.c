@@ -261,73 +261,62 @@ HashTable *gtree_view_column_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gtree_view_column_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gtree_view_column_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gtree_view_column_object * intern = Z_GTREE_VIEW_COLUMN_P(object);
 	gtree_view_column_ptr b = intern->tree_view_column_ptr;
 	long tmp_l;
-	int tmp_b;
-	int tmp_d;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkTreeViewColumn * tree = GTK_TREE_VIEW_COLUMN(b->intern);
-	switch(Z_TYPE_P(value)){
-		case IS_STRING :
-			if(!strcmp(member_val, GTREE_VIEW_COLUMN_TITLE)){
-				gtk_tree_view_column_set_title(tree, Z_STRVAL_P(value));
-			}else
-				std_object_handlers.write_property(object, member, value, cache_slot);
-			break;
-		case IS_LONG :
-			tmp_l = Z_LVAL_P(value);
-			if(!strcmp(member_val, GTREE_VIEW_COLUMN_SIZING)){
-				switch(tmp_l){
-					case GTK_TREE_VIEW_COLUMN_GROW_ONLY :
-					case GTK_TREE_VIEW_COLUMN_AUTOSIZE  :
-					case GTK_TREE_VIEW_COLUMN_FIXED     :
-						gtk_tree_view_column_set_sizing(tree, tmp_l);
-						break;
-					default :
-						zend_throw_exception_ex(pggi_exception_get(), 0, "the sizing needs to be a SIZING_*");
-						break;
-				}			
-			}else if(!strcmp(member_val, GTREE_VIEW_COLUMN_SPACING)){
-				gtk_tree_view_column_set_spacing(tree, tmp_l);
-			}else if(!strcmp(member_val, GTREE_VIEW_COLUMN_FIXED_WIDTH)){
-				gtk_tree_view_column_set_fixed_width(tree, tmp_l);
-			}else if(!strcmp(member_val, GTREE_VIEW_COLUMN_MIN_WIDTH)){
-				gtk_tree_view_column_set_min_width(tree, tmp_l);
-			}else if(!strcmp(member_val, GTREE_VIEW_COLUMN_MAX_WIDTH)){
-				gtk_tree_view_column_set_max_width(tree, tmp_l);
-			}else
-				std_object_handlers.write_property(object, member, value, cache_slot);
-			break;
-		case IS_TRUE  :
-		case IS_FALSE :
-			tmp_b = (Z_TYPE_P(value) == IS_TRUE ? 1 : 0);
-			if(!strcmp(member_val, GTREE_VIEW_COLUMN_EXPAND)){
-				gtk_tree_view_column_set_expand(tree, tmp_b);
-			}else if(!strcmp(member_val, GTREE_VIEW_COLUMN_CLICKABLE)){
-				gtk_tree_view_column_set_clickable(tree, tmp_b);
-			}else if(!strcmp(member_val, GTREE_VIEW_COLUMN_REORDERABLE)){
-				gtk_tree_view_column_set_reorderable(tree, tmp_b);
-			}else if(!strcmp(member_val, GTREE_VIEW_COLUMN_VISIBLE)){
-				gtk_tree_view_column_set_visible(tree, tmp_b);
-			}else if(!strcmp(member_val, GTREE_VIEW_COLUMN_RESIZABLE)){
-				gtk_tree_view_column_set_resizable(tree, tmp_b);
-			}else
-				std_object_handlers.write_property(object, member, value, cache_slot);
-			break;
-		case IS_DOUBLE :
-			if(!strcmp(member_val, GTREE_VIEW_COLUMN_ALIGNMENT)){
-				tmp_d = Z_DVAL_P(value);
-				gtk_tree_view_column_set_resizable(tree, tmp_d);
-			}else
-				std_object_handlers.write_property(object, member, value, cache_slot);
-			break;
-			
-		default:
-			std_object_handlers.write_property(object, member, value, cache_slot);
+	if(!strcmp(member_val, GTREE_VIEW_COLUMN_TITLE)){
+		gtk_tree_view_column_set_title(tree, Z_STRVAL_P(value));
 	}
+	if(!strcmp(member_val, GTREE_VIEW_COLUMN_SIZING)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		switch(tmp_l){
+			case GTK_TREE_VIEW_COLUMN_GROW_ONLY :
+			case GTK_TREE_VIEW_COLUMN_AUTOSIZE  :
+			case GTK_TREE_VIEW_COLUMN_FIXED     :
+				gtk_tree_view_column_set_sizing(tree, tmp_l);
+				break;
+			default :
+				zend_throw_exception_ex(pggi_exception_get(), 0, "the sizing needs to be a SIZING_*");
+				break;
+		}			
+	}else if(!strcmp(member_val, GTREE_VIEW_COLUMN_SPACING)){
+		convert_to_long(value);
+		gtk_tree_view_column_set_spacing(tree, Z_LVAL_P(value));
+	}else if(!strcmp(member_val, GTREE_VIEW_COLUMN_FIXED_WIDTH)){
+		convert_to_long(value);
+		gtk_tree_view_column_set_fixed_width(tree, Z_LVAL_P(value));
+	}else if(!strcmp(member_val, GTREE_VIEW_COLUMN_MIN_WIDTH)){
+		convert_to_long(value);
+		gtk_tree_view_column_set_min_width(tree, Z_LVAL_P(value));
+	}else if(!strcmp(member_val, GTREE_VIEW_COLUMN_MAX_WIDTH)){
+		convert_to_long(value);
+		gtk_tree_view_column_set_max_width(tree, Z_LVAL_P(value));
+	}else if(!strcmp(member_val, GTREE_VIEW_COLUMN_EXPAND)){
+		convert_to_boolean(value);
+		gtk_tree_view_column_set_expand(tree, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GTREE_VIEW_COLUMN_CLICKABLE)){
+		convert_to_boolean(value);
+		gtk_tree_view_column_set_clickable(tree, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GTREE_VIEW_COLUMN_REORDERABLE)){
+		convert_to_boolean(value);
+		gtk_tree_view_column_set_reorderable(tree, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GTREE_VIEW_COLUMN_VISIBLE)){
+		convert_to_boolean(value);
+		gtk_tree_view_column_set_visible(tree, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GTREE_VIEW_COLUMN_RESIZABLE)){
+		convert_to_boolean(value);
+		gtk_tree_view_column_set_resizable(tree, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GTREE_VIEW_COLUMN_ALIGNMENT)){
+		convert_to_double(value);
+		gtk_tree_view_column_set_resizable(tree, Z_DVAL_P(value));
+	}else
+		PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 /************************************/

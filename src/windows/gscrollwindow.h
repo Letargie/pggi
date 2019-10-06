@@ -50,7 +50,7 @@ HashTable * gscroll_window_get_properties(zval *object);
 /** 
  * Write property handling function
  */
-void gscroll_window_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE gscroll_window_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 
 /***************/

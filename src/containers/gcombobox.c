@@ -117,22 +117,18 @@ HashTable *gcombo_box_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gcombo_box_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gcombo_box_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkComboBox * menu = GTK_COMBO_BOX(w->intern);
-	switch(Z_TYPE_P(value)){
-		case IS_LONG :
-			if(!strcmp(member_val, GCOMBO_BOX_ACTIVE))
-				gtk_combo_box_set_active(menu, Z_LVAL_P(value));
-			else
-				gcontainer_write_property(object, member, value, cache_slot);
-			break;
-		default :
-			gcontainer_write_property(object, member, value, cache_slot);
-	}
+	if(!strcmp(member_val, GCOMBO_BOX_ACTIVE)){
+		convert_to_long(value);
+		gtk_combo_box_set_active(menu, Z_LVAL_P(value));
+	}else
+		PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 /**********************************/

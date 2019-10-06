@@ -82,7 +82,7 @@ HashTable * gfile_chooser_dialog_get_properties(zval *object);
 /** 
  * Write property handling function
  */
-void gfile_chooser_dialog_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE gfile_chooser_dialog_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 
 /***************/

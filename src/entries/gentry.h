@@ -81,7 +81,7 @@ zval *gentry_read_property(zval *object, zval *member, int type, void **cache_sl
 
 HashTable *gentry_get_properties(zval *object);
 
-void gentry_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE gentry_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 /*******************************/
 /* GEntry class initialisation */

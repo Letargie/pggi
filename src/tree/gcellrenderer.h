@@ -110,19 +110,19 @@ GCELL_RENDERER_METHOD(activable);
 /** 
  * Read property handling function
  */
-zval *gcell_renderer_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv);
+//zval *gcell_renderer_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv);
 
 /*==========================================================================*/
 /** 
  * get properties handling function
  */
-HashTable *gcell_renderer_get_properties(zval *object);
+//HashTable *gcell_renderer_get_properties(zval *object);
 
 /*==========================================================================*/
 /** 
  * write property handling function
  */
-void gcell_renderer_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+//PHP_WRITE_PROP_HANDLER_TYPE gcell_renderer_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 /************************************/
 /* GCellRenderer Class Initialization */

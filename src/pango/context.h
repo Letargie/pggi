@@ -242,7 +242,7 @@ HashTable *pp_context_get_properties(zval *object);
  * @param zval * value       The value we want to use to set the property
  * @param void ** cache_slot The cache slot
  */
-void pp_context_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE pp_context_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 /************************/
 /* Class Initialization */

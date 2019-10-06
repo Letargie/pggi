@@ -83,7 +83,7 @@ HashTable * gtree_view_get_properties(zval *object);
 /** 
  * Write property handling function
  */
-void gtree_view_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE gtree_view_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 
 /***************/

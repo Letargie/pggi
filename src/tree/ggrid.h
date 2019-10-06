@@ -79,7 +79,7 @@ zval *ggrid_read_property(zval *object, zval *member, int type, void **cache_slo
 
 HashTable *ggrid_get_properties(zval *object);
 
-void ggrid_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE ggrid_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 void ggrid_init(int module_number);
 

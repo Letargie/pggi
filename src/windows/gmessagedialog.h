@@ -51,7 +51,7 @@ HashTable * gmessage_dialog_get_properties(zval *object);
 /** 
  * Write property handling function
  */
-void gmessage_dialog_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE gmessage_dialog_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 
 /***************/

@@ -219,72 +219,69 @@ HashTable *gtree_view_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gtree_view_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gtree_view_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	long tmp_l;
-	int tmp_b;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkTreeView * view = GTK_TREE_VIEW(w->intern);
-	switch(Z_TYPE_P(value)){
-		case IS_LONG :
-			tmp_l = Z_LVAL_P(value);
-			if(!strcmp(member_val, GTREE_VIEW_ENABLE_GRID_LINES)){
-				gtk_tree_view_set_grid_lines(view, tmp_l);
-			}else if(!strcmp(member_val, GTREE_VIEW_LEVEL_INDENTATION)){
-				gtk_tree_view_set_level_indentation(view, tmp_l);
-			}else if(!strcmp(member_val, GTREE_VIEW_SEARCH_COLUMN)){
-				gtk_tree_view_set_search_column(view, tmp_l);
-			}else if(!strcmp(member_val, GTREE_VIEW_TOOLTIP_COLUMN)){
-				gtk_tree_view_set_tooltip_column(view, tmp_l);
-			}else
-				gcontainer_write_property(object, member, value, cache_slot);
-			break;
-		case IS_FALSE :
-		case IS_TRUE :
-			tmp_b = Z_TYPE_P(value) == IS_TRUE ? 1 : 0;
-			if(!strcmp(member_val, GTREE_VIEW_ACTIVATE_ON_SINGLE_CLICK)){
-				gtk_tree_view_set_activate_on_single_click(view, tmp_b);
-			}else if(!strcmp(member_val, GTREE_VIEW_ENABLE_SEARCH)){
-				gtk_tree_view_set_enable_search(view, tmp_b);
-			}else if(!strcmp(member_val, GTREE_VIEW_ENABLE_TREE_LINES)){
-				gtk_tree_view_set_enable_tree_lines(view, tmp_b);
-			}else if(!strcmp(member_val, GTREE_VIEW_FIXED_HEIGHT_MODE)){
-				gtk_tree_view_set_fixed_height_mode(view, tmp_b);
-			}else if(!strcmp(member_val, GTREE_VIEW_HEADERS_CLICKABLE)){
-				gtk_tree_view_set_headers_clickable(view, tmp_b);
-			}else if(!strcmp(member_val, GTREE_VIEW_HEADERS_VISIBLE)){
-				gtk_tree_view_set_headers_visible(view, tmp_b);
-			}else if(!strcmp(member_val, GTREE_VIEW_HOVER_EXPAND)){
-				gtk_tree_view_set_hover_expand(view, tmp_b);
-			}else if(!strcmp(member_val, GTREE_VIEW_REORDERABLE)){
-				gtk_tree_view_set_reorderable(view, tmp_b);
-			}else if(!strcmp(member_val, GTREE_VIEW_RUBBER_BANDING)){
-				gtk_tree_view_set_rubber_banding(view, tmp_b);
-			}else if(!strcmp(member_val, GTREE_VIEW_SHOW_EXPANDERS)){
-				gtk_tree_view_set_show_expanders(view, tmp_b);
-			}else if(!strcmp(member_val, GTREE_VIEW_HOVER_SELECTION)){
-				gtk_tree_view_set_hover_selection(view, tmp_b);
-			}else
-				gcontainer_write_property(object, member, value, cache_slot);
-			break;
-		case IS_OBJECT :
-				if(!strcmp(member_val, GTREE_VIEW_MODEL)){
-					ze_gtree_store_object * tmp_model = Z_GTREE_STORE_P(value);
-					if(!tmp_model){
-						zend_throw_exception_ex(pggi_exception_get(), 0, "that need to be a widget");
-						return ;
-					}
-					gtree_store_ptr w = tmp_model->tree_store_ptr;
-					std_object_handlers.write_property(object, member, value, cache_slot);
-					gtk_tree_view_set_model(view, GTK_TREE_MODEL(w->intern));
-				}else
-					gcontainer_write_property(object, member, value, cache_slot);
-			break;
-		default :
-			gcontainer_write_property(object, member, value, cache_slot);
-	}
+	if(!strcmp(member_val, GTREE_VIEW_ENABLE_GRID_LINES)){
+		convert_to_long(value);
+		gtk_tree_view_set_grid_lines(view, Z_LVAL_P(value));
+	}else if(!strcmp(member_val, GTREE_VIEW_LEVEL_INDENTATION)){
+		convert_to_long(value);
+		gtk_tree_view_set_level_indentation(view, Z_LVAL_P(value));
+	}else if(!strcmp(member_val, GTREE_VIEW_SEARCH_COLUMN)){
+		convert_to_long(value);
+		gtk_tree_view_set_search_column(view, Z_LVAL_P(value));
+	}else if(!strcmp(member_val, GTREE_VIEW_TOOLTIP_COLUMN)){
+		convert_to_long(value);
+		gtk_tree_view_set_tooltip_column(view, Z_LVAL_P(value));
+	}else if(!strcmp(member_val, GTREE_VIEW_ACTIVATE_ON_SINGLE_CLICK)){
+		convert_to_boolean(value);
+		gtk_tree_view_set_activate_on_single_click(view, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GTREE_VIEW_ENABLE_SEARCH)){
+		convert_to_boolean(value);
+		gtk_tree_view_set_enable_search(view, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GTREE_VIEW_ENABLE_TREE_LINES)){
+		convert_to_boolean(value);
+		gtk_tree_view_set_enable_tree_lines(view, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GTREE_VIEW_FIXED_HEIGHT_MODE)){
+		convert_to_boolean(value);
+		gtk_tree_view_set_fixed_height_mode(view, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GTREE_VIEW_HEADERS_CLICKABLE)){
+		convert_to_boolean(value);
+		gtk_tree_view_set_headers_clickable(view, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GTREE_VIEW_HEADERS_VISIBLE)){
+		convert_to_boolean(value);
+		gtk_tree_view_set_headers_visible(view, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GTREE_VIEW_HOVER_EXPAND)){
+		convert_to_boolean(value);
+		gtk_tree_view_set_hover_expand(view, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GTREE_VIEW_REORDERABLE)){
+		convert_to_boolean(value);
+		gtk_tree_view_set_reorderable(view, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GTREE_VIEW_RUBBER_BANDING)){
+		convert_to_boolean(value);
+		gtk_tree_view_set_rubber_banding(view, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GTREE_VIEW_SHOW_EXPANDERS)){
+		convert_to_boolean(value);
+		gtk_tree_view_set_show_expanders(view, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GTREE_VIEW_HOVER_SELECTION)){
+		convert_to_boolean(value);
+		gtk_tree_view_set_hover_selection(view, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GTREE_VIEW_MODEL)){
+		ze_gtree_store_object * tmp_model = Z_GTREE_STORE_P(value);
+		if(!tmp_model){
+			zend_throw_exception_ex(pggi_exception_get(), 0, "that need to be a widget");
+			return ;
+		}
+		gtree_store_ptr w = tmp_model->tree_store_ptr;
+		std_object_handlers.write_property(object, member, value, cache_slot);
+		gtk_tree_view_set_model(view, GTK_TREE_MODEL(w->intern));
+	}else
+		PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 /**********************************/

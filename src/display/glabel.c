@@ -115,60 +115,48 @@ HashTable *glabel_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void glabel_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE glabel_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
 	GtkLabel * label = GTK_LABEL(w->intern);
-	long tmp_l;
-	double tmp_d;
-	int tmp_b;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
-	switch(Z_TYPE_P(value)){
-		case IS_LONG :
-			tmp_l = Z_LVAL_P(value);
-			if(!strcmp(member_val, GLABEL_ELLIPSIZE))
-				gtk_label_set_ellipsize(label, tmp_l);
-			else if(!strcmp(member_val, GLABEL_LINES))
-				gtk_label_set_lines(label, tmp_l);
-			else if(!strcmp(member_val, GLABEL_WIDTH_CHARS))
-				gtk_label_set_width_chars(label, tmp_l);
-			else if(!strcmp(member_val, GLABEL_MAX_WIDTH_CHARS))
-				gtk_label_set_max_width_chars(label, tmp_l);
-			else
-				gwidget_write_property(object, member, value, cache_slot);
-			break;
-		case IS_DOUBLE :
-			tmp_d = Z_DVAL_P(value);
-			if(!strcmp(member_val, GLABEL_XALIGN))
-				gtk_label_set_xalign(label, tmp_d);
-			else if(!strcmp(member_val, GLABEL_YALIGN))
-				gtk_label_set_yalign(label, tmp_d);
-			else
-				gwidget_write_property(object, member, value, cache_slot);
-		case IS_STRING :
-			if(!strcmp(member_val, GLABEL_TEXT))
-				gtk_label_set_text(label, Z_STRVAL_P(value));
-			else
-				gwidget_write_property(object, member, value, cache_slot);
-			break;
-		case IS_FALSE :
-		case IS_TRUE :
-			tmp_b = Z_TYPE_P(value) == IS_TRUE ? 1 : 0 ;
-			if(!strcmp(member_val, GLABEL_SELECTABLE))
-				gtk_label_set_selectable(label, tmp_b);
-			else if(!strcmp(member_val, GLABEL_USE_UNDERLINE))
-				gtk_label_set_use_underline(label, tmp_b);
-			else if(!strcmp(member_val, GLABEL_USE_MARKUP))
-				gtk_label_set_use_markup(label, tmp_b);
-			else if(!strcmp(member_val, GLABEL_TRACK_VISITED_LINKS))
-				gtk_label_set_track_visited_links(label, tmp_b);
-			else
-				gwidget_write_property(object, member, value, cache_slot);
-			break;
-		default:
-			gwidget_write_property(object, member, value, cache_slot);
-	}
+	if(!strcmp(member_val, GLABEL_ELLIPSIZE)){
+		convert_to_long(value);
+		gtk_label_set_ellipsize(label, Z_LVAL_P(value));
+	}else if(!strcmp(member_val, GLABEL_LINES)){
+		convert_to_long(value);
+		gtk_label_set_lines(label, Z_LVAL_P(value));
+	}else if(!strcmp(member_val, GLABEL_WIDTH_CHARS)){
+		convert_to_long(value);
+		gtk_label_set_width_chars(label, Z_LVAL_P(value));
+	}else if(!strcmp(member_val, GLABEL_MAX_WIDTH_CHARS)){
+		convert_to_long(value);
+		gtk_label_set_max_width_chars(label, Z_LVAL_P(value));
+	}else if(!strcmp(member_val, GLABEL_XALIGN)){
+		convert_to_double(value);
+		gtk_label_set_xalign(label, Z_DVAL_P(value));
+	}else if(!strcmp(member_val, GLABEL_YALIGN)){
+		convert_to_double(value);
+		gtk_label_set_yalign(label, Z_DVAL_P(value));
+	}else if(!strcmp(member_val, GLABEL_TEXT)){
+		convert_to_string(value);
+		gtk_label_set_text(label, Z_STRVAL_P(value));
+	}else if(!strcmp(member_val, GLABEL_SELECTABLE)){
+		convert_to_boolean(value);
+		gtk_label_set_selectable(label, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GLABEL_USE_UNDERLINE)){
+		convert_to_boolean(value);
+		gtk_label_set_use_underline(label, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GLABEL_USE_MARKUP)){
+		convert_to_boolean(value);
+		gtk_label_set_use_markup(label, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GLABEL_TRACK_VISITED_LINKS)){
+		convert_to_boolean(value);
+		gtk_label_set_track_visited_links(label, GET_BOOL_FROM_ZVAL(value));
+	}else
+		gwidget_write_property(object, member, value, cache_slot);
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 /*******************************/

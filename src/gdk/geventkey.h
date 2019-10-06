@@ -68,7 +68,7 @@ HashTable *gevent_key_get_properties(zval *object);
 /** 
  * write property handling function
  */
-void gevent_write_key_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE gevent_write_key_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 /**********************************/
 /* GEventKey Class Initialization */

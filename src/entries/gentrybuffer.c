@@ -239,28 +239,21 @@ HashTable *gentry_buffer_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gentry_buffer_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gentry_buffer_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gentry_buffer_object * intern = Z_GENTRY_BUFFER_P(object);
 	gentry_buffer_ptr b = intern->buffer_ptr;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkEntryBuffer * buffer = b->intern;
-	switch(Z_TYPE_P(value)){
-		case IS_STRING :
-			if(!strcmp(member_val, GENTRY_BUFFER_TEXT)){
-				gtk_entry_buffer_set_text(buffer, Z_STRVAL_P(value), Z_STRLEN_P(value));
-			}else 
-				std_object_handlers.write_property(object, member, value, cache_slot);
-			break;
-		case IS_LONG :
-			if(!strcmp(member_val, GENTRY_BUFFER_MAX_LENGTH)){
-				gtk_entry_buffer_set_max_length(buffer, Z_LVAL_P(value));
-			}else 
-				std_object_handlers.write_property(object, member, value, cache_slot);
-			break;
-		default:
-			std_object_handlers.write_property(object, member, value, cache_slot);
-	}
+	if(!strcmp(member_val, GENTRY_BUFFER_TEXT)){
+		convert_to_string(value);
+		gtk_entry_buffer_set_text(buffer, Z_STRVAL_P(value), Z_STRLEN_P(value));
+	}else if(!strcmp(member_val, GENTRY_BUFFER_MAX_LENGTH)){
+		convert_to_long(value);
+		gtk_entry_buffer_set_max_length(buffer, Z_LVAL_P(value));
+	}else 
+		PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 /************************************/

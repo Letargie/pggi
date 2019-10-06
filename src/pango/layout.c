@@ -154,43 +154,40 @@ HashTable *pp_layout_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void pp_layout_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE pp_layout_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_layout_object * intern = Z_LAYOUT_P(object);
 	pp_layout_ptr l = intern->layout_ptr;
 	long tmp_l;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
-	switch(Z_TYPE_P(value)){
-		case IS_LONG :
-			tmp_l = Z_LVAL_P(value);
-			if(!strcmp(member_val, LAYOUT_HEIGHT)){
-				pango_layout_set_width(l->intern, tmp_l);
-			}else if(!strcmp(member_val, LAYOUT_WIDTH)){
-				pango_layout_set_height(l->intern, tmp_l);
-			}else if(!strcmp(member_val, LAYOUT_WRAP)){
-				switch(tmp_l){
-					case PANGO_WRAP_WORD     :
-					case PANGO_WRAP_CHAR     :
-					case PANGO_WRAP_WORD_CHAR:
-						pango_layout_set_wrap(l->intern, tmp_l);
-						break;
-					default:
-						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the gravityHint property, needs to be a Context::GRAVITY_HINT_*");
-						return;
-						break;
-				}
-			}else
-				std_object_handlers.write_property(object, member, value, cache_slot);
-			break;
-		case IS_STRING :
-			if(!strcmp(member_val, LAYOUT_TEXT))
-				pango_layout_set_text(l->intern, Z_STRVAL_P(value), Z_STRLEN_P(value));
-			else
-				std_object_handlers.write_property(object, member, value, cache_slot);
-			break;
-		default:
-			std_object_handlers.write_property(object, member, value, cache_slot);
-	}
+	if(!strcmp(member_val, LAYOUT_HEIGHT)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		pango_layout_set_width(l->intern, tmp_l);
+	}else if(!strcmp(member_val, LAYOUT_WIDTH)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		pango_layout_set_height(l->intern, tmp_l);
+	}else if(!strcmp(member_val, LAYOUT_WRAP)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		switch(tmp_l){
+			case PANGO_WRAP_WORD     :
+			case PANGO_WRAP_CHAR     :
+			case PANGO_WRAP_WORD_CHAR:
+				pango_layout_set_wrap(l->intern, tmp_l);
+				break;
+			default:
+				zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the gravityHint property, needs to be a Context::GRAVITY_HINT_*");
+				return;
+				break;
+		}
+	}else if(!strcmp(member_val, LAYOUT_TEXT)){
+		convert_to_string(value);
+		pango_layout_set_text(l->intern, Z_STRVAL_P(value), Z_STRLEN_P(value));
+	}else
+		PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 /************************/

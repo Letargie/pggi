@@ -57,7 +57,7 @@ HashTable * gcombo_box_get_properties(zval *object);
 /** 
  * Write property handling function
  */
-void gcombo_box_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE gcombo_box_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 
 /***************/

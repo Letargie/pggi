@@ -117,25 +117,18 @@ HashTable *gmenushell_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gmenushell_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gmenushell_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	int tmp_b;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkMenuShell * menu = GTK_MENU_SHELL(w->intern);
-	switch(Z_TYPE_P(value)){
-		case IS_TRUE :
-		case IS_FALSE :
-			tmp_b = Z_TYPE_P(value) == IS_TRUE ? 1 : 0;
-			if(!strcmp(member_val, GMENUSHELL_TAKE_FOCUS))
-				gtk_menu_shell_set_take_focus(menu, tmp_b);
-			else
-				gcontainer_write_property(object, member, value, cache_slot);
-			break;
-		default :
-			gcontainer_write_property(object, member, value, cache_slot);
-	}
+	if(!strcmp(member_val, GMENUSHELL_TAKE_FOCUS)){
+		convert_to_boolean(value);
+		gtk_menu_shell_set_take_focus(menu, GET_BOOL_FROM_ZVAL(value));
+	}else
+		PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 /***********************************/

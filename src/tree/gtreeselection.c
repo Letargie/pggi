@@ -323,35 +323,30 @@ HashTable *gtree_selection_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gtree_selection_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gtree_selection_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gtree_selection_object * intern = Z_GTREE_SELECTION_P(object);
 	gtree_selection_ptr b = intern->tree_selection_ptr;
 	long tmp_l;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkTreeSelection * tree = GTK_TREE_SELECTION(b->intern);
-	switch(Z_TYPE_P(value)){
-		case IS_LONG :
-			tmp_l = Z_LVAL_P(value);
-			if(!strcmp(member_val, GTREE_SELECTION_MODE)){
-				switch(tmp_l){
-					case GTK_SELECTION_NONE     :
-					case GTK_SELECTION_SINGLE   :
-					case GTK_SELECTION_BROWSE   :
-					case GTK_SELECTION_MULTIPLE :
-						gtk_tree_selection_set_mode(tree, tmp_l);
-						break;
-					default :
-						zend_throw_exception_ex(pggi_exception_get(), 0, "the selection mode needs to be a SELECTION_*");
-						break;
-				}
-			}else
-				std_object_handlers.write_property(object, member, value, cache_slot);
-			break;
-			
-		default:
-			std_object_handlers.write_property(object, member, value, cache_slot);
-	}
+	if(!strcmp(member_val, GTREE_SELECTION_MODE)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		switch(tmp_l){
+			case GTK_SELECTION_NONE     :
+			case GTK_SELECTION_SINGLE   :
+			case GTK_SELECTION_BROWSE   :
+			case GTK_SELECTION_MULTIPLE :
+				gtk_tree_selection_set_mode(tree, tmp_l);
+				break;
+			default :
+				zend_throw_exception_ex(pggi_exception_get(), 0, "the selection mode needs to be a SELECTION_*");
+				break;
+		}
+	}else
+		PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 /************************************/

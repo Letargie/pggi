@@ -114,7 +114,7 @@ HashTable *gscreen_get_properties(zval *object);
 /** 
  * write property handling function
  */
-void gscreen_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE gscreen_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 /********************************/
 /* GScreen Class Initialization */

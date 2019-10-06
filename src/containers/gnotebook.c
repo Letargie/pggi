@@ -323,60 +323,52 @@ HashTable *gnotebook_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gnotebook_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gnotebook_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
 	long tmp_l;
-	int tmp_b;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
-	switch(Z_TYPE_P(value)){
-		case IS_STRING :
-			if(!strcmp(member_val, GNOTEBOOK_GROUP_NAME))
-				gtk_notebook_set_group_name(GTK_NOTEBOOK(w->intern), Z_STRVAL_P(value));
-			else
-				gcontainer_write_property(object, member, value, cache_slot);
-			break;
-		case IS_LONG :
-			tmp_l = Z_LVAL_P(value);
-			if(!strcmp(member_val, GNOTEBOOK_PAGE))
-				gtk_notebook_set_current_page(GTK_NOTEBOOK(w->intern), tmp_l);
-			else if(!strcmp(member_val, GNOTEBOOK_TAB_POS))
-				switch(tmp_l){
-					case GTK_POS_LEFT   :
-					case GTK_POS_RIGHT  :
-					case GTK_POS_TOP    :
-					case GTK_POS_BOTTOM :
-						gtk_notebook_set_tab_pos(GTK_NOTEBOOK(w->intern), tmp_l);
-						break;
-					default:
-						zend_throw_exception_ex(pggi_exception_get(), 0, "the tabPos need to be a POS_*");
-						break;
-				}
-			else
-				gcontainer_write_property(object, member, value, cache_slot);
-			break;
-		case IS_FALSE :
-		case IS_TRUE :
-			tmp_b = Z_TYPE_P(value) == IS_TRUE ? 1 : 0;
-			if(!strcmp(member_val, GNOTEBOOK_ENABLE_POPUP))
-				if(tmp_b){
-					gtk_notebook_popup_enable(GTK_NOTEBOOK(w->intern));
-				}else{
-					gtk_notebook_popup_disable(GTK_NOTEBOOK(w->intern));
-				}
-			else if(!strcmp(member_val, GNOTEBOOK_SCROLLABLE))
-				gtk_notebook_set_scrollable(GTK_NOTEBOOK(w->intern), tmp_b);
-			else if(!strcmp(member_val, GNOTEBOOK_SHOW_BORDER))
-				gtk_notebook_set_show_border(GTK_NOTEBOOK(w->intern), tmp_b);
-			else if(!strcmp(member_val, GNOTEBOOK_SHOW_TABS))
-				gtk_notebook_set_show_tabs(GTK_NOTEBOOK(w->intern), tmp_b);
-			else
-				gcontainer_write_property(object, member, value, cache_slot);
-			break;
-		default:
-			gcontainer_write_property(object, member, value, cache_slot);
-	}
+	if(!strcmp(member_val, GNOTEBOOK_GROUP_NAME))
+		gtk_notebook_set_group_name(GTK_NOTEBOOK(w->intern), Z_STRVAL_P(value));
+	
+	else if(!strcmp(member_val, GNOTEBOOK_PAGE)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(w->intern), tmp_l);
+	}else if(!strcmp(member_val, GNOTEBOOK_TAB_POS)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		switch(tmp_l){
+			case GTK_POS_LEFT   :
+			case GTK_POS_RIGHT  :
+			case GTK_POS_TOP    :
+			case GTK_POS_BOTTOM :
+				gtk_notebook_set_tab_pos(GTK_NOTEBOOK(w->intern), tmp_l);
+				break;
+			default:
+				zend_throw_exception_ex(pggi_exception_get(), 0, "the tabPos need to be a POS_*");
+				break;
+		}
+	}else if(!strcmp(member_val, GNOTEBOOK_ENABLE_POPUP)){
+		convert_to_boolean(value);
+		if(GET_BOOL_FROM_ZVAL(value)){
+			gtk_notebook_popup_enable(GTK_NOTEBOOK(w->intern));
+		}else{
+			gtk_notebook_popup_disable(GTK_NOTEBOOK(w->intern));
+		}
+	}else if(!strcmp(member_val, GNOTEBOOK_SCROLLABLE)){
+		convert_to_boolean(value);
+		gtk_notebook_set_scrollable(GTK_NOTEBOOK(w->intern), GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GNOTEBOOK_SHOW_BORDER)){
+		convert_to_boolean(value);
+		gtk_notebook_set_show_border(GTK_NOTEBOOK(w->intern), GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GNOTEBOOK_SHOW_TABS)){
+		convert_to_boolean(value);
+		gtk_notebook_set_show_tabs(GTK_NOTEBOOK(w->intern), GET_BOOL_FROM_ZVAL(value));
+	}else
+		PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 #define DECLARE_GNOTEBOOK_PROP(name) \

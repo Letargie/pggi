@@ -88,41 +88,32 @@ HashTable *gtoolbar_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gtoolbar_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gtoolbar_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	int tmp_b;
 	long tmp_l;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
-	switch(Z_TYPE_P(value)){
-		case IS_LONG :
-			tmp_l = Z_LVAL_P(value);
-			if(!strcmp(member_val, GTOOLBAR_STYLE))
-				switch(tmp_l){
-					case GTK_TOOLBAR_ICONS     :
-					case GTK_TOOLBAR_TEXT      :
-					case GTK_TOOLBAR_BOTH      :
-					case GTK_TOOLBAR_BOTH_HORIZ:
-						gtk_toolbar_set_style(GTK_TOOLBAR(w->intern), tmp_l);
-						break;
-					default:
-						zend_throw_exception_ex(pggi_exception_get(), 0, "The style property needs to be a TOOLBAR_*");
-				}
-			else
-				gcontainer_write_property(object, member, value, cache_slot);
-			break;
-		case IS_FALSE :
-		case IS_TRUE :
-			tmp_b = Z_TYPE_P(value) == IS_TRUE ? 1 : 0;
-			if(!strcmp(member_val, GTOOLBAR_SHOW_ARROW))
-				gtk_toolbar_set_show_arrow(GTK_TOOLBAR(w->intern), tmp_b);
-			else
-				gcontainer_write_property(object, member, value, cache_slot);
-			break;
-		default:
-			gcontainer_write_property(object, member, value, cache_slot);
-	}
+	
+	if(!strcmp(member_val, GTOOLBAR_STYLE)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		switch(tmp_l){
+			case GTK_TOOLBAR_ICONS     :
+			case GTK_TOOLBAR_TEXT      :
+			case GTK_TOOLBAR_BOTH      :
+			case GTK_TOOLBAR_BOTH_HORIZ:
+				gtk_toolbar_set_style(GTK_TOOLBAR(w->intern), tmp_l);
+				break;
+			default:
+				zend_throw_exception_ex(pggi_exception_get(), 0, "The style property needs to be a TOOLBAR_*");
+		}
+	}else if(!strcmp(member_val, GTOOLBAR_SHOW_ARROW)){
+			convert_to_boolean(value);
+			gtk_toolbar_set_show_arrow(GTK_TOOLBAR(w->intern), GET_BOOL_FROM_ZVAL(value));
+	}else
+		PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 

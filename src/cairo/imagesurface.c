@@ -210,17 +210,13 @@ HashTable *pc_image_surface_get_properties(zval *object){
 	return pc_surface_get_properties(object);
 }
 
-void pc_image_surface_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE pc_image_surface_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	/*ze_surface_object * intern = Z_SURFACE_P(object);
 	pc_surface_ptr c = intern->surface_ptr;
 
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);*/
-	switch(Z_TYPE_P(value)){
-		
-		default:
-			pc_surface_write_property(object, member, value, cache_slot);
-	}
+	PHP_WRITE_PROP_HANDLER_TYPE(pc_surface_write_property(object, member, value, cache_slot));
 }
 
 /********************************/

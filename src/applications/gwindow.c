@@ -194,45 +194,42 @@ HashTable *gwindow_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void gwindow_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE gwindow_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_gwidget_object * intern = Z_GWIDGET_P(object);
 	gwidget_ptr w = intern->widget_ptr;
-	int tmp_b;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
 	GtkWindow * win = GTK_WINDOW(w->intern);
-	switch(Z_TYPE_P(value)){
-		case IS_STRING :
-			if(!strcmp(member_val, GWINDOW_TITLE))
-				gtk_window_set_title(win, Z_STRVAL_P(value));
-			else
-				gcontainer_write_property(object, member, value, cache_slot);
-			break;
-		case IS_TRUE :
-		case IS_FALSE :
-			tmp_b = Z_TYPE_P(value) == IS_TRUE ? 1 :0;
-			if(!strcmp(member_val, GWINDOW_FOCUS_VISIBLE))
-				gtk_window_set_focus_visible(win, tmp_b);
-			else if(!strcmp(member_val, GWINDOW_FOCUS_ON_MAP))
-				gtk_window_set_focus_on_map(win, tmp_b);
-			else if(!strcmp(member_val, GWINDOW_DECORATED))
-				gtk_window_set_decorated(win, tmp_b);
-			else if(!strcmp(member_val, GWINDOW_DELETABLE))
-				gtk_window_set_deletable(win, tmp_b);
-			else if(!strcmp(member_val, GWINDOW_MNEMONICS_VISIBLE))
-				gtk_window_set_mnemonics_visible(win, tmp_b);
-			else if(!strcmp(member_val, GWINDOW_RESIZABLE))
-				gtk_window_set_resizable(win, tmp_b);
-			else if(!strcmp(member_val, GWINDOW_HIDE_TITLEBAR_WHEN_MAXIMIZED))
-				gtk_window_set_hide_titlebar_when_maximized(win, tmp_b);
-			else if(!strcmp(member_val, GWINDOW_ACCEPT_FOCUS))
-				gtk_window_set_accept_focus(win, tmp_b);
-			else
-				gcontainer_write_property(object, member, value, cache_slot);
-			break;
-		default :
-			gcontainer_write_property(object, member, value, cache_slot);
-	}
+	if(!strcmp(member_val, GWINDOW_TITLE)){
+		convert_to_string(value);
+		gtk_window_set_title(win, Z_STRVAL_P(value));
+	}else if(!strcmp(member_val, GWINDOW_FOCUS_VISIBLE)){
+		convert_to_boolean(value);
+		gtk_window_set_focus_visible(win, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GWINDOW_FOCUS_ON_MAP)){
+		convert_to_boolean(value);
+		gtk_window_set_focus_on_map(win, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GWINDOW_DECORATED)){
+		convert_to_boolean(value);
+		gtk_window_set_decorated(win, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GWINDOW_DELETABLE)){
+		convert_to_boolean(value);
+		gtk_window_set_deletable(win, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GWINDOW_MNEMONICS_VISIBLE)){
+		convert_to_boolean(value);
+		gtk_window_set_mnemonics_visible(win, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GWINDOW_RESIZABLE)){
+		convert_to_boolean(value);
+		gtk_window_set_resizable(win, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GWINDOW_HIDE_TITLEBAR_WHEN_MAXIMIZED)){
+		convert_to_boolean(value);
+		gtk_window_set_hide_titlebar_when_maximized(win, GET_BOOL_FROM_ZVAL(value));
+	}else if(!strcmp(member_val, GWINDOW_ACCEPT_FOCUS)){
+		convert_to_boolean(value);
+		gtk_window_set_accept_focus(win, GET_BOOL_FROM_ZVAL(value));
+	}else
+		PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 /********************************/

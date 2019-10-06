@@ -45,7 +45,7 @@ zval *gtool_button_read_property(zval *object, zval *member, int type, void **ca
 
 HashTable *gtool_button_get_properties(zval *object);
 
-void gtool_button_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE gtool_button_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 void gtool_button_init(int module_number);
 

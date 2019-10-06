@@ -51,7 +51,7 @@ zval *gbox_read_property(zval *object, zval *member, int type, void **cache_slot
 
 HashTable *gbox_get_properties(zval *object);
 
-void gbox_write_property(zval *object, zval *member, zval *value, void **cache_slot);
+PHP_WRITE_PROP_HANDLER_TYPE gbox_write_property(zval *object, zval *member, zval *value, void **cache_slot);
 
 void gbox_init(int module_number);
 

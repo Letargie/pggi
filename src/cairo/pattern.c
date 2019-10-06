@@ -114,47 +114,43 @@ HashTable *pc_pattern_get_properties(zval *object){
 	return G_H_UPDATE_RETURN;
 }
 
-void pc_pattern_write_property(zval *object, zval *member, zval *value, void **cache_slot){
+PHP_WRITE_PROP_HANDLER_TYPE pc_pattern_write_property(zval *object, zval *member, zval *value, void **cache_slot){
 	ze_pattern_object * intern = Z_PATTERN_P(object);
 	pc_pattern_ptr c = intern->pattern_ptr;
 	long tmp_l;
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);
-	switch(Z_TYPE_P(value)){
-		case IS_LONG :
-			tmp_l = Z_LVAL_P(value);
-			if(!strcmp(member_val, PATTERN_FILTER)){
-				switch(tmp_l){
-					case CAIRO_FILTER_FAST     :
-					case CAIRO_FILTER_GOOD     :
-					case CAIRO_FILTER_BEST     :
-					case CAIRO_FILTER_NEAREST  :
-					case CAIRO_FILTER_BILINEAR :
-						cairo_pattern_set_filter(c->intern, tmp_l);
-						break;
-					default:
-						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the filter property, needs to be a Pattern::FILTER_*");
-						return;
-						break;
-				}
-			}else if(!strcmp(member_val, PATTERN_EXTEND)){
-				switch(tmp_l){
-					case CAIRO_EXTEND_NONE   :
-					case CAIRO_EXTEND_REPEAT :
-						cairo_pattern_set_extend(c->intern, tmp_l);
-						break;
-					default:
-						zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the extend property, needs to be a Pattern::EXTEND_*");
-						return;
-						break;
-				}
-			}else
-				std_object_handlers.write_property(object, member, value, cache_slot);
-			break;
-		default:
-			std_object_handlers.write_property(object, member, value, cache_slot);
-	}
+	if(!strcmp(member_val, PATTERN_FILTER)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		switch(tmp_l){
+			case CAIRO_FILTER_FAST     :
+			case CAIRO_FILTER_GOOD     :
+			case CAIRO_FILTER_BEST     :
+			case CAIRO_FILTER_NEAREST  :
+			case CAIRO_FILTER_BILINEAR :
+				cairo_pattern_set_filter(c->intern, tmp_l);
+				break;
+			default:
+				zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the filter property, needs to be a Pattern::FILTER_*");
+				break;
+		}
+	}else if(!strcmp(member_val, PATTERN_EXTEND)){
+		convert_to_long(value);
+		tmp_l = Z_LVAL_P(value);
+		switch(tmp_l){
+			case CAIRO_EXTEND_NONE   :
+			case CAIRO_EXTEND_REPEAT :
+				cairo_pattern_set_extend(c->intern, tmp_l);
+				break;
+			default:
+				zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the extend property, needs to be a Pattern::EXTEND_*");
+				break;
+		}
+	}else
+		std_object_handlers.write_property(object, member, value, cache_slot);
 	pc_exception(cairo_pattern_status(c->intern));
+	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
 /********************************/
