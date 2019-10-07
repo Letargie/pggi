@@ -3,16 +3,19 @@ All notable changes to this project will be documented in this file.
 
 For now as the extension in its early development phase, the api will change a lot.
 
-## [Unreleased] 0.4.0
+## [Unreleased] 0.5.0
+## 0.4.0
 ### Added
 	-new classes
 		-GFixed
 	-clicked event for GButton
+	-type conversion when setting object properties
 ### Bugfixed
-	- gwindow_init implicit-function-declaration (issue #7)
-	- src/display/gspinner.c:69:2: warning: missing sentinel in functio… (issue #8)
-	- duplicated macro name (issue #9)
-	- src/gdk/gpixbuf.c:120:3: error: format not a string literal and … (issue #11)
+	-gwindow_init implicit-function-declaration (issue #7)
+	-src/display/gspinner.c:69:2: warning: missing sentinel in functio… (issue #8)
+	-duplicated macro name (issue #9)
+	-src/gdk/gpixbuf.c:120:3: error: format not a string literal and … (issue #11)
+	-write_function usage for php 7.4
 ## 0.3.0
 * Mon May 28 2017 Valentin Collet <valentin@famillecollet.com> 0.3.0
 ### Added
