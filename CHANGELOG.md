@@ -3,7 +3,10 @@ All notable changes to this project will be documented in this file.
 
 For now as the extension in its early development phase, the api will change a lot.
 
-## [Unreleased] 0.5.0
+## [Unreleased] 0.4.1
+### Bugfixed
+	-fixing compiler warnings
+
 ## 0.4.0
 ### Added
 	-new classes

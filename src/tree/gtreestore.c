@@ -84,12 +84,13 @@ GTREE_STORE_METHOD(__construct){
 	ze_gtree_store_object *ze_obj = NULL;
 	zval * self = getThis();
 	long length;
+	int i;
 	if (zend_parse_parameters_throw(ZEND_NUM_ARGS(), "l", &length) == FAILURE)
 		return;
 	ze_obj = Z_GTREE_STORE_P(self);
 	ze_obj->tree_store_ptr = gtree_store_new();
 	GType * types = malloc(length * sizeof(GType));
-	for(int i = 0; i < length; ++i){
+	for(i = 0; i < length; ++i){
 		types[i] = G_TYPE_STRING;
 	}
 	ze_obj->tree_store_ptr->intern = gtk_tree_store_newv(length, types);

@@ -12,7 +12,7 @@
 #ifndef __PGGI_DEF__
 #define __PGGI_DEF__
 
-#define PGGI_VERSION "0.4.0"
+#define PGGI_VERSION "0.4.1"
 #define PGGI_EXTNAME "pggi"
 
 #include "php.h"
