@@ -1119,8 +1119,9 @@ PHP_WRITE_PROP_HANDLER_TYPE pc_context_write_property(zval *object, zval *member
 		convert_to_double(value);
 		tmp_d = Z_DVAL_P(value);
 		cairo_set_line_width(c->intern, tmp_d);
-	}else
+	} else {
 		PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
+	}
 	pc_exception(cairo_status(c->intern));
 	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }

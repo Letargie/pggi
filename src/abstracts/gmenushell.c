@@ -126,8 +126,9 @@ PHP_WRITE_PROP_HANDLER_TYPE gmenushell_write_property(zval *object, zval *member
 	if(!strcmp(member_val, GMENUSHELL_TAKE_FOCUS)){
 		convert_to_boolean(value);
 		gtk_menu_shell_set_take_focus(menu, GET_BOOL_FROM_ZVAL(value));
-	}else
+	} else {
 		PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
+	}
 	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 

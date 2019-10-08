@@ -185,8 +185,9 @@ PHP_WRITE_PROP_HANDLER_TYPE gbutton_write_property(zval *object, zval *member, z
 		w = tmp_widget->widget_ptr;
 		std_object_handlers.write_property(object, member, value, cache_slot);
 		gtk_button_set_image(but, w->intern);
-	}else
+	} else {
 		PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
+	}
 	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
