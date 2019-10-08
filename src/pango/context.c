@@ -275,7 +275,7 @@ PHP_WRITE_PROP_HANDLER_TYPE pp_context_write_property(zval *object, zval *member
 				break;
 			default:
 				zend_throw_exception_ex(pp_exception_get(), 0, "Can't change the baseDir property, needs to be a Context::DIRECTION_*");
-				return;
+				PHP_WRITE_PROP_HANDLER_RETURN(NULL);
 				break;
 		}
 	}else if(!strcmp(member_val, CONTEXT_BASE_GRAVITY)){
@@ -291,7 +291,7 @@ PHP_WRITE_PROP_HANDLER_TYPE pp_context_write_property(zval *object, zval *member
 				break;
 			default:
 				zend_throw_exception_ex(pp_exception_get(), 0, "Can't change the baseGravity property, needs to be a Context::GRAVITY_*");
-				return;
+				PHP_WRITE_PROP_HANDLER_RETURN(NULL);
 				break;
 		}
 	}else if(!strcmp(member_val, CONTEXT_GRAVITY_HINT)){
@@ -305,7 +305,7 @@ PHP_WRITE_PROP_HANDLER_TYPE pp_context_write_property(zval *object, zval *member
 				break;
 			default:
 				zend_throw_exception_ex(pp_exception_get(), 0, "Can't change the gravityHint property, needs to be a Context::GRAVITY_HINT_*");
-				return;
+				PHP_WRITE_PROP_HANDLER_RETURN(NULL);
 				break;
 		}
 	} else {

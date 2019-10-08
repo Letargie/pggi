@@ -180,7 +180,7 @@ PHP_WRITE_PROP_HANDLER_TYPE gbutton_write_property(zval *object, zval *member, z
 		tmp_widget = Z_GWIDGET_P(value);
 		if(!tmp_widget){
 			zend_throw_exception_ex(pggi_exception_get(), 0, "the image need to be an image");
-			return ;
+			PHP_WRITE_PROP_HANDLER_RETURN(NULL);
 		}
 		w = tmp_widget->widget_ptr;
 		std_object_handlers.write_property(object, member, value, cache_slot);

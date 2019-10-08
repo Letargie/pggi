@@ -200,7 +200,7 @@ PHP_WRITE_PROP_HANDLER_TYPE gtool_button_write_property(zval *object, zval *memb
 		tmp_widget = Z_GWIDGET_P(value);
 		if(!tmp_widget){
 			zend_throw_exception_ex(pggi_exception_get(), 0, "the icon needs to be a widget");
-			return ;
+			PHP_WRITE_PROP_HANDLER_RETURN(NULL);
 		}
 		w = tmp_widget->widget_ptr;
 		std_object_handlers.write_property(object, member, value, cache_slot);
@@ -209,7 +209,7 @@ PHP_WRITE_PROP_HANDLER_TYPE gtool_button_write_property(zval *object, zval *memb
 		tmp_widget = Z_GWIDGET_P(value);
 		if(!tmp_widget){
 			zend_throw_exception_ex(pggi_exception_get(), 0, "the label needs to be a widget");
-			return ;
+			PHP_WRITE_PROP_HANDLER_RETURN(NULL);
 		}
 		w = tmp_widget->widget_ptr;
 		std_object_handlers.write_property(object, member, value, cache_slot);

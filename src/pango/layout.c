@@ -179,7 +179,7 @@ PHP_WRITE_PROP_HANDLER_TYPE pp_layout_write_property(zval *object, zval *member,
 				break;
 			default:
 				zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the gravityHint property, needs to be a Context::GRAVITY_HINT_*");
-				return;
+				PHP_WRITE_PROP_HANDLER_RETURN(NULL);
 				break;
 		}
 	}else if(!strcmp(member_val, LAYOUT_TEXT)){

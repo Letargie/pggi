@@ -1085,7 +1085,7 @@ PHP_WRITE_PROP_HANDLER_TYPE pc_context_write_property(zval *object, zval *member
 				break;
 			default:
 				zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the lineCaps property, needs to be a Context::LINE_CAP_*");
-				return;
+				PHP_WRITE_PROP_HANDLER_RETURN(NULL);
 				break;
 		}
 	}else if(!strcmp(member_val, CONTEXT_LINE_JOIN)){
@@ -1099,7 +1099,7 @@ PHP_WRITE_PROP_HANDLER_TYPE pc_context_write_property(zval *object, zval *member
 				break;
 			default:
 				zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the lineJoin property, needs to be a Context::LINE_JOIN_*");
-				return;
+				PHP_WRITE_PROP_HANDLER_RETURN(NULL);
 				break;
 		}
 	}else if(!strcmp(member_val, CONTEXT_FILL_RULE)){
@@ -1112,7 +1112,7 @@ PHP_WRITE_PROP_HANDLER_TYPE pc_context_write_property(zval *object, zval *member
 				break;
 			default:
 				zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the fillRule property, needs to be a Context::FILL_RULE_*");
-				return;
+				PHP_WRITE_PROP_HANDLER_RETURN(NULL);
 				break;
 		}
 	}else if(!strcmp(member_val, CONTEXT_LINE_WIDTH)){

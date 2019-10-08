@@ -186,7 +186,7 @@ PHP_WRITE_PROP_HANDLER_TYPE gmenuitem_write_property(zval *object, zval *member,
 		tmp_obj = Z_GWIDGET_P(value);
 		if(!tmp_obj){
 			zend_throw_exception_ex(pggi_exception_get(), 0, "the submenu need to be a widget");
-			return ;
+			PHP_WRITE_PROP_HANDLER_RETURN(NULL);
 		}
 		w = tmp_obj->widget_ptr;
 		std_object_handlers.write_property(object, member, value, cache_slot);
