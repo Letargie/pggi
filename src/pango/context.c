@@ -308,8 +308,9 @@ PHP_WRITE_PROP_HANDLER_TYPE pp_context_write_property(zval *object, zval *member
 				return;
 				break;
 		}
-	}else
+	} else {
 		PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
+	}
 	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 

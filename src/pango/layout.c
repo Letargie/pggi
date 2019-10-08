@@ -185,8 +185,9 @@ PHP_WRITE_PROP_HANDLER_TYPE pp_layout_write_property(zval *object, zval *member,
 	}else if(!strcmp(member_val, LAYOUT_TEXT)){
 		convert_to_string(value);
 		pango_layout_set_text(l->intern, Z_STRVAL_P(value), Z_STRLEN_P(value));
-	}else
+	} else {
 		PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
+	}
 	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 

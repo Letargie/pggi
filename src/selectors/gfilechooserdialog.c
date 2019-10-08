@@ -230,8 +230,9 @@ PHP_WRITE_PROP_HANDLER_TYPE gfile_chooser_dialog_write_property(zval *object, zv
 	}else if(!strcmp(member_val, GFILE_CHOOSER_DIALOG_SHOW_HIDDEN)){
 		convert_to_boolean(value);
 		gtk_file_chooser_set_show_hidden(chooser, GET_BOOL_FROM_ZVAL(value));
-	}else
+	} else {
 		PHP_WRITE_PROP_HANDLER_RETURN(gwindow_write_property(object, member, value, cache_slot));
+	}
 	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 

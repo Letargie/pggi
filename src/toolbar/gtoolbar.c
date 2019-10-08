@@ -111,8 +111,9 @@ PHP_WRITE_PROP_HANDLER_TYPE gtoolbar_write_property(zval *object, zval *member, 
 	}else if(!strcmp(member_val, GTOOLBAR_SHOW_ARROW)){
 			convert_to_boolean(value);
 			gtk_toolbar_set_show_arrow(GTK_TOOLBAR(w->intern), GET_BOOL_FROM_ZVAL(value));
-	}else
+	} else {
 		PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
+	}
 	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 

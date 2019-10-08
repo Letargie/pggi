@@ -235,8 +235,9 @@ PHP_WRITE_PROP_HANDLER_TYPE gentry_write_property(zval *object, zval *member, zv
 		}
 		gtk_entry_set_buffer(e, ze_obj->buffer_ptr->intern);
 		std_object_handlers.write_property(object, member, value, cache_slot);
-	}else
+	} else {
 		PHP_WRITE_PROP_HANDLER_RETURN(gwidget_write_property(object, member, value, cache_slot));
+	}
 	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 

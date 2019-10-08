@@ -186,8 +186,9 @@ PHP_WRITE_PROP_HANDLER_TYPE rgba_write_property(zval *object, zval *member, zval
 		if(tmp_d < 0 || tmp_d > 1)
 			zend_throw_exception_ex(pggi_exception_get(), 0, "the value should be between 0 and 1");
 		c->color->alpha = tmp_d;
-	}else
+	} else {
 		PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
+	}
 	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 

@@ -191,8 +191,9 @@ PHP_WRITE_PROP_HANDLER_TYPE gmenuitem_write_property(zval *object, zval *member,
 		w = tmp_obj->widget_ptr;
 		std_object_handlers.write_property(object, member, value, cache_slot);
 		gtk_menu_item_set_submenu(menu, w->intern);
-	}else
+	} else {
 		PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
+	}
 	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 

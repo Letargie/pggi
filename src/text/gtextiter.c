@@ -723,8 +723,9 @@ PHP_WRITE_PROP_HANDLER_TYPE gtext_iter_write_property(zval *object, zval *member
     }else if(!strcmp(member_val, GTEXT_ITER_VISIBLE_LINE_OFFSET)){
 		convert_to_string(value);
         gtk_text_iter_set_visible_line_offset(iter, Z_LVAL_P(value));
-    }else
+    } else {
         PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
+	}
 	PHP_WRITE_PROP_HANDLER_RETURN(value);
 
 }

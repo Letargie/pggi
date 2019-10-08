@@ -279,8 +279,9 @@ PHP_WRITE_PROP_HANDLER_TYPE gtree_view_write_property(zval *object, zval *member
 		gtree_store_ptr w = tmp_model->tree_store_ptr;
 		std_object_handlers.write_property(object, member, value, cache_slot);
 		gtk_tree_view_set_model(view, GTK_TREE_MODEL(w->intern));
-	}else
+	} else {
 		PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
+	}
 	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
