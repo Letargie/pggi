@@ -85,8 +85,9 @@ PHP_WRITE_PROP_HANDLER_TYPE gtool_item_write_property(zval *object, zval *member
 	}else if(!strcmp(member_val, GTOOL_ITEM_EXPAND)){
 		convert_to_boolean(value);
 		gtk_tool_item_set_expand(GTK_TOOL_ITEM(w->intern), GET_BOOL_FROM_ZVAL(value));
-	}else
+	} else {
 		PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
+	}
 	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 

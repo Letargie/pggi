@@ -216,8 +216,9 @@ PHP_WRITE_PROP_HANDLER_TYPE gabout_dialog_write_property(zval *object, zval *mem
 	}else if(!strcmp(member_val, GABOUT_DIALOG_WRAP_LICENSE)){
 		convert_to_boolean(value);
 		gtk_about_dialog_set_wrap_license(dialog, GET_BOOL_FROM_ZVAL(value));
-	}else
+	} else {
 		PHP_WRITE_PROP_HANDLER_RETURN(gwindow_write_property(object, member, value, cache_slot));
+	}
 	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 

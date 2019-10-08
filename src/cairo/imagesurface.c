@@ -216,7 +216,7 @@ PHP_WRITE_PROP_HANDLER_TYPE pc_image_surface_write_property(zval *object, zval *
 
 	convert_to_string(member);
 	char * member_val = Z_STRVAL_P(member);*/
-	PHP_WRITE_PROP_HANDLER_TYPE(pc_surface_write_property(object, member, value, cache_slot));
+	PHP_WRITE_PROP_HANDLER_RETURN(pc_surface_write_property(object, member, value, cache_slot));
 }
 
 /********************************/

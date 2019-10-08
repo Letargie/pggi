@@ -344,8 +344,9 @@ PHP_WRITE_PROP_HANDLER_TYPE gtree_selection_write_property(zval *object, zval *m
 				zend_throw_exception_ex(pggi_exception_get(), 0, "the selection mode needs to be a SELECTION_*");
 				break;
 		}
-	}else
+	} else {
 		PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
+	}
 	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 

@@ -314,8 +314,9 @@ PHP_WRITE_PROP_HANDLER_TYPE gtree_view_column_write_property(zval *object, zval 
 	}else if(!strcmp(member_val, GTREE_VIEW_COLUMN_ALIGNMENT)){
 		convert_to_double(value);
 		gtk_tree_view_column_set_resizable(tree, Z_DVAL_P(value));
-	}else
+	} else {
 		PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
+	}
 	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 

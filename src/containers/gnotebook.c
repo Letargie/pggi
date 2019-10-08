@@ -366,8 +366,9 @@ PHP_WRITE_PROP_HANDLER_TYPE gnotebook_write_property(zval *object, zval *member,
 	}else if(!strcmp(member_val, GNOTEBOOK_SHOW_TABS)){
 		convert_to_boolean(value);
 		gtk_notebook_set_show_tabs(GTK_NOTEBOOK(w->intern), GET_BOOL_FROM_ZVAL(value));
-	}else
+	} else {
 		PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
+	}
 	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 

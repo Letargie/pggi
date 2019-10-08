@@ -227,8 +227,9 @@ PHP_WRITE_PROP_HANDLER_TYPE gwindow_write_property(zval *object, zval *member, z
 	}else if(!strcmp(member_val, GWINDOW_ACCEPT_FOCUS)){
 		convert_to_boolean(value);
 		gtk_window_set_accept_focus(win, GET_BOOL_FROM_ZVAL(value));
-	}else
+	} else {
 		PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
+	}
 	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 

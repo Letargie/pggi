@@ -274,13 +274,14 @@ PHP_WRITE_PROP_HANDLER_TYPE gtree_view_write_property(zval *object, zval *member
 		ze_gtree_store_object * tmp_model = Z_GTREE_STORE_P(value);
 		if(!tmp_model){
 			zend_throw_exception_ex(pggi_exception_get(), 0, "that need to be a widget");
-			return ;
+			PHP_WRITE_PROP_HANDLER_RETURN(NULL);
 		}
 		gtree_store_ptr w = tmp_model->tree_store_ptr;
 		std_object_handlers.write_property(object, member, value, cache_slot);
 		gtk_tree_view_set_model(view, GTK_TREE_MODEL(w->intern));
-	}else
+	} else {
 		PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
+	}
 	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 

@@ -244,8 +244,9 @@ PHP_WRITE_PROP_HANDLER_TYPE gtext_buffer_write_property(zval *object, zval *memb
 	if(!strcmp(member_val, GTEXT_BUFFER_TEXT)){
 		convert_to_string(value);
 		gtk_text_buffer_set_text(buffer, Z_STRVAL_P(value), Z_STRLEN_P(value));
-	}else
+	} else {
 		PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
+	}
 	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 

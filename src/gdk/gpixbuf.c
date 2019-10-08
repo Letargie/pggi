@@ -120,9 +120,9 @@ GPIXBUF_METHOD(createFromFile){
 		zend_throw_exception_ex(pggi_exception_get(), 0, "%s", error->message);
 		return;
 	}
-	zval * new_pixbuf;
-	ZVAL_OBJ(new_pixbuf, gpixbuf_ctor(gpixbuf_get_class_entry(), pix));  
-	RETURN_ZVAL(new_pixbuf, 1, 0);
+	zval new_pixbuf;
+	ZVAL_OBJ(&new_pixbuf, gpixbuf_ctor(gpixbuf_get_class_entry(), pix));
+	RETURN_ZVAL(&new_pixbuf, 1, 0);
 }
 
 GPIXBUF_METHOD(getWidth){

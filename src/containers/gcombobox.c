@@ -126,8 +126,9 @@ PHP_WRITE_PROP_HANDLER_TYPE gcombo_box_write_property(zval *object, zval *member
 	if(!strcmp(member_val, GCOMBO_BOX_ACTIVE)){
 		convert_to_long(value);
 		gtk_combo_box_set_active(menu, Z_LVAL_P(value));
-	}else
+	} else {
 		PHP_WRITE_PROP_HANDLER_RETURN(gcontainer_write_property(object, member, value, cache_slot));
+	}
 	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 

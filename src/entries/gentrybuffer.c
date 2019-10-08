@@ -251,8 +251,9 @@ PHP_WRITE_PROP_HANDLER_TYPE gentry_buffer_write_property(zval *object, zval *mem
 	}else if(!strcmp(member_val, GENTRY_BUFFER_MAX_LENGTH)){
 		convert_to_long(value);
 		gtk_entry_buffer_set_max_length(buffer, Z_LVAL_P(value));
-	}else 
+	} else {
 		PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
+	}
 	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 

@@ -110,10 +110,10 @@ SURFACE_METHOD(createSimilar){
 	cairo_surface_t * s = surface_object->surface_ptr->intern;
 	cairo_surface_t * new = cairo_surface_create_similar(s, content, width, height);
 	pc_exception(cairo_surface_status(s));
-	zval * new_surface;
-	ZVAL_OBJ(new_surface, pc_surface_ctor(surface_object->std.ce, new, 1));  
+	zval new_surface;
+	ZVAL_OBJ(&new_surface, pc_surface_ctor(surface_object->std.ce, new, 1));
 	pc_exception(cairo_surface_status(new));
-	RETURN_ZVAL(new_surface, 1, 0);
+	RETURN_ZVAL(&new_surface, 1, 0);
 }
 
 

@@ -283,7 +283,7 @@ PHP_WRITE_PROP_HANDLER_TYPE font_description_write_property(zval *object, zval *
 				break;
 			default:
 				zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the stretch property, needs to be a FontDescription::STRETCH_*");
-				return;
+				PHP_WRITE_PROP_HANDLER_RETURN(NULL);
 				break;
 		}
 		
@@ -301,11 +301,12 @@ PHP_WRITE_PROP_HANDLER_TYPE font_description_write_property(zval *object, zval *
 				break;
 			default:
 				zend_throw_exception_ex(pggi_exception_get(), 0, "Can't change the variant property, needs to be a FontDescription::VARIANT_*");
-				return;
+				PHP_WRITE_PROP_HANDLER_RETURN(NULL);
 				break;
 		}
-	}else
+	} else {
 		PHP_WRITE_PROP_HANDLER_RETURN(std_object_handlers.write_property(object, member, value, cache_slot));
+	}
 	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 

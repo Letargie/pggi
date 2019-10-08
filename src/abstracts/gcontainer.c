@@ -139,8 +139,9 @@ PHP_WRITE_PROP_HANDLER_TYPE gcontainer_write_property(zval *object, zval *member
 	if(!strcmp(member_val, GCONTAINER_BORDER_WIDTH)){
 		convert_to_long(value);
 		gtk_container_set_border_width(GTK_CONTAINER(w->intern), Z_LVAL_P(value));
-	}else
+	} else {
 		PHP_WRITE_PROP_HANDLER_RETURN(gwidget_write_property(object, member, value, cache_slot));
+	}
 	PHP_WRITE_PROP_HANDLER_RETURN(value);
 }
 
