@@ -109,9 +109,9 @@ GDK_WINDOW_METHOD(createSimilarSurface){
 	window_object = Z_GDK_GWINDOW_P(this);
 	cairo_surface_t * new = gdk_window_create_similar_surface(window_object->window_ptr->intern, content, width, height);
 	pc_exception(cairo_surface_status(new));
-	zval * new_surface;
-	ZVAL_OBJ(new_surface, pc_surface_ctor(pc_surface_get_class_entry(), new, 1));  
-	RETURN_ZVAL(new_surface, 1, 0);
+	zval new_surface;
+	ZVAL_OBJ(&new_surface, pc_surface_ctor(pc_surface_get_class_entry(), new, 1));
+	RETURN_ZVAL(&new_surface, 1, 0);
 }
 
 GDK_WINDOW_METHOD(drawFrame){
